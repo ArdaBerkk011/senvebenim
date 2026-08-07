@@ -6013,7 +6013,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     });
 </script>
 
-<!-- ================= HAFTALIK KAZI KAZAN (ÇAKIŞMA VE KİLİTLENME KORUMALI) ================= -->
+<!-- ================= HAFTALIK KAZI KAZAN (BULUT / FIREBASE DESTEKLİ %100 KİLİTLİ) ================= -->
 
 <style>
     /* Sağ Üst Yuvarlak Buton */
@@ -6045,7 +6045,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
     /* Modal Arka Plan */
     #kazi-modal-overlay {
-        display: none; /* Varsayılan gizli */
+        display: none;
         position: fixed;
         top: 0; left: 0;
         width: 100vw; height: 100vh;
@@ -6212,8 +6212,8 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             <div class="kart-kutusu" id="kart-1">
                 <div class="surpriz-icerik">
                     <div class="surpriz-simge">🎬🍿</div>
-                    <div class="surpriz-baslik">Sinema </div>
-                    <div class="surpriz-metin">Sinemaya gidince filmi sen seçiyorsun.</div>
+                    <div class="surpriz-baslik">Sinema Gecesi!</div>
+                    <div class="surpriz-metin">Bu haftanın filmini sen seçiyorsun, mısırlar benden!</div>
                 </div>
                 <canvas class="kazi-canvas" id="canvas-1"></canvas>
                 <div class="kilitli-katman">Diğer Kart Seçildi 🔒</div>
@@ -6222,8 +6222,8 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             <div class="kart-kutusu" id="kart-2">
                 <div class="surpriz-icerik">
                     <div class="surpriz-simge">👑💖</div>
-                    <div class="surpriz-baslik">EVET Kuponu</div>
-                    <div class="surpriz-metin">isteyeceğin 1 şey için "Hayır" deme hakkım yok!</div>
+                    <div class="surpriz-baslik">Sınırsız 'EVET' Kuponu</div>
+                    <div class="surpriz-metin">Bugün isteyeceğin 1 şey için "Hayır" deme hakkım yok!</div>
                 </div>
                 <canvas class="kazi-canvas" id="canvas-2"></canvas>
                 <div class="kilitli-katman">Diğer Kart Seçildi 🔒</div>
@@ -6247,13 +6247,11 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
 <script>
-    // Kodu kendi özel kapsamına (IIFE) alarak diğer JS kodlarıyla çakışmasını engelliyoruz
     (function() {
         window.addEventListener('DOMContentLoaded', () => {
             try {
-                // Eski versiyon temizliği
-                localStorage.removeItem('haftalik_kazi_tarih');
-                localStorage.removeItem('haftalik_kazi_secilen');
+                const FIREBASE_URL = 'https://surpriz-kazi-kazan-default-rtdb.europe-west1.firebasedatabase.app/kazi_durum.json';
+                const YEDI_GUN_MS = 7 * 24 * 60 * 60 * 1000;
 
                 const btn = document.getElementById('haftalik-kazi-btn');
                 const modal = document.getElementById('kazi-modal-overlay');
@@ -6264,9 +6262,8 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
                 if (!btn || !modal) return;
 
-                const YEDI_GUN_MS = 7 * 24 * 60 * 60 * 1000;
-                let secimZamani = localStorage.getItem('haftalik_kazi_v2_tarih');
-                let secilenKartId = localStorage.getItem('haftalik_kazi_v2_secilen');
+                let secimZamani = null;
+                let secilenKartId = null;
                 let intervalId = null;
 
                 durumKontrolVeHazirla();
@@ -6282,6 +6279,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
                     });
                 }
 
+                // GİZLİ SIFIRLAMA: Başlığa 4 tık atınca BULUTTAKİ veriyi de tamamen siler
                 let tiklamaSayisi = 0;
                 let tiklamaZamanlayici = null;
 
@@ -6291,13 +6289,16 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
                         clearTimeout(tiklamaZamanlayici);
                         if (tiklamaSayisi === 4) {
                             tiklamaSayisi = 0;
-                            localStorage.removeItem('haftalik_kazi_v2_tarih');
-                            localStorage.removeItem('haftalik_kazi_v2_secilen');
-                            secimZamani = null;
-                            secilenKartId = null;
-                            if (intervalId) clearInterval(intervalId);
-                            alert('⚙️ Hafıza Tamamen Sıfırlandı!');
-                            durumKontrolVeHazirla();
+                            
+                            // Buluttan sil
+                            fetch(FIREBASE_URL, { method: 'DELETE' })
+                            .then(() => {
+                                secimZamani = null;
+                                secilenKartId = null;
+                                if (intervalId) clearInterval(intervalId);
+                                alert('⚙️ Bulut Veritabanı Sıfırlandı! Tüm kilitler açıldı.');
+                                durumKontrolVeHazirla();
+                            });
                         } else {
                             tiklamaZamanlayici = setTimeout(() => { tiklamaSayisi = 0; }, 1500);
                         }
@@ -6305,22 +6306,39 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
                 }
 
                 function durumKontrolVeHazirla() {
-                    const simdi = new Date().getTime();
-                    if (secimZamani && (simdi - parseInt(secimZamani) >= YEDI_GUN_MS)) {
-                        localStorage.removeItem('haftalik_kazi_v2_tarih');
-                        localStorage.removeItem('haftalik_kazi_v2_secilen');
-                        secimZamani = null;
-                        secilenKartId = null;
-                    }
+                    // Buluttan veriyi sorgula
+                    fetch(FIREBASE_URL)
+                    .then(res => res.json())
+                    .then(data => {
+                        const simdi = new Date().getTime();
 
-                    if (secimZamani) {
-                        if (sayacKutusu) sayacKutusu.style.display = 'block';
-                        sayacBaslat(parseInt(secimZamani) + YEDI_GUN_MS);
-                        kilitleriUygula(secilenKartId);
-                    } else {
-                        if (sayacKutusu) sayacKutusu.style.display = 'none';
+                        if (data && data.secimZamani) {
+                            if (simdi - parseInt(data.secimZamani) >= YEDI_GUN_MS) {
+                                // 7 gün dolmuş, buluttan sil ve sıfırla
+                                fetch(FIREBASE_URL, { method: 'DELETE' });
+                                secimZamani = null;
+                                secilenKartId = null;
+                                if (sayacKutusu) sayacKutusu.style.display = 'none';
+                                kartlariIlklendir();
+                            } else {
+                                // Halen kilit süresi devam ediyor
+                                secimZamani = parseInt(data.secimZamani);
+                                secilenKartId = data.secilenKartId;
+                                if (sayacKutusu) sayacKutusu.style.display = 'block';
+                                sayacBaslat(secimZamani + YEDI_GUN_MS);
+                                kilitleriUygula(secilenKartId);
+                            }
+                        } else {
+                            // Henüz kart seçilmemiş
+                            secimZamani = null;
+                            secilenKartId = null;
+                            if (sayacKutusu) sayacKutusu.style.display = 'none';
+                            kartlariIlklendir();
+                        }
+                    })
+                    .catch(() => {
                         kartlariIlklendir();
-                    }
+                    });
                 }
 
                 function sayacBaslat(bitisTarihi) {
@@ -6420,12 +6438,20 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
                             kaziHareketSayisi++;
 
                             if (kaziHareketSayisi > 5) {
-                                if (!localStorage.getItem('haftalik_kazi_v2_tarih')) {
+                                if (!secimZamani) {
                                     const simdi = new Date().getTime();
-                                    localStorage.setItem('haftalik_kazi_v2_tarih', simdi);
-                                    localStorage.setItem('haftalik_kazi_v2_secilen', `kart-${id}`);
                                     secimZamani = simdi;
                                     secilenKartId = `kart-${id}`;
+
+                                    // BULUTA KAYDET
+                                    fetch(FIREBASE_URL, {
+                                        method: 'PUT',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({
+                                            secimZamani: simdi,
+                                            secilenKartId: `kart-${id}`
+                                        })
+                                    });
 
                                     if (sayacKutusu) sayacKutusu.style.display = 'block';
                                     sayacBaslat(simdi + YEDI_GUN_MS);
@@ -6474,7 +6500,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
                 window.addEventListener('touchend', () => { isDrawing = false; });
 
             } catch (err) {
-                console.warn('Kazı kazan bileşeni yüklenirken hata oluştu ama sayfa çalışmaya devam ediyor:', err);
+                console.warn('Hata:', err);
             }
         });
     })();
