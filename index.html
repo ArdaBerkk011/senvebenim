@@ -6013,7 +6013,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     });
 </script>
 
-<!-- ================= HAFTALIK 3 SEÇENEKLİ KAZI KAZAN (YENİLEME SIZINTISI TAMAMEN GİDERİLDİ) ================= -->
+<!-- ================= HAFTALIK 3 SEÇENEKLİ KAZI KAZAN (ESKİ SEÇİM SIFIRLANDI & TAM KORUMA) ================= -->
 
 <style>
     /* Sağ Üst Yuvarlak Buton */
@@ -6077,7 +6077,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         margin: 0 0 4px 0;
         font-size: 19px;
         user-select: none;
-        cursor: default;
+        cursor: pointer;
     }
 
     .modal-icerik p.aciklama {
@@ -6115,13 +6115,13 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         height: 240px;
         border-radius: 14px;
         overflow: hidden;
-        background: #e0e0e0; /* Yüklenirken beyaz çakmayı engeller */
+        background: #e0e0e0;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         user-select: none;
         flex-shrink: 0;
     }
 
-    /* VARSAYILAN OLARAK GİZLİ (Sayfa yenilense de görünmez) */
+    /* Sızıntıyı Önleyen Görünmezlik Kuralı */
     .surpriz-icerik {
         position: absolute;
         top: 0; left: 0;
@@ -6134,12 +6134,11 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         text-align: center;
         background: #fff0f5;
         box-sizing: border-box;
-        visibility: hidden; /* Sızıntıyı önleyen temel kural */
+        visibility: hidden;
         opacity: 0;
         transition: opacity 0.3s ease;
     }
 
-    /* Sadece kazanılan/seçilen kart görünür olur */
     .surpriz-icerik.acik {
         visibility: visible !important;
         opacity: 1 !important;
@@ -6211,11 +6210,10 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 <!-- POP-UP MODAL -->
 <div id="kazi-modal-overlay">
     <div class="modal-icerik">
-        <!-- Gizli 4 Tık Başlığı -->
-        <h2 id="modal-gizli-baslik">Haftalık Sürpriz Kazı Kazan 🎁</h2>
+        <h2 id="modal-gizli-baslik" title="Sıfırlamak için 4 kez hızlıca tıkla">Haftalık Sürpriz Kazı Kazan 🎁</h2>
         <p class="aciklama">Her hafta 3 karttan sadece 1 tanesini seçip kazıma hakkın var!</p>
 
-        <!-- Canlı Geri Sayım Sayacı -->
+        <!-- Geri Sayım Sayacı -->
         <div id="sayac-kutusu">
             Kalan Süre: <span id="kalan-zaman">--:--:--</span>
         </div>
@@ -6225,7 +6223,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             <div class="kart-kutusu" id="kart-1">
                 <div class="surpriz-icerik">
                     <div class="surpriz-simge">🎬🍿</div>
-                    <div class="surpriz-baslik">Sinema</div>
+                    <div class="surpriz-baslik">Sinema Gecesi!</div>
                     <div class="surpriz-metin">Bu haftanın filmini sen seçiyorsun, mısırlar benden!</div>
                 </div>
                 <canvas class="kazi-canvas" id="canvas-1"></canvas>
@@ -6236,7 +6234,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             <div class="kart-kutusu" id="kart-2">
                 <div class="surpriz-icerik">
                     <div class="surpriz-simge">👑💖</div>
-                    <div class="surpriz-baslik"> EVET Kuponu</div>
+                    <div class="surpriz-baslik">Sınırsız 'EVET' Kuponu</div>
                     <div class="surpriz-metin">Bugün isteyeceğin 1 şey için "Hayır" deme hakkım yok!</div>
                 </div>
                 <canvas class="kazi-canvas" id="canvas-2"></canvas>
@@ -6248,7 +6246,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
                 <div class="surpriz-icerik">
                     <div class="surpriz-simge">🍕🤗</div>
                     <div class="surpriz-baslik">Tatlı / Yemek Ismarlama</div>
-                    <div class="surpriz-metin">En sevdiğin tatlı veya yemek benden</div>
+                    <div class="surpriz-metin">En sevdiğin tatlı veya yemek benden hediyeli!</div>
                 </div>
                 <canvas class="kazi-canvas" id="canvas-3"></canvas>
                 <div class="kilitli-katman">Diğer Kart Seçildi 🔒</div>
@@ -6264,6 +6262,10 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // --- ESKİ VERSİYON TEMİZLİĞİ (Tüm eski test verilerini otomatik siler) ---
+        localStorage.removeItem('haftalik_kazi_tarih');
+        localStorage.removeItem('haftalik_kazi_secilen');
+
         const btn = document.getElementById('haftalik-kazi-btn');
         const modal = document.getElementById('kazi-modal-overlay');
         const kapatBtn = document.getElementById('modalKapatBtn');
@@ -6272,11 +6274,12 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         const kalanZamanSpan = document.getElementById('kalan-zaman');
 
         const YEDI_GUN_MS = 7 * 24 * 60 * 60 * 1000;
-        let secimZamani = localStorage.getItem('haftalik_kazi_tarih');
-        let secilenKartId = localStorage.getItem('haftalik_kazi_secilen');
+        
+        // Yeni versiyon anahtarları (v2)
+        let secimZamani = localStorage.getItem('haftalik_kazi_v2_tarih');
+        let secilenKartId = localStorage.getItem('haftalik_kazi_v2_secilen');
         let intervalId = null;
 
-        // Sayfa yüklenir yüklenmez durumu hemen doğrula
         durumKontrolVeHazirla();
 
         btn.addEventListener('click', () => {
@@ -6290,7 +6293,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             modal.style.display = 'none';
         });
 
-        // GİZLİ SIFIRLAMA: Başlığa 1.5 saniye içinde 4 kez tıklayınca sıfırlanır
+        // GİZLİ SIFIRLAMA: Başlığa 1.5 saniye içinde 4 kez tıklayınca anında sıfırlar
         let tiklamaSayisi = 0;
         let tiklamaZamanlayici = null;
 
@@ -6300,13 +6303,13 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
             if (tiklamaSayisi === 4) {
                 tiklamaSayisi = 0;
-                localStorage.removeItem('haftalik_kazi_tarih');
-                localStorage.removeItem('haftalik_kazi_secilen');
+                localStorage.removeItem('haftalik_kazi_v2_tarih');
+                localStorage.removeItem('haftalik_kazi_v2_secilen');
                 secimZamani = null;
                 secilenKartId = null;
                 if (intervalId) clearInterval(intervalId);
 
-                alert('⚙️ Test Modu: Bütün kilitler ve sayaç sıfırlandı!');
+                alert('⚙️ Hafıza Tamamen Sıfırlandı! Kartlar yeniden açıldı.');
                 durumKontrolVeHazirla();
             } else {
                 tiklamaZamanlayici = setTimeout(() => {
@@ -6319,8 +6322,8 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             const simdi = new Date().getTime();
 
             if (secimZamani && (simdi - parseInt(secimZamani) >= YEDI_GUN_MS)) {
-                localStorage.removeItem('haftalik_kazi_tarih');
-                localStorage.removeItem('haftalik_kazi_secilen');
+                localStorage.removeItem('haftalik_kazi_v2_tarih');
+                localStorage.removeItem('haftalik_kazi_v2_secilen');
                 secimZamani = null;
                 secilenKartId = null;
             }
@@ -6432,23 +6435,21 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
                     ctx.arc(x, y, 14, 0, Math.PI * 2);
                     ctx.fill();
 
-                    // Kazıma başladığında altındaki yazıyı görünür kıl
                     if (icerik) icerik.classList.add('acik');
 
                     kaziHareketSayisi++;
 
                     if (kaziHareketSayisi > 5) {
-                        if (!localStorage.getItem('haftalik_kazi_tarih')) {
+                        if (!localStorage.getItem('haftalik_kazi_v2_tarih')) {
                             const simdi = new Date().getTime();
-                            localStorage.setItem('haftalik_kazi_tarih', simdi);
-                            localStorage.setItem('haftalik_kazi_secilen', `kart-${id}`);
+                            localStorage.setItem('haftalik_kazi_v2_tarih', simdi);
+                            localStorage.setItem('haftalik_kazi_v2_secilen', `kart-${id}`);
                             secimZamani = simdi;
                             secilenKartId = `kart-${id}`;
 
                             sayacKutusu.style.display = 'block';
                             sayacBaslat(simdi + YEDI_GUN_MS);
 
-                            // Diğer kartları anında kilitler ve yazılarını kapatır
                             [1, 2, 3].forEach(otherId => {
                                 if (otherId !== id) {
                                     const digerKart = document.getElementById(`kart-${otherId}`);
@@ -6492,7 +6493,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         }
     });
 </script>
-
  </html>
 <!-- === EVRENSEL GİZLEYİCİ MIKNATIS === -->
 <style type="text/css">
