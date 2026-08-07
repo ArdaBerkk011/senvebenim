@@ -6013,7 +6013,462 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     });
 </script>
 
+<!-- ================= HAFTALIK 3 SEÇENEKLİ KAZI KAZAN (BOYUT & KAZIMA DÜZELTİLMİŞ) ================= -->
 
+<style>
+    /* Sağ Üst Yuvarlak Buton */
+    #haftalik-kazi-btn {
+        position: fixed;
+        top: 13px;
+        right: 64px;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #ff758f, #ff4757);
+        color: white;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        z-index: 99999;
+        box-shadow: 0 6px 16px rgba(255, 71, 87, 0.4);
+        transition: transform 0.2s, box-shadow 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
+    }
+
+    #haftalik-kazi-btn:hover {
+        transform: scale(1.08) rotate(6deg);
+        box-shadow: 0 8px 20px rgba(255, 71, 87, 0.6);
+    }
+
+    /* Modal / Pop-up Arka Plan */
+    #kazi-modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        background: rgba(0, 0, 0, 0.65);
+        backdrop-filter: blur(5px);
+        z-index: 100005;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+
+    .modal-icerik {
+        background: #ffffff;
+        padding: 20px 15px;
+        border-radius: 20px;
+        text-align: center;
+        max-width: 680px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+        box-sizing: border-box;
+    }
+
+    .modal-icerik h2 {
+        color: #ff4757;
+        margin: 0 0 4px 0;
+        font-size: 19px;
+        user-select: none;
+        cursor: default;
+    }
+
+    .modal-icerik p.aciklama {
+        color: #666;
+        font-size: 12px;
+        margin-bottom: 12px;
+    }
+
+    /* Geri Sayım Kutusu */
+    #sayac-kutusu {
+        display: none;
+        background: #fff0f5;
+        border: 1.5px dashed #ff758f;
+        color: #d63384;
+        padding: 8px 14px;
+        border-radius: 12px;
+        font-weight: bold;
+        font-size: 13px;
+        margin: 0 auto 12px auto;
+        max-width: 320px;
+    }
+
+    /* 3 Kart Yan Yana Düzeni */
+    .kartlar-wrapper {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .kart-kutusu {
+        position: relative;
+        width: 180px;
+        height: 240px;
+        border-radius: 14px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        user-select: none;
+        flex-shrink: 0;
+    }
+
+    .surpriz-icerik {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 12px;
+        text-align: center;
+        background: #fff0f5;
+        box-sizing: border-box;
+    }
+
+    .surpriz-simge { font-size: 34px; margin-bottom: 6px; }
+    .surpriz-baslik { font-size: 14px; font-weight: bold; color: #ff4757; margin-bottom: 4px; }
+    .surpriz-metin { font-size: 11px; color: #555; line-height: 1.35; }
+
+    canvas.kazi-canvas {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        cursor: pointer;
+        z-index: 2;
+        touch-action: none;
+    }
+
+    /* Kilitli Kart Katmanı */
+    .kilitli-katman {
+        display: none;
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.55);
+        z-index: 3;
+        color: white;
+        font-weight: bold;
+        font-size: 12px;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 8px;
+        box-sizing: border-box;
+    }
+
+    .modal-kapat-btn {
+        margin-top: 15px;
+        background: #f1f2f6;
+        color: #333;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 16px;
+        font-weight: bold;
+        font-size: 13px;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .modal-kapat-btn:hover { background: #dfe4ea; }
+
+    @media (max-width: 600px) {
+        .kart-kutusu {
+            width: 140px;
+            height: 200px;
+        }
+        .surpriz-simge { font-size: 28px; }
+        .surpriz-baslik { font-size: 12px; }
+        .surpriz-metin { font-size: 10px; }
+    }
+</style>
+
+<!-- SAĞ ÜST YUVARLAK BUTON -->
+<button id="haftalik-kazi-btn" title="Haftalık Sürpriz">🎁</button>
+
+<!-- POP-UP MODAL -->
+<div id="kazi-modal-overlay">
+    <div class="modal-icerik">
+        <!-- Gizli 4 Tık Başlığı -->
+        <h2 id="modal-gizli-baslik">Haftalık Sürpriz Kazı Kazan 🎁</h2>
+        <p class="aciklama">Her hafta 3 karttan sadece 1 tanesini seçip kazıma hakkın var!</p>
+        <!-- Canlı Geri Sayım Sayacı -->
+        <div id="sayac-kutusu">
+            Kalan Süre: <span id="kalan-zaman">--:--:--</span>
+        </div>
+
+        <div class="kartlar-wrapper">
+            <!-- KART 1 -->
+            <div class="kart-kutusu" id="kart-1">
+                <div class="surpriz-icerik">
+                    <div class="surpriz-simge">🧺</div>
+                    <div class="surpriz-baslik">Piknik Keyfi</div>
+                    <div class="surpriz-metin">Güzel bir havada plan yapıp Piknik Yapmaya götürceksin beni</div>
+                </div>
+                <canvas class="kazi-canvas" id="canvas-1"></canvas>
+                <div class="kilitli-katman">Diğer Kart Seçildi 🔒</div>
+            </div>
+
+            <!-- KART 2 -->
+            <div class="kart-kutusu" id="kart-2">
+                <div class="surpriz-icerik">
+                    <div class="surpriz-simge">👑</div>
+                    <div class="surpriz-baslik">Ceza' Kuponu</div>
+                    <div class="surpriz-metin">isteyeceğim 1 şey için "Hayır" deme hakkın yok!</div>
+                </div>
+                <canvas class="kazi-canvas" id="canvas-2"></canvas>
+                <div class="kilitli-katman">Diğer Kart Seçildi 🔒</div>
+            </div>
+
+            <!-- KART 3 -->
+            <div class="kart-kutusu" id="kart-3">
+                <div class="surpriz-icerik">
+                    <div class="surpriz-simge">🛡️</div>
+                    <div class="surpriz-baslik">Ben Haklıyım Kuponu</div>
+                    <div class="surpriz-metin">İleride yaşanacak ufak bir fikir ayrılığında çıkarıp kullanabileceğim anında beni  haklı çıkaran 1 defalık joker kartı</div>
+                </div>
+                <canvas class="kazi-canvas" id="canvas-3"></canvas>
+                <div class="kilitli-katman">Diğer Kart Seçildi 🔒</div>
+            </div>
+        </div>
+
+        <button class="modal-kapat-btn" id="modalKapatBtn">Kapat ✖</button>
+    </div>
+</div>
+
+<!-- Konfeti Kütüphanesi -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const btn = document.getElementById('haftalik-kazi-btn');
+        const modal = document.getElementById('kazi-modal-overlay');
+        const kapatBtn = document.getElementById('modalKapatBtn');
+        const gizliBaslik = document.getElementById('modal-gizli-baslik');
+        const sayacKutusu = document.getElementById('sayac-kutusu');
+        const kalanZamanSpan = document.getElementById('kalan-zaman');
+
+        const YEDI_GUN_MS = 7 * 24 * 60 * 60 * 1000;
+        let secimZamani = localStorage.getItem('haftalik_kazi_tarih');
+        let secilenKartId = localStorage.getItem('haftalik_kazi_secilen');
+
+        let intervalId = null;
+
+        btn.addEventListener('click', () => {
+            modal.style.display = 'flex';
+            // Ekran yerleşiminin (layout) tam oturması için çift kare beklenir
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    durumKontrolVeHazirla();
+                });
+            });
+        });
+
+        kapatBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        // GİZLİ SIFIRLAMA: Başlığa 1.5 saniye içinde 4 kez üst üste tıklayınca çalışır
+        let tiklamaSayisi = 0;
+        let tiklamaZamanlayici = null;
+
+        gizliBaslik.addEventListener('click', () => {
+            tiklamaSayisi++;
+            clearTimeout(tiklamaZamanlayici);
+
+            if (tiklamaSayisi === 4) {
+                tiklamaSayisi = 0;
+                localStorage.removeItem('haftalik_kazi_tarih');
+                localStorage.removeItem('haftalik_kazi_secilen');
+                secimZamani = null;
+                secilenKartId = null;
+                if (intervalId) clearInterval(intervalId);
+
+                alert('⚙️ Test Modu: Kazı kazan kartları ve sayaç başarıyla sıfırlandı!');
+                durumKontrolVeHazirla();
+            } else {
+                tiklamaZamanlayici = setTimeout(() => {
+                    tiklamaSayisi = 0;
+                }, 1500);
+            }
+        });
+
+        function durumKontrolVeHazirla() {
+            const simdi = new Date().getTime();
+
+            if (secimZamani && (simdi - parseInt(secimZamani) >= YEDI_GUN_MS)) {
+                localStorage.removeItem('haftalik_kazi_tarih');
+                localStorage.removeItem('haftalik_kazi_secilen');
+                secimZamani = null;
+                secilenKartId = null;
+            }
+
+            if (secimZamani) {
+                sayacKutusu.style.display = 'block';
+                sayacBaslat(parseInt(secimZamani) + YEDI_GUN_MS);
+                kilitleriUygula(secilenKartId);
+            } else {
+                sayacKutusu.style.display = 'none';
+                kartlariIlklendir();
+            }
+        }
+
+        function sayacBaslat(bitisTarihi) {
+            if (intervalId) clearInterval(intervalId);
+
+            function guncelle() {
+                const simdi = new Date().getTime();
+                const fark = bitisTarihi - simdi;
+
+                if (fark <= 0) {
+                    clearInterval(intervalId);
+                    durumKontrolVeHazirla();
+                    return;
+                }
+
+                const gun = Math.floor(fark / (1000 * 60 * 60 * 24));
+                const saat = Math.floor((fark % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const dakika = Math.floor((fark % (1000 * 60 * 60)) / (1000 * 60));
+                const saniye = Math.floor((fark % (1000 * 60)) / 1000);
+
+                kalanZamanSpan.textContent = `${gun} gün ${saat}s ${dakika}dk ${saniye}sn`;
+            }
+
+            guncelle();
+            intervalId = setInterval(guncelle, 1000);
+        }
+
+        function kilitleriUygula(secilenId) {
+            [1, 2, 3].forEach(id => {
+                const kart = document.getElementById(`kart-${id}`);
+                const canvas = document.getElementById(`canvas-${id}`);
+                const kilit = kart.querySelector('.kilitli-katman');
+
+                if (`kart-${id}` === secilenId) {
+                    if (canvas) canvas.style.display = 'none';
+                    kilit.style.display = 'none';
+                } else {
+                    kilit.style.display = 'flex';
+                }
+            });
+        }
+
+        function kartlariIlklendir() {
+            [1, 2, 3].forEach(id => {
+                const kart = document.getElementById(`kart-${id}`);
+                const canvas = document.getElementById(`canvas-${id}`);
+                const kilit = kart.querySelector('.kilitli-katman');
+
+                // Ekran genişliğine göre boyut tam belirlenir
+                const isMobile = window.innerWidth <= 600;
+                const rect = kart.getBoundingClientRect();
+                const w = Math.round(rect.width) || (isMobile ? 140 : 180);
+                const h = Math.round(rect.height) || (isMobile ? 200 : 240);
+
+                canvas.width = w;
+                canvas.height = h;
+
+                const ctx = canvas.getContext('2d');
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.fillStyle = '#C0C0C0';
+                ctx.fillRect(0, 0, w, h);
+
+                ctx.fillStyle = '#ff4757';
+                ctx.font = 'bold 14px Segoe UI';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('Kazı ve Seç! ✨', w / 2, h / 2);
+
+                canvas.style.display = 'block';
+                canvas.style.opacity = '1';
+                kilit.style.display = 'none';
+
+                let isDrawing = false;
+                let kazindi = false;
+                let kaziHareketSayisi = 0;
+
+                function kazi(e) {
+                    if (!isDrawing || kazindi) return;
+
+                    const cRect = canvas.getBoundingClientRect();
+                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+                    if (clientX === undefined || clientY === undefined) return;
+
+                    const x = clientX - cRect.left;
+                    const y = clientY - cRect.top;
+
+                    ctx.globalCompositeOperation = 'destination-out';
+                    ctx.beginPath();
+                    ctx.arc(x, y, 14, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    kaziHareketSayisi++;
+
+                    // Gerçekten kazıma yapıldığında (5 hareket geçilince) hakkı kaydet
+                    if (kaziHareketSayisi > 5) {
+                        if (!localStorage.getItem('haftalik_kazi_tarih')) {
+                            const simdi = new Date().getTime();
+                            localStorage.setItem('haftalik_kazi_tarih', simdi);
+                            localStorage.setItem('haftalik_kazi_secilen', `kart-${id}`);
+                            secimZamani = simdi;
+                            secilenKartId = `kart-${id}`;
+
+                            sayacKutusu.style.display = 'block';
+                            sayacBaslat(simdi + YEDI_GUN_MS);
+
+                            [1, 2, 3].forEach(otherId => {
+                                if (otherId !== id) {
+                                    document.getElementById(`kart-${otherId}`).querySelector('.kilitli-katman').style.display = 'flex';
+                                }
+                            });
+                        }
+
+                        // %50'den fazlası kazındığında örtüyü kaldır
+                        if (kaziHareketSayisi % 6 === 0) {
+                            const imgData = ctx.getImageData(0, 0, w, h);
+                            let trans = 0;
+                            const totalPixels = imgData.data.length / 4;
+
+                            for (let i = 3; i < imgData.data.length; i += 4) {
+                                if (imgData.data[i] === 0) trans++;
+                            }
+
+                            if (trans / totalPixels > 0.50) {
+                                kazindi = true;
+                                canvas.style.transition = 'opacity 0.4s ease';
+                                canvas.style.opacity = '0';
+                                setTimeout(() => canvas.style.display = 'none', 400);
+
+                                if (typeof confetti === 'function') {
+                                    confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
+                                }
+                            }
+                        }
+                    }
+                }
+
+                canvas.onmousedown = (e) => { isDrawing = true; kazi(e); };
+                canvas.onmousemove = kazi;
+                window.onmouseup = () => isDrawing = false;
+
+                canvas.ontouchstart = (e) => { isDrawing = true; kazi(e); };
+                canvas.ontouchmove = kazi;
+                window.ontouchend = () => isDrawing = false;
+            });
+        }
+    });
+</script>
 
  </html>
 <!-- === EVRENSEL GİZLEYİCİ MIKNATIS === -->
