@@ -5691,7 +5691,327 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 <!-- === KRAL TÜM TEMAYI DEĞİŞTİREN GECE/GÜNDÜZ MODU BİTİŞİ === -->
 
 
+<!-- ================= BOL MESAJLI & HAFIZALI MASKOT OYUNU ================= -->
 
+<style>
+    @keyframes maskotSuzulme {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-8px) rotate(2deg); }
+    }
+
+    @keyframes kalpUcur {
+        0% { opacity: 1; transform: translate(0, 0) scale(0.8); }
+        100% { opacity: 0; transform: translate(var(--dx), -80px) scale(1.3) rotate(var(--rot)); }
+    }
+
+    @keyframes konfetiDusu {
+        0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+
+    @keyframes balikUcus {
+        0% { transform: scale(0.5) translateY(0); opacity: 0; }
+        20% { opacity: 1; }
+        80% { opacity: 1; }
+        100% { transform: scale(1.1) translateY(-150px); opacity: 0; }
+    }
+
+    #maskot-konteyner {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        width: 85px;
+        height: 85px;
+        z-index: 99999;
+        cursor: pointer;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        animation: maskotSuzulme 3s ease-in-out infinite;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    #maskot-konteyner:active {
+        transform: scale(0.9) !important;
+    }
+
+    #maskot-gorsel {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background: transparent !important;
+        border: none !important;
+        filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15));
+        transition: transform 0.2s ease;
+    }
+
+    #maskot-konteyner:hover #maskot-gorsel {
+        transform: scale(1.1) rotate(4deg);
+    }
+
+    #konusma-balonu {
+        display: none;
+        position: absolute;
+        bottom: 100px;
+        right: 0;
+        width: 190px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 2px solid #ff758f;
+        border-radius: 18px;
+        padding: 10px 14px;
+        box-shadow: 0 8px 20px rgba(255, 117, 143, 0.25);
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    #konusma-metni {
+        margin: 0;
+        font-size: 13px;
+        color: #2b2b2b;
+        font-weight: 600;
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        line-height: 1.4;
+    }
+
+    #konusma-balonu .ok {
+        position: absolute;
+        bottom: -9px;
+        right: 32px;
+        width: 0;
+        height: 0;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-top: 9px solid #ff758f;
+    }
+
+    .kalp-parcacik {
+        position: fixed;
+        pointer-events: none;
+        z-index: 100000;
+        font-size: 20px;
+        animation: kalpUcur 1.1s ease-out forwards;
+    }
+
+    .konfeti-parcacik {
+        position: fixed;
+        top: -20px;
+        z-index: 100001;
+        pointer-events: none;
+        animation: konfetiDusu linear forwards;
+    }
+
+    .ucan-balik {
+        position: fixed;
+        z-index: 99998;
+        font-size: 30px;
+        cursor: pointer;
+        user-select: none;
+        animation: balikUcus 4s ease-in-out forwards;
+        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+    }
+</style>
+
+<div id="maskot-konteyner">
+    <img id="maskot-gorsel" 
+         src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Cat%20Face.png" 
+         alt="Maskot">
+    
+    <div id="konusma-balonu">
+        <p id="konusma-metni"></p>
+        <div class="ok"></div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const maskotKonteyner = document.getElementById('maskot-konteyner');
+        const konusmaBalonu = document.getElementById('konusma-balonu');
+        const konusmaMetni = document.getElementById('konusma-metni');
+
+        let tiklamaSayisi = parseInt(localStorage.getItem('maskot_tiklama')) || 0;
+        let yakalananBalik = parseInt(localStorage.getItem('maskot_balik')) || 0;
+
+        let daktiloZamanlayici;
+        let kapaZamanlayici;
+
+        // --- DEV MESAJ LİSTESİ ---
+        const mesajlar = [
+            "Seni çok seviyorumm! ❤️",
+            "Bugün her zamanki gibi ışıl ışılsın ✨",
+            "Bu siteyi sadece senin için yaptı, biliyorsun di mi?",
+            "Kalbim seninle pır pır atıyor! 💓",
+            "Hiç gitme, hep burada kal...",
+            "Bana kocaman bir sarılma borcun var! 🤗",
+            "Dünyanın en şanslı kişisi kim? (Tabii ki sen!) 💖",
+            "Miyavvv! Sen dünyadaki en tatlı insansın 🐾",
+            "Gülüşün tüm günü aydınlatıyor ☀️",
+            "İyi ki varsın, iyi ki buradasın! 🌸",
+            "Aramızda kalsın ama sana sırılsıklam aşık! 🤫💕",
+            "Ekranda uçan balıklara tıklayıp bana besleyebilirsin! 🐟",
+            "Ayyy gıdıklandım! 😹",
+            "Günün nasıl geçiyor prenses? 👑",
+            "Şu an seni düşündüğüne %100 eminim! 💭💘",
+            "Dünyanın en tatlı tebessümüne sahipsin ✨",
+            "Yorulduysan mola vermeyi unutma sakın! ☕",
+            "Seni görünce ne yapacağımı şaşırıyorum 🐾",
+            "Sen benim en sevdiğim manzaramsın! 🌅",
+            "Bak yine aklıma geldin, gülümsüyorum... 😊",
+            "Pati uzatıyorum, tutar mısın? 🐾❤️",
+            "Buraların en havalısı sensin, net! 😎✨",
+            "Gözlerinin içi parıldıyor resmen! 🌟",
+            "Her tıkında sevgisi bir kat daha artıyor! 💕",
+            "Bir çay/kahve kapıp gel, birlikte takılalım! ☕"
+        ];
+
+        function daktiloYaz(metin, indeks = 0) {
+            if (indeks === 0) konusmaMetni.textContent = '';
+            if (indeks < metin.length) {
+                konusmaMetni.textContent += metin.charAt(indeks);
+                daktiloZamanlayici = setTimeout(() => daktiloYaz(metin, indeks + 1), 30);
+            }
+        }
+
+        function konfetiPatlat() {
+            const renkler = ['❤️', '💖', '✨', '🎉', '🌸', '⭐', '🎈'];
+            for (let i = 0; i < 35; i++) {
+                const konfeti = document.createElement('div');
+                konfeti.className = 'konfeti-parcacik';
+                konfeti.textContent = renkler[Math.floor(Math.random() * renkler.length)];
+                konfeti.style.left = Math.random() * 100 + 'vw';
+                konfeti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                konfeti.style.fontSize = (Math.random() * 15 + 15) + 'px';
+                document.body.appendChild(konfeti);
+
+                setTimeout(() => konfeti.remove(), 4000);
+            }
+        }
+
+        function kalpPatlat() {
+            const rect = maskotKonteyner.getBoundingClientRect();
+            const merkezX = rect.left + rect.width / 2;
+            const merkezY = rect.top + rect.height / 2;
+            const semboller = ['❤️', '💖', '✨', '💕', '🌸', '🐾'];
+
+            for (let i = 0; i < 6; i++) {
+                const kalp = document.createElement('div');
+                kalp.className = 'kalp-parcacik';
+                kalp.textContent = semboller[Math.floor(Math.random() * semboller.length)];
+                kalp.style.left = `${merkezX - 10}px`;
+                kalp.style.top = `${merkezY - 10}px`;
+                kalp.style.setProperty('--dx', `${(Math.random() - 0.5) * 90}px`);
+                kalp.style.setProperty('--rot', `${(Math.random() - 0.5) * 50}deg`);
+
+                document.body.appendChild(kalp);
+                setTimeout(() => kalp.remove(), 1100);
+            }
+        }
+
+        function tatliSesCikar() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const ctx = new AudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1);
+
+                gain.gain.setValueAtTime(0.06, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.2);
+            } catch (err) {}
+        }
+
+        function balikUcur() {
+            const balik = document.createElement('div');
+            balik.className = 'ucan-balik';
+            balik.textContent = '🐟';
+            
+            const x = Math.random() * (window.innerWidth - 100) + 50;
+            const y = Math.random() * (window.innerHeight - 300) + 200;
+            
+            balik.style.left = `${x}px`;
+            balik.style.top = `${y}px`;
+
+            balik.addEventListener('click', (e) => {
+                e.stopPropagation();
+                yakalananBalik++;
+                localStorage.setItem('maskot_balik', yakalananBalik);
+
+                tatliSesCikar();
+                kalpPatlat();
+                balik.remove();
+
+                clearTimeout(daktiloZamanlayici);
+                clearTimeout(kapaZamanlayici);
+                konusmaBalonu.style.display = 'block';
+
+                daktiloYaz(`Nefisss! Toplam Bana${yakalananBalik}. balık tuttun! 🐱🐟`);
+
+                if (yakalananBalik % 5 === 0) {
+                    konfetiPatlat();
+                }
+
+                kapaZamanlayici = setTimeout(() => {
+                    konusmaBalonu.style.display = 'none';
+                }, 4000);
+            });
+
+            document.body.appendChild(balik);
+            setTimeout(() => { if (balik.parentNode) balik.remove(); }, 4000);
+        }
+
+        setInterval(balikUcur, 12000);
+
+        maskotKonteyner.addEventListener('click', () => {
+            clearTimeout(daktiloZamanlayici);
+            clearTimeout(kapaZamanlayici);
+
+            tiklamaSayisi++;
+            localStorage.setItem('maskot_tiklama', tiklamaSayisi);
+
+            kalpPatlat();
+            tatliSesCikar();
+
+            let secilenMesaj = "";
+
+            if (tiklamaSayisi === 3) {
+                secilenMesaj = "Ooo 3 tık oldu! Isınma turları başladı 🐾";
+            } else if (tiklamaSayisi === 5) {
+                secilenMesaj = "5. tık! Beni gıdıklamayı çok sevdin galiba? 😻";
+            } else if (tiklamaSayisi === 10) {
+                secilenMesaj = "TAM 10 TIK! KUTLAMA ZAMANI! 🎉💖";
+                konfetiPatlat();
+            } else if (tiklamaSayisi === 15) {
+                secilenMesaj = "15 tık mı?! Sen harika birisin! 🚀";
+            } else if (tiklamaSayisi === 20) {
+                secilenMesaj = "20 TIK OLDU! SEVGİ PATLAMASI! 🏆✨";
+                konfetiPatlat();
+            } else if (tiklamaSayisi === 50) {
+                secilenMesaj = "50 KERE TIKLADIN! Sen tam bir çılgınsın, seni çoook seviyorum! 💘🔥";
+                konfetiPatlat();
+            } else {
+                secilenMesaj = mesajlar[Math.floor(Math.random() * mesajlar.length)];
+            }
+
+            konusmaBalonu.style.display = 'block';
+            daktiloYaz(secilenMesaj);
+
+            kapaZamanlayici = setTimeout(() => {
+                konusmaBalonu.style.display = 'none';
+            }, 4000);
+        });
+    });
+</script>
 
 
 
