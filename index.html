@@ -6013,16 +6013,16 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     });
 </script>
 
-<!-- ================= HAFTALIK 3 SEÇENEKLİ KAZI KAZAN (ESKİ SEÇİM SIFIRLANDI & TAM KORUMA) ================= -->
+<!-- ================= HAFTALIK KAZI KAZAN (ÇAKIŞMA VE KİLİTLENME KORUMALI) ================= -->
 
 <style>
     /* Sağ Üst Yuvarlak Buton */
     #haftalik-kazi-btn {
         position: fixed;
-        top: 13px;
-        right: 64px;
-        width: 45px;
-        height: 45px;
+        top: 20px;
+        right: 20px;
+        width: 55px;
+        height: 55px;
         border-radius: 50%;
         background: linear-gradient(135deg, #ff758f, #ff4757);
         color: white;
@@ -6043,9 +6043,9 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         box-shadow: 0 8px 20px rgba(255, 71, 87, 0.6);
     }
 
-    /* Modal / Pop-up Arka Plan */
+    /* Modal Arka Plan */
     #kazi-modal-overlay {
-        display: none;
+        display: none; /* Varsayılan gizli */
         position: fixed;
         top: 0; left: 0;
         width: 100vw; height: 100vh;
@@ -6086,7 +6086,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         margin-bottom: 12px;
     }
 
-    /* Geri Sayım Kutusu */
     #sayac-kutusu {
         display: none;
         background: #fff0f5;
@@ -6100,7 +6099,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         max-width: 320px;
     }
 
-    /* 3 Kart Yan Yana Düzeni */
     .kartlar-wrapper {
         display: flex;
         gap: 12px;
@@ -6121,7 +6119,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         flex-shrink: 0;
     }
 
-    /* Sızıntıyı Önleyen Görünmezlik Kuralı */
     .surpriz-icerik {
         position: absolute;
         top: 0; left: 0;
@@ -6158,7 +6155,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         background: #c0c0c0;
     }
 
-    /* Tam Opak Kilit Katmanı */
     .kilitli-katman {
         display: none;
         position: absolute;
@@ -6194,54 +6190,45 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     .modal-kapat-btn:hover { background: #dfe4ea; }
 
     @media (max-width: 600px) {
-        .kart-kutusu {
-            width: 140px;
-            height: 200px;
-        }
+        .kart-kutusu { width: 140px; height: 200px; }
         .surpriz-simge { font-size: 28px; }
         .surpriz-baslik { font-size: 12px; }
         .surpriz-metin { font-size: 10px; }
     }
 </style>
 
-<!-- SAĞ ÜST YUVARLAK BUTON -->
 <button id="haftalik-kazi-btn" title="Haftalık Sürpriz">🎁</button>
 
-<!-- POP-UP MODAL -->
 <div id="kazi-modal-overlay">
     <div class="modal-icerik">
         <h2 id="modal-gizli-baslik" title="Sıfırlamak için 4 kez hızlıca tıkla">Haftalık Sürpriz Kazı Kazan 🎁</h2>
         <p class="aciklama">Her hafta 3 karttan sadece 1 tanesini seçip kazıma hakkın var!</p>
 
-        <!-- Geri Sayım Sayacı -->
         <div id="sayac-kutusu">
             Kalan Süre: <span id="kalan-zaman">--:--:--</span>
         </div>
 
         <div class="kartlar-wrapper">
-            <!-- KART 1 -->
             <div class="kart-kutusu" id="kart-1">
                 <div class="surpriz-icerik">
                     <div class="surpriz-simge">🎬🍿</div>
-                    <div class="surpriz-baslik">Sinema Gecesi!</div>
-                    <div class="surpriz-metin">Bu haftanın filmini sen seçiyorsun, mısırlar benden!</div>
+                    <div class="surpriz-baslik">Sinema </div>
+                    <div class="surpriz-metin">Sinemaya gidince filmi sen seçiyorsun.</div>
                 </div>
                 <canvas class="kazi-canvas" id="canvas-1"></canvas>
                 <div class="kilitli-katman">Diğer Kart Seçildi 🔒</div>
             </div>
 
-            <!-- KART 2 -->
             <div class="kart-kutusu" id="kart-2">
                 <div class="surpriz-icerik">
                     <div class="surpriz-simge">👑💖</div>
-                    <div class="surpriz-baslik">Sınırsız 'EVET' Kuponu</div>
-                    <div class="surpriz-metin">Bugün isteyeceğin 1 şey için "Hayır" deme hakkım yok!</div>
+                    <div class="surpriz-baslik">EVET Kuponu</div>
+                    <div class="surpriz-metin">isteyeceğin 1 şey için "Hayır" deme hakkım yok!</div>
                 </div>
                 <canvas class="kazi-canvas" id="canvas-2"></canvas>
                 <div class="kilitli-katman">Diğer Kart Seçildi 🔒</div>
             </div>
 
-            <!-- KART 3 -->
             <div class="kart-kutusu" id="kart-3">
                 <div class="surpriz-icerik">
                     <div class="surpriz-simge">🍕🤗</div>
@@ -6257,241 +6244,240 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     </div>
 </div>
 
-<!-- Konfeti Kütüphanesi -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // --- ESKİ VERSİYON TEMİZLİĞİ (Tüm eski test verilerini otomatik siler) ---
-        localStorage.removeItem('haftalik_kazi_tarih');
-        localStorage.removeItem('haftalik_kazi_secilen');
+    // Kodu kendi özel kapsamına (IIFE) alarak diğer JS kodlarıyla çakışmasını engelliyoruz
+    (function() {
+        window.addEventListener('DOMContentLoaded', () => {
+            try {
+                // Eski versiyon temizliği
+                localStorage.removeItem('haftalik_kazi_tarih');
+                localStorage.removeItem('haftalik_kazi_secilen');
 
-        const btn = document.getElementById('haftalik-kazi-btn');
-        const modal = document.getElementById('kazi-modal-overlay');
-        const kapatBtn = document.getElementById('modalKapatBtn');
-        const gizliBaslik = document.getElementById('modal-gizli-baslik');
-        const sayacKutusu = document.getElementById('sayac-kutusu');
-        const kalanZamanSpan = document.getElementById('kalan-zaman');
+                const btn = document.getElementById('haftalik-kazi-btn');
+                const modal = document.getElementById('kazi-modal-overlay');
+                const kapatBtn = document.getElementById('modalKapatBtn');
+                const gizliBaslik = document.getElementById('modal-gizli-baslik');
+                const sayacKutusu = document.getElementById('sayac-kutusu');
+                const kalanZamanSpan = document.getElementById('kalan-zaman');
 
-        const YEDI_GUN_MS = 7 * 24 * 60 * 60 * 1000;
-        
-        // Yeni versiyon anahtarları (v2)
-        let secimZamani = localStorage.getItem('haftalik_kazi_v2_tarih');
-        let secilenKartId = localStorage.getItem('haftalik_kazi_v2_secilen');
-        let intervalId = null;
+                if (!btn || !modal) return;
 
-        durumKontrolVeHazirla();
+                const YEDI_GUN_MS = 7 * 24 * 60 * 60 * 1000;
+                let secimZamani = localStorage.getItem('haftalik_kazi_v2_tarih');
+                let secilenKartId = localStorage.getItem('haftalik_kazi_v2_secilen');
+                let intervalId = null;
 
-        btn.addEventListener('click', () => {
-            modal.style.display = 'flex';
-            requestAnimationFrame(() => {
                 durumKontrolVeHazirla();
-            });
-        });
 
-        kapatBtn.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
+                btn.addEventListener('click', () => {
+                    modal.style.display = 'flex';
+                    requestAnimationFrame(() => durumKontrolVeHazirla());
+                });
 
-        // GİZLİ SIFIRLAMA: Başlığa 1.5 saniye içinde 4 kez tıklayınca anında sıfırlar
-        let tiklamaSayisi = 0;
-        let tiklamaZamanlayici = null;
-
-        gizliBaslik.addEventListener('click', () => {
-            tiklamaSayisi++;
-            clearTimeout(tiklamaZamanlayici);
-
-            if (tiklamaSayisi === 4) {
-                tiklamaSayisi = 0;
-                localStorage.removeItem('haftalik_kazi_v2_tarih');
-                localStorage.removeItem('haftalik_kazi_v2_secilen');
-                secimZamani = null;
-                secilenKartId = null;
-                if (intervalId) clearInterval(intervalId);
-
-                alert('⚙️ Hafıza Tamamen Sıfırlandı! Kartlar yeniden açıldı.');
-                durumKontrolVeHazirla();
-            } else {
-                tiklamaZamanlayici = setTimeout(() => {
-                    tiklamaSayisi = 0;
-                }, 1500);
-            }
-        });
-
-        function durumKontrolVeHazirla() {
-            const simdi = new Date().getTime();
-
-            if (secimZamani && (simdi - parseInt(secimZamani) >= YEDI_GUN_MS)) {
-                localStorage.removeItem('haftalik_kazi_v2_tarih');
-                localStorage.removeItem('haftalik_kazi_v2_secilen');
-                secimZamani = null;
-                secilenKartId = null;
-            }
-
-            if (secimZamani) {
-                sayacKutusu.style.display = 'block';
-                sayacBaslat(parseInt(secimZamani) + YEDI_GUN_MS);
-                kilitleriUygula(secilenKartId);
-            } else {
-                sayacKutusu.style.display = 'none';
-                kartlariIlklendir();
-            }
-        }
-
-        function sayacBaslat(bitisTarihi) {
-            if (intervalId) clearInterval(intervalId);
-
-            function guncelle() {
-                const simdi = new Date().getTime();
-                const fark = bitisTarihi - simdi;
-
-                if (fark <= 0) {
-                    clearInterval(intervalId);
-                    durumKontrolVeHazirla();
-                    return;
+                if (kapatBtn) {
+                    kapatBtn.addEventListener('click', () => {
+                        modal.style.display = 'none';
+                    });
                 }
 
-                const gun = Math.floor(fark / (1000 * 60 * 60 * 24));
-                const saat = Math.floor((fark % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const dakika = Math.floor((fark % (1000 * 60 * 60)) / (1000 * 60));
-                const saniye = Math.floor((fark % (1000 * 60)) / 1000);
+                let tiklamaSayisi = 0;
+                let tiklamaZamanlayici = null;
 
-                kalanZamanSpan.textContent = `${gun} gün ${saat}s ${dakika}dk ${saniye}sn`;
-            }
-
-            guncelle();
-            intervalId = setInterval(guncelle, 1000);
-        }
-
-        function kilitleriUygula(secilenId) {
-            [1, 2, 3].forEach(id => {
-                const kart = document.getElementById(`kart-${id}`);
-                const canvas = document.getElementById(`canvas-${id}`);
-                const icerik = kart.querySelector('.surpriz-icerik');
-                const kilit = kart.querySelector('.kilitli-katman');
-
-                if (`kart-${id}` === secilenId) {
-                    if (canvas) canvas.style.display = 'none';
-                    if (icerik) icerik.classList.add('acik');
-                    kilit.style.display = 'none';
-                } else {
-                    if (canvas) canvas.style.display = 'none';
-                    if (icerik) icerik.classList.remove('acik');
-                    kilit.style.display = 'flex';
+                if (gizliBaslik) {
+                    gizliBaslik.addEventListener('click', () => {
+                        tiklamaSayisi++;
+                        clearTimeout(tiklamaZamanlayici);
+                        if (tiklamaSayisi === 4) {
+                            tiklamaSayisi = 0;
+                            localStorage.removeItem('haftalik_kazi_v2_tarih');
+                            localStorage.removeItem('haftalik_kazi_v2_secilen');
+                            secimZamani = null;
+                            secilenKartId = null;
+                            if (intervalId) clearInterval(intervalId);
+                            alert('⚙️ Hafıza Tamamen Sıfırlandı!');
+                            durumKontrolVeHazirla();
+                        } else {
+                            tiklamaZamanlayici = setTimeout(() => { tiklamaSayisi = 0; }, 1500);
+                        }
+                    });
                 }
-            });
-        }
 
-        function kartlariIlklendir() {
-            [1, 2, 3].forEach(id => {
-                const kart = document.getElementById(`kart-${id}`);
-                const canvas = document.getElementById(`canvas-${id}`);
-                const icerik = kart.querySelector('.surpriz-icerik');
-                const kilit = kart.querySelector('.kilitli-katman');
+                function durumKontrolVeHazirla() {
+                    const simdi = new Date().getTime();
+                    if (secimZamani && (simdi - parseInt(secimZamani) >= YEDI_GUN_MS)) {
+                        localStorage.removeItem('haftalik_kazi_v2_tarih');
+                        localStorage.removeItem('haftalik_kazi_v2_secilen');
+                        secimZamani = null;
+                        secilenKartId = null;
+                    }
 
-                if (icerik) icerik.classList.remove('acik');
-                kilit.style.display = 'none';
-
-                const isMobile = window.innerWidth <= 600;
-                const rect = kart.getBoundingClientRect();
-                const w = Math.round(rect.width) || (isMobile ? 140 : 180);
-                const h = Math.round(rect.height) || (isMobile ? 200 : 240);
-
-                canvas.width = w;
-                canvas.height = h;
-
-                const ctx = canvas.getContext('2d');
-                ctx.globalCompositeOperation = 'source-over';
-                ctx.fillStyle = '#C0C0C0';
-                ctx.fillRect(0, 0, w, h);
-
-                ctx.fillStyle = '#ff4757';
-                ctx.font = 'bold 14px Segoe UI';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText('Kazı ve Seç! ✨', w / 2, h / 2);
-
-                canvas.style.display = 'block';
-                canvas.style.opacity = '1';
-
-                let isDrawing = false;
-                let kazindi = false;
-                let kaziHareketSayisi = 0;
-
-                function kazi(e) {
-                    if (!isDrawing || kazindi) return;
-
-                    const cRect = canvas.getBoundingClientRect();
-                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-
-                    if (clientX === undefined || clientY === undefined) return;
-
-                    const x = clientX - cRect.left;
-                    const y = clientY - cRect.top;
-
-                    ctx.globalCompositeOperation = 'destination-out';
-                    ctx.beginPath();
-                    ctx.arc(x, y, 14, 0, Math.PI * 2);
-                    ctx.fill();
-
-                    if (icerik) icerik.classList.add('acik');
-
-                    kaziHareketSayisi++;
-
-                    if (kaziHareketSayisi > 5) {
-                        if (!localStorage.getItem('haftalik_kazi_v2_tarih')) {
-                            const simdi = new Date().getTime();
-                            localStorage.setItem('haftalik_kazi_v2_tarih', simdi);
-                            localStorage.setItem('haftalik_kazi_v2_secilen', `kart-${id}`);
-                            secimZamani = simdi;
-                            secilenKartId = `kart-${id}`;
-
-                            sayacKutusu.style.display = 'block';
-                            sayacBaslat(simdi + YEDI_GUN_MS);
-
-                            [1, 2, 3].forEach(otherId => {
-                                if (otherId !== id) {
-                                    const digerKart = document.getElementById(`kart-${otherId}`);
-                                    digerKart.querySelector('.surpriz-icerik').classList.remove('acik');
-                                    digerKart.querySelector('.kilitli-katman').style.display = 'flex';
-                                }
-                            });
-                        }
-
-                        if (kaziHareketSayisi % 6 === 0) {
-                            const imgData = ctx.getImageData(0, 0, w, h);
-                            let trans = 0;
-                            const totalPixels = imgData.data.length / 4;
-
-                            for (let i = 3; i < imgData.data.length; i += 4) {
-                                if (imgData.data[i] === 0) trans++;
-                            }
-
-                            if (trans / totalPixels > 0.50) {
-                                kazindi = true;
-                                canvas.style.transition = 'opacity 0.4s ease';
-                                canvas.style.opacity = '0';
-                                setTimeout(() => canvas.style.display = 'none', 400);
-
-                                if (typeof confetti === 'function') {
-                                    confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
-                                }
-                            }
-                        }
+                    if (secimZamani) {
+                        if (sayacKutusu) sayacKutusu.style.display = 'block';
+                        sayacBaslat(parseInt(secimZamani) + YEDI_GUN_MS);
+                        kilitleriUygula(secilenKartId);
+                    } else {
+                        if (sayacKutusu) sayacKutusu.style.display = 'none';
+                        kartlariIlklendir();
                     }
                 }
 
-                canvas.onmousedown = (e) => { isDrawing = true; kazi(e); };
-                canvas.onmousemove = kazi;
-                window.onmouseup = () => isDrawing = false;
+                function sayacBaslat(bitisTarihi) {
+                    if (intervalId) clearInterval(intervalId);
+                    function guncelle() {
+                        const simdi = new Date().getTime();
+                        const fark = bitisTarihi - simdi;
+                        if (fark <= 0) {
+                            clearInterval(intervalId);
+                            durumKontrolVeHazirla();
+                            return;
+                        }
+                        const gun = Math.floor(fark / (1000 * 60 * 60 * 24));
+                        const saat = Math.floor((fark % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        const dakika = Math.floor((fark % (1000 * 60 * 60)) / (1000 * 60));
+                        const saniye = Math.floor((fark % (1000 * 60)) / 1000);
+                        if (kalanZamanSpan) kalanZamanSpan.textContent = `${gun} gün ${saat}s ${dakika}dk ${saniye}sn`;
+                    }
+                    guncelle();
+                    intervalId = setInterval(guncelle, 1000);
+                }
 
-                canvas.ontouchstart = (e) => { isDrawing = true; kazi(e); };
-                canvas.ontouchmove = kazi;
-                window.ontouchend = () => isDrawing = false;
-            });
-        }
-    });
+                function kilitleriUygula(secilenId) {
+                    [1, 2, 3].forEach(id => {
+                        const kart = document.getElementById(`kart-${id}`);
+                        if (!kart) return;
+                        const canvas = document.getElementById(`canvas-${id}`);
+                        const icerik = kart.querySelector('.surpriz-icerik');
+                        const kilit = kart.querySelector('.kilitli-katman');
+
+                        if (`kart-${id}` === secilenId) {
+                            if (canvas) canvas.style.display = 'none';
+                            if (icerik) icerik.classList.add('acik');
+                            if (kilit) kilit.style.display = 'none';
+                        } else {
+                            if (canvas) canvas.style.display = 'none';
+                            if (icerik) icerik.classList.remove('acik');
+                            if (kilit) kilit.style.display = 'flex';
+                        }
+                    });
+                }
+
+                function kartlariIlklendir() {
+                    [1, 2, 3].forEach(id => {
+                        const kart = document.getElementById(`kart-${id}`);
+                        if (!kart) return;
+                        const canvas = document.getElementById(`canvas-${id}`);
+                        const icerik = kart.querySelector('.surpriz-icerik');
+                        const kilit = kart.querySelector('.kilitli-katman');
+
+                        if (icerik) icerik.classList.remove('acik');
+                        if (kilit) kilit.style.display = 'none';
+
+                        const isMobile = window.innerWidth <= 600;
+                        const rect = kart.getBoundingClientRect();
+                        const w = Math.round(rect.width) || (isMobile ? 140 : 180);
+                        const h = Math.round(rect.height) || (isMobile ? 200 : 240);
+
+                        if (!canvas) return;
+                        canvas.width = w;
+                        canvas.height = h;
+
+                        const ctx = canvas.getContext('2d');
+                        ctx.globalCompositeOperation = 'source-over';
+                        ctx.fillStyle = '#C0C0C0';
+                        ctx.fillRect(0, 0, w, h);
+
+                        ctx.fillStyle = '#ff4757';
+                        ctx.font = 'bold 14px Segoe UI';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText('Kazı ve Seç! ✨', w / 2, h / 2);
+
+                        canvas.style.display = 'block';
+                        canvas.style.opacity = '1';
+
+                        let isDrawing = false;
+                        let kazindi = false;
+                        let kaziHareketSayisi = 0;
+
+                        function kazi(e) {
+                            if (!isDrawing || kazindi) return;
+                            const cRect = canvas.getBoundingClientRect();
+                            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                            if (clientX === undefined || clientY === undefined) return;
+
+                            const x = clientX - cRect.left;
+                            const y = clientY - cRect.top;
+
+                            ctx.globalCompositeOperation = 'destination-out';
+                            ctx.beginPath();
+                            ctx.arc(x, y, 14, 0, Math.PI * 2);
+                            ctx.fill();
+
+                            if (icerik) icerik.classList.add('acik');
+                            kaziHareketSayisi++;
+
+                            if (kaziHareketSayisi > 5) {
+                                if (!localStorage.getItem('haftalik_kazi_v2_tarih')) {
+                                    const simdi = new Date().getTime();
+                                    localStorage.setItem('haftalik_kazi_v2_tarih', simdi);
+                                    localStorage.setItem('haftalik_kazi_v2_secilen', `kart-${id}`);
+                                    secimZamani = simdi;
+                                    secilenKartId = `kart-${id}`;
+
+                                    if (sayacKutusu) sayacKutusu.style.display = 'block';
+                                    sayacBaslat(simdi + YEDI_GUN_MS);
+
+                                    [1, 2, 3].forEach(otherId => {
+                                        if (otherId !== id) {
+                                            const digerKart = document.getElementById(`kart-${otherId}`);
+                                            if (digerKart) {
+                                                const dIcerik = digerKart.querySelector('.surpriz-icerik');
+                                                const dKilit = digerKart.querySelector('.kilitli-katman');
+                                                if (dIcerik) dIcerik.classList.remove('acik');
+                                                if (dKilit) dKilit.style.display = 'flex';
+                                            }
+                                        }
+                                    });
+                                }
+
+                                if (kaziHareketSayisi % 6 === 0) {
+                                    const imgData = ctx.getImageData(0, 0, w, h);
+                                    let trans = 0;
+                                    for (let i = 3; i < imgData.data.length; i += 4) {
+                                        if (imgData.data[i] === 0) trans++;
+                                    }
+                                    if (trans / (imgData.data.length / 4) > 0.50) {
+                                        kazindi = true;
+                                        canvas.style.transition = 'opacity 0.4s ease';
+                                        canvas.style.opacity = '0';
+                                        setTimeout(() => canvas.style.display = 'none', 400);
+
+                                        if (typeof confetti === 'function') {
+                                            confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        canvas.onmousedown = (e) => { isDrawing = true; kazi(e); };
+                        canvas.onmousemove = kazi;
+                        canvas.ontouchstart = (e) => { isDrawing = true; kazi(e); };
+                        canvas.ontouchmove = kazi;
+                    });
+                }
+
+                window.addEventListener('mouseup', () => { isDrawing = false; });
+                window.addEventListener('touchend', () => { isDrawing = false; });
+
+            } catch (err) {
+                console.warn('Kazı kazan bileşeni yüklenirken hata oluştu ama sayfa çalışmaya devam ediyor:', err);
+            }
+        });
+    })();
 </script>
  </html>
 <!-- === EVRENSEL GİZLEYİCİ MIKNATIS === -->
