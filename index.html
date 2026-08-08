@@ -1006,155 +1006,117 @@ max-width:440px !important; margin:35px auto !important; box-sizing:border-box !
 
 
 
-
-<!-- === ZİGZAG AŞK PANELİ V3 (TAM EŞİTLENMİŞ SON SÜRÜM) === -->
-<div id="neden-seviyorum-wrapper" style="width: 100% !important; max-width: 100% !important; margin: 45px 0 !important; text-align: center !important; font-family: 'Plus Jakarta Sans', sans-serif !important; box-sizing: border-box !important; clear: both !important; position: relative !important; z-index: 50 !important;">
+<!-- NEON EFEKTLİ KÜÇÜK KALPLİ NOTLAR ALANI -->
+<div id="kalpli-notlar-container" style="width: 100%; max-width: 440px; margin: 35px auto; padding: 0 15px; box-sizing: border-box !important;">
     
-    <!-- MEKTUP ODASIYLA TAM EŞİTLENMİŞ VE TEK SATIRA SABİTLENMİŞ BAŞLIK -->
-    <h3 style="color: #f43f5e !important; font-size: 17px !important; font-weight: 900 !important; text-shadow: 0 0 12px rgba(244, 63, 94, 0.5) !important; margin-bottom: 30px !important; text-align: center !important; whitespace-nowrap !important; overflow: hidden !important; text-ellipsis: current !important; width: 100% !important; box-sizing: border-box !important;">🌹 Neden mi Seviyorum 🌹</h3>
+    <!-- NEON BAŞLIK (Tek satır ve asla taşmaz) -->
+    <h3 class="neon-baslik">
+    ✨ Neden mi Seviyorum? ✨
+    </h3>
 
-    <!-- MEKTUP ODASIYLA TAM AYNI EN GÖRÜNTÜSÜNE (MAX-W-MD) SAHİP KUTU -->
-    <div style="display: flex !important; flex-direction: column !important; gap: 20px !important; width: 100% !important; max-width: 440px !important; margin: 0 auto !important; padding: 0 15px !important; box-sizing: border-box !important;">
+    <div style="display: flex; flex-direction: column; gap: 14px;">
         
-        <!-- 1. MADDE (SOLA HİZALI BUTTON VE METİN) -->
-        <div style="width: 100% !important; display: flex !important; flex-direction: column !important; align-items: flex-start !important; box-sizing: border-box !important;">
-            <button onclick="toggleNedenZ(1); event.stopPropagation();" id="nBtnZ1" class="neden-rakam-buton">01</button>
-            <div id="nCevapZ1" class="neden-cevap-kutusu" style="display: none;">
-                <h4 class="neden-ic-baslik"> Gözlerindeki O Huzuru...</h4>
-                <p class="neden-ic-paragraf">Birtanem, ne zaman gözlerinin içine baksam dünyadaki bütün dertleri, tasaları bir anda unutuyorum. Bana verdiğin o saf huzur için seni çok seviyorum. ❤️</p>
-            </div>
+        <!-- Not 1 -->
+        <div class="neon-not-kutu">
+            <span class="not-kalp">💖</span>
+            <p class="not-metin">Gülüşünle dünyamı aydınlattığın ve her anımı güzelleştirdiğin için...</p>
         </div>
 
-        <!-- 2. MADDE (SAĞA HİZALI BUTTON VE METİN) -->
-        <div style="width: 100% !important; display: flex !important; flex-direction: column !important; align-items: flex-end !important; box-sizing: border-box !important;">
-            <button onclick="toggleNedenZ(2); event.stopPropagation();" id="nBtnZ2" class="neden-rakam-buton">02</button>
-            <div id="nCevapZ2" class="neden-cevap-kutusu" style="display: none;">
-                <h4 class="neden-ic-baslik">🥰 En Doğal Çocuksu Halini...</h4>
-                <p class="neden-ic-paragraf">Sadece benim yanımdayken takındığın o tatlı, masum ve çocuksu hallerine bitiyorum. Yanımda bu kadar 'sen' olduğun ve içini açtığın için seni çok seviyorum. 💖</p>
-            </div>
-        </div>
-        
-        <!-- 3. MADDE (SOLA HİZALI BUTTON VE METİN) -->
-        <div style="width: 100% !important; display: flex !important; flex-direction: column !important; align-items: flex-start !important; box-sizing: border-box !important;">
-            <button onclick="toggleNedenZ(3); event.stopPropagation();" id="nBtnZ3" class="neden-rakam-buton">03</button>
-            <div id="nCevapZ3" class="neden-cevap-kutusu" style="display: none;">
-                <h4 class="neden-ic-baslik">🤝 Asla Elimizi Bırakmayışını...</h4>
-                <p class="neden-ic-paragraf">Ne yaşarsak yaşayalım, en fırtınalı günlerde bile dönüp dolaşıp birbirimize sarılmamızı, o sıcacık ellerini benden hiç çekmeyişini seviyorum. 🔒</p>
-            </div>
+        <!-- Not 2 -->
+        <div class="neon-not-kutu">
+            <span class="not-kalp">🌸</span>
+            <p class="not-metin">En saçma şakalarıma bile içtenlikle güldüğün için...</p>
         </div>
 
-        <!-- 4. MADDE (SAĞA HİZALI BUTTON VE METİN) -->
-        <div style="width: 100% !important; display: flex !important; flex-direction: column !important; align-items: flex-end !important; box-sizing: border-box !important;">
-            <button onclick="toggleNedenZ(4); event.stopPropagation();" id="nBtnZ4" class="neden-rakam-buton">04</button>
-            <div id="nCevapZ4" class="neden-cevap-kutusu" style="display: none;">
-                <h4 class="neden-ic-baslik">🌟 Beni Dünyanın En Şanslısı Yapmanı...</h4>
-                <p class="neden-ic-paragraf">Sen hayatıma girdiğinden beri her sabah daha mutlu uyanıyorum. Bana varlığınla verdiğin o büyük kıymeti, beni ben yapan o eşsiz sevgini seviyorum. ✨</p>
-            </div>
+        <!-- Not 3 -->
+        <div class="neon-not-kutu">
+            <span class="not-kalp">⭐</span>
+            <p class="not-metin">Yanında kendim olabildiğim, huzur bulduğum tek kişi olduğun için...</p>
         </div>
 
-        <!-- 5. MADDE (SOLA HİZALI BUTTON VE METİN) -->
-        <div style="width: 100% !important; display: flex !important; flex-direction: column !important; align-items: flex-start !important; box-sizing: border-box !important;">
-            <button onclick="toggleNedenZ(5); event.stopPropagation();" id="nBtnZ5" class="neden-rakam-buton">05</button>
-            <div id="nCevapZ5" class="neden-cevap-kutusu" style="display: none;">
-                <h4 class="neden-ic-baslik">🏡 Geleceğe Dair Kurduğumuz Hayalleri...</h4>
-                <p class="neden-ic-paragraf">İleride seninle aynı çatı altında uyanacağımız, kahvelerimizi birlikte yudumlayacağımız o güzel yarınları şimdiden seninle planlamayı çok seviyorum. ❤️</p>
-            </div>
+        <!-- Not 4 -->
+        <div class="neon-not-kutu">
+            <span class="not-kalp">💞</span>
+            <p class="not-metin">Kalbimin atışını her seferinde değiştiren o özel bakışın için...</p>
         </div>
 
     </div>
 </div>
 
-<!-- MEKTUP ODASIYLA TAM EŞİTLENMİŞ TASARIM STYLES -->
 <style type="text/css">
-    .neden-rakam-buton {
-        background: rgba(255, 255, 255, 0.15) !important;
-        border: 1px solid rgba(255, 255, 255, 0.25) !important;
-        color: #ffffff !important;
-        width: 50px !important;
-        height: 50px !important;
-        font-size: 16px !important;
-        font-weight: 800 !important;
-        border-radius: 50% !important;
-        cursor: pointer !important;
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        backdrop-filter: blur(5px) !important;
-        -webkit-backdrop-filter: blur(5px) !important;
-        transition: all 0.25s ease !important;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.15) !important;
-    }
-    .neden-rakam-buton.aktif-z {
-        background: #ffffff !important;
-        color: #e11d48 !important;
-        border-color: #ffffff !important;
-        transform: scale(1.08) !important;
-        box-shadow: 0 4px 14px rgba(255, 255, 255, 0.2) !important;
-    }
-    
-    /* MEKTUP KAĞIDI KUTUSUYLA BİREBİR EŞİTLENMİŞ METİN KUTUSU */
-    .neden-cevap-kutusu {
-        background: #fffbe6 !important;
-        color: #333333 !important;
-        padding: 16px 20px !important;
-        border-radius: 16px !important;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.2) !important;
-        width: 90% !important;
-        margin-top: 10px !important;
+    .neon-baslik {
+        text-align: center !important;
+        width: 100% !important;
         box-sizing: border-box !important;
-        border-left: 4px solid #ff758c !important;
-        animation: suzulBakalim 0.35s cubic-bezier(0.165, 0.84, 0.44, 1) forwards !important;
+        font-size: calc(14px + 1vw) !important; /* Ekran boyutuna göre kusursuz sığması için biraz esnettik */
+        font-weight: 900 !important;
+        margin-bottom: 22px !important;
+        color: #fff !important;
+        font-family: sans-serif !important;
+        /* Taşmayı önlemek için nowrap yerine normal akışa bıraktık, böylece her ekranda ortalı durur */
+        white-space: normal !important; 
+        text-shadow: 
+            0 0 5px #ff758c, 
+            0 0 10px #ff758c, 
+            0 0 20px #ff758c, 
+            0 0 40px #f43f5e !important;
+        animation: neonTitresim 2s ease-in-out infinite alternate !important;
     }
-    .neden-ic-baslik {
-        color: #e11d48 !important;
-        font-weight: 800 !important;
-        margin: 0 0 6px 0 !important;
-        font-size: 14.5px !important;
-        text-align: left !important;
+
+    @keyframes neonTitresim {
+        0% {
+            text-shadow: 0 0 5px #ff758c, 0 0 10px #ff758c, 0 0 20px #ff758c, 0 0 30px #f43f5e;
+            transform: scale(1);
+        }
+        100% {
+            text-shadow: 0 0 8px #ff758c, 0 0 15px #ff7e5f, 0 0 25px #ff758c, 0 0 45px #f43f5e;
+            transform: scale(1.02);
+        }
     }
-    .neden-ic-paragraf {
-        color: #444444 !important;
+
+    .neon-not-kutu {
+        display: flex !important;
+        align-items: center !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+        border: 1px solid rgba(255, 117, 140, 0.4) !important;
+        padding: 15px 18px !important;
+        border-radius: 16px !important;
+        box-shadow: 0 4px 20px rgba(244, 63, 94, 0.15), inset 0 0 10px rgba(255, 117, 140, 0.05) !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .neon-not-kutu:hover {
+        transform: translateY(-3px) !important;
+        background: rgba(255, 255, 255, 0.18) !important;
+        border-color: rgba(255, 117, 140, 0.8) !important;
+        box-shadow: 0 6px 25px rgba(244, 63, 94, 0.3), 0 0 15px rgba(255, 117, 140, 0.4) !important;
+    }
+
+    .not-kalp {
+        font-size: 22px !important;
+        margin-right: 14px !important;
+        flex-shrink: 0 !important;
+        filter: drop-shadow(0 0 8px rgba(255, 117, 140, 0.6)) !important;
+        animation: kalpAtis 1.5s ease-in-out infinite alternate !important;
+    }
+
+    .not-metin {
+        color: #fff !important;
         font-size: 14px !important;
-        line-height: 1.6 !important;
+        font-weight: 600 !important;
         margin: 0 !important;
-        padding: 0 !important;
-        font-style: italic !important;
-        font-weight: 500 !important;
-        text-align: left !important;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5), 0 0 8px rgba(255, 255, 255, 0.3) !important;
+        line-height: 1.4 !important;
     }
-    @keyframes suzulBakalim { 
-        from { opacity: 0; transform: translateY(-10px) scale(0.98); } 
-        to { opacity: 1; transform: translateY(0) scale(1); } 
+
+    @keyframes kalpAtis {
+        0% { transform: scale(1); }
+        100% { transform: scale(1.18); }
     }
 </style>
 
-<!-- KİLİTLEME VE ODAKLAMA MOTORU -->
-<script type="text/javascript">
-    function toggleNedenZ(num) {
-        const p = document.getElementById("nCevapZ" + num);
-        const b = document.getElementById("nBtnZ" + num);
-        
-        if (!p || !b) return;
-
-        if (p.style.display === "block") {
-            p.style.display = "none";
-            b.classList.remove("aktif-z");
-        } else {
-            // Açık olan diğer nedenleri kapatır
-            document.querySelectorAll('[id^="nCevapZ"]').forEach(el => el.style.display = 'none');
-            document.querySelectorAll('[id^="nBtnZ"]').forEach(el => el.classList.remove('aktif-z'));
-            
-            p.style.display = "block";
-            b.classList.add("aktif-z");
-            
-            // Telefonda ekranı açılan zigzag metne pürüzsüzce odaklar
-            setTimeout(() => { 
-                b.scrollIntoView({ behavior: 'smooth', block: 'center' }); 
-            }, 60);
-        }
-    }
-</script>
-<!-- === ZİGZAG AŞK PANELİ BİTİŞİ === -->
 
 <div class="kral-zarif-ayrac"><div class="mini-kalp-zinciri"><span>✉️</span><span>✨</span><span>🔒</span><span>❤️</span><span>🗝️</span></div></div>
 
