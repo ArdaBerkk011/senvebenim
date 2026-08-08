@@ -6262,34 +6262,31 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 </div>
 
 <script>
-    // 1. Firebase Yapılandırması
+    // Firebase Yapılandırması
     const firebaseConfig = {
-    apiKey: "AIzaSyDdxnuTvAdYs4rDBVlfpT44A7VEpp06xyE",
-    authDomain: "cark-7df7c.firebaseapp.com",
-    databaseURL: "https://cark-7df7c-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "cark-7df7c",
-    storageBucket: "cark-7df7c.firebasestorage.app",
-    messagingSenderId: "413334951088",
-    appId: "1:413334951088:web:7efb5a57475b637d929775"
-};
+        apiKey: "AIzaSyDdxnuTvAdYs4rDBVlfpT44A7VEpp06xyE",
+        authDomain: "cark-7df7c.firebaseapp.com",
+        databaseURL: "https://cark-7df7c-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "cark-7df7c",
+        storageBucket: "cark-7df7c.firebasestorage.app",
+        messagingSenderId: "413334951088",
+        appId: "1:413334951088:web:7efb5a57475b637d929775"
+    };
 
     if (!firebase.apps.length) {
         firebase.initializeApp(firebaseConfig);
     }
 
-    // 2. Sürpriz Listesi & Renk Paleti
-    // Aşk + Eğlenceli Ceza Karışık Sürpriz Listesi
-  const prizes = [
-    { text: "Bugünün tüm kararlarını sen veriyorsun!", bg: "#ff758c" },
-    { text: "BOŞ ÇIKTI", bg: "#ff8fa3" },
-    { text: "Romantik & Tatlı bir ses kaydı gönder", bg: "#ffb3c1" },
-    { text: "10 Dakikalık masaj yap bana!", bg: "#ff8fa3" },
-    { text: "En sevdiğimiz tatlıyı yemeye gidiyoruz", bg: "#ffb3c1" },
-    { text: "Komik bir yüz ifadesiyle selfie at!", bg: "#ff477e" }
-  
+    const prizes = [
+        { text: "Bugünün tüm kararlarını sen veriyorsun!", bg: "#ff758c" },
+        { text: "BOŞ ÇIKTI", bg: "#ff8fa3" },
+        { text: "Romantik & Tatlı bir ses kaydı gönder", bg: "#ffb3c1" },
+        { text: "10 Dakikalık masaj yap bana!", bg: "#ff8fa3" },
+        { text: "En sevdiğimiz tatlıyı yemeye gidiyoruz", bg: "#ffb3c1" },
+        { text: "Komik bir yüz ifadesiyle selfie at!", bg: "#ff477e" }
+
     ];
 
-    // 3. Çark Dilimlerini Dinamik Oluşturma
     const spinner = document.getElementById('wheelSpinner');
     const totalPrizes = prizes.length;
     const sliceAngle = 360 / totalPrizes;
@@ -6302,65 +6299,100 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
     spinner.style.background = `conic-gradient(${conicGradient})`;
 
-    // 4. Modal Kontrolleri
     const overlay = document.getElementById('carkModalOverlay');
     document.getElementById('carkOpenBtn').onclick = () => overlay.classList.add('active');
     document.getElementById('carkCloseBtn').onclick = () => overlay.classList.remove('active');
 
-    // 5. Çevirme Mantığı ve Firebase Kontrolü (7 Gün)
     let isSpinning = false;
+    let currentRotation = 0;
 
     document.getElementById('spinBtn').onclick = function() {
         if (isSpinning) return;
 
-        const now = new Date().getTime();
-        const oneWeekMs = 7 * 24 * 60 * 60 * 1000;
         const resultBox = document.getElementById('resultBox');
-        const dbRef = firebase.database().ref('askCark/sonCevirmeTarihi');
+        resultBox.style.color = "#334155";
+        resultBox.innerHTML = "Kontrol ediliyor... ⏳";
 
-        dbRef.once('value').then((snapshot) => {
-            const lastSpin = snapshot.val();
+        const now = new Date().getTime();
+        const intervalMs = 7 * 24 * 60 * 60 * 1000; // Bekleme süresi (7 Gün)
+        
+        try {
+            const dbRef = firebase.database().ref('askCark');
 
-            if (lastSpin && (now - lastSpin < oneWeekMs)) {
-                const remaining = oneWeekMs - (now - lastSpin);
-                const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                
+            dbRef.once('value').then((snapshot) => {
+                const data = snapshot.val() || {};
+                const lastSpin = data.sonCevirmeTarihi || 0;
+                let spinCount = data.cevirmeSayisi || 0;
+
+                // Eğer süre dolduysa hakları sıfırla
+                if (now - lastSpin >= intervalMs) {
+                    spinCount = 0;
+                }
+
+                // 2 Hak da kullanıldıysa engelle
+                if (spinCount >= 2) {
+                    const remaining = intervalMs - (now - lastSpin);
+                    const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    
+                    resultBox.style.color = "#e11d48";
+                    resultBox.innerHTML = `⏳ İki hakkını da kullandın!<br>Yeni hak için: ${days} gün ${hours} saat kalır`;
+                    return;
+                }
+
+                isSpinning = true;
+                resultBox.innerHTML = "Şansın dönüyor... 🎡";
+
+                // Dönüş derecesi hesabı
+                const extraDegrees = Math.floor(Math.random() * 360) + 2160;
+                currentRotation += extraDegrees;
+                spinner.style.transform = `rotate(${currentRotation}deg)`;
+
+                setTimeout(() => {
+                    const actualDegrees = currentRotation % 360;
+                    const selectedIndex = Math.floor((360 - actualDegrees) / sliceAngle) % totalPrizes;
+                    const wonPrize = prizes[selectedIndex];
+
+                    const newSpinCount = spinCount + 1;
+                    
+                    if (newSpinCount === 1) {
+                        resultBox.style.color = "#059669";
+                        resultBox.innerHTML = `
+                            🎉 ${wonPrize.text}<br>
+                            <small style="font-size:12px; color:#64748b;">Sonucu beğenmedin mi?</small><br>
+                            <button id="reSpinBtn" style="margin-top:8px; padding:6px 12px; background:#e11d48; color:white; border:none; border-radius:6px; cursor:pointer;">
+                                🎲 Son Şansını Kullan (1 Hak Kaldı)
+                            </button>
+                        `;
+
+                        document.getElementById('reSpinBtn').onclick = () => {
+                            document.getElementById('spinBtn').click();
+                        };
+                    } else {
+                        resultBox.style.color = "#059669";
+                        resultBox.innerHTML = `🎉 Son Karar: ${wonPrize.text}`;
+                    }
+
+                    if (typeof confetti === 'function') {
+                        confetti({ particleCount: 60, spread: 60, origin: { y: 0.65 } });
+                    }
+
+                    // Firebase Güncelleme
+                    dbRef.set({
+                        sonCevirmeTarihi: now,
+                        cevirmeSayisi: newSpinCount
+                    });
+
+                    isSpinning = false;
+                }, 4500);
+            }).catch((err) => {
+                console.error("Firebase Hatası:", err);
                 resultBox.style.color = "#e11d48";
-                resultBox.innerHTML = `⏳ Bu hafta çevrildi!<br>Kalan: ${days} gün ${hours} saat`;
-                return;
-            }
-
-            isSpinning = true;
-            resultBox.style.color = "#334155";
-            resultBox.innerHTML = "Şansın dönüyor... 🎡";
-
-            const extraDegrees = Math.floor(Math.random() * 360) + 2160;
-            spinner.style.transform = `rotate(${extraDegrees}deg)`;
-
-            setTimeout(() => {
-                const actualDegrees = extraDegrees % 360;
-                const selectedIndex = Math.floor((360 - actualDegrees) / sliceAngle) % totalPrizes;
-                const wonPrize = prizes[selectedIndex];
-
-                resultBox.style.color = "#059669";
-                resultBox.innerHTML = "🎉 " + wonPrize.text;
-
-                // Konfeti Efekti Patlat
-                confetti({
-                    particleCount: 60,
-                    spread: 60,
-                    origin: { y: 0.65 }
-                });
-
-                // Firebase'e zamanı kaydet
-                dbRef.set(now);
-                isSpinning = false;
-            }, 4500);
-        }).catch((err) => {
-            resultBox.innerHTML = "Bağlantı hatası oluştu.";
-            console.error(err);
-        });
+                resultBox.innerHTML = "Veri hatası!";
+            });
+        } catch (e) {
+            console.error("Kritik Hata:", e);
+        }
     };
 </script>
 
