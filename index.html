@@ -5986,7 +5986,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
 
 <!-- ============================================================ -->
-<!-- ŞANS ÇARKI, KUPONLAR & TELEGRAM BİLDİRİM SİSTEMİ -->
+<!-- ŞANS ÇARKI, CANLI SAYAÇ, SES EFEKTLERİ & TELEGRAM BİLDİRİM -->
 <!-- ============================================================ -->
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -6067,15 +6067,48 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     .cark-tab-content { display: none; }
     .cark-tab-content.active { display: block; }
 
-    .wheel-container { position: relative; width: 240px; height: 240px; margin: 16px auto; }
-    .wheel-pointer {
-        position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-        width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent;
-        border-top: 22px solid #e11d48; z-index: 10;
+    .wheel-container { 
+        position: relative; 
+        width: 260px; 
+        height: 260px; 
+        margin: 20px auto; 
+        border-radius: 50%;
+        padding: 8px;
+        background: linear-gradient(145deg, #ffd700, #b8860b);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), inset 0 2px 5px rgba(255, 255, 255, 0.8);
     }
+
+    .wheel-pointer {
+        position: absolute; 
+        top: -10px; 
+        left: 50%; 
+        transform: translateX(-50%);
+        width: 0; height: 0; 
+        border-left: 14px solid transparent; 
+        border-right: 14px solid transparent;
+        border-top: 26px solid #e11d48; 
+        z-index: 10;
+        filter: drop-shadow(0 3px 4px rgba(0,0,0,0.3));
+    }
+
+    .wheel-center-cap {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        width: 42px; height: 42px;
+        background: radial-gradient(circle, #ffe600 0%, #b8860b 100%);
+        border: 3px solid #ffffff;
+        border-radius: 50%;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        z-index: 8;
+    }
+
     .wheel-spinner {
-        width: 100%; height: 100%; border-radius: 50%; border: 4px solid #ffffff;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.12); transition: transform 4.5s cubic-bezier(0.15, 0.99, 0.35, 1);
+        width: 100%; height: 100%; 
+        border-radius: 50%; 
+        border: 4px solid #ffffff;
+        box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2); 
+        transition: transform 4.5s cubic-bezier(0.15, 0.99, 0.35, 1);
     }
 
     .cark-spin-btn {
@@ -6084,6 +6117,20 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         cursor: pointer; box-shadow: 0 6px 20px rgba(255, 71, 126, 0.35); transition: transform 0.2s;
     }
     .cark-spin-btn:disabled { background: #cbd5e1; box-shadow: none; cursor: not-allowed; }
+
+    .countdown-box {
+        display: inline-flex;
+        gap: 6px;
+        margin-top: 8px;
+        background: #0f172a;
+        color: #38bdf8;
+        padding: 8px 14px;
+        border-radius: 12px;
+        font-family: monospace;
+        font-size: 14px;
+        font-weight: bold;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+    }
 
     .kupon-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
     .kupon-kart {
@@ -6135,6 +6182,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     padding: 0;
     transition: transform 0.2s ease, border-color 0.2s ease;
+
 " onmouseover="this.style.transform='scale(1.1)'; this.style.borderColor='#ff477e';" onmouseout="this.style.transform='scale(1)'; this.style.borderColor='#f8bbd0';">
     🎡
 </button>
@@ -6156,11 +6204,12 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
                 
                 <div class="wheel-container">
                     <div class="wheel-pointer"></div>
+                    <div class="wheel-center-cap"></div>
                     <div class="wheel-spinner" id="wheelSpinner"></div>
                 </div>
 
                 <button class="cark-spin-btn" id="spinBtn">Çarkı Çevir 🎲</button>
-                <div id="resultBox" style="margin-top: 12px; font-weight: 700; font-size: 13px; min-height: 38px;">Unutma bunları sen kazanıyorsun istedigin zaman yapabililiriz.</div>
+                <div id="resultBox" style="margin-top: 12px; font-weight: 700; font-size: 13px; min-height: 38px;">Şansını denemek için butona bas!</div>
             </div>
         </div>
 
@@ -6183,11 +6232,53 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // TELEGRAM BİLGİLERİ (GÖRSELLERDEN EKLENDİ)
+        // GITHUB DEPENDENCY'DEN ALINAN TOKEN & CHAT ID
         const TELEGRAM_BOT_TOKEN = "8834454895:AAFqOrZziBAvPm3UZSIdtoLoubI0oCYQwe4";
         const TELEGRAM_CHAT_ID = "8059288514";
 
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) audioCtx = new AudioCtx();
+        }
+
+        function playTickSound() {
+            initAudio();
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 0.04);
+            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.04);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.04);
+        }
+
+        function playWinSound() {
+            initAudio();
+            if (!audioCtx) return;
+            const notes = [523.25, 659.25, 783.99, 1046.50];
+            notes.forEach((freq, i) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime + i * 0.12);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime + i * 0.12);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + i * 0.12 + 0.3);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(audioCtx.currentTime + i * 0.12);
+                osc.stop(audioCtx.currentTime + i * 0.12 + 0.3);
+            });
+        }
+
         function sendTelegramNotification(message) {
+            if (!TELEGRAM_BOT_TOKEN || TELEGRAM_BOT_TOKEN.includes("BURAYA_")) return;
             const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(message)}&parse_mode=HTML`;
             fetch(url).catch(err => console.error("Telegram Hata:", err));
         }
@@ -6212,29 +6303,27 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         }
         const db = (typeof firebase !== 'undefined') ? firebase.database() : null;
 
-        // GÜNCELLENMİŞ 8'Lİ ÇARK ÖDÜLLERİ
-const prizes = [
-    { id: "hakliyim", text: "👑 Haklıyım Kuponu", bg: "#ff758c" },
-    { id: "masaj", text: "💆‍♂️ Bana Masaj Yap", bg: "#ff8fa3" },
-    { id: "cezalisin", text: "😈 Cezalısın!", bg: "#e11d48" },
-    { id: "sinema", text: "🎬 Beni Sinemaya Götür", bg: "#ffb3c1" },
-    { id: "istedigim", text: "✨ İstediğimi Yapacağız", bg: "#ff758c" },
-    { id: "tatli", text: "🍦 Tatlı Yemeye Gideceğiz", bg: "#ff8fa3" },
-    { id: "ateskes", text: "🕊️ Ateşkes Kuponu", bg: "#e11d48" },
-    { id: "prenses", text: "👑 Prenses Kuponu", bg: "#ffb3c1" }
-];
+        const prizes = [
+            { id: "hakliyim", text: "👑 Haklıyım Kuponu", bg: "#ff758c" },
+            { id: "masaj", text: "💆‍♂️ Bana Masaj Yap", bg: "#ff8fa3" },
+            { id: "cezalisin", text: "😈 Cezalısın!", bg: "#e11d48" },
+            { id: "sinema", text: "🎬 Beni Sinemaya Götür", bg: "#ffb3c1" },
+            { id: "istedigim", text: "✨ İstediğimi Yapacağız", bg: "#ff758c" },
+            { id: "tatli", text: "🍦 Tatlı Yemeye Gideceğiz", bg: "#ff8fa3" },
+            { id: "ateskes", text: "🕊️ Ateşkes Kuponu", bg: "#e11d48" },
+            { id: "prenses", text: "👑 Prenses Kuponu", bg: "#ffb3c1" }
+        ];
 
-// GÜNCELLENMİŞ 8'Lİ KUPON DETAY BİLGİLERİ
-const kuponBilgileri = {
-    hakliyim: { baslik: "👑 Haklıyım!", detay: "Tartışmada masaya sürülür, konu kapanır.", adi: "👑 Haklıyım Kuponu" },
-    masaj: { baslik: "💆‍♂️ Bana Masaj Yap", detay: "İtirazsız masaj yaptırma hakkı.", adi: "💆‍♂️ Bana Masaj Yap Kuponu" },
-    cezalisin: { baslik: "😈 Cezalısın!", detay: "Küçük tatlı bir ceza verilir.", adi: "😈 Cezalısın Kuponu" },
-    sinema: { baslik: "🎬 Sinemaya Götür", detay: "Birlikte sinemaya gitme hakkı.", adi: "🎬 Beni Sinemaya Götür Kuponu" },
-    istedigim: { baslik: "✨ İstediğimi Yapacağız", detay: "Seçilen etkinliği ikasız kabul etme hakkı.", adi: "✨ İstediğimi Yapacağız Kuponu" },
-    tatli: { baslik: "🍦 Tatlı Yemeye Gideceğiz", detay: "Dışarıda tatlı kaçamağı hakkı.", adi: "🍦 Tatlı Yemeye Gideceğiz Kuponu" },
-    ateskes: { baslik: "🕊️ Ateşkes Kuponu", detay: "Tartışmayı anında bitirme ve barışma hakkı.", adi: "🕊️ Ateşkes Kuponu" },
-    prenses: { baslik: "👑 Prenses Kuponu", detay: "Gün boyu küçük isteklerin geri çevrilmediği özel gün.", adi: "👑 Prenses Kuponu" }
-};
+        const kuponBilgileri = {
+            hakliyim: { baslik: "👑 Haklıyım!", detay: "Tartışmada masaya sürülür, konu kapanır.", adi: "👑 Haklıyım Kuponu" },
+            masaj: { baslik: "💆‍♂️ Bana Masaj Yap", detay: "İtirazsız masaj yaptırma hakkı.", adi: "💆‍♂️ Bana Masaj Yap Kuponu" },
+            cezalisin: { baslik: "😈 Cezalısın!", detay: "Küçük tatlı bir ceza verilir.", adi: "😈 Cezalısın Kuponu" },
+            sinema: { baslik: "🎬 Sinemaya Götür", detay: "Birlikte sinemaya gitme hakkı.", adi: "🎬 Beni Sinemaya Götür Kuponu" },
+            istedigim: { baslik: "✨ İstediğimi Yapacağız", detay: "Seçilen etkinliği ikasız kabul etme hakkı.", adi: "✨ İstediğimi Yapacağız Kuponu" },
+            tatli: { baslik: "🍦 Tatlı Yemeye Gideceğiz", detay: "Dışarıda tatlı kaçamağı hakkı.", adi: "🍦 Tatlı Yemeye Gideceğiz Kuponu" },
+            ateskes: { baslik: "🕊️ Ateşkes Kuponu", detay: "Tartışmayı anında bitirme ve barışma hakkı.", adi: "🕊️ Ateşkes Kuponu" },
+            prenses: { baslik: "👑 Prenses Kuponu", detay: "Gün boyu küçük isteklerin geri çevrilmediği özel gün.", adi: "👑 Prenses Kuponu" }
+        };
 
         const spinner = document.getElementById('wheelSpinner');
         const totalPrizes = prizes.length;
@@ -6311,11 +6400,39 @@ const kuponBilgileri = {
 
         let isSpinning = false;
         let currentRotation = 0;
+        let countdownTimer = null;
+
+        function startCountdown(targetTime) {
+            if (countdownTimer) clearInterval(countdownTimer);
+            const resultBox = document.getElementById('resultBox');
+
+            countdownTimer = setInterval(() => {
+                const now = new Date().getTime();
+                const remaining = targetTime - now;
+
+                if (remaining <= 0) {
+                    clearInterval(countdownTimer);
+                    resultBox.style.color = "#059669";
+                    resultBox.innerHTML = "🎉 Yeni haftalık çevirme hakkın hazır!";
+                    document.getElementById('spinBtn').disabled = false;
+                    return;
+                }
+
+                const d = Math.floor(remaining / (1000 * 60 * 60 * 24));
+                const h = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((remaining % (1000 * 60)) / 1000);
+
+                resultBox.style.color = "#e11d48";
+                resultBox.innerHTML = `⏳ Bu haftaki hak kullanıldı!<br><div class="countdown-box">⏱️ ${d}g ${h.toString().padStart(2,'0')}s ${m.toString().padStart(2,'0')}d ${s.toString().padStart(2,'0')}s</div>`;
+            }, 1000);
+        }
 
         const spinBtn = document.getElementById('spinBtn');
         if (spinBtn) {
             spinBtn.onclick = () => {
                 if (isSpinning) return;
+                initAudio();
                 const resultBox = document.getElementById('resultBox');
                 resultBox.innerHTML = "Kontrol ediliyor... ⏳";
 
@@ -6331,12 +6448,8 @@ const kuponBilgileri = {
                     if (now - lastSpin >= intervalMs) {
                         dbRef.child('kilitli').set(false);
                     } else if (isLocked) {
-                        const remaining = intervalMs - (now - lastSpin);
-                        const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
-                        const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                        resultBox.style.color = "#e11d48";
-                        resultBox.innerHTML = `⏳ Bu haftaki hak kullanıldı!<br>Kalan süre: ${days} gün ${hours} saat`;
                         spinBtn.disabled = true;
+                        startCountdown(lastSpin + intervalMs);
                         return;
                     }
 
@@ -6348,6 +6461,14 @@ const kuponBilgileri = {
                     currentRotation += extraDegrees;
                     spinner.style.transform = `rotate(${currentRotation}deg)`;
 
+                    let tickCount = 0;
+                    const totalTicks = 28;
+                    const tickInterval = setInterval(() => {
+                        playTickSound();
+                        tickCount++;
+                        if (tickCount >= totalTicks) clearInterval(tickInterval);
+                    }, 140);
+
                     setTimeout(() => {
                         const actualDegrees = currentRotation % 360;
                         const selectedIndex = Math.floor((360 - actualDegrees) / sliceAngle) % totalPrizes;
@@ -6357,28 +6478,30 @@ const kuponBilgileri = {
                         dbRef.set({ sonCevirmeTarihi: new Date().getTime(), kilitli: true });
 
                         if (typeof confetti === 'function') confetti({ particleCount: 90, spread: 70, origin: { y: 0.65 } });
+                        playWinSound();
 
                         resultBox.style.color = "#059669";
                         resultBox.innerHTML = `🎉 Kazandın: <b>${wonPrize.text}</b><br><small style="color:#64748b;">Kupon otomatik olarak envanterine eklendi! 💚</small>`;
 
-                        // Telegram Bildirimi: Yeni Ödül
                         sendTelegramNotification(`🎡 <b>ÇARK ÇEVRİLDİ!</b>\n\n🎉 <b>Kazanılan Ödül:</b> ${wonPrize.text}\n📂 Envantere eklendi.`);
 
                         isSpinning = false;
+                        startCountdown(new Date().getTime() + intervalMs);
                     }, 4500);
                 });
             };
         }
 
         window.kuponKullan = function(kuponId, kuponAdi) {
+            initAudio();
             if (confirm(`"${kuponAdi}" hakkını kullanmak istediğine emin misin?`)) {
                 kuponRef.child(kuponId).transaction((m) => (m && m > 0) ? m - 1 : 0, (err, committed) => {
                     if (committed) {
                         const tarih = new Date().toLocaleString('tr-TR', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
                         bildirimRef.push({ kuponAdi: kuponAdi, tarih: tarih });
                         if (typeof confetti === 'function') confetti({ particleCount: 90, spread: 70 });
+                        playWinSound();
 
-                        // Telegram Bildirimi: Kupon Harcandı
                         sendTelegramNotification(`🎟️ <b>KUPON HARCANDI!</b>\n\n📌 <b>Kupon:</b> ${kuponAdi}\n🕒 <b>Tarih:</b> ${tarih}`);
 
                         alert("🎉 Kupon kullanıldı!");
@@ -6388,7 +6511,6 @@ const kuponBilgileri = {
         };
     });
 </script>
-
 
 
 
