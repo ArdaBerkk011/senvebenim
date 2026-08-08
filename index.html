@@ -6277,14 +6277,13 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         firebase.initializeApp(firebaseConfig);
     }
 
-    const prizes = [
+        const prizes = [
         { text: "Bugünün tüm kararlarını sen veriyorsun!", bg: "#ff758c" },
         { text: "BOŞ ÇIKTI", bg: "#ff8fa3" },
         { text: "Romantik & Tatlı bir ses kaydı gönder", bg: "#ffb3c1" },
         { text: "10 Dakikalık masaj yap bana!", bg: "#ff8fa3" },
         { text: "En sevdiğimiz tatlıyı yemeye gidiyoruz", bg: "#ffb3c1" },
         { text: "Komik bir yüz ifadesiyle selfie at!", bg: "#ff477e" }
-
     ];
 
     const spinner = document.getElementById('wheelSpinner');
@@ -6306,7 +6305,8 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     let isSpinning = false;
     let currentRotation = 0;
 
-    document.getElementById('spinBtn').onclick = function() {
+    // Tekrar çevirme aksiyonunu tetikleyen yardımcı fonksiyon
+    function triggerSpin(isRespin = false) {
         if (isSpinning) return;
 
         const resultBox = document.getElementById('resultBox');
@@ -6314,7 +6314,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         resultBox.innerHTML = "Kontrol ediliyor... ⏳";
 
         const now = new Date().getTime();
-        const intervalMs = 7 * 24 * 60 * 60 * 1000; // Bekleme süresi (7 Gün)
+        const intervalMs = 7 * 24 * 60 * 60 * 1000; // 7 Gün
         
         try {
             const dbRef = firebase.database().ref('askCark');
@@ -6322,28 +6322,24 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             dbRef.once('value').then((snapshot) => {
                 const data = snapshot.val() || {};
                 const lastSpin = data.sonCevirmeTarihi || 0;
-                let spinCount = data.cevirmeSayisi || 0;
+                const isLocked = data.kilitli || false;
 
-                // Eğer süre dolduysa hakları sıfırla
+                // 7 günlük süre dolduysa kilidi aç
                 if (now - lastSpin >= intervalMs) {
-                    spinCount = 0;
-                }
-
-                // 2 Hak da kullanıldıysa engelle
-                if (spinCount >= 2) {
+                    dbRef.child('kilitli').set(false);
+                } else if (isLocked) {
                     const remaining = intervalMs - (now - lastSpin);
                     const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
                     const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                     
                     resultBox.style.color = "#e11d48";
-                    resultBox.innerHTML = `⏳ İki hakkını da kullandın!<br>Yeni hak için: ${days} gün ${hours} saat kalır`;
+                    resultBox.innerHTML = `⏳ Bu haftaki hak kullanıldı!<br>Yeni hak için: ${days} gün ${hours} saat kalır`;
                     return;
                 }
 
                 isSpinning = true;
                 resultBox.innerHTML = "Şansın dönüyor... 🎡";
 
-                // Dönüş derecesi hesabı
                 const extraDegrees = Math.floor(Math.random() * 360) + 2160;
                 currentRotation += extraDegrees;
                 spinner.style.transform = `rotate(${currentRotation}deg)`;
@@ -6353,35 +6349,52 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
                     const selectedIndex = Math.floor((360 - actualDegrees) / sliceAngle) % totalPrizes;
                     const wonPrize = prizes[selectedIndex];
 
-                    const newSpinCount = spinCount + 1;
-                    
-                    if (newSpinCount === 1) {
-                        resultBox.style.color = "#059669";
-                        resultBox.innerHTML = `
-                            🎉 ${wonPrize.text}<br>
-                            <small style="font-size:12px; color:#64748b;">Sonucu beğenmedin mi?</small><br>
-                            <button id="reSpinBtn" style="margin-top:8px; padding:6px 12px; background:#e11d48; color:white; border:none; border-radius:6px; cursor:pointer;">
-                                🎲 Son Şansını Kullan (1 Hak Kaldı)
-                            </button>
-                        `;
-
-                        document.getElementById('reSpinBtn').onclick = () => {
-                            document.getElementById('spinBtn').click();
-                        };
-                    } else {
-                        resultBox.style.color = "#059669";
-                        resultBox.innerHTML = `🎉 Son Karar: ${wonPrize.text}`;
-                    }
-
                     if (typeof confetti === 'function') {
                         confetti({ particleCount: 60, spread: 60, origin: { y: 0.65 } });
                     }
 
-                    // Firebase Güncelleme
-                    dbRef.set({
-                        sonCevirmeTarihi: now,
-                        cevirmeSayisi: newSpinCount
-                    });
+                    if (!isRespin) {
+                        // İlk çevirme sonucu
+                        resultBox.style.color = "#059669";
+                        resultBox.innerHTML = `
+                            🎉 ${wonPrize.text}<br>
+                            <div style="margin-top:10px; display:flex; gap:8px; justify-content:center;">
+                                <button id="acceptBtn" style="padding:6px 12px; background:#10b981; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">
+                                    Kabul Et 💚
+                                </button>
+                                <button id="reSpinBtn" style="padding:6px 12px; background:#e11d48; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">
+                                    Tekrar Döndür (Son Hak) 🎲
+                                </button>
+                            </div>
+                        `;
+
+                        // "Kabul Et" Butonuna Basılırsa
+                        document.getElementById('acceptBtn').onclick = () => {
+                            dbRef.set({
+                                sonCevirmeTarihi: new Date().getTime(),
+                                kilitli: true
+                            });
+                            resultBox.style.color = "#059669";
+                            resultBox.innerHTML = `🎉 Kabul Edildi: ${wonPrize.text}<br><small style="color:#64748b;">Süre başlatıldı! Haftaya görüşürüz 🔒</small>`;
+                        };
+
+                        // "Tekrar Döndür" Butonuna Basılırsa
+                        document.getElementById('reSpinBtn').onclick = () => {
+                            isSpinning = false;
+                            triggerSpin(true); // İkinci çevirmeyi başlatır
+                        };
+
+                    } else {
+                        // İkinci (Son) Çevirme Sonucu
+                        resultBox.style.color = "#059669";
+                        resultBox.innerHTML = `🎉 Son Karar: ${wonPrize.text}<br><small style="color:#64748b;">Süre başlatıldı! Haftaya görüşürüz 🔒</small>`;
+
+                        // Süre doğrudan başlatılır ve veritabanı kilitlenir
+                        dbRef.set({
+                            sonCevirmeTarihi: new Date().getTime(),
+                            kilitli: true
+                        });
+                    }
 
                     isSpinning = false;
                 }, 4500);
@@ -6393,6 +6406,11 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         } catch (e) {
             console.error("Kritik Hata:", e);
         }
+    }
+
+    // Ana Çevir Butonu
+    document.getElementById('spinBtn').onclick = function() {
+        triggerSpin(false);
     };
 </script>
 
