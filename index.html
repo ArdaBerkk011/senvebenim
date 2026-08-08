@@ -6109,7 +6109,35 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 </style>
 
 <!-- Buton -->
-<button id="openCarkModalBtn" onclick="document.getElementById('carkModalOverlay').classList.add('active');" title="Şans Çarkı & Kuponlar" style="position: fixed !important; top: 15px !important; right: 70px !important; width: 44px !important; height: 44px !important; border-radius: 50% !important; background: #ffffff !important; border: 2px solid #f8bbd0 !important; font-size: 20px !important; cursor: pointer !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 4px 12px rgba(0,0,0,0.12) !important; z-index: 999999 !important; transition: transform 0.2s ease, border-color 0.2s ease;" onmouseover="this.style.transform='scale(1.1)'; this.style.borderColor='#ff477e';" onmouseout="this.style.transform='scale(1)'; this.style.borderColor='#f8bbd0';">🎡</button>
+<button id="openCarkModalBtn" 
+        onclick="document.getElementById('carkModalOverlay').classList.add('active');" 
+        title="Şans Çarkı & Kuponlar" 
+        style="
+    position: fixed;
+    color: #ff477e !important;
+    top: 14px;          /* Zarın üst mesafesiyle aynı seviye */
+    right: 60px;        /* 80px yaparak zarın sol yanına kaydırdık */
+    z-index: 99999;
+    width: 43px!important;
+    height: 44px!important; 
+    border: 1px solid #ffc2d1 !important;             /* Kenarına sitenin tarzında ince pembe bir çizgi çektik */
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 2px solid rgba(255, 117, 140, 0.5);
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(255, 105, 180, 0.15) !important; /* Parlamayı yumuşattık */
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    padding: 0;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+" onmouseover="this.style.transform='scale(1.1)'; this.style.borderColor='#ff477e';" onmouseout="this.style.transform='scale(1)'; this.style.borderColor='#f8bbd0';">
+    🎡
+</button>
 
 <!-- Modal -->
 <div id="carkModalOverlay" class="cark-modal-overlay">
@@ -6184,23 +6212,29 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         }
         const db = (typeof firebase !== 'undefined') ? firebase.database() : null;
 
-        const prizes = [
-            { id: "hakliyim", text: "👑 Haklıyım Kuponu", bg: "#ff758c" },
-            { id: "masaj", text: "💆‍♂️ Bana Masaj Yap", bg: "#ff8fa3" },
-            { id: "cezalisin", text: "😈 Cezalısın!", bg: "#e11d48" },
-            { id: "sinema", text: "🎬 Beni Sinemaya Götür", bg: "#ffb3c1" },
-            { id: "istedigim", text: "✨ İstediğimi Yapacağız", bg: "#ff758c" },
-            { id: "tatli", text: "🍦 Tatlı Yemeye Gideceğiz", bg: "#ff8fa3" }
-        ];
+        // GÜNCELLENMİŞ 8'Lİ ÇARK ÖDÜLLERİ
+const prizes = [
+    { id: "hakliyim", text: "👑 Haklıyım Kuponu", bg: "#ff758c" },
+    { id: "masaj", text: "💆‍♂️ Bana Masaj Yap", bg: "#ff8fa3" },
+    { id: "cezalisin", text: "😈 Cezalısın!", bg: "#e11d48" },
+    { id: "sinema", text: "🎬 Beni Sinemaya Götür", bg: "#ffb3c1" },
+    { id: "istedigim", text: "✨ İstediğimi Yapacağız", bg: "#ff758c" },
+    { id: "tatli", text: "🍦 Tatlı Yemeye Gideceğiz", bg: "#ff8fa3" },
+    { id: "ateskes", text: "🕊️ Ateşkes Kuponu", bg: "#e11d48" },
+    { id: "prenses", text: "👑 Prenses Kuponu", bg: "#ffb3c1" }
+];
 
-        const kuponBilgileri = {
-            hakliyim: { baslik: "👑 Haklıyım!", detay: "Tartışmada masaya sürülür, konu kapanır.", adi: "👑 Haklıyım Kuponu" },
-            masaj: { baslik: "💆‍♂️ Bana Masaj Yap", detay: "İtirazsız masaj yaptırma hakkı.", adi: "💆‍♂️ Bana Masaj Yap Kuponu" },
-            cezalisin: { baslik: "😈 Cezalısın!", detay: "Küçük tatlı bir ceza verilir.", adi: "😈 Cezalısın Kuponu" },
-            sinema: { baslik: "🎬 Sinemaya Götür", detay: "Birlikte sinemaya gitme hakkı.", adi: "🎬 Beni Sinemaya Götür Kuponu" },
-            istedigim: { baslik: "✨ İstediğimi Yapacağız", detay: "Seçilen etkinliği ikasız kabul etme hakkı.", adi: "✨ İstediğimi Yapacağız Kuponu" },
-            tatli: { baslik: "🍦 Tatlı Yemeye Gideceğiz", detay: "Dışarıda tatlı kaçamağı hakkı.", adi: "🍦 Tatlı Yemeye Gideceğiz Kuponu" }
-        };
+// GÜNCELLENMİŞ 8'Lİ KUPON DETAY BİLGİLERİ
+const kuponBilgileri = {
+    hakliyim: { baslik: "👑 Haklıyım!", detay: "Tartışmada masaya sürülür, konu kapanır.", adi: "👑 Haklıyım Kuponu" },
+    masaj: { baslik: "💆‍♂️ Bana Masaj Yap", detay: "İtirazsız masaj yaptırma hakkı.", adi: "💆‍♂️ Bana Masaj Yap Kuponu" },
+    cezalisin: { baslik: "😈 Cezalısın!", detay: "Küçük tatlı bir ceza verilir.", adi: "😈 Cezalısın Kuponu" },
+    sinema: { baslik: "🎬 Sinemaya Götür", detay: "Birlikte sinemaya gitme hakkı.", adi: "🎬 Beni Sinemaya Götür Kuponu" },
+    istedigim: { baslik: "✨ İstediğimi Yapacağız", detay: "Seçilen etkinliği ikasız kabul etme hakkı.", adi: "✨ İstediğimi Yapacağız Kuponu" },
+    tatli: { baslik: "🍦 Tatlı Yemeye Gideceğiz", detay: "Dışarıda tatlı kaçamağı hakkı.", adi: "🍦 Tatlı Yemeye Gideceğiz Kuponu" },
+    ateskes: { baslik: "🕊️ Ateşkes Kuponu", detay: "Tartışmayı anında bitirme ve barışma hakkı.", adi: "🕊️ Ateşkes Kuponu" },
+    prenses: { baslik: "👑 Prenses Kuponu", detay: "Gün boyu küçük isteklerin geri çevrilmediği özel gün.", adi: "👑 Prenses Kuponu" }
+};
 
         const spinner = document.getElementById('wheelSpinner');
         const totalPrizes = prizes.length;
@@ -6354,6 +6388,8 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         };
     });
 </script>
+
+
 
 
 
