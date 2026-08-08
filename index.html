@@ -1,4 +1,5 @@
-<!-- === KRAL ESKİ PERDEYİ KÖKTEN KÖR EDEN SİHİRLİ DUVAR === -->
+
+   <!-- === KRAL ESKİ PERDEYİ KÖKTEN KÖR EDEN SİHİRLİ DUVAR === -->
 <style>
     /* Sitenin orijinalindeki tüm olası eski giriş/karşılama ekranlarını zorla yok eder */
     #welcome-screen, #intro, .welcome, #welcome, #loading, .welcome-screen, [id*="welcome"], [class*="welcome"], [id*="intro"] { 
@@ -5983,498 +5984,388 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     });
 </script>
 
-<!-- ================= HAFTALIK KAZI KAZAN (BULUT / FIREBASE DESTEKLİ %100 KİLİTLİ) ================= -->
+
+<!-- Firebase SDK Kütüphaneleri -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<!-- Canvas Confetti (Konfeti Efekti) -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <style>
-    /* Sağ Üst Yuvarlak Buton */
-    #haftalik-kazi-btn {
-        position: fixed;
-        top: 12px;
-        right: 61px;
-        width: 48px;
-        height: 44px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #ff758f, #ff4757);
-        color: white;
-        border: none;
-        font-size: 24px;
-        cursor: pointer;
-        z-index: 99999;
-        box-shadow: 0 6px 16px rgba(255, 71, 87, 0.4);
-        transition: transform 0.2s, box-shadow 0.2s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        user-select: none;
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap');
+
+    :root {
+        --primary-gradient: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
+        --accent-glow: rgba(255, 8, 68, 0.35);
+        --glass-bg: rgba(255, 255, 255, 0.92);
+        --glass-border: rgba(255, 255, 255, 0.6);
     }
 
-    #haftalik-kazi-btn:hover {
-        transform: scale(1.08) rotate(6deg);
-        box-shadow: 0 8px 20px rgba(255, 71, 87, 0.6);
+    * {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
     }
 
-    /* Modal Arka Plan */
-    #kazi-modal-overlay {
+   /* Sağ Üst Yuvarlak Buton (Zarın Sol Yanı) */
+.premium-cark-trigger {
+    position: fixed;
+    color: #ff477e !important;
+    top: 14px;          /* Zarın üst mesafesiyle aynı seviye */
+    right: 60px;        /* 80px yaparak zarın sol yanına kaydırdık */
+    z-index: 99999;
+    width: 43px!important;
+    height: 44px!important; 
+    border: 1px solid #ffc2d1 !important;             /* Kenarına sitenin tarzında ince pembe bir çizgi çektik */
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 2px solid rgba(255, 117, 140, 0.5);
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(255, 105, 180, 0.15) !important; /* Parlamayı yumuşattık */
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    padding: 0;
+}
+
+    .premium-cark-trigger:hover {
+        transform: scale(1.1) !important; 
+        background: #fff0f5 !important; /* Çok hafif tatlı bir pembe beyaza döner */
+        border-color: #ff477e !important;
+        box-shadow: 0 6px 18px rgba(255, 71, 126, 0.3) !important;
+    }
+
+    .premium-cark-trigger:active {
+        transform: scale(0.92);
+    }
+
+    /* Modal Arka Planı (Mobil 100dvh Desteği) */
+    .cark-modal-overlay {
         display: none;
         position: fixed;
-        top: 0; left: 0;
-        width: 100vw; height: 100vh;
-        background: rgba(0, 0, 0, 0.65);
-        backdrop-filter: blur(5px);
-        z-index: 100005;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        height: 100dvh;
+        background: rgba(15, 23, 42, 0.7);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        z-index: 100000;
         justify-content: center;
         align-items: center;
-        padding: 15px;
-        box-sizing: border-box;
-        font-family: 'Segoe UI', system-ui, sans-serif;
-    }
-
-    .modal-icerik {
-        background: #ffffff;
-        padding: 20px 15px;
-        border-radius: 20px;
-        text-align: center;
-        max-width: 680px;
-        width: 100%;
-        max-height: 90vh;
-        overflow-y: auto;
-        box-shadow: 0 15px 30px rgba(0,0,0,0.25);
-        box-sizing: border-box;
-    }
-
-    .modal-icerik h2 {
-        color: #ff4757;
-        margin: 0 0 4px 0;
-        font-size: 19px;
-        user-select: none;
-        cursor: pointer;
-    }
-
-    .modal-icerik p.aciklama {
-        color: #666;
-        font-size: 12px;
-        margin-bottom: 12px;
-    }
-
-    #sayac-kutusu {
-        display: none;
-        background: #fff0f5;
-        border: 1.5px dashed #ff758f;
-        color: #d63384;
-        padding: 8px 14px;
-        border-radius: 12px;
-        font-weight: bold;
-        font-size: 13px;
-        margin: 0 auto 12px auto;
-        max-width: 320px;
-    }
-
-    .kartlar-wrapper {
-        display: flex;
-        gap: 12px;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-
-    .kart-kutusu {
-        position: relative;
-        width: 180px;
-        height: 240px;
-        border-radius: 14px;
-        overflow: hidden;
-        background: #e0e0e0;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        user-select: none;
-        flex-shrink: 0;
-    }
-
-    .surpriz-icerik {
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 12px;
-        text-align: center;
-        background: #fff0f5;
-        box-sizing: border-box;
-        visibility: hidden;
+        padding: 16px;
         opacity: 0;
         transition: opacity 0.3s ease;
     }
 
-    .surpriz-icerik.acik {
-        visibility: visible !important;
-        opacity: 1 !important;
+    .cark-modal-overlay.active {
+        display: flex;
+        opacity: 1;
     }
 
-    .surpriz-simge { font-size: 34px; margin-bottom: 6px; }
-    .surpriz-baslik { font-size: 14px; font-weight: bold; color: #ff4757; margin-bottom: 4px; }
-    .surpriz-metin { font-size: 11px; color: #555; line-height: 1.35; }
-
-    canvas.kazi-canvas {
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        cursor: pointer;
-        z-index: 2;
-        touch-action: none;
-        background: #c0c0c0;
-    }
-
-    .kilitli-katman {
-        display: none;
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        background: #2d2d3a;
-        z-index: 10;
-        color: #ffffff;
-        font-weight: bold;
-        font-size: 13px;
-        justify-content: center;
-        align-items: center;
+    /* Modal Gövdesi */
+    .cark-card {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 28px;
+        padding: 28px 20px 24px 20px;
+        width: 100%;
+        max-width: 350px;
+        max-height: 90dvh;
+        overflow-y: auto;
         text-align: center;
-        padding: 12px;
-        box-sizing: border-box;
-        border-radius: 14px;
+        position: relative;
+        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+        transform: scale(0.9);
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .cark-modal-overlay.active .cark-card {
+        transform: scale(1);
+    }
+
+    .cark-close-btn {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.05);
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        color: #64748b;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-title {
+        font-size: 19px;
+        font-weight: 800;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 0 0 4px 0;
+    }
+
+    .modal-subtitle {
+        font-size: 12px;
+        color: #64748b;
+        margin-bottom: 20px;
+        font-weight: 500;
         line-height: 1.4;
     }
 
-    .modal-kapat-btn {
-        margin-top: 15px;
-        background: #f1f2f6;
-        color: #333;
-        border: none;
-        padding: 8px 20px;
-        border-radius: 16px;
-        font-weight: bold;
-        font-size: 13px;
-        cursor: pointer;
-        transition: background 0.2s;
+    /* Çark Alanı */
+    .wheel-outer-ring {
+        position: relative;
+        width: min(250px, 68vw);
+        height: min(250px, 68vw);
+        margin: 0 auto;
+        border-radius: 50%;
+        padding: 8px;
+        background: linear-gradient(145deg, #ffffff, #e6e6e6);
+        box-shadow: inset 0 0 12px rgba(0,0,0,0.08), 0 10px 25px rgba(0,0,0,0.15);
     }
 
-    .modal-kapat-btn:hover { background: #dfe4ea; }
+    .wheel-pointer {
+        position: absolute;
+        top: -6px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 24px;
+        height: 28px;
+        background: #1e293b;
+        clip-path: polygon(100% 0, 0 0, 50% 100%);
+        z-index: 20;
+        filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.3));
+    }
 
-    @media (max-width: 600px) {
-        .kart-kutusu { width: 140px; height: 200px; }
-        .surpriz-simge { font-size: 28px; }
-        .surpriz-baslik { font-size: 12px; }
-        .surpriz-metin { font-size: 10px; }
+    .wheel-spinner {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        position: relative;
+        transition: transform 4.5s cubic-bezier(0.15, 0.88, 0.15, 0.98);
+        box-shadow: inset 0 0 8px rgba(0,0,0,0.2);
+    }
+
+    .wheel-center-cap {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: min(58px, 16vw);
+        height: min(58px, 16vw);
+        background: #ffffff;
+        border-radius: 50%;
+        z-index: 10;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .spin-action-btn {
+        width: min(44px, 12vw);
+        height: min(44px, 12vw);
+        border-radius: 50%;
+        background: var(--primary-gradient);
+        border: none;
+        color: white;
+        font-weight: 800;
+        font-size: 10px;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        box-shadow: 0 3px 10px var(--accent-glow);
+    }
+
+    /* Sonuç Ekranı */
+    .result-display {
+        margin-top: 20px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        font-size: 12px;
+        font-weight: 700;
+        color: #334155;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1.4;
+    }
+
+    /* Masaüstü Ekranlar İçin Ayarlar */
+    @media (min-width: 600px) {
+        .premium-cark-trigger {
+            top: 24px;
+            right: 24px;
+            width: 58px;
+            height: 58px;
+            font-size: 26px;
+        }
+        .cark-card {
+            padding: 36px 28px;
+            max-width: 370px;
+        }
+        .wheel-outer-ring {
+            width: 260px;
+            height: 260px;
+        }
+        .wheel-center-cap {
+            width: 62px;
+            height: 62px;
+        }
+        .spin-action-btn {
+            width: 48px;
+            height: 48px;
+            font-size: 11px;
+        }
+        .result-display {
+            font-size: 13px;
+        }
     }
 </style>
 
-<button id="haftalik-kazi-btn" title="Haftalık Sürpriz">🎁</button>
+<!-- Sağ Üst Yuvarlak İkon Butonu -->
+<button class="premium-cark-trigger" id="carkOpenBtn" title="Aşk Çarkı">
+    🎡
+</button>
 
-<div id="kazi-modal-overlay">
-    <div class="modal-icerik">
-        <h2 id="modal-gizli-baslik" title="Sıfırlamak için 4 kez hızlıca tıkla">Haftalık Sürpriz Kazı Kazan 🎁</h2>
-        <p class="aciklama">Her hafta 3 karttan sadece 1 tanesini seçip kazıma hakkın var!</p>
-
-        <div id="sayac-kutusu">
-            Kalan Süre: <span id="kalan-zaman">--:--:--</span>
-        </div>
-
-        <div class="kartlar-wrapper">
-            <div class="kart-kutusu" id="kart-1">
-                <div class="surpriz-icerik">
-                    <div class="surpriz-simge">🎬🍿</div>
-                    <div class="surpriz-baslik">Sinema Gecesi!</div>
-                    <div class="surpriz-metin">Bu haftanın filmini sen seçiyorsun, mısırlar benden!</div>
-                </div>
-                <canvas class="kazi-canvas" id="canvas-1"></canvas>
-                <div class="kilitli-katman">Diğer Kart Seçildi 🔒</div>
-            </div>
-
-            <div class="kart-kutusu" id="kart-2">
-                <div class="surpriz-icerik">
-                    <div class="surpriz-simge">👑💖</div>
-                    <div class="surpriz-baslik">Sınırsız 'EVET' Kuponu</div>
-                    <div class="surpriz-metin">Bugün isteyeceğin 1 şey için "Hayır" deme hakkım yok!</div>
-                </div>
-                <canvas class="kazi-canvas" id="canvas-2"></canvas>
-                <div class="kilitli-katman">Diğer Kart Seçildi 🔒</div>
-            </div>
-
-            <div class="kart-kutusu" id="kart-3">
-                <div class="surpriz-icerik">
-                    <div class="surpriz-simge">🍕🤗</div>
-                    <div class="surpriz-baslik">Tatlı / Yemek Ismarlama</div>
-                    <div class="surpriz-metin">En sevdiğin tatlı veya yemek benden hediyeli!</div>
-                </div>
-                <canvas class="kazi-canvas" id="canvas-3"></canvas>
-                <div class="kilitli-katman">Diğer Kart Seçildi 🔒</div>
+<!-- Modal -->
+<div class="cark-modal-overlay" id="carkModalOverlay">
+    <div class="cark-card">
+        <button class="cark-close-btn" id="carkCloseBtn">&times;</button>
+        <h3 class="modal-title">Haftalık Sürpriz Çarkı</h3>
+        <p class="modal-subtitle">Her hafta 1 hakkın var, bakalım bu hafta şansına ne çıkacak? 💕</p>
+        
+        <div class="wheel-outer-ring">
+            <div class="wheel-pointer"></div>
+            <div class="wheel-spinner" id="wheelSpinner"></div>
+            <div class="wheel-center-cap">
+                <button class="spin-action-btn" id="spinBtn">ÇEVİR</button>
             </div>
         </div>
 
-        <button class="modal-kapat-btn" id="modalKapatBtn">Kapat ✖</button>
+        <div class="result-display" id="resultBox">Sürprizini öğrenmek için çevir! 🌸</div>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-
 <script>
-    (function() {
-        window.addEventListener('DOMContentLoaded', () => {
-            try {
-                const FIREBASE_URL = 'https://surpriz-kazi-kazan-default-rtdb.europe-west1.firebasedatabase.app/kazi_durum.json';
-                const YEDI_GUN_MS = 7 * 24 * 60 * 60 * 1000;
+    // 1. Firebase Yapılandırması
+    const firebaseConfig = {
+    apiKey: "AIzaSyDdxnuTvAdYs4rDBVlfpT44A7VEpp06xyE",
+    authDomain: "cark-7df7c.firebaseapp.com",
+    databaseURL: "https://cark-7df7c-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "cark-7df7c",
+    storageBucket: "cark-7df7c.firebasestorage.app",
+    messagingSenderId: "413334951088",
+    appId: "1:413334951088:web:7efb5a57475b637d929775"
+};
 
-                const btn = document.getElementById('haftalik-kazi-btn');
-                const modal = document.getElementById('kazi-modal-overlay');
-                const kapatBtn = document.getElementById('modalKapatBtn');
-                const gizliBaslik = document.getElementById('modal-gizli-baslik');
-                const sayacKutusu = document.getElementById('sayac-kutusu');
-                const kalanZamanSpan = document.getElementById('kalan-zaman');
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
 
-                if (!btn || !modal) return;
+    // 2. Sürpriz Listesi & Renk Paleti
+    // Aşk + Eğlenceli Ceza Karışık Sürpriz Listesi
+  const prizes = [
+    { text: "Bugünün tüm kararlarını sen veriyorsun!", bg: "#ff758c" },
+    { text: "BOŞ ÇIKTI", bg: "#ff8fa3" },
+    { text: "Romantik & Tatlı bir ses kaydı gönder", bg: "#ffb3c1" },
+    { text: "10 Dakikalık masaj yap bana!", bg: "#ff8fa3" },
+    { text: "En sevdiğimiz tatlıyı yemeye gidiyoruz", bg: "#ffb3c1" },
+    { text: "Komik bir yüz ifadesiyle selfie at!", bg: "#ff477e" }
+  
+    ];
 
-                let secimZamani = null;
-                let secilenKartId = null;
-                let intervalId = null;
+    // 3. Çark Dilimlerini Dinamik Oluşturma
+    const spinner = document.getElementById('wheelSpinner');
+    const totalPrizes = prizes.length;
+    const sliceAngle = 360 / totalPrizes;
+    
+    let conicGradient = prizes.map((prize, index) => {
+        const start = index * sliceAngle;
+        const end = (index + 1) * sliceAngle;
+        return `${prize.bg} ${start}deg ${end}deg`;
+    }).join(', ');
 
-                durumKontrolVeHazirla();
+    spinner.style.background = `conic-gradient(${conicGradient})`;
 
-                btn.addEventListener('click', () => {
-                    modal.style.display = 'flex';
-                    requestAnimationFrame(() => durumKontrolVeHazirla());
+    // 4. Modal Kontrolleri
+    const overlay = document.getElementById('carkModalOverlay');
+    document.getElementById('carkOpenBtn').onclick = () => overlay.classList.add('active');
+    document.getElementById('carkCloseBtn').onclick = () => overlay.classList.remove('active');
+
+    // 5. Çevirme Mantığı ve Firebase Kontrolü (7 Gün)
+    let isSpinning = false;
+
+    document.getElementById('spinBtn').onclick = function() {
+        if (isSpinning) return;
+
+        const now = new Date().getTime();
+        const oneWeekMs = 7 * 24 * 60 * 60 * 1000;
+        const resultBox = document.getElementById('resultBox');
+        const dbRef = firebase.database().ref('askCark/sonCevirmeTarihi');
+
+        dbRef.once('value').then((snapshot) => {
+            const lastSpin = snapshot.val();
+
+            if (lastSpin && (now - lastSpin < oneWeekMs)) {
+                const remaining = oneWeekMs - (now - lastSpin);
+                const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                
+                resultBox.style.color = "#e11d48";
+                resultBox.innerHTML = `⏳ Bu hafta çevrildi!<br>Kalan: ${days} gün ${hours} saat`;
+                return;
+            }
+
+            isSpinning = true;
+            resultBox.style.color = "#334155";
+            resultBox.innerHTML = "Şansın dönüyor... 🎡";
+
+            const extraDegrees = Math.floor(Math.random() * 360) + 2160;
+            spinner.style.transform = `rotate(${extraDegrees}deg)`;
+
+            setTimeout(() => {
+                const actualDegrees = extraDegrees % 360;
+                const selectedIndex = Math.floor((360 - actualDegrees) / sliceAngle) % totalPrizes;
+                const wonPrize = prizes[selectedIndex];
+
+                resultBox.style.color = "#059669";
+                resultBox.innerHTML = "🎉 " + wonPrize.text;
+
+                // Konfeti Efekti Patlat
+                confetti({
+                    particleCount: 60,
+                    spread: 60,
+                    origin: { y: 0.65 }
                 });
 
-                if (kapatBtn) {
-                    kapatBtn.addEventListener('click', () => {
-                        modal.style.display = 'none';
-                    });
-                }
-
-                // GİZLİ SIFIRLAMA: Başlığa 4 tık atınca BULUTTAKİ veriyi de tamamen siler
-                let tiklamaSayisi = 0;
-                let tiklamaZamanlayici = null;
-
-                if (gizliBaslik) {
-                    gizliBaslik.addEventListener('click', () => {
-                        tiklamaSayisi++;
-                        clearTimeout(tiklamaZamanlayici);
-                        if (tiklamaSayisi === 4) {
-                            tiklamaSayisi = 0;
-                            
-                            // Buluttan sil
-                            fetch(FIREBASE_URL, { method: 'DELETE' })
-                            .then(() => {
-                                secimZamani = null;
-                                secilenKartId = null;
-                                if (intervalId) clearInterval(intervalId);
-                                alert('⚙️ Bulut Veritabanı Sıfırlandı! Tüm kilitler açıldı.');
-                                durumKontrolVeHazirla();
-                            });
-                        } else {
-                            tiklamaZamanlayici = setTimeout(() => { tiklamaSayisi = 0; }, 1500);
-                        }
-                    });
-                }
-
-                function durumKontrolVeHazirla() {
-                    // Buluttan veriyi sorgula
-                    fetch(FIREBASE_URL)
-                    .then(res => res.json())
-                    .then(data => {
-                        const simdi = new Date().getTime();
-
-                        if (data && data.secimZamani) {
-                            if (simdi - parseInt(data.secimZamani) >= YEDI_GUN_MS) {
-                                // 7 gün dolmuş, buluttan sil ve sıfırla
-                                fetch(FIREBASE_URL, { method: 'DELETE' });
-                                secimZamani = null;
-                                secilenKartId = null;
-                                if (sayacKutusu) sayacKutusu.style.display = 'none';
-                                kartlariIlklendir();
-                            } else {
-                                // Halen kilit süresi devam ediyor
-                                secimZamani = parseInt(data.secimZamani);
-                                secilenKartId = data.secilenKartId;
-                                if (sayacKutusu) sayacKutusu.style.display = 'block';
-                                sayacBaslat(secimZamani + YEDI_GUN_MS);
-                                kilitleriUygula(secilenKartId);
-                            }
-                        } else {
-                            // Henüz kart seçilmemiş
-                            secimZamani = null;
-                            secilenKartId = null;
-                            if (sayacKutusu) sayacKutusu.style.display = 'none';
-                            kartlariIlklendir();
-                        }
-                    })
-                    .catch(() => {
-                        kartlariIlklendir();
-                    });
-                }
-
-                function sayacBaslat(bitisTarihi) {
-                    if (intervalId) clearInterval(intervalId);
-                    function guncelle() {
-                        const simdi = new Date().getTime();
-                        const fark = bitisTarihi - simdi;
-                        if (fark <= 0) {
-                            clearInterval(intervalId);
-                            durumKontrolVeHazirla();
-                            return;
-                        }
-                        const gun = Math.floor(fark / (1000 * 60 * 60 * 24));
-                        const saat = Math.floor((fark % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                        const dakika = Math.floor((fark % (1000 * 60 * 60)) / (1000 * 60));
-                        const saniye = Math.floor((fark % (1000 * 60)) / 1000);
-                        if (kalanZamanSpan) kalanZamanSpan.textContent = `${gun} gün ${saat}s ${dakika}dk ${saniye}sn`;
-                    }
-                    guncelle();
-                    intervalId = setInterval(guncelle, 1000);
-                }
-
-                function kilitleriUygula(secilenId) {
-                    [1, 2, 3].forEach(id => {
-                        const kart = document.getElementById(`kart-${id}`);
-                        if (!kart) return;
-                        const canvas = document.getElementById(`canvas-${id}`);
-                        const icerik = kart.querySelector('.surpriz-icerik');
-                        const kilit = kart.querySelector('.kilitli-katman');
-
-                        if (`kart-${id}` === secilenId) {
-                            if (canvas) canvas.style.display = 'none';
-                            if (icerik) icerik.classList.add('acik');
-                            if (kilit) kilit.style.display = 'none';
-                        } else {
-                            if (canvas) canvas.style.display = 'none';
-                            if (icerik) icerik.classList.remove('acik');
-                            if (kilit) kilit.style.display = 'flex';
-                        }
-                    });
-                }
-
-                function kartlariIlklendir() {
-                    [1, 2, 3].forEach(id => {
-                        const kart = document.getElementById(`kart-${id}`);
-                        if (!kart) return;
-                        const canvas = document.getElementById(`canvas-${id}`);
-                        const icerik = kart.querySelector('.surpriz-icerik');
-                        const kilit = kart.querySelector('.kilitli-katman');
-
-                        if (icerik) icerik.classList.remove('acik');
-                        if (kilit) kilit.style.display = 'none';
-
-                        const isMobile = window.innerWidth <= 600;
-                        const rect = kart.getBoundingClientRect();
-                        const w = Math.round(rect.width) || (isMobile ? 140 : 180);
-                        const h = Math.round(rect.height) || (isMobile ? 200 : 240);
-
-                        if (!canvas) return;
-                        canvas.width = w;
-                        canvas.height = h;
-
-                        const ctx = canvas.getContext('2d');
-                        ctx.globalCompositeOperation = 'source-over';
-                        ctx.fillStyle = '#C0C0C0';
-                        ctx.fillRect(0, 0, w, h);
-
-                        ctx.fillStyle = '#ff4757';
-                        ctx.font = 'bold 14px Segoe UI';
-                        ctx.textAlign = 'center';
-                        ctx.textBaseline = 'middle';
-                        ctx.fillText('Kazı ve Seç! ✨', w / 2, h / 2);
-
-                        canvas.style.display = 'block';
-                        canvas.style.opacity = '1';
-
-                        let isDrawing = false;
-                        let kazindi = false;
-                        let kaziHareketSayisi = 0;
-
-                        function kazi(e) {
-                            if (!isDrawing || kazindi) return;
-                            const cRect = canvas.getBoundingClientRect();
-                            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-                            if (clientX === undefined || clientY === undefined) return;
-
-                            const x = clientX - cRect.left;
-                            const y = clientY - cRect.top;
-
-                            ctx.globalCompositeOperation = 'destination-out';
-                            ctx.beginPath();
-                            ctx.arc(x, y, 14, 0, Math.PI * 2);
-                            ctx.fill();
-
-                            if (icerik) icerik.classList.add('acik');
-                            kaziHareketSayisi++;
-
-                            if (kaziHareketSayisi > 5) {
-                                if (!secimZamani) {
-                                    const simdi = new Date().getTime();
-                                    secimZamani = simdi;
-                                    secilenKartId = `kart-${id}`;
-
-                                    // BULUTA KAYDET
-                                    fetch(FIREBASE_URL, {
-                                        method: 'PUT',
-                                        headers: { 'Content-Type': 'application/json' },
-                                        body: JSON.stringify({
-                                            secimZamani: simdi,
-                                            secilenKartId: `kart-${id}`
-                                        })
-                                    });
-
-                                    if (sayacKutusu) sayacKutusu.style.display = 'block';
-                                    sayacBaslat(simdi + YEDI_GUN_MS);
-
-                                    [1, 2, 3].forEach(otherId => {
-                                        if (otherId !== id) {
-                                            const digerKart = document.getElementById(`kart-${otherId}`);
-                                            if (digerKart) {
-                                                const dIcerik = digerKart.querySelector('.surpriz-icerik');
-                                                const dKilit = digerKart.querySelector('.kilitli-katman');
-                                                if (dIcerik) dIcerik.classList.remove('acik');
-                                                if (dKilit) dKilit.style.display = 'flex';
-                                            }
-                                        }
-                                    });
-                                }
-
-                                if (kaziHareketSayisi % 6 === 0) {
-                                    const imgData = ctx.getImageData(0, 0, w, h);
-                                    let trans = 0;
-                                    for (let i = 3; i < imgData.data.length; i += 4) {
-                                        if (imgData.data[i] === 0) trans++;
-                                    }
-                                    if (trans / (imgData.data.length / 4) > 0.50) {
-                                        kazindi = true;
-                                        canvas.style.transition = 'opacity 0.4s ease';
-                                        canvas.style.opacity = '0';
-                                        setTimeout(() => canvas.style.display = 'none', 400);
-
-                                        if (typeof confetti === 'function') {
-                                            confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        canvas.onmousedown = (e) => { isDrawing = true; kazi(e); };
-                        canvas.onmousemove = kazi;
-                        canvas.ontouchstart = (e) => { isDrawing = true; kazi(e); };
-                        canvas.ontouchmove = kazi;
-                    });
-                }
-
-                window.addEventListener('mouseup', () => { isDrawing = false; });
-                window.addEventListener('touchend', () => { isDrawing = false; });
-
-            } catch (err) {
-                console.warn('Hata:', err);
-            }
+                // Firebase'e zamanı kaydet
+                dbRef.set(now);
+                isSpinning = false;
+            }, 4500);
+        }).catch((err) => {
+            resultBox.innerHTML = "Bağlantı hatası oluştu.";
+            console.error(err);
         });
-    })();
+    };
 </script>
+
+
+  
  </html>
 <!-- === EVRENSEL GİZLEYİCİ MIKNATIS === -->
 <style type="text/css">
