@@ -5985,436 +5985,381 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 </script>
 
 
-<!-- Firebase SDK Kütüphaneleri -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<!-- ============================================================ -->
+<!-- ŞANS ÇARKI, KUPONLAR & TELEGRAM BİLDİRİM SİSTEMİ -->
+<!-- ============================================================ -->
 
-<!-- Canvas Confetti (Konfeti Efekti) -->
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap');
-
     :root {
-        --primary-gradient: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
-        --accent-glow: rgba(255, 8, 68, 0.35);
-        --glass-bg: rgba(255, 255, 255, 0.92);
-        --glass-border: rgba(255, 255, 255, 0.6);
+        --cark-primary: #ff477e;
+        --cark-gradient: linear-gradient(135deg, #ff758c 0%, #ff477e 100%);
+        --cark-glass-bg: rgba(255, 255, 255, 0.98);
+        --cark-glass-border: rgba(255, 255, 255, 0.9);
     }
 
-    * {
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        box-sizing: border-box;
-        -webkit-tap-highlight-color: transparent;
-    }
-
-   /* Sağ Üst Yuvarlak Buton (Zarın Sol Yanı) */
-.premium-cark-trigger {
-    position: fixed;
-    color: #ff477e !important;
-    top: 14px;          /* Zarın üst mesafesiyle aynı seviye */
-    right: 60px;        /* 80px yaparak zarın sol yanına kaydırdık */
-    z-index: 99999;
-    width: 43px!important;
-    height: 44px!important; 
-    border: 1px solid #ffc2d1 !important;             /* Kenarına sitenin tarzında ince pembe bir çizgi çektik */
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 2px solid rgba(255, 117, 140, 0.5);
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(255, 105, 180, 0.15) !important; /* Parlamayı yumuşattık */
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    padding: 0;
-}
-
-    .premium-cark-trigger:hover {
-        transform: scale(1.1) !important; 
-        background: #fff0f5 !important; /* Çok hafif tatlı bir pembe beyaza döner */
-        border-color: #ff477e !important;
-        box-shadow: 0 6px 18px rgba(255, 71, 126, 0.3) !important;
-    }
-
-    .premium-cark-trigger:active {
-        transform: scale(0.92);
-    }
-
-    /* Modal Arka Planı (Mobil 100dvh Desteği) */
     .cark-modal-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        height: 100dvh;
-        background: rgba(15, 23, 42, 0.7);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        z-index: 100000;
-        justify-content: center;
-        align-items: center;
-        padding: 16px;
-        opacity: 0;
-        transition: opacity 0.3s ease;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        background: rgba(15, 23, 42, 0.65) !important;
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+        display: none !important;
+        align-items: center !important;
+        justify-content: center !important;
+        z-index: 999999 !important;
+        padding: 15px !important;
+        box-sizing: border-box !important;
     }
 
-    .cark-modal-overlay.active {
-        display: flex;
-        opacity: 1;
-    }
+    .cark-modal-overlay.active { display: flex !important; }
 
-    /* Modal Gövdesi */
-    .cark-card {
-        background: var(--glass-bg);
-        border: 1px solid var(--glass-border);
+    .cark-modal-content {
+        background: var(--cark-glass-bg);
+        border: 1px solid var(--cark-glass-border);
         border-radius: 28px;
-        padding: 28px 20px 24px 20px;
+        padding: 24px 20px;
         width: 100%;
-        max-width: 350px;
-        max-height: 90dvh;
+        max-width: 460px;
+        max-height: 90vh;
         overflow-y: auto;
-        text-align: center;
         position: relative;
-        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
-        transform: scale(0.9);
-        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+        animation: carkPopIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    .cark-modal-overlay.active .cark-card {
-        transform: scale(1);
+    @keyframes carkPopIn {
+        from { transform: scale(0.85); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
     }
 
     .cark-close-btn {
-        position: absolute;
-        top: 16px;
-        right: 16px;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        background: rgba(0, 0, 0, 0.05);
-        border: none;
-        font-size: 20px;
-        cursor: pointer;
-        color: #64748b;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        position: absolute; top: 14px; right: 16px; background: #f1f5f9;
+        border: none; width: 32px; height: 32px; border-radius: 50%;
+        font-size: 18px; font-weight: bold; color: #64748b; cursor: pointer;
+        display: flex; align-items: center; justify-content: center; transition: 0.2s;
+    }
+    .cark-close-btn:hover { background: #e2e8f0; color: #0f172a; }
+
+    .cark-tabs {
+        display: flex; gap: 8px; margin: 10px auto 16px auto;
+        background: #f1f5f9; padding: 4px; border-radius: 30px;
     }
 
-    .modal-title {
-        font-size: 19px;
-        font-weight: 800;
-        background: var(--primary-gradient);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin: 0 0 4px 0;
+    .cark-tab-btn {
+        flex: 1; padding: 10px; border: none; background: transparent;
+        font-weight: 700; font-size: 13px; color: #64748b; border-radius: 24px;
+        cursor: pointer; transition: all 0.25s ease;
     }
 
-    .modal-subtitle {
-        font-size: 12px;
-        color: #64748b;
-        margin-bottom: 20px;
-        font-weight: 500;
-        line-height: 1.4;
+    .cark-tab-btn.active {
+        background: var(--cark-gradient); color: white;
+        box-shadow: 0 4px 12px rgba(255, 71, 126, 0.3);
     }
 
-    /* Çark Alanı */
-    .wheel-outer-ring {
-        position: relative;
-        width: min(250px, 68vw);
-        height: min(250px, 68vw);
-        margin: 0 auto;
-        border-radius: 50%;
-        padding: 8px;
-        background: linear-gradient(145deg, #ffffff, #e6e6e6);
-        box-shadow: inset 0 0 12px rgba(0,0,0,0.08), 0 10px 25px rgba(0,0,0,0.15);
-    }
+    .cark-tab-content { display: none; }
+    .cark-tab-content.active { display: block; }
 
+    .wheel-container { position: relative; width: 240px; height: 240px; margin: 16px auto; }
     .wheel-pointer {
-        position: absolute;
-        top: -6px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 24px;
-        height: 28px;
-        background: #1e293b;
-        clip-path: polygon(100% 0, 0 0, 50% 100%);
-        z-index: 20;
-        filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.3));
+        position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+        width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent;
+        border-top: 22px solid #e11d48; z-index: 10;
     }
-
     .wheel-spinner {
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        position: relative;
-        transition: transform 4.5s cubic-bezier(0.15, 0.88, 0.15, 0.98);
-        box-shadow: inset 0 0 8px rgba(0,0,0,0.2);
+        width: 100%; height: 100%; border-radius: 50%; border: 4px solid #ffffff;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.12); transition: transform 4.5s cubic-bezier(0.15, 0.99, 0.35, 1);
     }
 
-    .wheel-center-cap {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: min(58px, 16vw);
-        height: min(58px, 16vw);
-        background: #ffffff;
-        border-radius: 50%;
-        z-index: 10;
-        box-shadow: 0 4px 14px rgba(0,0,0,0.15);
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .cark-spin-btn {
+        background: var(--cark-gradient); color: white; border: none;
+        padding: 12px 30px; font-size: 15px; font-weight: 700; border-radius: 50px;
+        cursor: pointer; box-shadow: 0 6px 20px rgba(255, 71, 126, 0.35); transition: transform 0.2s;
     }
+    .cark-spin-btn:disabled { background: #cbd5e1; box-shadow: none; cursor: not-allowed; }
 
-    .spin-action-btn {
-        width: min(44px, 12vw);
-        height: min(44px, 12vw);
-        border-radius: 50%;
-        background: var(--primary-gradient);
-        border: none;
-        color: white;
-        font-weight: 800;
-        font-size: 10px;
-        letter-spacing: 0.5px;
-        cursor: pointer;
-        box-shadow: 0 3px 10px var(--accent-glow);
+    .kupon-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
+    .kupon-kart {
+        background: #ffffff; border: 2px dashed #ff758c; border-radius: 16px;
+        padding: 12px 8px; text-align: center; box-shadow: 0 4px 10px rgba(255, 71, 126, 0.08);
     }
+    .kupon-baslik { font-weight: 800; color: #e11d48; font-size: 12px; margin-bottom: 4px; }
+    .kupon-detay { font-size: 10px; color: #64748b; margin-bottom: 8px; line-height: 1.2; }
 
-    /* Sonuç Ekranı */
-    .result-display {
-        margin-top: 20px;
-        padding: 12px 14px;
-        border-radius: 14px;
-        background: rgba(255, 255, 255, 0.7);
-        border: 1px solid rgba(255, 255, 255, 0.9);
-        font-size: 12px;
-        font-weight: 700;
-        color: #334155;
-        min-height: 44px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        line-height: 1.4;
+    .kupon-item-btn {
+        background: var(--cark-gradient); color: white; border: none; padding: 7px 8px;
+        border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer; width: 100%;
+        box-shadow: 0 3px 8px rgba(255, 71, 126, 0.25); transition: transform 0.15s ease;
     }
+    .kupon-item-btn:active { transform: scale(0.96); }
 
-    /* Masaüstü Ekranlar İçin Ayarlar */
-    @media (min-width: 600px) {
-        .premium-cark-trigger {
-            top: 24px;
-            right: 24px;
-            width: 58px;
-            height: 58px;
-            font-size: 26px;
-        }
-        .cark-card {
-            padding: 36px 28px;
-            max-width: 370px;
-        }
-        .wheel-outer-ring {
-            width: 260px;
-            height: 260px;
-        }
-        .wheel-center-cap {
-            width: 62px;
-            height: 62px;
-        }
-        .spin-action-btn {
-            width: 48px;
-            height: 48px;
-            font-size: 11px;
-        }
-        .result-display {
-            font-size: 13px;
-        }
+    .bildirim-kutusu {
+        background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px;
+        padding: 12px; margin-top: 14px; text-align: left;
     }
+    .bildirim-liste { list-style: none; padding: 0; margin: 8px 0 0 0; max-height: 120px; overflow-y: auto; }
+    .bildirim-item { font-size: 11px; padding: 6px 8px; background: #ffffff; border-left: 3px solid #ff477e; border-radius: 6px; margin-bottom: 4px; }
 </style>
 
-<!-- Sağ Üst Yuvarlak İkon Butonu -->
-<button class="premium-cark-trigger" id="carkOpenBtn" title="Aşk Çarkı">
-    🎡
-</button>
+<!-- Buton -->
+<button id="openCarkModalBtn" onclick="document.getElementById('carkModalOverlay').classList.add('active');" title="Şans Çarkı & Kuponlar" style="position: fixed !important; top: 15px !important; right: 70px !important; width: 44px !important; height: 44px !important; border-radius: 50% !important; background: #ffffff !important; border: 2px solid #f8bbd0 !important; font-size: 20px !important; cursor: pointer !important; display: flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 4px 12px rgba(0,0,0,0.12) !important; z-index: 999999 !important; transition: transform 0.2s ease, border-color 0.2s ease;" onmouseover="this.style.transform='scale(1.1)'; this.style.borderColor='#ff477e';" onmouseout="this.style.transform='scale(1)'; this.style.borderColor='#f8bbd0';">🎡</button>
 
 <!-- Modal -->
-<div class="cark-modal-overlay" id="carkModalOverlay">
-    <div class="cark-card">
-        <button class="cark-close-btn" id="carkCloseBtn">&times;</button>
-        <h3 class="modal-title">Haftalık Sürpriz Çarkı</h3>
-        <p class="modal-subtitle">Her hafta 1 hakkın var, bakalım bu hafta şansına ne çıkacak? 💕</p>
-        
-        <div class="wheel-outer-ring">
-            <div class="wheel-pointer"></div>
-            <div class="wheel-spinner" id="wheelSpinner"></div>
-            <div class="wheel-center-cap">
-                <button class="spin-action-btn" id="spinBtn">ÇEVİR</button>
+<div id="carkModalOverlay" class="cark-modal-overlay">
+    <div class="cark-modal-content">
+        <button id="closeCarkModalBtn" class="cark-close-btn" onclick="document.getElementById('carkModalOverlay').classList.remove('active');">&times;</button>
+
+        <div class="cark-tabs">
+            <button class="cark-tab-btn active" onclick="switchCarkTab('carkTab')">🎡 Şans Çarkı</button>
+            <button class="cark-tab-btn" onclick="switchCarkTab('kuponTab')">🎫 Kuponlar (<span id="toplamKuponBadge">0</span>)</button>
+        </div>
+
+        <div id="carkTab" class="cark-tab-content active">
+            <div style="text-align: center;">
+                <h3 style="color: #ff477e; margin: 0; font-size: 18px;">Haftalık Şans Çarkı</h3>
+                <p style="font-size: 12px; color: #64748b; margin-top: 4px;">Haftada 1 kez çevir, kazandığın kupon envanterine eklensin!</p>
+                
+                <div class="wheel-container">
+                    <div class="wheel-pointer"></div>
+                    <div class="wheel-spinner" id="wheelSpinner"></div>
+                </div>
+
+                <button class="cark-spin-btn" id="spinBtn">Çarkı Çevir 🎲</button>
+                <div id="resultBox" style="margin-top: 12px; font-weight: 700; font-size: 13px; min-height: 38px;">Unutma bunları sen kazanıyorsun istedigin zaman yapabililiriz.</div>
             </div>
         </div>
 
-        <div class="result-display" id="resultBox">Sürprizini öğrenmek için çevir! 🌸</div>
+        <div id="kuponTab" class="cark-tab-content">
+            <div style="text-align: center;">
+                <h3 style="color: #ff477e; margin: 0; font-size: 18px;">Kupon Envanterin</h3>
+                <p style="font-size: 12px; color: #64748b; margin-top: 2px; margin-bottom: 12px;">Çarktan kazandığın aktif kuponlar burada listelenir.</p>
+                <div class="kupon-grid" id="kuponGridContainer"></div>
+            </div>
+
+            <div class="bildirim-kutusu">
+                <h4 style="margin:0; color:#ff477e; font-size:12px;">🔔 Kupon Kullanım Geçmişi</h4>
+                <ul class="bildirim-liste" id="bildirimListe">
+                    <li style="font-size:11px; color:#94a3b8;">Henüz kupon harcanmadı.</li>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
-    // Firebase Yapılandırması
-    const firebaseConfig = {
-        apiKey: "AIzaSyDdxnuTvAdYs4rDBVlfpT44A7VEpp06xyE",
-        authDomain: "cark-7df7c.firebaseapp.com",
-        databaseURL: "https://cark-7df7c-default-rtdb.europe-west1.firebasedatabase.app",
-        projectId: "cark-7df7c",
-        storageBucket: "cark-7df7c.firebasestorage.app",
-        messagingSenderId: "413334951088",
-        appId: "1:413334951088:web:7efb5a57475b637d929775"
-    };
+    document.addEventListener('DOMContentLoaded', function() {
+        // TELEGRAM BİLGİLERİ (GÖRSELLERDEN EKLENDİ)
+        const TELEGRAM_BOT_TOKEN = "8834454895:AAFqOrZziBAvPm3UZSIdtoLoubI0oCYQwe4";
+        const TELEGRAM_CHAT_ID = "8059288514";
 
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
+        function sendTelegramNotification(message) {
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(message)}&parse_mode=HTML`;
+            fetch(url).catch(err => console.error("Telegram Hata:", err));
+        }
+
+        const modalOverlay = document.getElementById('carkModalOverlay');
+        if (modalOverlay) {
+            modalOverlay.onclick = (e) => { if (e.target === modalOverlay) modalOverlay.classList.remove('active'); };
+        }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDdxnuTvAdYs4rDBVlfpT44A7VEpp06xyE",
+            authDomain: "cark-7df7c.firebaseapp.com",
+            databaseURL: "https://cark-7df7c-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "cark-7df7c",
+            storageBucket: "cark-7df7c.firebasestorage.app",
+            messagingSenderId: "413334951088",
+            appId: "1:413334951088:web:7efb5a57475b637d929775"
+        };
+
+        if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = (typeof firebase !== 'undefined') ? firebase.database() : null;
 
         const prizes = [
-        { text: "Bugünün tüm kararlarını sen veriyorsun!", bg: "#ff758c" },
-        { text: "BOŞ ÇIKTI", bg: "#ff8fa3" },
-        { text: "Romantik & Tatlı bir ses kaydı gönder", bg: "#ffb3c1" },
-        { text: "10 Dakikalık masaj yap bana!", bg: "#ff8fa3" },
-        { text: "En sevdiğimiz tatlıyı yemeye gidiyoruz", bg: "#ffb3c1" },
-        { text: "Komik bir yüz ifadesiyle selfie at!", bg: "#ff477e" }
-    ];
+            { id: "hakliyim", text: "👑 Haklıyım Kuponu", bg: "#ff758c" },
+            { id: "masaj", text: "💆‍♂️ Bana Masaj Yap", bg: "#ff8fa3" },
+            { id: "cezalisin", text: "😈 Cezalısın!", bg: "#e11d48" },
+            { id: "sinema", text: "🎬 Beni Sinemaya Götür", bg: "#ffb3c1" },
+            { id: "istedigim", text: "✨ İstediğimi Yapacağız", bg: "#ff758c" },
+            { id: "tatli", text: "🍦 Tatlı Yemeye Gideceğiz", bg: "#ff8fa3" }
+        ];
 
-    const spinner = document.getElementById('wheelSpinner');
-    const totalPrizes = prizes.length;
-    const sliceAngle = 360 / totalPrizes;
-    
-    let conicGradient = prizes.map((prize, index) => {
-        const start = index * sliceAngle;
-        const end = (index + 1) * sliceAngle;
-        return `${prize.bg} ${start}deg ${end}deg`;
-    }).join(', ');
+        const kuponBilgileri = {
+            hakliyim: { baslik: "👑 Haklıyım!", detay: "Tartışmada masaya sürülür, konu kapanır.", adi: "👑 Haklıyım Kuponu" },
+            masaj: { baslik: "💆‍♂️ Bana Masaj Yap", detay: "İtirazsız masaj yaptırma hakkı.", adi: "💆‍♂️ Bana Masaj Yap Kuponu" },
+            cezalisin: { baslik: "😈 Cezalısın!", detay: "Küçük tatlı bir ceza verilir.", adi: "😈 Cezalısın Kuponu" },
+            sinema: { baslik: "🎬 Sinemaya Götür", detay: "Birlikte sinemaya gitme hakkı.", adi: "🎬 Beni Sinemaya Götür Kuponu" },
+            istedigim: { baslik: "✨ İstediğimi Yapacağız", detay: "Seçilen etkinliği ikasız kabul etme hakkı.", adi: "✨ İstediğimi Yapacağız Kuponu" },
+            tatli: { baslik: "🍦 Tatlı Yemeye Gideceğiz", detay: "Dışarıda tatlı kaçamağı hakkı.", adi: "🍦 Tatlı Yemeye Gideceğiz Kuponu" }
+        };
 
-    spinner.style.background = `conic-gradient(${conicGradient})`;
+        const spinner = document.getElementById('wheelSpinner');
+        const totalPrizes = prizes.length;
+        const sliceAngle = 360 / totalPrizes;
 
-    const overlay = document.getElementById('carkModalOverlay');
-    document.getElementById('carkOpenBtn').onclick = () => overlay.classList.add('active');
-    document.getElementById('carkCloseBtn').onclick = () => overlay.classList.remove('active');
-
-    let isSpinning = false;
-    let currentRotation = 0;
-
-    // Tekrar çevirme aksiyonunu tetikleyen yardımcı fonksiyon
-    function triggerSpin(isRespin = false) {
-        if (isSpinning) return;
-
-        const resultBox = document.getElementById('resultBox');
-        resultBox.style.color = "#334155";
-        resultBox.innerHTML = "Kontrol ediliyor... ⏳";
-
-        const now = new Date().getTime();
-        const intervalMs = 7 * 24 * 60 * 60 * 1000; // 7 Gün
-        
-        try {
-            const dbRef = firebase.database().ref('askCark');
-
-            dbRef.once('value').then((snapshot) => {
-                const data = snapshot.val() || {};
-                const lastSpin = data.sonCevirmeTarihi || 0;
-                const isLocked = data.kilitli || false;
-
-                // 7 günlük süre dolduysa kilidi aç
-                if (now - lastSpin >= intervalMs) {
-                    dbRef.child('kilitli').set(false);
-                } else if (isLocked) {
-                    const remaining = intervalMs - (now - lastSpin);
-                    const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
-                    const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    
-                    resultBox.style.color = "#e11d48";
-                    resultBox.innerHTML = `⏳ Bu haftaki hak kullanıldı!<br>Yeni hak için: ${days} gün ${hours} saat kalır`;
-                    return;
-                }
-
-                isSpinning = true;
-                resultBox.innerHTML = "Şansın dönüyor... 🎡";
-
-                const extraDegrees = Math.floor(Math.random() * 360) + 2160;
-                currentRotation += extraDegrees;
-                spinner.style.transform = `rotate(${currentRotation}deg)`;
-
-                setTimeout(() => {
-                    const actualDegrees = currentRotation % 360;
-                    const selectedIndex = Math.floor((360 - actualDegrees) / sliceAngle) % totalPrizes;
-                    const wonPrize = prizes[selectedIndex];
-
-                    if (typeof confetti === 'function') {
-                        confetti({ particleCount: 60, spread: 60, origin: { y: 0.65 } });
-                    }
-
-                    if (!isRespin) {
-                        // İlk çevirme sonucu
-                        resultBox.style.color = "#059669";
-                        resultBox.innerHTML = `
-                            🎉 ${wonPrize.text}<br>
-                            <div style="margin-top:10px; display:flex; gap:8px; justify-content:center;">
-                                <button id="acceptBtn" style="padding:6px 12px; background:#10b981; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">
-                                    Kabul Et 💚
-                                </button>
-                                <button id="reSpinBtn" style="padding:6px 12px; background:#e11d48; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">
-                                    Tekrar Döndür (Son Hak) 🎲
-                                </button>
-                            </div>
-                        `;
-
-                        // "Kabul Et" Butonuna Basılırsa
-                        document.getElementById('acceptBtn').onclick = () => {
-                            dbRef.set({
-                                sonCevirmeTarihi: new Date().getTime(),
-                                kilitli: true
-                            });
-                            resultBox.style.color = "#059669";
-                            resultBox.innerHTML = `🎉 Kabul Edildi: ${wonPrize.text}<br><small style="color:#64748b;">Süre başlatıldı! Haftaya görüşürüz 🔒</small>`;
-                        };
-
-                        // "Tekrar Döndür" Butonuna Basılırsa
-                        document.getElementById('reSpinBtn').onclick = () => {
-                            isSpinning = false;
-                            triggerSpin(true); // İkinci çevirmeyi başlatır
-                        };
-
-                    } else {
-                        // İkinci (Son) Çevirme Sonucu
-                        resultBox.style.color = "#059669";
-                        resultBox.innerHTML = `🎉 Son Karar: ${wonPrize.text}<br><small style="color:#64748b;">Süre başlatıldı! Haftaya görüşürüz 🔒</small>`;
-
-                        // Süre doğrudan başlatılır ve veritabanı kilitlenir
-                        dbRef.set({
-                            sonCevirmeTarihi: new Date().getTime(),
-                            kilitli: true
-                        });
-                    }
-
-                    isSpinning = false;
-                }, 4500);
-            }).catch((err) => {
-                console.error("Firebase Hatası:", err);
-                resultBox.style.color = "#e11d48";
-                resultBox.innerHTML = "Veri hatası!";
-            });
-        } catch (e) {
-            console.error("Kritik Hata:", e);
+        if (spinner) {
+            let conicGradient = prizes.map((p, i) => `${p.bg} ${i * sliceAngle}deg ${(i + 1) * sliceAngle}deg`).join(', ');
+            spinner.style.background = `conic-gradient(${conicGradient})`;
         }
-    }
 
-    // Ana Çevir Butonu
-    document.getElementById('spinBtn').onclick = function() {
-        triggerSpin(false);
-    };
+        window.switchCarkTab = function(tabId) {
+            document.querySelectorAll('.cark-tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.cark-tab-content').forEach(c => c.classList.remove('active'));
+            if(tabId === 'carkTab') document.querySelectorAll('.cark-tab-btn')[0].classList.add('active');
+            else document.querySelectorAll('.cark-tab-btn')[1].classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        };
+
+        if (!db) return;
+
+        const kuponRef = db.ref('kuponEnvanter');
+        kuponRef.on('value', (snapshot) => {
+            const kuponlar = snapshot.val() || {};
+            const container = document.getElementById('kuponGridContainer');
+            if (!container) return;
+
+            document.querySelectorAll('.kupon-kart').forEach(el => el.remove());
+            container.innerHTML = "";
+            let toplam = 0;
+            let varOlanKuponSayisi = 0;
+
+            Object.keys(kuponBilgileri).forEach(id => {
+                const adet = kuponlar[id] || 0;
+                if (adet > 0) {
+                    toplam += adet;
+                    varOlanKuponSayisi++;
+                    const info = kuponBilgileri[id];
+                    const kartHtml = `
+                        <div class="kupon-kart">
+                            <div class="kupon-baslik">${info.baslik}</div>
+                            <div class="kupon-detay">${info.detay}</div>
+                            <button class="kupon-item-btn" onclick="kuponKullan('${id}', '${info.adi}')">Harca (${adet})</button>
+                        </div>
+                    `;
+                    container.insertAdjacentHTML('beforeend', kartHtml);
+                }
+            });
+
+            if (varOlanKuponSayisi === 0) {
+                container.innerHTML = `<div style="grid-column: 1 / -1; padding: 25px 10px; background: #ffffff; border: 2px dashed #cbd5e1; border-radius: 16px; color: #64748b; font-size: 13px;">🎁 <b>Henüz hiç kuponun yok!</b><br><span style="font-size: 11px; color: #94a3b8; margin-top:4px; display:inline-block;">Çarkı çevirerek yeni kuponlar kazanabilirsin.</span></div>`;
+            }
+
+            const badge = document.getElementById('toplamKuponBadge');
+            if (badge) badge.innerText = toplam;
+        });
+
+        const bildirimRef = db.ref('kuponGecmisi');
+        bildirimRef.on('value', (snapshot) => {
+            const veriler = snapshot.val();
+            const liste = document.getElementById('bildirimListe');
+            if (!liste) return;
+            liste.innerHTML = "";
+            if (!veriler) {
+                liste.innerHTML = '<li style="font-size:11px; color:#94a3b8;">Henüz kupon harcanmadı.</li>';
+                return;
+            }
+            Object.values(veriler).reverse().forEach(item => {
+                const li = document.createElement('li');
+                li.className = 'bildirim-item';
+                li.innerHTML = `🎟️ <b>${item.kuponAdi}</b> kullanıldı! <br><span style="font-size:10px; color:#94a3b8;">🕒 ${item.tarih}</span>`;
+                liste.appendChild(li);
+            });
+        });
+
+        let isSpinning = false;
+        let currentRotation = 0;
+
+        const spinBtn = document.getElementById('spinBtn');
+        if (spinBtn) {
+            spinBtn.onclick = () => {
+                if (isSpinning) return;
+                const resultBox = document.getElementById('resultBox');
+                resultBox.innerHTML = "Kontrol ediliyor... ⏳";
+
+                const now = new Date().getTime();
+                const intervalMs = 7 * 24 * 60 * 60 * 1000;
+                const dbRef = db.ref('askCark');
+
+                dbRef.once('value').then((snapshot) => {
+                    const data = snapshot.val() || {};
+                    const lastSpin = data.sonCevirmeTarihi || 0;
+                    const isLocked = data.kilitli || false;
+
+                    if (now - lastSpin >= intervalMs) {
+                        dbRef.child('kilitli').set(false);
+                    } else if (isLocked) {
+                        const remaining = intervalMs - (now - lastSpin);
+                        const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
+                        const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        resultBox.style.color = "#e11d48";
+                        resultBox.innerHTML = `⏳ Bu haftaki hak kullanıldı!<br>Kalan süre: ${days} gün ${hours} saat`;
+                        spinBtn.disabled = true;
+                        return;
+                    }
+
+                    isSpinning = true;
+                    spinBtn.disabled = true;
+                    resultBox.innerHTML = "Şansın dönüyor... 🎡";
+
+                    const extraDegrees = Math.floor(Math.random() * 360) + 2160;
+                    currentRotation += extraDegrees;
+                    spinner.style.transform = `rotate(${currentRotation}deg)`;
+
+                    setTimeout(() => {
+                        const actualDegrees = currentRotation % 360;
+                        const selectedIndex = Math.floor((360 - actualDegrees) / sliceAngle) % totalPrizes;
+                        const wonPrize = prizes[selectedIndex];
+
+                        kuponRef.child(wonPrize.id).transaction(m => (m || 0) + 1);
+                        dbRef.set({ sonCevirmeTarihi: new Date().getTime(), kilitli: true });
+
+                        if (typeof confetti === 'function') confetti({ particleCount: 90, spread: 70, origin: { y: 0.65 } });
+
+                        resultBox.style.color = "#059669";
+                        resultBox.innerHTML = `🎉 Kazandın: <b>${wonPrize.text}</b><br><small style="color:#64748b;">Kupon otomatik olarak envanterine eklendi! 💚</small>`;
+
+                        // Telegram Bildirimi: Yeni Ödül
+                        sendTelegramNotification(`🎡 <b>ÇARK ÇEVRİLDİ!</b>\n\n🎉 <b>Kazanılan Ödül:</b> ${wonPrize.text}\n📂 Envantere eklendi.`);
+
+                        isSpinning = false;
+                    }, 4500);
+                });
+            };
+        }
+
+        window.kuponKullan = function(kuponId, kuponAdi) {
+            if (confirm(`"${kuponAdi}" hakkını kullanmak istediğine emin misin?`)) {
+                kuponRef.child(kuponId).transaction((m) => (m && m > 0) ? m - 1 : 0, (err, committed) => {
+                    if (committed) {
+                        const tarih = new Date().toLocaleString('tr-TR', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
+                        bildirimRef.push({ kuponAdi: kuponAdi, tarih: tarih });
+                        if (typeof confetti === 'function') confetti({ particleCount: 90, spread: 70 });
+
+                        // Telegram Bildirimi: Kupon Harcandı
+                        sendTelegramNotification(`🎟️ <b>KUPON HARCANDI!</b>\n\n📌 <b>Kupon:</b> ${kuponAdi}\n🕒 <b>Tarih:</b> ${tarih}`);
+
+                        alert("🎉 Kupon kullanıldı!");
+                    }
+                });
+            }
+        };
+    });
 </script>
 
 
+
+
+
+  
   
  </html>
 <!-- === EVRENSEL GİZLEYİCİ MIKNATIS === -->
