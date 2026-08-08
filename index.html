@@ -604,7 +604,12 @@ Bu sayfayı senin için hazırladım. Çünkü bazı şeyler sözcüklerden fazl
 <div id="mektup-odasi" class="w-full max-w-2xl mx-auto my-12 px-2 relative z-50 text-center font-sans">
 
     
-  <h3 class="text-rose-400 text-lg md:text-2xl font-black mb-1 tracking-wide drop-shadow-[0_2px_10px_rgba(251,113,133,0.4)] whitespace-nowrap overflow-hidden text-ellipsis">7 Günlük Aşk Mektupları </h3>
+  <!-- NEON BAŞLIK (Ortalanmış ve Parıltılı) -->
+    <h3 class="neon-baslik">
+        💌 7 Günlük Aşk Mektupları 💌
+    </h3>
+
+    <div style="display: flex; flex-direction: column; gap: 14px;">
   <p class="text-rose-100/90 text-xs md:text-sm mb-6 drop-shadow-sm">
     Her gün sadece bir mektubun kilidi açılır, merakla bekle...
   </p>
@@ -782,6 +787,26 @@ Bu sayfayı senin için hazırladım. Çünkü bazı şeyler sözcüklerden fazl
       
 <!-- === KRAL ÇITI PITI MİNİMALİST UZUN AYRAÇ BAŞLANGICI === -->
 <style>
+
+  .neon-baslik {
+        text-align: center !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        /* Ekranı ne kadar küçük olursa olsun otomatik küçülür ve sığar */
+        font-size: clamp(10px, 3.5vw, 18px) !important; 
+        font-weight: 900 !important;
+        margin-bottom: 22px !important;
+        color: #fff !important;
+        font-family: sans-serif !important;
+        white-space: nowrap !important; /* Asla alt satıra atlamaz, yan yana kalır */
+        letter-spacing: -0.5px !important; /* Sığmayı garantilemek için harfleri hafifçe birbirine yaklaştırır */
+        text-shadow: 
+            0 0 5px #ff758c, 
+            0 0 10px #ff758c, 
+            0 0 20px #ff758c, 
+            0 0 40px #f43f5e !important;
+        animation: neonTitresim 2s ease-in-out infinite alternate !important;
+    }
     .kral-zarif-ayrac {
         display: flex;
         align-items: center;
@@ -1011,7 +1036,10 @@ max-width:440px !important; margin:35px auto !important; box-sizing:border-box !
     
     <!-- NEON BAŞLIK (Tek satır ve asla taşmaz) -->
     <h3 class="neon-baslik">
-    ✨ Neden mi Seviyorum? ✨
+  ✨ Neden mi Seviyorum? 
+    </h3>
+  <h3 class="neon-baslik">
+     
     </h3>
 
     <div style="display: flex; flex-direction: column; gap: 14px;">
