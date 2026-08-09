@@ -5556,14 +5556,29 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         box-shadow: none;
     }
 
-    /* Oyun Ekranı Boyutu Genişletildi */
+    /* Oyun Ekranı - Mobil Uyumluluk Güncellemesi */
     #wow2OyunEkrani {
         max-width: 680px;
+        width: 100%;
         height: 94vh;
         max-height: 880px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        
+        /* Telefonda ekranı patlatmaması için küçük bir dokunuş */
+        margin: 0 auto;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    /* Eğer ekran 600px'den küçükse (telefonlarda), ekranı biraz sıkıştırıp nefes aldıralım */
+    @media (max-height: 700px) {
+        #wow2OyunEkrani {
+            height: 90vh; /* Yüksekliği biraz azalttık */
+            transform: scale(0.95); /* Çok hafif bir küçültme (fark edilmez ama rahatlatır) */
+            transform-origin: top center;
+        }
     }
 
     .wow2-basari-banner, .wow2-bonus-banner {
