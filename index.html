@@ -5364,79 +5364,11 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
 
 
-<!-- ======================================================== -->
-<!-- 1. BUTON VE KAPSAYICI -->
-<!-- ======================================================== -->
-<button class="wow2-sag-ust-buton" onclick="wow2MenuAc()">🎮</button>
 
-<div id="wow2AnaModal" class="wow2-modal-arkaplan" style="display:none;">
-    
-    <!-- MENÜ EKRANI -->
-    <div id="wow2MenuEkrani" class="wow2-pencere-kutu">
-        <div class="wow2-logo-ikon">🌟</div>
-        <h1>Kelime Macerası</h1>
-        
-        <div class="wow2-kurallar-alani">
-            <strong>📖 500 Bölümlük Devasa ve Uzun Soluklu Seviye Sistemi:</strong>
-            <ul>
-                <li>🟢 **Kolay Bölümler (1-200):** Bölüm başına **2 ile 4** arası kelime</li>
-                <li>🟡 **Orta Bölümler (201-350):** Bölüm başına **3 ile 5** arası kelime</li>
-                <li>🔴 **Zor Bölümler (351-500):** Bölüm başına **5 ile 6** arası kelime</li>
-                <li>🪙 Her bulduğun kelime başına **7 Altın** kazanırsın</li>
-                <li>🎁 **Bonus Kelime Sistemi:** Tahtada olmayan geçerli kelimeleri bularak ekstra **10 Altın** kazanırsın!</li>
-                <li>💡 Takıldığın yerlerde **25 Altın** karşılığında harf ipucu alabilirsin</li>
-                <li>💾 **Gelişmiş Kayıt:** İlerlemen, bonusların ve altınların anlık olarak saklanır.</li>
-            </ul>
-        </div>
 
-        <div class="wow2-btn-grup">
-            <button class="wow2-btn wow2-btn-ana" onclick="wow2OyunuBaslat(wow2AktifBolum)">Oyuna Devam Et</button>
-            <button class="wow2-btn wow2-btn-tehlikeli" onclick="wow2OyunuSifirla()">🗑️ Oyunu Sıfırla</button>
-            <button class="wow2-btn wow2-btn-ikincil" onclick="wow2MenuKapat()">❌ Kapat / Çık</button>
-        </div>
-    </div>
-
-    <!-- OYUN EKRANI -->
-    <div id="wow2OyunEkrani" class="wow2-pencere-kutu" style="display:none;">
-        <div id="wow2BasariBanner" class="wow2-basari-banner" style="display:none;">🎉 Tebrikler! Bölüm Tamamlandı!</div>
-        <div id="wow2BonusBanner" class="wow2-bonus-banner" style="display:none;">🎁 Bonus Kelime Bulundu! (+10 🪙)</div>
-
-        <div class="wow2-ust-bilgi-alani">
-            <div class="wow2-seviye-badge" id="wow2BolumBaslik">Bölüm 1</div>
-            <div class="wow2-altin-gosterge">🪙 <span id="wow2AltinMiktari">50</span></div>
-            <div class="wow2-skor-badge" id="wow2SkorBilgi">Bulunan: 0/2</div>
-        </div>
-
-        <!-- Genişletilmiş Bölüm Arka Planlı Bulmaca Alanı -->
-        <div class="wow2-bulmaca-arkaplan-kapsul" id="wow2BulmacaArkaplanKapsul">
-            <div class="wow2-bulmaca-izgara" id="wow2BulmacaAlani"></div>
-        </div>
-        
-        <div class="wow2-alt-kontrol-seridi">
-            <div id="wow2AnaKelimeEtiket" class="wow2-ana-kelime-etiket">Tema: -</div>
-            <div style="display: flex; gap: 8px;">
-                <button class="wow2-ipucu-btn" onclick="wow2HarfIpucuVer()" title="25 Altın karşılığı bu bölüme ait kapalı bir harf açar">💡 Harf İpucu (25 🪙)</button>
-            </div>
-        </div>
-
-        <div class="wow2-secilen-kelime-kutusu" id="wow2SecilenKelimeKutusu"></div>
-
-        <div class="wow2-harf-cemberi-alani" id="wow2HarfCemberiAlani">
-            <button class="wow2-cember-ici-karistir-btn" onclick="wow2HarfleriKaristir()" title="Harflerin yerini karıştır">🔀</button>
-            <svg class="wow2-cizgi-svg" id="wow2CizgiSvg"></svg>
-        </div>
-
-        <div class="wow2-oyun-butonlari">
-            <button class="wow2-btn wow2-btn-ikincil wow2-menu-don-btn" onclick="wow2MenuyeDon()">🏠 Menü</button>
-        </div>
-    </div>
-</div>
-
-<!-- ======================================================== -->
-<!-- 2. STİLLER -->
-<!-- ======================================================== -->
 <style>
-    .wow2-sag-ust-buton {
+    /* SİTENİN SAĞ ÜSTÜNDEKİ SABİT OYUN BUTONU */
+    .wow2-sabit-ac-btn {
         position: fixed;
         color: #ff477e !important;
         top: 14px;          /* Zarın üst mesafesiyle aynı seviye */
@@ -5459,782 +5391,1177 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         bbox-shadow: 0 4px 12px rgba(255, 105, 180, 0.15) !important; /* Parlamayı yumuşattık */
         transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    .wow2-sag-ust-buton:hover {
-        transform: translateY(-2px) scale(1.03);
+
+    .wow2-sabit-ac-btn:hover {
+        ransform: translateY(-2px) scale(1.03);
         box-shadow: 0 14px 24px -5px rgba(14, 165, 233, 0.7);
     }
 
-    .wow2-modal-arkaplan {
+    /* OYUN KAPSAYICISI VE TÜM İÇ ELEMANLARIN İZOLE İSTİLLENMESİ */
+    #wow2OyunModalOverlay {
+        --primary: #0ea5e9;
+        --success: #10b981;
+        --danger: #ef4444;
+        --accent: #f59e0b;
+        --bg-dark: #0f172a;
+
         position: fixed;
-        top: 0; left: 0; width: 100vw; height: 100vh;
-        background: rgba(9, 13, 25, 0.85);
-        backdrop-filter: blur(8px);
+        inset: 0;
+        z-index: 100000;
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(10px);
         display: flex;
         justify-content: center;
         align-items: center;
-        z-index: 999999;
-        padding: 20px;
-        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        padding: 10px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        box-sizing: border-box;
     }
-    .wow2-modal-arkaplan * {
+
+    #wow2OyunModalOverlay * {
         box-sizing: border-box;
         user-select: none;
         -webkit-user-select: none;
+        touch-action: manipulation;
     }
 
-    .wow2-pencere-kutu {
-        width: 100%;
-        max-width: 520px;
-        background: rgba(30, 41, 59, 0.98);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        padding: 25px; /* İç boşluğu 25px'ten 15px'e düşürdük, dikeyde nefes aldırır */
-        border-radius: 24px;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
-        text-align: center;
-        color: #f8fafc;
+    #wow2OyunModalOverlay.aktif {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* OYUN PENCERESİ KUTUSU */
+    #wow2OyunModalOverlay .wow2-pencere-kutu {
         position: relative;
-        animation: wow2FadeIn 0.25s ease-out;
+        width: 100%;
+        max-width: 460px;
+        height: 100dvh;
+        max-height: 820px;
+        border-radius: 24px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+        color: #f8fafc;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
     }
 
-    @keyframes wow2FadeIn {
-        from { opacity: 0; transform: scale(0.95); }
-        to { opacity: 1; transform: scale(1); }
-    }
-
-    .wow2-logo-ikon { font-size: 38px; margin-bottom: 8px; }
-    .wow2-pencere-kutu h1 {
-        margin-top: 0;
-        color: #38bdf8;
-        font-size: 26px;
-        margin-bottom: 12px;
-    }
-
-    .wow2-kurallar-alani {
+    /* Üst Bar */
+    #wow2OyunModalOverlay .oyun-ust-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 14px;
+        z-index: 10;
         background: rgba(15, 23, 42, 0.7);
-        padding: 16px;
-        border-radius: 14px;
-        margin: 15px 0;
-        text-align: left;
-        font-size: 13px;
-        line-height: 1.55;
-        color: #cbd5e1;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        max-height: 220px;
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    #wow2OyunModalOverlay .ust-bilgi-rozet {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    #wow2OyunModalOverlay .sag-ust-butonlar {
+        display: flex;
+        gap: 8px;
+    }
+
+    #wow2OyunModalOverlay .ikon-btn {
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    #wow2OyunModalOverlay .ikon-btn:hover {
+        background: rgba(255, 255, 255, 0.25);
+    }
+
+    #wow2OyunModalOverlay .ikon-btn:active {
+        transform: scale(0.95);
+    }
+
+    /* BÜYÜK BÖLÜM GEÇİŞ EKRANI DUYURUSU */
+    #wow2GecisEkrani {
+        position: absolute;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.96);
+        backdrop-filter: blur(16px);
+        z-index: 200;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 30px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+
+    #wow2GecisEkrani.aktif {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    #wow2GecisEkrani .gecis-simge {
+        font-size: 3.5rem;
+        margin-bottom: 12px;
+        animation: wow2Bounce 1s infinite alternate;
+    }
+
+    #wow2GecisEkrani .gecis-baslik {
+        font-size: 1.8rem;
+        font-weight: 900;
+        background: linear-gradient(to right, #38bdf8, #34d399);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 10px;
+        letter-spacing: 1px;
+    }
+
+    #wow2GecisEkrani .gecis-alt-yazi {
+        color: #94a3b8;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    @keyframes wow2Bounce {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(-12px); }
+    }
+
+    /* Modallar (İç Menüler) */
+    #wow2OyunModalOverlay .wow2-modal {
+        position: absolute;
+        inset: 0;
+        background: rgba(11, 17, 32, 0.96);
+        backdrop-filter: blur(12px);
+        z-index: 50;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 24px;
+        text-align: center;
+        gap: 16px;
         overflow-y: auto;
     }
-    .wow2-kurallar-alani ul { margin: 6px 0 0 0; padding-left: 16px; }
 
-    .wow2-btn-grup {
+    #wow2OyunModalOverlay .wow2-modal.gizli { display: none !important; }
+
+    #wow2OyunModalOverlay .menu-baslik h2 {
+        font-size: 2rem;
+        margin: 0;
+        background: linear-gradient(to right, #38bdf8, #818cf8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    #wow2OyunModalOverlay .menu-baslik p {
+        color: #94a3b8;
+        font-size: 0.88rem;
+        margin-top: 6px;
+    }
+
+    #wow2OyunModalOverlay .menu-butonlar {
         display: flex;
         flex-direction: column;
         gap: 10px;
-        margin-top: 20px;
-    }
-
-    .wow2-btn {
-        background: linear-gradient(135deg, #0ea5e9, #0284c7);
-        color: #fff;
-        border: none;
-        padding: 12px 20px;
-        font-size: 14.5px;
-        font-weight: 600;
-        border-radius: 12px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
-    }
-    .wow2-btn:hover { transform: translateY(-2px); }
-    .wow2-btn-ana {
-        background: linear-gradient(135deg, #10b981, #059669);
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-    }
-    .wow2-btn-ikincil { background: rgba(71, 85, 105, 0.8); box-shadow: none; }
-    .wow2-btn-tehlikeli {
-        background: rgba(239, 68, 68, 0.15);
-        border: 1px solid rgba(239, 68, 68, 0.3);
-        color: #fca5a5;
-        box-shadow: none;
-    }
-
-    /* Oyun Ekranı - Mobil Uyumluluk Güncellemesi */
-    #wow2OyunEkrani {
-        max-width: 680px;
         width: 100%;
-        height: 94vh;
-        max-height: 880px;
+        max-width: 280px;
+    }
+
+    #wow2OyunModalOverlay .kurallar-icerik {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 14px;
+        padding: 14px;
+        text-align: left;
+        font-size: 0.85rem;
+        color: #cbd5e1;
+        line-height: 1.5;
+        max-height: 280px;
+        overflow-y: auto;
+    }
+
+    #wow2OyunModalOverlay .kurallar-icerik ul {
+        margin: 0;
+        padding-left: 18px;
+    }
+
+    #wow2OyunModalOverlay .kurallar-icerik li {
+        margin-bottom: 8px;
+    }
+
+    /* MİNİ ÖĞRETİCİ CSS */
+    .ogretici-ipucu-kutusu {
+        background: rgba(14, 165, 233, 0.15);
+        border: 1px solid rgba(14, 165, 233, 0.4);
+        padding: 10px 14px;
+        border-radius: 16px;
+        color: #7dd3fc;
+        font-size: 0.85rem;
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .ogretici-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+        width: 260px;
+        height: 260px;
+        margin: 10px auto;
+        touch-action: none;
+    }
+
+    .ogretici-grid .grid-hucre {
+        font-size: 1.2rem !important;
+    }
+
+    /* Ana Oyun Ekranı */
+    #wow2OyunModalOverlay .wow2-ekran {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        padding: 8px;
+        gap: 8px;
+        justify-content: space-between;
+    }
+
+    #wow2OyunModalOverlay .wow2-bulmaca-arkaplan-kapsul {
+        position: relative;
+        flex: 1;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background-size: cover;
+        background-position: center;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        
-        /* Telefonda ekranı patlatmaması için küçük bir dokunuş */
-        margin: 0 auto;
-        padding: 10px;
-        box-sizing: border-box;
-    }
-
-    /* Eğer ekran 600px'den küçükse (telefonlarda), ekranı biraz sıkıştırıp nefes aldıralım */
-    @media (max-height: 700px) {
-        #wow2OyunEkrani {
-            height: 90vh; /* Yüksekliği biraz azalttık */
-            transform: scale(0.95); /* Çok hafif bir küçültme (fark edilmez ama rahatlatır) */
-            transform-origin: top center;
-        }
-    }
-
-    .wow2-basari-banner, .wow2-bonus-banner {
-        position: absolute;
-        top: 15px;
-        left: 50%;
-        transform: translateX(-50%);
-        color: #fff;
-        padding: 8px 20px;
-        border-radius: 30px;
-        font-weight: 700;
-        font-size: 14px;
-        z-index: 20;
-        animation: wow2BounceIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .wow2-basari-banner { background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 8px 20px rgba(16, 185, 129, 0.5); }
-    .wow2-bonus-banner { background: linear-gradient(135deg, #8b5cf6, #6d28d9); box-shadow: 0 8px 20px rgba(139, 92, 246, 0.5); }
-
-    @keyframes wow2BounceIn {
-        from { opacity: 0; transform: translateX(-50%) scale(0.7); }
-        to { opacity: 1; transform: translateX(-50%) scale(1); }
-    }
-
-    .wow2-ust-bilgi-alani { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-    .wow2-seviye-badge, .wow2-skor-badge {
-        background: rgba(15, 23, 42, 0.7);
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 13.5px;
-        font-weight: 700;
-        color: #38bdf8;
-        border: 1px solid rgba(56, 189, 248, 0.2);
-    }
-    .wow2-altin-gosterge {
-        background: rgba(15, 23, 42, 0.8);
-        padding: 5px 14px;
-        border-radius: 20px;
-        border: 1px solid rgba(245, 158, 11, 0.4);
-        color: #fcd34d;
-        font-size: 14px;
-        font-weight: 700;
-    }
-
-    /* Kutu Alanı Dikeyde Genişletildi */
-    .wow2-bulmaca-arkaplan-kapsul {
-        position: relative;
-        width: 100%;
-        min-height: 230px !important; /* Ne çok kısa ne çok uzun, tam kararında */
-        max-height: 260px !important;
-        flex-grow: 0 !important;
-        border-radius: 14px;
-        overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        background-size: cover;
-        background-position: center;
-        margin-bottom: 8px;
-        display: flex;
-        justify-content: center;
         align-items: center;
+        padding: 10px 8px;
+        touch-action: none;
     }
-    }
-    .wow2-bulmaca-arkaplan-kapsul::before {
+
+    #wow2OyunModalOverlay .wow2-bulmaca-arkaplan-kapsul::before {
         content: '';
         position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(11, 17, 32, 0.82);
+        inset: 0;
+        background: rgba(11, 17, 32, 0.8);
         z-index: 1;
     }
 
-    .wow2-bulmaca-izgara {
+    #wow2OyunModalOverlay .kategori-kart {
         position: relative;
         z-index: 2;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        backdrop-filter: blur(8px);
+        padding: 6px 16px;
+        border-radius: 20px;
         display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        padding: 15px;
-        width: 100%;
-        height: 100%;
-        overflow-y: auto;
-        justify-content: center;
-        align-content: center;
         align-items: center;
+        gap: 8px;
     }
 
-    .wow2-kelime-satir, .wow2-kelime-sutun {
-        display: flex;
+    #wow2OyunModalOverlay .kategori-etiket { font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; }
+    #wow2OyunModalOverlay .kategori-baslik { font-size: 0.85rem; font-weight: 800; color: #38bdf8; }
+
+    /* Durum Bildirimi */
+    #wow2OyunModalOverlay .durum-bildirimi {
+        position: absolute;
+        top: 50px;
+        z-index: 20;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 0.85rem;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        pointer-events: none;
+    }
+
+    #wow2OyunModalOverlay .durum-bildirimi.aktif { opacity: 1; transform: translateY(0); }
+    #wow2OyunModalOverlay .durum-bildirimi.dogru { background: var(--success); color: white; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4); }
+    #wow2OyunModalOverlay .durum-bildirimi.yanlis { background: var(--danger); color: white; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4); }
+
+    /* Grid Izgarası */
+    #wow2OyunModalOverlay .kelime-grid {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        grid-template-rows: repeat(9, 1fr);
         gap: 4px;
-        align-items: center;
-        justify-content: center;
-        background: rgba(15, 23, 42, 0.5);
-        padding: 6px;
-        border-radius: 8px;
-        border: 1px dashed rgba(255, 255, 255, 0.1);
+        padding: 4px;
+        width: 100%;
+        max-width: 420px;
+        flex: 1;
+        max-height: 520px;
     }
-    .wow2-kelime-satir { flex-direction: row; }
-    .wow2-kelime-sutun { flex-direction: column; }
 
-    .wow2-harf-kutusu {
-        width: 30px;
-        height: 30px;
-        background: rgba(51, 65, 85, 0.6);
+    #wow2OyunModalOverlay .grid-hucre {
+        background: rgba(30, 41, 59, 0.85);
         border: 1px solid rgba(255, 255, 255, 0.15);
-        border-radius: 6px;
+        border-radius: 8px;
         display: flex;
         justify-content: center;
         align-items: center;
+        font-size: clamp(0.9rem, 3.8vw, 1.15rem);
         font-weight: 700;
-        font-size: 13.5px;
-        color: #fff;
-        text-transform: uppercase;
-    }
-    .wow2-harf-kutusu.dolu {
-        background: linear-gradient(135deg, #0ea5e9, #0284c7);
-        border-color: #38bdf8;
-        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.4);
-    }
-
-    .wow2-alt-kontrol-seridi { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-    .wow2-ana-kelime-etiket {
-        font-size: 12px;
-        color: #94a3b8;
-        background: rgba(15, 23, 42, 0.7);
-        padding: 5px 10px;
-        border-radius: 8px;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        font-weight: 600;
-    }
-    .wow2-ipucu-btn {
-        background: linear-gradient(135deg, #f59e0b, #d97706);
-        color: #1e293b;
-        border: none;
-        padding: 5px 12px;
-        font-size: 12px;
-        font-weight: 700;
-        border-radius: 8px;
+        color: #f8fafc;
         cursor: pointer;
+        transition: transform 0.1s ease, background-color 0.2s ease;
     }
 
-    .wow2-secilen-kelime-kutusu {
-        height: 38px;
-        background: rgba(15, 23, 42, 0.8);
-        border: 1px solid rgba(14, 165, 233, 0.4);
-        border-radius: 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 16px;
-        font-weight: 700;
-        color: #38bdf8;
-        letter-spacing: 3px;
-        margin-bottom: 8px;
-        text-transform: uppercase;
+    #wow2OyunModalOverlay .grid-hucre.secili {
+        background: var(--primary);
+        border-color: #38bdf8;
+        transform: scale(0.92);
+        box-shadow: 0 0 10px rgba(14, 165, 233, 0.6);
     }
-    .wow2-secilen-kelime-kutusu.yanlis {
-        background: rgba(239, 68, 68, 0.25) !important;
-        border-color: #ef4444 !important;
-        color: #fca5a5 !important;
-        animation: wow2Shake 0.3s ease-in-out;
+
+    #wow2OyunModalOverlay .grid-hucre.bulundu {
+        background: var(--success) !important;
+        border-color: #34d399 !important;
+        color: white;
     }
-    .wow2-secilen-kelime-kutusu.bonus {
-        background: rgba(139, 92, 246, 0.25) !important;
-        border-color: #8b5cf6 !important;
-        color: #ddd6fe !important;
+
+    #wow2OyunModalOverlay .sallan {
+        animation: wow2Shake 0.35s ease-in-out;
+        background: var(--danger) !important;
     }
 
     @keyframes wow2Shake {
         0%, 100% { transform: translateX(0); }
-        20%, 60% { transform: translateX(-5px); }
-        40%, 80% { transform: translateX(5px); }
+        25% { transform: translateX(-4px); }
+        75% { transform: translateX(4px); }
     }
 
-    .wow2-harf-cemberi-alani {
+    #wow2OyunModalOverlay .secim-paneli {
         position: relative;
-        width: 240px;
-        height: 240px;
-        margin: 0 auto 6px auto;
-        background: rgba(15, 23, 42, 0.6);
-        border-radius: 50%;
-        border: 2px solid rgba(255, 255, 255, 0.1);
-        touch-action: none;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 85%;
+        max-width: 260px;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 6px 14px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(4px);
     }
 
-    .wow2-cember-ici-karistir-btn {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 54px;   /* Genişlik ve yükseklik eşit olmalı */
-        height: 54px;
-        border-radius: 50%; /* Tam yuvarlak yapar */
-        background: #1e293b;
+    #wow2OyunModalOverlay .secilen-yazi {
+        font-weight: 800;
+        letter-spacing: 2px;
         color: #38bdf8;
-        border: 2px solid #38bdf8;
+        text-align: center;
+        flex: 1;
+        font-size: 0.95rem;
+    }
+
+    #wow2OyunModalOverlay .temizle-btn {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        cursor: pointer;
-        z-index: 10;
-        font-size: 20px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        font-size: 0.75rem;
     }
-    .wow2-cizgi-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
 
-    .wow2-harf-btn {
-        position: absolute;
-        width: 38px; height: 38px;
-        background: #334155;
-        color: #fff;
-        border: 2px solid #475569;
-        border-radius: 50%;
-        font-size: 14px;
+    #wow2OyunModalOverlay .bulunacak-kelimeler-alani {
+        padding: 8px 10px;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    #wow2OyunModalOverlay .liste-baslik {
+        font-size: 0.7rem;
+        color: #94a3b8;
+        margin: 0 0 6px 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-align: center;
+    }
+
+    #wow2OyunModalOverlay .kelime-etiketleri {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    #wow2OyunModalOverlay .kelime-badge {
+        background: rgba(255, 255, 255, 0.06);
+        padding: 4px 8px;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #cbd5e1;
+    }
+
+    #wow2OyunModalOverlay .kelime-badge.gizli-badge { color: #64748b; border-style: dashed; }
+    #wow2OyunModalOverlay .kelime-badge.bulundu { background: rgba(16, 185, 129, 0.2); border-color: var(--success); color: #34d399; font-weight: 700; }
+
+    #wow2OyunModalOverlay .wow2-btn {
+        padding: 11px 18px;
+        font-size: 0.9rem;
         font-weight: 700;
-        display: flex; justify-content: center; align-items: center;
+        border-radius: 12px;
+        border: none;
         cursor: pointer;
-        transform: translate(-50%, -50%);
-        z-index: 10;
-        box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        transition: transform 0.1s ease;
     }
-    .wow2-harf-btn.secili {
-        background: linear-gradient(135deg, #0ea5e9, #0284c7);
-        border-color: #38bdf8;
-        transform: translate(-50%, -50%) scale(1.15);
-        box-shadow: 0 0 12px rgba(14, 165, 233, 0.6);
-    }
-    .wow2-oyun-butonlari { display: flex; justify-content: center; }
-    .wow2-menu-don-btn { padding: 4px 14px; font-size: 12px; }
+
+    #wow2OyunModalOverlay .wow2-btn:active { transform: scale(0.97); }
+    #wow2OyunModalOverlay .ana-btn { background: linear-gradient(135deg, #0ea5e9, #2563eb); color: white; }
+    #wow2OyunModalOverlay .alt-btn { background: rgba(255, 255, 255, 0.08); color: #cbd5e1; border: 1px solid rgba(255, 255, 255, 0.12); }
+    #wow2OyunModalOverlay .tehlike-btn { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
 </style>
 
-<!-- ======================================================== -->
-<!-- 3. SCRİPTLER -->
-<!-- ======================================================== -->
+<!-- SİTENİN SAĞ ÜSTÜNDEKİ SABİT OYUN BUTONU -->
+<button class="wow2-sabit-ac-btn" onclick="wow2OyunuAc()">
+    <span>🎮</span>
+</button>
+
+<!-- TAM EKRAN POPUP OVERLAY -->
+<div id="wow2OyunModalOverlay">
+    <div class="wow2-pencere-kutu">
+        
+        <!-- BÜYÜK TAM EKRAN BÖLÜM GEÇİŞ DUYURUSU -->
+        <div id="wow2GecisEkrani">
+            <div class="gecis-simge">🚀</div>
+            <div id="wow2GecisBaslik" class="gecis-baslik">Bölüm Tamamlandı!</div>
+            <div id="wow2GecisAlt" class="gecis-alt-yazi">Diğer bölüme geçiliyor...</div>
+        </div>
+
+        <!-- ÜST BAR -->
+        <div class="oyun-ust-bar">
+            <span id="wow2BolumYazi" class="ust-bilgi-rozet">Bölüm 1/100</span>
+            <span id="wow2Skor" class="ust-bilgi-rozet">Puan: 0</span>
+            <div class="sag-ust-butonlar">
+                <button class="ikon-btn" title="İpucu Al (-20 Puan)" onclick="wow2IpucuAl()">💡</button>
+                <button class="ikon-btn" title="Ana Menüye Dön / Kapat" onclick="wow2MenuyuAcKapat()">✕</button>
+            </div>
+        </div>
+
+        <!-- ANA MENÜ MODALI -->
+        <div id="wow2AnaMenu" class="wow2-modal">
+            <div class="menu-baslik">
+                <h2>KELİME AVI</h2>
+                <p>100 Farklı Kategori & Bölüm</p>
+            </div>
+            <div class="menu-butonlar">
+                <button class="wow2-btn ana-btn" onclick="wow2OyunuBaslat()">🎮 Oyuna Başla</button>
+                <button class="wow2-btn alt-btn" onclick="wow2KurallarAc()">📜 Kurallar & Bilgi</button>
+                <button class="wow2-btn alt-btn" onclick="wow2TemaMenusuAc()">🎨 Tema Seçimi</button>
+                <button class="wow2-btn tehlike-btn" onclick="wow2KaydiSil()">🗑️ Kaydı Sil (Sıfırla)</button>
+                <button class="wow2-btn alt-btn" style="margin-top: 6px;" onclick="wow2OyunuKapat()">❌ Oyundan Çık</button>
+            </div>
+        </div>
+
+        <!-- ZORLAŞTIRILMIŞ MİNİ ÖĞRETİCİ MODALI -->
+        <div id="wow2OgreticiMenu" class="wow2-modal gizli">
+            <div class="menu-baslik">
+                <h2>Öğretici Bölüm</h2>
+                <p>Parmağını zigzag çizerek harfler üzerinde kaydır!</p>
+            </div>
+
+            <div class="ogretici-ipucu-kutusu">
+                <span>👆</span>
+                <div>Bulunacak Kelimeler: <b>KOD</b>, <b>WEB</b>, <b>AĞ</b></div>
+            </div>
+
+            <div id="wow2OgreticiGrid" class="ogretici-grid"></div>
+
+            <div class="secim-paneli" style="margin-top: 5px;">
+                <span id="wow2OgreticiSecilen" class="secilen-yazi">...</span>
+            </div>
+
+            <div class="bulunacak-kelimeler-alani" style="width: 100%; margin-top: 10px;">
+                <div id="wow2OgreticiKelimeListesi" class="kelime-etiketleri"></div>
+            </div>
+        </div>
+
+        <!-- KURALLAR MODALI -->
+        <div id="wow2KurallarMenu" class="wow2-modal gizli">
+            <div class="menu-baslik">
+                <h2>Oyun Kuralları</h2>
+            </div>
+            <div class="kurallar-icerik">
+                <ul>
+                    <li><b>Oyun Yapısı:</b> Oyunumuz tam <b>100 farklı tematik bölümden</b> oluşmaktadır.</li>
+                    <li><b>Sürüklemeli / Zikzaklı Seçim:</b> Parmağınızı veya farenizi harfler üzerinde sürükleyerek komşu harfleri birleştirebilirsiniz. Sadece düz değil, çapraz ve bükülmeli hat çizebilirsiniz.</li>
+                    <li><b>Puanlama:</b> Her doğru kelime <b>+40 puan</b> kazandırır.</li>
+                    <li><b>İpucu Kullanımı:</b> Sağ üstteki 💡 butonuna tıklayarak <b>-20 puan</b> karşılığında gizli kelimenin ilk harfini görebilirsiniz.</li>
+                    <li><b>Kayıt Sistemi:</b> Bölüm ve puan durumunuz tarayıcınıza otomatik kaydedilir.</li>
+                </ul>
+            </div>
+            <div class="menu-butonlar">
+                <button class="wow2-btn ana-btn" onclick="wow2KurallarKapat()">Anladım, Geri Dön</button>
+            </div>
+        </div>
+
+        <!-- TEMA MODALI (5 FARKLI TEMA) -->
+        <div id="wow2TemaMenu" class="wow2-modal gizli">
+            <div class="menu-baslik">
+                <h2>TEMA SEÇİMİ</h2>
+                <p>Arkaplan Atmosferini Değiştir</p>
+            </div>
+            <div class="menu-butonlar">
+                <button class="wow2-btn alt-btn" onclick="wow2TemaDegistir('doga')">🌲 Doğa & Zirve</button>
+                <button class="wow2-btn alt-btn" onclick="wow2TemaDegistir('uzay')">🌌 Derin Uzay</button>
+                <button class="wow2-btn alt-btn" onclick="wow2TemaDegistir('deniz')">🌊 Okyanus</button>
+                <button class="wow2-btn alt-btn" onclick="wow2TemaDegistir('gunbatimi')">🌅 Gün Batımı</button>
+                <button class="wow2-btn alt-btn" onclick="wow2TemaDegistir('siber')">⚡ Siber Gece</button>
+                <button class="wow2-btn ana-btn" style="margin-top: 6px;" onclick="wow2TemaMenusuKapat()">Geri Dön</button>
+            </div>
+        </div>
+
+        <!-- OYUN ALANI -->
+        <div class="wow2-ekran">
+            <div id="wow2Kapsul" class="wow2-bulmaca-arkaplan-kapsul">
+                <div class="kategori-kart">
+                    <span class="kategori-etiket">Kategori:</span>
+                    <span id="wow2KategoriYazi" class="kategori-baslik">Uzay & Astronomi</span>
+                </div>
+
+                <div id="wow2Bildirim" class="durum-bildirimi"></div>
+                
+                <div id="wow2GridKutular" class="kelime-grid"></div>
+
+                <div class="secim-paneli">
+                    <span id="wow2SecilenYazi" class="secilen-yazi">...</span>
+                    <button class="temizle-btn" onclick="wow2SecimiSifirla()">✕</button>
+                </div>
+            </div>
+
+            <div class="bulunacak-kelimeler-alani">
+                <p class="liste-baslik">Gizli Kelimeler</p>
+                <div id="wow2KelimeListesi" class="kelime-etiketleri"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 <script>
-    const wow2TemaGorselleri = [
-        { kategori: "Orman & Doğa", resim: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1000&q=80" },
-        { kategori: "Zirve & Dağ", resim: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1000&q=80" },
-        { kategori: "Derin Uzay", resim: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1000&q=80" },
-        { kategori: "Antik Gizem", resim: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1000&q=80" },
-        { kategori: "Fırtına Vadisi", resim: "https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1000&q=80" },
-        { kategori: "Siber Dünya", resim: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1000&q=80" },
-        { kategori: "Vahşi Yaşam", resim: "https://images.unsplash.com/photo-1511497584788-876761192d12?auto=format&fit=crop&w=1000&q=80" },
-        { kategori: "Okyanus", resim: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80" },
-        { kategori: "Gece Şehri", resim: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=1000&q=80" },
-        { kategori: "Tropik Adalar", resim: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1000&q=80" }
+    const bolumVerileri = [
+        { kategori: "Uzay & Astronomi", kelimeler: ["GALAKSİ", "UZAY", "METEOR", "ROKET", "NEBULA", "YILDIZ"] },
+        { kategori: "Okyanus & Deniz", kelimeler: ["MERCAN", "BALIK", "DENİZ", "YUNUS", "DALGA", "YENGEÇ"] },
+        { kategori: "Doğa & Zirve", kelimeler: ["KARDELEN", "ZİRVE", "DOĞA", "ORMAN", "RÜZGÂR", "GÜNEŞ"] },
+        { kategori: "Tarih & Medeniyet", kelimeler: ["MÜZE", "SARAY", "PİRAMİD", "HEYKEL", "FOSİL", "KALE"] },
+        { kategori: "Mutfak & Lezzet", kelimeler: ["MUTFAK", "LEZZET", "TATLI", "ÇORBA", "BÖREK", "BAKLAVA"] },
+        { kategori: "Yazılım & Teknoloji", kelimeler: ["YAZILIM", "KODLAMA", "EKRAN", "VERİ", "SİSTEM", "AĞ"] },
+        { kategori: "Spor & Rekabet", kelimeler: ["FUTBOL", "BASKET", "KUPA", "TAKIM", "SAHA", "LİG"] },
+        { kategori: "Müzik & Sanat", kelimeler: ["GİTAR", "PİYANO", "MÜZİK", "BESTE", "SAHNE", "NOTA"] },
+        { kategori: "Kamp & Macera", kelimeler: ["ÇADIR", "ATEŞ", "ORMAN", "MAT", "FENER", "ROTA"] },
+        { kategori: "Kahve & Mola", kelimeler: ["KAHVE", "KURABİYE", "BARİSTA", "AROMA", "SÜT", "ESPRESSO"] },
+        { kategori: "Otomobil & Yol", kelimeler: ["ARABA", "MOTOR", "YOLCU", "GARAJ", "TEKER", "SÜRÜCÜ"] },
+        { kategori: "Edebiyat & Şiir", kelimeler: ["KİTAP", "ROMAN", "YAZAR", "SAYFA", "MASAL", "ŞİİR"] },
+        { kategori: "Resim & Görsel", kelimeler: ["RESİM", "BOYA", "TUVAL", "FIRÇA", "SANAT", "DESEN"] },
+        { kategori: "Meyve Bahçesi", kelimeler: ["ELMA", "ARMUT", "KİRAZ", "KARPUZ", "ÇİLEK", "KİVİ"] },
+        { kategori: "Sebze Dünyası", kelimeler: ["HAVUÇ", "PATATES", "SOĞAN", "BİBER", "TURP", "DOMATES"] },
+        { kategori: "Ulaşım & Tren", kelimeler: ["TREN", "VAGON", "RAYLAR", "İSTASYON", "BİLET", "MAKİNİST"] },
+        { kategori: "Havacılık & Gök", kelimeler: ["UÇAK", "BULUT", "PİLOT", "KANAT", "GÖKYÜZÜ", "JET"] },
+        { kategori: "Kraliyet & Şato", kelimeler: ["KULE", "SUR", "KRAL", "KRALİÇE", "ŞATO", "TAÇ"] },
+        { kategori: "Tiyatro & Perde", kelimeler: ["TİYATRO", "OYUNCU", "PERDE", "SAHNE", "DRAMA", "ROL"] },
+        { kategori: "Tıp & Sağlık", kelimeler: ["DOKTOR", "HASTANE", "ŞİFA", "İLAÇ", "REÇETE", "NABIZ"] },
+        { kategori: "Mimari & Yapı", kelimeler: ["MİMAR", "BİNA", "PROJE", "ÇİZİM", "ÇATI", "BETON"] },
+        { kategori: "Çiçek Bahçesi", kelimeler: ["LALE", "GÜL", "MENEKŞE", "SÜMBÜL", "ORKİDE", "PUL"] },
+        { kategori: "Hava Durumu", kelimeler: ["FIRTINA", "BORA", "KASIRGA", "TAYFUN", "RÜZGAR", "DOLU"] },
+        { kategori: "Geometri & Şekil", kelimeler: ["ÜÇGEN", "KARE", "DAİRE", "SİLİNDİR", "AÇI", "PRİZMA"] },
+        { kategori: "Kuşlar Alemi", kelimeler: ["KARTAL", "ŞAHİN", "SERÇE", "LEYLEK", "MARTI", "BAYKUŞ"] },
+        { kategori: "Vahşi Doğa", kelimeler: ["ASLAN", "KAPLAN", "ZÜRAFA", "AYI", "KURT", "TİLKİ"] },
+        { kategori: "Kış & Soğuk", kelimeler: ["SOĞUK", "KAR", "BUZ", "DOLU", "TİPİ", "KAYAK"] },
+        { kategori: "Yaz & Tatil", kelimeler: ["SICAK", "GÜNEŞ", "TATİL", "PLAJ", "KUM", "DENİZ"] },
+        { kategori: "Bahar Sevinci", kelimeler: ["CEMRE", "YEŞİL", "ÇİÇEK", "YAĞMUR", "TOPRAK", "FİLİZ"] },
+        { kategori: "Sonbahar Yaprakları", kelimeler: ["HÜZÜN", "RÜZGAR", "YAPRAK", "BULUT", "SARAL", "DAMLA"] },
+        { kategori: "Sinema & Film", kelimeler: ["FİLM", "PERDE", "MISIR", "SEANS", "KAMERA", "AKTOR"] },
+        { kategori: "Eğlence Parkı", kelimeler: ["SALINCAK", "KAYDIRAK", "ÇOCUK", "ÇİM", "EĞLENCE", "PARK"] },
+        { kategori: "Zaman & Saat", kelimeler: ["DAKİKA", "SANİYE", "ZAMAN", "ALARM", "KADRAN", "SAAT"] },
+        { kategori: "Finans & Ekonomi", kelimeler: ["BANKA", "KART", "BÜTÇE", "ALTIN", "YATIRIM", "BORSA"] },
+        { kategori: "Dil & Kelime", kelimeler: ["SÖZLÜK", "KELİME", "CÜMLE", "HARF", "ANLAM", "TEMA"] },
+        { kategori: "Okul & Eğitim", kelimeler: ["SINIF", "TAHTA", "SIRA", "DEFTER", "KALEM", "DERS"] },
+        { kategori: "Aile & Yuva", kelimeler: ["ANNE", "BABA", "KARDEŞ", "SEVGİ", "YUVAM", "HUZUR"] },
+        { kategori: "Gezegenler", kelimeler: ["DÜNYA", "GEZEGEN", "GÜNEŞ", "MARS", "JÜPİTER", "SATÜRN"] },
+        { kategori: "Derin Deniz", kelimeler: ["DENİZALTI", "SONAR", "DALGIÇ", "BASINÇ", "GEMİ", "ÇAPA"] },
+        { kategori: "Zafer & Ordu", kelimeler: ["SAVAŞ", "BARIŞ", "ORDU", "ASKER", "ZAFER", "BAYRAK"] },
+        { kategori: "Köy Yaşamı", kelimeler: ["TARLA", "HASAT", "TRAKTÖR", "ÇİFTLİK", "SAMAN", "KÜMES"] },
+        { kategori: "Şehir & Trafik", kelimeler: ["CADDE", "SOKAK", "TRAFİK", "BİNA", "IŞIK", "DURAK"] },
+        { kategori: "Coğrafya & Nehir", kelimeler: ["KÖPRÜ", "NEHİR", "AKARSU", "VADİ", "GEÇİT", "GÖL"] },
+        { kategori: "Yanardağ & Lav", kelimeler: ["VOLKAN", "LAV", "PÜSKÜRME", "KRATER", "KÜL", "MAGMA"] },
+        { kategori: "Çöl & Sıcak", kelimeler: ["KUM", "VAHA", "DEVE", "SICAK", "KURAK", "DÜN"] },
+        { kategori: "Kutuplar & Buz", kelimeler: ["BUZUL", "KUTUP", "PENGUEN", "SOĞUK", "ERİME", "İGLO"] },
+        { kategori: "Mitoloji & Masal", kelimeler: ["EFSANE", "EJDERHA", "GİZEM", "MASAL", "BÜYÜ", "PERİ"] },
+        { kategori: "İletişim & Uydu", kelimeler: ["ROKET", "UYDU", "SİNYAL", "TELSİZ", "ANTEN", "VERİ"] },
+        { kategori: "Bilim & Deney", kelimeler: ["FİZİK", "KİMYA", "DENEY", "ATOM", "MOLEKÜL", "HÜCRE"] },
+        { kategori: "Şampiyonluk", kelimeler: ["ŞAMPİYON", "REKOR", "MADALYA", "ZAFER", "BAŞARI", "ALKIŞ"] },
+        { kategori: "Elektronik & Devre", kelimeler: ["DIRENÇ", "KONDANSATÖR", "SENSÖR", "VOLTAJ", "KABLO", "AKIM"] },
+        { kategori: "Bilişim & Siber", kelimeler: ["ŞİFRE", "GÜVENLİK", "HACKER", "SUNUCU", "DUVAR", "AĞ"] },
+        { kategori: "İnternet & Web", kelimeler: ["SİTE", "TARAYICI", "LİNK", "ETİKET", "ALAN", "ARAMA"] },
+        { kategori: "Kır Bahçesi", kelimeler: ["PAPATYA", "ÇİMEN", "ARACIK", "TOHUM", "GÜBRE", "SULAMA"] },
+        { kategori: "Baharat Çarşısı", kelimeler: ["NANE", "KEKİK", "TARÇIN", "KİMYON", "KARABİBER", "SUMAK"] },
+        { kategori: "Kahvaltı Keyfi", kelimeler: ["PEYNİR", "ZEYTİN", "REÇEL", "YUMURTA", "BAL", "TEREYAĞI"] },
+        { kategori: "Fırın & Ekmek", kelimeler: ["EKMEK", "SIMIT", "POĞAÇA", "MAYA", "UN", "TEPSİ"] },
+        { kategori: "Sokak Lezzetleri", kelimeler: ["DÖNER", "KÖFTE", "KUMPİR", "MIDYE", "KOKOREÇ", "TANTUNİ"] },
+        { kategori: "Deniz Ürünleri", kelimeler: ["KARIDES", "AHTAPOT", "KALAMAR", "LEVREK", "ÇUPRA", "SARDALYA"] },
+        { kategori: "Ev & Mobilya", kelimeler: ["KOLTUK", "MASA", "SANDALYE", "DOLAP", "HALI", "PERDE"] },
+        { kategori: "Mutfak Gereçleri", kelimeler: ["TAVUK", "TENCERE", "TABAĞI", "KAŞIK", "ÇATAL", "BIÇAK"] },
+        { kategori: "Banyo & Temizlik", kelimeler: ["SABUN", "ŞAMPUAN", "HAVLU", "AYNA", "KÖPÜK", "SU"] },
+        { kategori: "Moda & Giyim", kelimeler: ["ELBİSE", "PANTOLON", "GÖMLEK", "CEKET", "KEMER", "ŞAPKASI"] },
+        { kategori: "Ayakkabı Dünyası", kelimeler: ["BOT", "ÇİZME", "TERLİK", "SPOR", "TOPUKLU", "BAĞCIK"] },
+        { kategori: "Takı & Aksesuar", kelimeler: ["YÜZÜK", "KOLYE", "BİLEZİK", "KÜPE", "SAAT", "TOKA"] },
+        { kategori: "Fotoğrafçılık", kelimeler: ["LENS", "OFLAŞ", "ODAK", "KADRAJ", "POZ", "TRİPOT"] },
+        { kategori: "Radyo & Yayın", kelimeler: ["STÜDYO", "MİKROFON", "YAYIN", "FREKANS", "SES", "KULAKLIK"] },
+        { kategori: "Oyun & Konsol", kelimeler: ["KONTROL", "TUŞ", "EKRAN", "SKOR", "SEVİYE", "KAZANÇ"] },
+        { kategori: "Satranç & Zeka", kelimeler: ["ŞAH", "MAT", "VEZİR", "PİYON", "KALE", "AT"] },
+        { kategori: "Kişisel Bakım", kelimeler: ["KREM", "PARFÜM", "TARAK", "MAKYAJ", "LOSYON", "PAMUK"] },
+        { kategori: "Eczane & Şifa", kelimeler: ["VITAMIN", "SURUP", "SARGIL", "TERMOMETRE", "AŞI", "HAP"] },
+        { kategori: "Astroloji & Burçlar", kelimeler: ["KOÇ", "BOĞA", "İKİZLER", "YENGEÇ", "ASLAN", "BAŞAK"] },
+        { kategori: "Gökyüzü Olayları", kelimeler: ["TUTULMA", "HALE", "ŞİMŞEK", "YILDIRIM", "GÜNBATIMI", "ŞAFAK"] },
+        { kategori: "Madenler & Taşlar", kelimeler: ["ELMAS", "ZÜMRÜT", "YAKUT", "SAFİR", "BAKIR", "DEMİR"] },
+        { kategori: "Jeoloji & Yer", kelimeler: ["KAYA", "TOPRAK", "KATMAN", "DEPREM", "FAY", "FOSİL"] },
+        { kategori: "Arkeoloji & Kazı", kelimeler: ["KAZI", "LAHIT", "SÜTUN", "ÇANAK", "HARABE", "TABLET"] },
+        { kategori: "Felsefe & Düşünce", kelimeler: ["FİKİR", "MANTIK", "BİLGİ", "AKIL", "SEZGİ", "GERÇEK"] },
+        { kategori: "Psikoloji & Zihin", kelimeler: ["DUYGU", "BEKLEYİŞ", "ALGI", "HAFIZA", "RÜYA", "STRES"] },
+        { kategori: "Sosyoloji & Toplum", kelimeler: ["KÜLTÜR", "BİREY", "HALK", "GELENEK", "SINIFA", "BİRLİK"] },
+        { kategori: "Hukuk & Adalet", kelimeler: ["YASA", "HÂKİM", "MAHKEME", "AVUKAT", "HAK", "ADALET"] },
+        { kategori: "Siyaset & Yönetim", kelimeler: ["SEÇİM", "MECLİS", "SİYASET", "KARAR", "KANUN", "OY"] },
+        { kategori: "Trafik & Sürüş", kelimeler: ["EHLİYET", "KAVŞAK", "SİNYAL", "KEMER", "FREN", "VİTES"] },
+        { kategori: "Liman & Gemi", kelimeler: ["LİMAN", "KAPTAN", "GÜVERTE", "DÜMEN", "FENER", "İSKELE"] },
+        { kategori: "Havalimanı", kelimeler: ["TERMINAL", "BAGAJ", "KONTROL", "BINIŞ", "PIST", "HANGAR"] },
+        { kategori: "Kampüs & Üniversite", kelimeler: ["KAMPÜS", "AMFİ", "PROFESÖR", "TEZ", "LİSANS", "KULÜP"] },
+        { kategori: "Kütüphane", kelimeler: ["RAFF", "SESSİZLİK", "KAYNAK", "ANSİKLOPEDİ", "ARŞİV", "OKUMA"] },
+        { kategori: "Yayıncılık", kelimeler: ["BASKI", "EDİTÖR", "DERGİ", "GAZETE", "MANŞET", "HABER"] },
+        { kategori: "Pazarlama & Satış", kelimeler: ["REKLAM", "MARKA", "ÜRÜN", "İNDİRİM", "MÜŞTERİ", "KAMPANYA"] },
+        { kategori: "Lojistik & Kargo", kelimeler: ["PAKET", "TESLİMAT", "DEPO", "ROTA", "ADRES", "TAKİP"] },
+        { kategori: "Otel & Konaklama", kelimeler: ["REZERVASYON", "ODASI", "LOBİ", "RESEPSİYON", "ANAHTAR", "LÜKS"] },
+        { kategori: "Gezgin & Turizm", kelimeler: ["TURİST", "MÜZE", "HARİTA", "GEZİ", "REHBER", "ANIT"] },
+        { kategori: "Dağcılık & Tırmanış", kelimeler: ["KRAMPON", "HALAT", "KABAN", "ZİRVE", "BUZUL", "TIRMANIŞ"] },
+        { kategori: "Su Sporları", kelimeler: ["SÖRF", "KANO", "HAVUZ", "YÜZME", "DALDIRMA", "PALET"] },
+        { kategori: "Kış Sporları", kelimeler: ["BUZPATENİ", "KAYAK", "KIZAK", "SNOWBOARD", "PİST", "MONTAJ"] },
+        { kategori: "Çocuk Oyunları", kelimeler: ["MİL", "SAKLAMBAÇ", "KAPMACA", "SEKSEK", "KALE", "MENDİL"] },
+        { kategori: "Motor Sporları", kelimeler: ["RALLİ", "KASK", "YARIŞ", "EGOZ", "PİST", "TRİBÜN"] },
+        { kategori: "Açık Hava & Park", kelimeler: ["BANK", "YÜRÜYÜŞ", "HAVUZ", "ÇİM", "AĞAÇ", "GÖLGE"] },
+        { kategori: "Zekâ Oyunu", kelimeler: ["BULMACA", "SUDOKU", "SAYI", "MANTIK", "AKIL", "ÇÖZÜM"] },
+        { kategori: "Yılbaşı & Kutlama", kelimeler: ["HEDİYE", "PASTA", "MUM", "PARTİ", "MÜZİK", "KUTLAMA"] },
+        { kategori: "Büyük Zafer", kelimeler: ["ŞANLI", "BAYRAK", "TÖREN", "MARŞ", "BAĞIMSIZLIK", "VATAN"] }
     ];
 
-    const wow2TumKelimelerHavuzu = [
-        "EV", "YOL", "SU", "KAS", "CAN", "YAZ", "GÖK", "ANIT", "ADA", "GEMİ",
-        "KAR", "GÜNEŞ", "KAP", "ALP", "BEL", "CEM", "MİR", "ARİ", "FES", "SEN",
-        "KÖY", "YEL", "BAĞ", "GÖL", "TAŞ", "BAK", "BAL", "SÜT", "GÜÇ", "YAL",
-        "KÖK", "ÇÖL", "GÜR", "TAN", "BİR", "KUŞ", "DAL", "BAHÇE", "GÜL", "KİTAP",
-        "OKUL", "DENİZ", "KUM", "GÜN", "BUZ", "DAĞ", "GECE", "AY", "YIL", "KAHVE",
-        "FINCAN", "KÖPÜK", "BALIK", "OLTA", "ANILAR", "HAYAL", "UMUT", "KAHRAMAN",
-        "CESUR", "YİĞİT", "AKADEMİ", "DERS", "SANATÇI", "ESER", "MÜZE", "BULUT",
-        "YAĞMUR", "ŞEMSİYE", "PİYANO", "MELODİ", "TUS", "KAYIK", "SAHİL", "KÖRFEZ",
-        "ZAMAN", "MAZ", "AZA", "YILDIZ", "TOPRAK", "YAPRAK", "ÇİÇEK", "ORMAN",
-        "NEHİR", "RÜZGAR", "KENT", "ZİRVE", "TEPE", "VADİ", "KANYON", "BAHAR",
-        "ATLAS", "HARİTA", "PUSULA", "VOLKAN", "KAPLAN", "ASLAN", "LEOPAR", "AĞAÇ",
-        "AROMA", "BİLMECE", "ZEKA", "MİMARİ", "YAPI", "MEDENİYET", "YENİ", "FIRTINA",
-        "TARİH", "TEKNOLOJİ", "YAZILIM", "BİLGİSAYAR", "KOD", "GALAKSİ", "ASTRONOT",
-        "EVREN", "UZAY", "KASIRGA", "DEPREM", "PİRAMİT", "LABİRENT", "HAZİNE",
-        "GİZEM", "ENDÜSTRİ", "FABRİKA", "ÜRETİM", "MAKİNE", "OKYANUS", "MERCAN",
-        "KÖPEKBALIĞI", "DALGA", "SIFIR", "ALGORİTMA", "İNTERNET", "SİBER", "ANADOLU",
-        "DESTAN", "EFSANE", "STRATEJİ", "BULMACA", "KELİME", "ÇEMBER", "YILDIRIM",
-        "ŞİMŞEK", "GÖKDELEN", "METROPOL", "ŞEHİR", "SOKAK", "KITA", "ŞÖVALYE",
-        "ÇIKIŞ", "SIR", "ANAHTAR", "KİLİT", "SANDIK", "ALTIN", "ELMAS", "SAYFA",
-        "YAZAR", "MÜZİK", "NOTA", "RİTİM", "ŞARKI", "TİYATRO", "SAHNE", "OYUNCU",
-        "PERDE", "FİLM", "SENARYO", "YÖNETMEN", "KROKİ", "FUTBOL", "GOL", "SAHA",
-        "HAKEM", "BASKETBOL", "POTA", "SAYI", "MAÇ", "VOLEYBOL", "FİLE", "MANŞET",
-        "SET", "TENİS", "RAKET", "KORT", "TOP", "SATRANÇ", "ŞAH", "MAT", "VEZİR",
-        "BİLİM", "DENEY", "FORMÜL", "TEORİ", "İMPARATORLUK", "PAPAĞAN", "ŞAHİN",
-        "KARTAL", "SERÇE", "GÜVERCİN", "KARINCA", "ARI", "KELEBEK", "ÖRÜMCEK",
-        "YILAN", "KERTENKELE", "KAPLUMBAĞA", "YUNUS", "BALİNA", "AHTAPOT", "YENGEÇ",
-        "MERCİMEK", "NOHUT", "FASULYE", "PİRİNÇ", "BULGUR", "MAKARNA", "ÇORBA",
-        "SALATA", "PATATES", "DOMATES", "BİBER", "PATLICAN", "SOĞAN", "SARIMSAK",
-        "ELMA", "ARMUT", "MUZ", "ÇİLEK", "KARPUZ", "KAVUN", "ÜZÜM", "KİRAZ",
-        "PORTAKAL", "MANDALİNA", "LİMON", "KAYISI", "ŞEFTALİ", "ERİK", "NAR",
-        "CEVIZ", "FINDIK", "BADEM", "FISTIK", "ÇİKOLATA", "DONDURMA", "REÇEL",
-        "HELVA", "LOKUM", "BAKLAVA", "BÖREK", "POĞAÇA", "SİMİT", "PİDE", "LAHMACUN",
-        "MANTI", "KÖFTE", "KEBAP", "DÖNER", "PİLİÇ", "ET", "TAVUK", "YUMURTA",
-        "PEYNİR", "ZEYTİN", "TEREYAĞ", "YOĞURT", "AYRAN", "ŞERBET", "GAZOZ", "KOLA",
-        "ÇAY", "KAHVALTI", "AKŞAM", "SABAH", "ÖĞLE", "MEVSİM", "KIPKIRMIZI",
-        "MASMAVİ", "YEMYEŞİL", "BEMBEYAZ", "KAPKARA", "BÜYÜK", "KÜÇÜK", "UZUN",
-        "KISACIK", "DERİN", "GENİŞ", "DARACIK", "YÜKSEK", "ALÇAK", "SICACIK",
-        "SOĞUK", "SERİN", "IRMAK", "PINAR", "ŞELALE", "GÖLET", "BATAKLIK", "ÇAYIR",
-        "YAYLA", "ORMAN", "KORU", "PARK", "BAHÇE", "TARLA", "BAĞ", "BOSTAN",
-        "SERA", "ÇİFTLİK", "AHIR", "KÜMES", "YUVA", "İNCİ", "MERCAN", "SEDEF",
-        "YAKUT", "ZÜMRÜT", "AMETİST", "SAFİR", "TOPAZ", "KUVARS", "MERMER", "GRANİT",
-        "KARDELEN", "PAPATYA", "LALE", "SÜMBÜL", "ORKİDE", "MENEKŞE", "NERGİS",
-        "GÜNEBAKAN", "ZAMBAK", "KARANFİL", "AKASYA", "ÇINAR", "MEŞE", "KAVAK",
-        "SÖĞÜT", "KAYIN", "LADİN", "SEDİR", "PALMİYE", "KANTAR", "TERAZİ", "METRE",
-        "CETVEL", "MAKAS", "KERPETEN", "KESER", "TORNAVİDA", "PENSE", "ÇEKİÇ", "BALTA"
-    ];
+    const temalar = {
+        doga: "https://images.unsplash.com/photo-1511497584788-876761142212?auto=format&fit=crop&w=800&q=80",
+        uzay: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=800&q=80",
+        deniz: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+        gunbatimi: "https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?auto=format&fit=crop&w=800&q=80",
+        siber: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80"
+    };
 
-    const wow2TemaListesi = [];
-    for (let i = 1; i <= 500; i++) {
-        let temaGorsel = wow2TemaGorselleri[(i - 1) % wow2TemaGorselleri.length];
-        let kelimeSayisi = (i <= 200) ? (2 + ((i * 3) % 3)) : (i <= 350) ? (3 + ((i * 5) % 3)) : (5 + ((i * 7) % 2));
-        let zorlukDerecesiMetin = (i <= 200) ? "Kolay" : (i <= 350) ? "Orta" : "Zor";
+    let mevcutBolumIndex = parseInt(localStorage.getItem('wow2_bolum')) || 0;
+    let toplamPuan = parseInt(localStorage.getItem('wow2_puan')) || 0;
+    let ogreticiTamamlandi = localStorage.getItem('wow2_ogretici_ok') === 'true';
 
-        let bolumKelimeleri = [];
-        let tumHarflerStr = "";
+    let secilenHucroler = [];
+    let bulunanKelimeler = [];
+    let mevcutKelimeler = [];
+    let isDragging = false;
 
-        for (let j = 0; j < kelimeSayisi; j++) {
-            let kelimeIndex = (i * 23 + j * 47) % wow2TumKelimelerHavuzu.length;
-            let secilenKelime = wow2TumKelimelerHavuzu[kelimeIndex];
-            
-            while (bolumKelimeleri.some(k => k.kelime === secilenKelime)) {
-                kelimeIndex = (kelimeIndex + 1) % wow2TumKelimelerHavuzu.length;
-                secilenKelime = wow2TumKelimelerHavuzu[kelimeIndex];
-            }
-            bolumKelimeleri.push({ kelime: secilenKelime, yon: (j % 2 === 0) ? "yatay" : "dikey" });
-            tumHarflerStr += secilenKelime;
-        }
+    /* ÖĞRETİCİ DEĞİŞKENLERİ */
+    let ogreticiHedefler = ["KOD", "WEB", "AĞ"];
+    let ogreticiBulunanlar = [];
+    let ogreticiSecilenHucroler = [];
 
-        // DÜZELTME: Tekrar eden harflerin (örn: GECE kelimesindeki iki 'E') çemberde kaybolmaması için 
-        // harfleri Set ile teke indirmek yerine doğrudan kelimelerdeki tüm harf listesini alıyoruz.
-        let harfHavuzuDizi = tumHarflerStr.split('');
-        let ekstraHarfHavuzu = ["A", "E", "I", "İ", "K", "L", "M", "N", "R", "S", "Ş", "T", "Y", "O", "Ö", "U", "Ü", "B", "D", "P", "Z", "H", "Ç", "G"];
-        
-        // Havuz çok küçük kalırsa biraz dolduruyoruz
-        while (harfHavuzuDizi.length < 8) {
-            let rastgeleEkstra = ekstraHarfHavuzu[(i * 3 + harfHavuzuDizi.length * 7) % ekstraHarfHavuzu.length];
-            harfHavuzuDizi.push(rastgeleEkstra);
-        }
-
-        wow2TemaListesi.push({
-            bolum: i,
-            kategori: `${temaGorsel.kategori} (${zorlukDerecesiMetin} - ${kelimeSayisi} Kelime)`,
-            resim: temaGorsel.resim,
-            harfHavuzu: harfHavuzuDizi,
-            kelimeVerileri: bolumKelimeleri
-        });
+    function wow2OyunuAc() {
+        document.getElementById('wow2OyunModalOverlay').classList.add('aktif');
     }
 
-    let wow2AktifBolum = 1;
-    let wow2Altin = 50;
-    let wow2BulunanKelimeler = [];
-    let wow2AcilanKutular = {}; 
-    let wow2AktifHarfHavuzu = [];
-    let wow2BulunanBonuslar = [];
-    let wow2SeciliHarfler = "";
-    let wow2SeciliIndexler = [];
-    let wow2Surukleniyor = false;
-
-    function wow2GetBolumBilgisi(no) {
-        return wow2TemaListesi.find(item => item.bolum === no) || wow2TemaListesi[0];
+    function wow2OyunuKapat() {
+        document.getElementById('wow2OyunModalOverlay').classList.remove('aktif');
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-        const kBolum = localStorage.getItem("wow2AktifBolum");
-        if (kBolum) wow2AktifBolum = parseInt(kBolum);
-        const kAltin = localStorage.getItem("wow2Altin");
-        if (kAltin !== null) wow2Altin = parseInt(kAltin);
-        else localStorage.setItem("wow2Altin", "50");
-    });
-
-    function wow2IlerlemeyiKaydet() {
-        localStorage.setItem("wow2AktifBolum", wow2AktifBolum);
-        localStorage.setItem("wow2Altin", wow2Altin);
-        localStorage.setItem(`wow2SeviyeVeri_${wow2AktifBolum}`, JSON.stringify({
-            bulunanlar: wow2BulunanKelimeler,
-            kutular: wow2AcilanKutular,
-            bonuslar: wow2BulunanBonuslar
-        }));
-    }
-
-    function wow2AltinGuncelle(miktar) {
-        wow2Altin += miktar;
-        document.getElementById("wow2AltinMiktari").innerText = wow2Altin;
-        wow2IlerlemeyiKaydet();
-    }
-
-    function wow2MenuAc() {
-        document.getElementById("wow2AnaModal").style.display = "flex";
-        document.getElementById("wow2OyunEkrani").style.display = "none";
-        document.getElementById("wow2MenuEkrani").style.display = "block";
-    }
-
-    function wow2MenuKapat() {
-        document.getElementById("wow2AnaModal").style.display = "none";
-    }
-
-    function wow2MenuyeDon() {
-        document.getElementById("wow2OyunEkrani").style.display = "none";
-        document.getElementById("wow2MenuEkrani").style.display = "block";
-    }
-
-    function wow2OyunuBaslat(no) {
-        wow2AktifBolum = no;
-        document.getElementById("wow2MenuEkrani").style.display = "none";
-        document.getElementById("wow2OyunEkrani").style.display = "block";
-        document.getElementById("wow2BasariBanner").style.display = "none";
-        document.getElementById("wow2BonusBanner").style.display = "none";
-        wow2BolumuYukle(wow2AktifBolum);
-    }
-
-    function wow2OyunuSifirla() {
-        if (confirm("Tüm ilerlemeniz ve altınlarınız silinecek. Emin misiniz?")) {
-            Object.keys(localStorage).forEach(key => { if (key.startsWith("wow2")) localStorage.removeItem(key); });
-            wow2AktifBolum = 1; wow2Altin = 50; wow2BulunanKelimeler = []; wow2AcilanKutular = {}; wow2BulunanBonuslar = [];
-            localStorage.setItem("wow2AktifBolum", "1"); localStorage.setItem("wow2Altin", "50");
-            alert("Oyun sıfırlandı!");
-            wow2OyunuBaslat(1);
-        }
-    }
-
-    function wow2BolumuYukle(no) {
-        wow2AktifBolum = no;
-        const bilgi = wow2GetBolumBilgisi(no);
-        document.getElementById("wow2BolumBaslik").innerText = `Bölüm ${bilgi.bolum}`;
-        document.getElementById("wow2AltinMiktari").innerText = wow2Altin;
-        document.getElementById("wow2BasariBanner").style.display = "none";
-        document.getElementById("wow2BonusBanner").style.display = "none";
-        
-        document.getElementById("wow2BulmacaArkaplanKapsul").style.backgroundImage = `url('${bilgi.resim}')`;
-        document.getElementById("wow2AnaKelimeEtiket").innerText = `Tema: ${bilgi.kategori}`;
-        
-        const kayitli = localStorage.getItem(`wow2SeviyeVeri_${wow2AktifBolum}`);
-        if (kayitli) {
-            try {
-                const parsed = JSON.parse(kayitli);
-                wow2BulunanKelimeler = parsed.bulunanlar || [];
-                wow2AcilanKutular = parsed.kutular || {};
-                wow2BulunanBonuslar = parsed.bonuslar || [];
-            } catch(e) { wow2BulunanKelimeler = []; wow2AcilanKutular = {}; wow2BulunanBonuslar = []; }
+    function wow2OyunuBaslat() {
+        if (!ogreticiTamamlandi) {
+            wow2OgreticiBaslat();
         } else {
-            wow2BulunanKelimeler = []; wow2AcilanKutular = {}; wow2BulunanBonuslar = [];
+            document.getElementById('wow2AnaMenu').classList.add('gizli');
         }
-
-        wow2AktifHarfHavuzu = [...bilgi.harfHavuzu];
-        wow2TemizleSecim();
-        wow2BulmacaCiz(bilgi);
-        wow2HarfCemberiCiz(wow2AktifHarfHavuzu);
-        wow2SkorGuncelle();
-        wow2IlerlemeyiKaydet();
     }
 
-    function wow2BulmacaCiz(bilgi) {
-        const alan = document.getElementById("wow2BulmacaAlani");
-        alan.innerHTML = "";
+    /* BÜYÜK GEÇİŞ DUYURUSU VE ZAMANLAYICI (2.5 SANİYE) */
+    function wow2BüyükGecisGoster(baslik, altYazi, callback) {
+        const gecisEkrani = document.getElementById('wow2GecisEkrani');
+        document.getElementById('wow2GecisBaslik').innerText = baslik;
+        document.getElementById('wow2GecisAlt').innerText = altYazi;
+        
+        gecisEkrani.classList.add('aktif');
 
-        bilgi.kelimeVerileri.forEach((item, kelimeIndex) => {
-            const grup = document.createElement("div");
-            grup.className = (item.yon === "yatay") ? "wow2-kelime-satir" : "wow2-kelime-sutun";
-            if (!wow2AcilanKutular[kelimeIndex]) wow2AcilanKutular[kelimeIndex] = [];
+        setTimeout(() => {
+            gecisEkrani.classList.remove('aktif');
+            if (typeof callback === 'function') {
+                callback();
+            }
+        }, 2500);
+    }
 
-            let tamAcildi = true;
-            for (let i = 0; i < item.kelime.length; i++) {
-                const kutu = document.createElement("div");
-                kutu.className = "wow2-harf-kutusu";
-                if (wow2BulunanKelimeler.includes(item.kelime) || wow2AcilanKutular[kelimeIndex].includes(i)) {
-                    kutu.classList.add("dolu");
-                    kutu.innerText = item.kelime[i];
-                } else {
-                    tamAcildi = false;
+    /* ZİKZAK YOLUYLA DİZİLMİŞ ÖĞRETİCİ SİSTEMİ */
+    function wow2OgreticiBaslat() {
+        document.getElementById('wow2AnaMenu').classList.add('gizli');
+        document.getElementById('wow2OgreticiMenu').classList.remove('gizli');
+        
+        const grid = document.getElementById('wow2OgreticiGrid');
+        grid.innerHTML = '';
+        ogreticiBulunanlar = [];
+        ogreticiSecilenHucroler = [];
+        document.getElementById('wow2OgreticiSecilen').innerText = '...';
+        wow2OgreticiListesiGuncelle();
+
+        const miniHarfler = [
+            ['K', 'X', 'E', 'Z'],
+            ['M', 'O', 'W', 'B'],
+            ['D', 'P', 'A', 'S'],
+            ['R', 'T', 'L', 'Ğ']
+        ];
+
+        miniHarfler.forEach((satir, r) => {
+            satir.forEach((harf, c) => {
+                const hucre = document.createElement('div');
+                hucre.className = 'grid-hucre';
+                hucre.innerText = harf;
+                hucre.dataset.row = r;
+                hucre.dataset.col = c;
+
+                hucre.addEventListener('mousedown', () => { isDragging = true; wow2OgreticiHucreTıkla(hucre); });
+                hucre.addEventListener('mouseenter', () => { if(isDragging) wow2OgreticiHucreTıkla(hucre); });
+
+                grid.appendChild(hucre);
+            });
+        });
+    }
+
+    function wow2OgreticiHucreTıkla(hucre) {
+        if (hucre.classList.contains('bulundu')) return;
+
+        if (ogreticiSecilenHucroler.length > 0) {
+            const son = ogreticiSecilenHucroler[ogreticiSecilenHucroler.length - 1];
+            if (son === hucre) return;
+            const r1 = parseInt(son.dataset.row), c1 = parseInt(son.dataset.col);
+            const r2 = parseInt(hucre.dataset.row), c2 = parseInt(hucre.dataset.col);
+            if (Math.abs(r1 - r2) > 1 || Math.abs(c1 - c2) > 1) return;
+        }
+
+        if (!ogreticiSecilenHucroler.includes(hucre)) {
+            ogreticiSecilenHucroler.push(hucre);
+            hucre.classList.add('secili');
+            if (navigator.vibrate) navigator.vibrate(15);
+            
+            const kelime = ogreticiSecilenHucroler.map(h => h.innerText).join('');
+            document.getElementById('wow2OgreticiSecilen').innerText = kelime;
+
+            if (ogreticiHedefler.includes(kelime) && !ogreticiBulunanlar.includes(kelime)) {
+                ogreticiBulunanlar.push(kelime);
+                ogreticiSecilenHucroler.forEach(h => {
+                    h.classList.remove('secili');
+                    h.classList.add('bulundu');
+                });
+                if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
+                ogreticiSecilenHucroler = [];
+                document.getElementById('wow2OgreticiSecilen').innerText = '...';
+                wow2OgreticiListesiGuncelle();
+
+                if (ogreticiBulunanlar.length === ogreticiHedefler.length) {
+                    wow2BüyükGecisGoster("Eğitim Tamamlandı!", "Oyun Başlıyor, Diğer Bölüme Geçiliyor...", () => {
+                        wow2OgreticiBitir();
+                    });
                 }
-                grup.appendChild(kutu);
-            }
-            if (tamAcildi && !wow2BulunanKelimeler.includes(item.kelime)) wow2BulunanKelimeler.push(item.kelime);
-            alan.appendChild(grup);
-        });
-    }
-
-    function wow2HarfleriKaristir() {
-        if (!wow2AktifHarfHavuzu.length) return;
-        for (let i = wow2AktifHarfHavuzu.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [wow2AktifHarfHavuzu[i], wow2AktifHarfHavuzu[j]] = [wow2AktifHarfHavuzu[j], wow2AktifHarfHavuzu[i]];
-        }
-        wow2HarfCemberiCiz(wow2AktifHarfHavuzu);
-    }
-
-    function wow2HarfIpucuVer() {
-        if (wow2Altin < 25) { alert("Yeterli altınınız yok!"); return; }
-        const bilgi = wow2GetBolumBilgisi(wow2AktifBolum);
-        let adaylar = [];
-        bilgi.kelimeVerileri.forEach((item, kIdx) => {
-            if (!wow2BulunanKelimeler.includes(item.kelime)) {
-                if (!wow2AcilanKutular[kIdx]) wow2AcilanKutular[kIdx] = [];
-                for (let i = 0; i < item.kelime.length; i++) {
-                    if (!wow2AcilanKutular[kIdx].includes(i)) adaylar.push({ kIdx, hIdx: i });
+            } else {
+                const uyusanVarMi = ogreticiHedefler.filter(k => !ogreticiBulunanlar.includes(k)).some(k => k.startsWith(kelime));
+                if (!uyusanVarMi) {
+                    const gecici = [...ogreticiSecilenHucroler];
+                    ogreticiSecilenHucroler = [];
+                    gecici.forEach(h => h.classList.add('sallan'));
+                    setTimeout(() => {
+                        gecici.forEach(h => h.classList.remove('sallan', 'secili'));
+                        document.getElementById('wow2OgreticiSecilen').innerText = '...';
+                    }, 350);
                 }
             }
-        });
-        if (!adaylar.length) return;
-        const secilen = adaylar[Math.floor(Math.random() * adaylar.length)];
-        wow2AltinGuncelle(-25);
-        wow2AcilanKutular[secilen.kIdx].push(secilen.hIdx);
-        wow2BulmacaCiz(bilgi);
-        wow2SkorGuncelle();
-        wow2IlerlemeyiKaydet();
-
-        if (wow2BulunanKelimeler.length === bilgi.kelimeVerileri.length) {
-            document.getElementById("wow2BasariBanner").style.display = "block";
-            setTimeout(() => {
-                wow2AltinGuncelle(5);
-                wow2AktifBolum = wow2AktifBolum < 500 ? wow2AktifBolum + 1 : 1;
-                wow2BolumuYukle(wow2AktifBolum);
-            }, 1200);
         }
     }
 
-    function wow2HarfCemberiCiz(harfHavuzu) {
-        const cember = document.getElementById("wow2HarfCemberiAlani");
-        const svg = document.getElementById("wow2CizgiSvg");
-        const karistirBtn = cember.querySelector('.wow2-cember-ici-karistir-btn');
-        cember.innerHTML = "";
-        if (karistirBtn) cember.appendChild(karistirBtn);
-        cember.appendChild(svg);
-        svg.innerHTML = "";
-
-        let toplam = harfHavuzu.length;
-        let radius = 82, merkezX = 120, merkezY = 120;
-
-        harfHavuzu.forEach((harf, index) => {
-            let aci = (index * 2 * Math.PI) / toplam - Math.PI / 2;
-            let x = merkezX + radius * Math.cos(aci);
-            let y = merkezY + radius * Math.sin(aci);
-            const btn = document.createElement("div");
-            btn.className = "wow2-harf-btn";
-            btn.style.left = `${x}px`;
-            btn.style.top = `${y}px`;
-            btn.innerText = harf;
-            btn.dataset.harf = harf;
-            btn.dataset.index = index;
-            cember.appendChild(btn);
-        });
-        wow2HarfOlaylariniTanimla();
-    }
-
-    function wow2HarfOlaylariniTanimla() {
-        const cember = document.getElementById("wow2HarfCemberiAlani");
-        const svg = document.getElementById("wow2CizgiSvg");
-
-        cember.onpointerdown = (e) => {
-            let btn = e.target.closest('.wow2-harf-btn');
-            if (!btn) return;
-            wow2Surukleniyor = true;
-            wow2SeciliHarfler = "";
-            wow2SeciliIndexler = [];
-            document.querySelectorAll('.wow2-harf-btn').forEach(b => b.classList.remove('secili'));
-            wow2HarfEkle(btn);
-            e.preventDefault();
-        };
-
-        cember.onpointermove = (e) => {
-            if (!wow2Surukleniyor) return;
-            let el = document.elementFromPoint(e.clientX, e.clientY);
-            let btn = el ? el.closest('.wow2-harf-btn') : null;
-            if (btn && !wow2SeciliIndexler.includes(btn.dataset.index)) wow2HarfEkle(btn);
-            wow2CizgiGuncelle();
-        };
-
-        window.onpointerup = () => {
-            if (!wow2Surukleniyor) return;
-            wow2Surukleniyor = false;
-            svg.innerHTML = "";
-            document.querySelectorAll('.wow2-harf-btn').forEach(b => b.classList.remove('secili'));
-            if (wow2SeciliHarfler.length > 0) wow2KelimeyiKontrolEt(wow2SeciliHarfler);
-            else wow2TemizleSecim();
-        };
-    }
-
-    function wow2HarfEkle(btn) {
-        btn.classList.add('secili');
-        wow2SeciliHarfler += btn.dataset.harf;
-        wow2SeciliIndexler.push(btn.dataset.index);
-        document.getElementById("wow2SecilenKelimeKutusu").innerText = wow2SeciliHarfler;
-    }
-
-    function wow2CizgiGuncelle() {
-        const svg = document.getElementById("wow2CizgiSvg");
-        const cember = document.getElementById("wow2HarfCemberiAlani").getBoundingClientRect();
-        let pts = "";
-        wow2SeciliIndexler.forEach(idx => {
-            const btn = document.querySelector(`.wow2-harf-btn[data-index='${idx}']`);
-            if (btn) {
-                let r = btn.getBoundingClientRect();
-                pts += `${r.left + r.width/2 - cember.left},${r.top + r.height/2 - cember.top} `;
+    function wow2OgreticiListesiGuncelle() {
+        const listeContainer = document.getElementById('wow2OgreticiKelimeListesi');
+        listeContainer.innerHTML = '';
+        ogreticiHedefler.forEach(kelime => {
+            const badge = document.createElement('span');
+            if (ogreticiBulunanlar.includes(kelime)) {
+                badge.className = 'kelime-badge bulundu';
+                badge.innerText = `✓ ${kelime}`;
+            } else {
+                badge.className = 'kelime-badge gizli-badge';
+                badge.innerText = `? ${kelime.length} Harf`;
             }
+            listeContainer.appendChild(badge);
         });
-        svg.innerHTML = `<polyline points="${pts}" stroke="#0ea5e9" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />`;
     }
 
-    function wow2KelimeyiKontrolEt(kelime) {
-        const bilgi = wow2GetBolumBilgisi(wow2AktifBolum);
-        const hedefKelimeler = bilgi.kelimeVerileri.map(item => item.kelime);
+    function wow2OgreticiBitir() {
+        ogreticiTamamlandi = true;
+        localStorage.setItem('wow2_ogretici_ok', 'true');
+        document.getElementById('wow2OgreticiMenu').classList.add('gizli');
+    }
 
-        if (hedefKelimeler.includes(kelime)) {
-            if (!wow2BulunanKelimeler.includes(kelime)) {
-                wow2BulunanKelimeler.push(kelime);
-                bilgi.kelimeVerileri.forEach((item, idx) => {
-                    if (item.kelime === kelime) {
-                        if (!wow2AcilanKutular[idx]) wow2AcilanKutular[idx] = [];
-                        for (let i = 0; i < kelime.length; i++) {
-                            if (!wow2AcilanKutular[idx].includes(i)) wow2AcilanKutular[idx].push(i);
+    /* MENÜ AÇ / KAPAT TOGGLE FONKSİYONU */
+    function wow2MenuyuAcKapat() {
+        const anaMenu = document.getElementById('wow2AnaMenu');
+        const ogreticiMenu = document.getElementById('wow2OgreticiMenu');
+        const kurallarMenu = document.getElementById('wow2KurallarMenu');
+        const temaMenu = document.getElementById('wow2TemaMenu');
+
+        if (anaMenu.classList.contains('gizli')) {
+            anaMenu.classList.remove('gizli');
+            ogreticiMenu.classList.add('gizli');
+            kurallarMenu.classList.add('gizli');
+            temaMenu.classList.add('gizli');
+        } else {
+            anaMenu.classList.add('gizli');
+        }
+    }
+
+    function wow2KurallarAc() { document.getElementById('wow2KurallarMenu').classList.remove('gizli'); }
+    function wow2KurallarKapat() { document.getElementById('wow2KurallarMenu').classList.add('gizli'); }
+    function wow2TemaMenusuAc() { document.getElementById('wow2TemaMenu').classList.remove('gizli'); }
+    function wow2TemaMenusuKapat() { document.getElementById('wow2TemaMenu').classList.add('gizli'); }
+
+    function wow2TemaDegistir(temaKey) {
+        if (temalar[temaKey]) {
+            document.getElementById('wow2Kapsul').style.backgroundImage = `url('${temalar[temaKey]}')`;
+            wow2TemaMenusuKapat();
+        }
+    }
+
+    function wow2KaydiSil() {
+        if (confirm("Tüm oyun ilerlemeniz, puanınız ve öğretici kaydınız silinecek. Emin misiniz?")) {
+            localStorage.removeItem('wow2_bolum');
+            localStorage.removeItem('wow2_puan');
+            localStorage.removeItem('wow2_ogretici_ok');
+            mevcutBolumIndex = 0;
+            toplamPuan = 0;
+            ogreticiTamamlandi = false;
+            document.getElementById('wow2Skor').innerText = `Puan: 0`;
+            wow2BolumYukle(0);
+            wow2BildirimGoster('🗑️ Kayıt Sıfırlandı!', 'yanlis');
+            wow2MenuyuAcKapat();
+        }
+    }
+
+    function zikzakMatrisUret(kelimeListesi, satirSayisi = 9, sutunSayisi = 8) {
+        const yonler = [
+            [-1, -1], [-1, 0], [-1, 1],
+            [ 0, -1],          [ 0, 1],
+            [ 1, -1], [ 1, 0], [ 1, 1]
+        ];
+
+        function karistir(dizi) { return dizi.sort(() => Math.random() - 0.5); }
+
+        function yolaKoy(matris, kelime, index, r, c, yol) {
+            if (index === kelime.length) return yol;
+            const rastGeleYonler = karistir([...yonler]);
+            for (let [dr, dc] of rastGeleYonler) {
+                const yeniR = r + dr;
+                const yeniC = c + dc;
+                if (yeniR >= 0 && yeniR < satirSayisi && yeniC >= 0 && yeniC < sutunSayisi) {
+                    const hucreDoluMu = matris[yeniR][yeniC] !== '';
+                    const ayniHarfMi = matris[yeniR][yeniC] === kelime[index];
+                    const yoldaVarMi = yol.some(p => p.r === yeniR && p.c === yeniC);
+                    if ((!hucreDoluMu || ayniHarfMi) && !yoldaVarMi) {
+                        yol.push({r: yeniR, c: yeniC, harf: kelime[index]});
+                        const sonuc = yolaKoy(matris, kelime, index + 1, yeniR, yeniC, yol);
+                        if (sonuc) return sonuc;
+                        yol.pop();
+                    }
+                }
+            }
+            return null;
+        }
+
+        let matris;
+        let basariliTamamlandi = false;
+        let genelDeneme = 0;
+
+        while (!basariliTamamlandi && genelDeneme < 100) {
+            genelDeneme++;
+            matris = Array(satirSayisi).fill(null).map(() => Array(sutunSayisi).fill(''));
+            let tumuYerlestirildi = true;
+
+            for (let kelime of kelimeListesi) {
+                let basarili = false;
+                let deneme = 0;
+                while (!basarili && deneme < 150) {
+                    deneme++;
+                    const basR = Math.floor(Math.random() * satirSayisi);
+                    const basC = Math.floor(Math.random() * sutunSayisi);
+                    if (matris[basR][basC] === '' || matris[basR][basC] === kelime[0]) {
+                        const ilkYol = [{r: basR, c: basC, harf: kelime[0]}];
+                        const yol = yolaKoy(matris, kelime, 1, basR, basC, ilkYol);
+                        if (yol) {
+                            yol.forEach(p => matris[p.r][p.c] = p.harf);
+                            basarili = true;
                         }
                     }
-                });
-                wow2BulmacaCiz(bilgi);
-                wow2SkorGuncelle();
-                wow2AltinGuncelle(7);
-                wow2IlerlemeyiKaydet();
-
-                if (wow2BulunanKelimeler.length === hedefKelimeler.length) {
-                    document.getElementById("wow2BasariBanner").style.display = "block";
-                    setTimeout(() => {
-                        wow2AltinGuncelle(5);
-                        wow2AktifBolum = wow2AktifBolum < 500 ? wow2AktifBolum + 1 : 1;
-                        wow2BolumuYukle(wow2AktifBolum);
-                    }, 1200);
+                }
+                if (!basarili) {
+                    tumuYerlestirildi = false;
+                    break;
                 }
             }
-            wow2TemizleSecim();
-        } else {
-            if (wow2BonusKelimeKontrol(kelime)) return;
-            const kutu = document.getElementById("wow2SecilenKelimeKutusu");
-            kutu.classList.add("yanlis");
-            setTimeout(() => { wow2TemizleSecim(); kutu.classList.remove("yanlis"); }, 350);
+            if (tumuYerlestirildi) basariliTamamlandi = true;
         }
-    }
- 
-    function wow2BonusKelimeKontrol(girilen) {
-        girilen = girilen.toUpperCase();
-        const bilgi = wow2GetBolumBilgisi(wow2AktifBolum);
-        const anaHedefler = bilgi.kelimeVerileri.map(i => i.kelime);
-        if (wow2TumKelimelerHavuzu.includes(girilen) && !anaHedefler.includes(girilen)) {
-            if (!wow2BulunanBonuslar.includes(girilen)) {
-                wow2BulunanBonuslar.push(girilen);
-                wow2AltinGuncelle(10);
-                const kutu = document.getElementById("wow2SecilenKelimeKutusu");
-                kutu.classList.add("bonus");
-                const banner = document.getElementById("wow2BonusBanner");
-                banner.style.display = "block";
-                setTimeout(() => { wow2TemizleSecim(); kutu.classList.remove("bonus"); banner.style.display = "none"; }, 1200);
-                wow2IlerlemeyiKaydet();
-                return true;
+
+        const harfler = "ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZ";
+        for (let r = 0; r < satirSayisi; r++) {
+            for (let c = 0; c < sutunSayisi; c++) {
+                if (matris[r][c] === '') {
+                    matris[r][c] = harfler[Math.floor(Math.random() * harfler.length)];
+                }
             }
         }
-        return false;
+        return matris;
     }
 
-    function wow2TemizleSecim() {
-        wow2SeciliHarfler = "";
-        wow2SeciliIndexler = [];
-        document.getElementById("wow2SecilenKelimeKutusu").innerText = "";
-        const svg = document.getElementById("wow2CizgiSvg");
-        if (svg) svg.innerHTML = "";
-        document.querySelectorAll('.wow2-harf-btn').forEach(b => b.classList.remove('secili'));
+    function wow2BolumYukle(index) {
+        if (index >= bolumVerileri.length) index = 0;
+        mevcutBolumIndex = index;
+        localStorage.setItem('wow2_bolum', index);
+        localStorage.setItem('wow2_puan', toplamPuan);
+
+        const veri = bolumVerileri[index];
+        mevcutKelimeler = veri.kelimeler;
+        
+        document.getElementById('wow2BolumYazi').innerText = `Bölüm ${index + 1}/100`;
+        document.getElementById('wow2Skor').innerText = `Puan: ${toplamPuan}`;
+        document.getElementById('wow2KategoriYazi').innerText = veri.kategori;
+        
+        bulunanKelimeler = [];
+        secilenHucroler = [];
+        wow2YaziGuncelle();
+
+        const matris = zikzakMatrisUret(mevcutKelimeler, 9, 8);
+        const gridContainer = document.getElementById('wow2GridKutular');
+        gridContainer.innerHTML = '';
+
+        matris.forEach((satir, r) => {
+            satir.forEach((harf, c) => {
+                const hucre = document.createElement('div');
+                hucre.className = 'grid-hucre';
+                hucre.innerText = harf;
+                hucre.dataset.row = r;
+                hucre.dataset.col = c;
+                
+                hucre.addEventListener('mousedown', () => { isDragging = true; wow2HucreTıkla(hucre); });
+                hucre.addEventListener('mouseenter', () => { if(isDragging) wow2HucreTıkla(hucre); });
+                
+                gridContainer.appendChild(hucre);
+            });
+        });
+
+        wow2KelimeListesiGuncelle();
+        document.getElementById('wow2Kapsul').style.backgroundImage = `url('${temalar.doga}')`;
     }
 
-    function wow2SkorGuncelle() {
-        const bilgi = wow2GetBolumBilgisi(wow2AktifBolum);
-        document.getElementById("wow2SkorBilgi").innerText = `Bulunan: ${wow2BulunanKelimeler.length}/${bilgi.kelimeVerileri.length}`;
+    function wow2HucreTıkla(hucre) {
+        if (hucre.classList.contains('bulundu')) return;
+
+        if (secilenHucroler.length > 0) {
+            const sonHucre = secilenHucroler[secilenHucroler.length - 1];
+            if (sonHucre === hucre) return;
+
+            const r1 = parseInt(sonHucre.dataset.row);
+            const c1 = parseInt(sonHucre.dataset.col);
+            const r2 = parseInt(hucre.dataset.row);
+            const c2 = parseInt(hucre.dataset.col);
+
+            if (Math.abs(r1 - r2) > 1 || Math.abs(c1 - c2) > 1) return;
+        }
+
+        if (!secilenHucroler.includes(hucre)) {
+            secilenHucroler.push(hucre);
+            hucre.classList.add('secili');
+            if (navigator.vibrate) navigator.vibrate(15);
+            wow2YaziGuncelle();
+            wow2OtomatikKontrol();
+        }
     }
+
+    function wow2YaziGuncelle() {
+        const kelime = secilenHucroler.map(h => h.innerText).join('');
+        document.getElementById('wow2SecilenYazi').innerText = kelime.length > 0 ? kelime : '...';
+    }
+
+    function wow2OtomatikKontrol() {
+        const mevcutKelime = secilenHucroler.map(h => h.innerText).join('');
+        if (mevcutKelime.length === 0) return;
+
+        if (mevcutKelimeler.includes(mevcutKelime) && !bulunanKelimeler.includes(mevcutKelime)) {
+            bulunanKelimeler.push(mevcutKelime);
+            
+            toplamPuan += 40;
+            localStorage.setItem('wow2_puan', toplamPuan);
+            document.getElementById('wow2Skor').innerText = `Puan: ${toplamPuan}`;
+
+            secilenHucroler.forEach(h => {
+                h.classList.remove('secili');
+                h.classList.add('bulundu');
+            });
+            
+            wow2BildirimGoster(`🎉 Buldun (+40 Puan): ${mevcutKelime}`, 'dogru');
+            secilenHucroler = [];
+            wow2YaziGuncelle();
+            wow2KelimeListesiGuncelle();
+
+            if (bulunanKelimeler.length === mevcutKelimeler.length) {
+                wow2BüyükGecisGoster(
+                    "🎉 Tebrikler!", 
+                    `${bolumVerileri[mevcutBolumIndex].kategori} Bölümü Tamamlandı. Diğer Bölüme Geçiliyor...`, 
+                    () => {
+                        mevcutBolumIndex++;
+                        wow2BolumYukle(mevcutBolumIndex);
+                    }
+                );
+            }
+            return;
+        }
+
+        const kalanKelimeler = mevcutKelimeler.filter(k => !bulunanKelimeler.includes(k));
+        const uyusanVarMi = kalanKelimeler.some(k => k.startsWith(mevcutKelime));
+
+        if (!uyusanVarMi) {
+            wow2BildirimGoster('❌ Yanlış!', 'yanlis');
+            if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
+            
+            const gecici = [...secilenHucroler];
+            secilenHucroler = [];
+            gecici.forEach(h => h.classList.add('sallan'));
+            
+            setTimeout(() => {
+                gecici.forEach(h => h.classList.remove('sallan', 'secili'));
+                wow2YaziGuncelle();
+            }, 350);
+        }
+    }
+
+    function wow2SecimiSifirla() {
+        secilenHucroler.forEach(h => h.classList.remove('secili'));
+        secilenHucroler = [];
+        wow2YaziGuncelle();
+    }
+
+    function wow2IpucuAl() {
+        if (toplamPuan < 20) {
+            wow2BildirimGoster('⚠️ En az 20 Puan Lazım!', 'yanlis');
+            return;
+        }
+        const kalanKelimeler = mevcutKelimeler.filter(k => !bulunanKelimeler.includes(k));
+        if (kalanKelimeler.length > 0) {
+            toplamPuan -= 20;
+            localStorage.setItem('wow2_puan', toplamPuan);
+            document.getElementById('wow2Skor').innerText = `Puan: ${toplamPuan}`;
+            const rastgeleKelime = kalanKelimeler[0];
+            wow2BildirimGoster(`💡 İpucu (-20 Puan): "${rastgeleKelime[0]}" harfi ile başlıyor`, 'dogru');
+        }
+    }
+
+    function wow2BildirimGoster(mesaj, tip) {
+        const bildirim = document.getElementById('wow2Bildirim');
+        bildirim.innerText = mesaj;
+        bildirim.className = `durum-bildirimi ${tip} aktif`;
+        setTimeout(() => { bildirim.classList.remove('aktif'); }, 1200);
+    }
+
+    function wow2KelimeListesiGuncelle() {
+        const listeContainer = document.getElementById('wow2KelimeListesi');
+        listeContainer.innerHTML = '';
+        mevcutKelimeler.forEach(kelime => {
+            const badge = document.createElement('span');
+            if (bulunanKelimeler.includes(kelime)) {
+                badge.className = 'kelime-badge bulundu';
+                badge.innerText = `✓ ${kelime}`;
+            } else {
+                badge.className = 'kelime-badge gizli-badge';
+                badge.innerText = `? ${kelime.length} Harf`;
+            }
+            listeContainer.appendChild(badge);
+        });
+    }
+
+    const gridKutular = document.getElementById('wow2GridKutular');
+    const ogreticiGrid = document.getElementById('wow2OgreticiGrid');
+
+    function dokunmaIsle(e, handler) {
+        const touch = e.touches[0];
+        const target = document.elementFromPoint(touch.clientX, touch.clientY);
+        if (target && target.classList.contains('grid-hucre')) handler(target);
+    }
+
+    gridKutular.addEventListener('touchstart', (e) => { isDragging = true; dokunmaIsle(e, wow2HucreTıkla); }, { passive: true });
+    gridKutular.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        if (e.cancelable) e.preventDefault();
+        dokunmaIsle(e, wow2HucreTıkla);
+    }, { passive: false });
+
+    ogreticiGrid.addEventListener('touchstart', (e) => { isDragging = true; dokunmaIsle(e, wow2OgreticiHucreTıkla); }, { passive: true });
+    ogreticiGrid.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        if (e.cancelable) e.preventDefault();
+        dokunmaIsle(e, wow2OgreticiHucreTıkla);
+    }, { passive: false });
+
+    window.addEventListener('mouseup', () => isDragging = false);
+    window.addEventListener('touchend', () => isDragging = false);
+
+    wow2BolumYukle(mevcutBolumIndex);
 </script>
+
+
+
+  
 
 
 
