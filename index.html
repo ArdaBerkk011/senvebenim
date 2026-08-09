@@ -5487,7 +5487,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         max-width: 520px;
         background: rgba(30, 41, 59, 0.98);
         border: 1px solid rgba(255, 255, 255, 0.12);
-        padding: 25px;
+        padding: 25px; /* İç boşluğu 25px'ten 15px'e düşürdük, dikeyde nefes aldırır */
         border-radius: 24px;
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
         text-align: center;
@@ -5626,8 +5626,9 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     .wow2-bulmaca-arkaplan-kapsul {
         position: relative;
         width: 100%;
-        min-height: 320px;
-        flex-grow: 1;
+        min-height: 230px !important; /* Ne çok kısa ne çok uzun, tam kararında */
+        max-height: 260px !important;
+        flex-grow: 0 !important;
         border-radius: 14px;
         overflow: hidden;
         border: 1px solid rgba(255, 255, 255, 0.08);
@@ -5637,6 +5638,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         display: flex;
         justify-content: center;
         align-items: center;
+    }
     }
     .wow2-bulmaca-arkaplan-kapsul::before {
         content: '';
