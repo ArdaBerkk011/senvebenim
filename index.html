@@ -5367,6 +5367,15 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
 
 <style>
+    /* OYUN AÇIKKEN ARKA PLAN KAYDIRMASINI VE AÇMA BUTONUNU GİZLER */
+    body.wow2-oyun-kilitli {
+        overflow: hidden !important;
+    }
+
+    body.wow2-oyun-kilitli .wow2-sabit-ac-btn {
+        display: none !important;
+    }
+
     /* SİTENİN SAĞ ÜSTÜNDEKİ SABİT OYUN BUTONU */
     .wow2-sabit-ac-btn {
         position: fixed;
@@ -5393,8 +5402,8 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     }
 
     .wow2-sabit-ac-btn:hover {
-        ransform: translateY(-2px) scale(1.03);
-        box-shadow: 0 14px 24px -5px rgba(14, 165, 233, 0.7);
+        transform: translateY(-2px) scale(1.03);
+        box-shadow: 0 14px 30px rgba(14, 165, 233, 0.6);
     }
 
     /* OYUN KAPSAYICISI VE TÜM İÇ ELEMANLARIN İZOLE İSTİLLENMESİ */
@@ -5858,7 +5867,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
 <!-- SİTENİN SAĞ ÜSTÜNDEKİ SABİT OYUN BUTONU -->
 <button class="wow2-sabit-ac-btn" onclick="wow2OyunuAc()">
-    <span>🎮</span>
+    <span>🎮</span> 
 </button>
 
 <!-- TAM EKRAN POPUP OVERLAY -->
@@ -5878,7 +5887,8 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             <span id="wow2Skor" class="ust-bilgi-rozet">Puan: 0</span>
             <div class="sag-ust-butonlar">
                 <button class="ikon-btn" title="İpucu Al (-20 Puan)" onclick="wow2IpucuAl()">💡</button>
-                <button class="ikon-btn" title="Ana Menüye Dön / Kapat" onclick="wow2MenuyuAcKapat()">✕</button>
+                <!-- ÇARPI BUTONU: ÖNCE MENÜYE DÖNER, MENÜDEYSE OYUNU KAPATIR -->
+                <button class="ikon-btn" title="Menü / Çıkış" onclick="wow2CarpiTiklandi()">✕</button>
             </div>
         </div>
 
@@ -5901,7 +5911,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         <div id="wow2OgreticiMenu" class="wow2-modal gizli">
             <div class="menu-baslik">
                 <h2>Öğretici Bölüm</h2>
-                <p>Parmağını zigzag çizerek harfler üzerinde kaydır!</p>
+                <p>Parmağını zikzak çizerek harfler üzerinde kaydır!</p>
             </div>
 
             <div class="ogretici-ipucu-kutusu">
@@ -6110,10 +6120,40 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
     function wow2OyunuAc() {
         document.getElementById('wow2OyunModalOverlay').classList.add('aktif');
+        document.body.classList.add('wow2-oyun-kilitli');
     }
 
     function wow2OyunuKapat() {
         document.getElementById('wow2OyunModalOverlay').classList.remove('aktif');
+        document.body.classList.remove('wow2-oyun-kilitli');
+    }
+
+    /* ÇARPIYA BASILDIĞINDA KONTROL EDEN MEKANİZMA */
+    function wow2CarpiTiklandi() {
+        const anaMenu = document.getElementById('wow2AnaMenu');
+        const kurallarMenu = document.getElementById('wow2KurallarMenu');
+        const temaMenu = document.getElementById('wow2TemaMenu');
+        const ogreticiMenu = document.getElementById('wow2OgreticiMenu');
+
+        // Eğer alt menülerden biri açıksa ana menüye döner
+        if (!kurallarMenu.classList.contains('gizli')) {
+            kurallarMenu.classList.add('gizli');
+            anaMenu.classList.remove('gizli');
+            return;
+        }
+        if (!temaMenu.classList.contains('gizli')) {
+            temaMenu.classList.add('gizli');
+            anaMenu.classList.remove('gizli');
+            return;
+        }
+
+        // Eğer oyunun içindeysek (Ana Menü gizliyse ve öğretici kapalıysa) Ana Menüyü açar
+        if (anaMenu.classList.contains('gizli') && ogreticiMenu.classList.contains('gizli')) {
+            anaMenu.classList.remove('gizli');
+        } else {
+            // Zaten Ana Menüdeysek veya Öğreticideysek tamamen kapatıp siteye atar
+            wow2OyunuKapat();
+        }
     }
 
     function wow2OyunuBaslat() {
@@ -6124,7 +6164,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         }
     }
 
-    /* BÜYÜK GEÇİŞ DUYURUSU VE ZAMANLAYICI (2.5 SANİYE) */
     function wow2BüyükGecisGoster(baslik, altYazi, callback) {
         const gecisEkrani = document.getElementById('wow2GecisEkrani');
         document.getElementById('wow2GecisBaslik').innerText = baslik;
@@ -6140,7 +6179,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         }, 2500);
     }
 
-    /* ZİKZAK YOLUYLA DİZİLMİŞ ÖĞRETİCİ SİSTEMİ */
     function wow2OgreticiBaslat() {
         document.getElementById('wow2AnaMenu').classList.add('gizli');
         document.getElementById('wow2OgreticiMenu').classList.remove('gizli');
@@ -6247,23 +6285,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         document.getElementById('wow2OgreticiMenu').classList.add('gizli');
     }
 
-    /* MENÜ AÇ / KAPAT TOGGLE FONKSİYONU */
-    function wow2MenuyuAcKapat() {
-        const anaMenu = document.getElementById('wow2AnaMenu');
-        const ogreticiMenu = document.getElementById('wow2OgreticiMenu');
-        const kurallarMenu = document.getElementById('wow2KurallarMenu');
-        const temaMenu = document.getElementById('wow2TemaMenu');
-
-        if (anaMenu.classList.contains('gizli')) {
-            anaMenu.classList.remove('gizli');
-            ogreticiMenu.classList.add('gizli');
-            kurallarMenu.classList.add('gizli');
-            temaMenu.classList.add('gizli');
-        } else {
-            anaMenu.classList.add('gizli');
-        }
-    }
-
     function wow2KurallarAc() { document.getElementById('wow2KurallarMenu').classList.remove('gizli'); }
     function wow2KurallarKapat() { document.getElementById('wow2KurallarMenu').classList.add('gizli'); }
     function wow2TemaMenusuAc() { document.getElementById('wow2TemaMenu').classList.remove('gizli'); }
@@ -6287,7 +6308,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             document.getElementById('wow2Skor').innerText = `Puan: 0`;
             wow2BolumYukle(0);
             wow2BildirimGoster('🗑️ Kayıt Sıfırlandı!', 'yanlis');
-            wow2MenuyuAcKapat();
         }
     }
 
