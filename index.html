@@ -5380,24 +5380,23 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     .wow2-sabit-ac-btn {
         position: fixed;
         color: #ff477e !important;
-        top: 14px;          /* Zarın üst mesafesiyle aynı seviye */
-        right: 10px;        /* 80px yaparak zarın sol yanına kaydırdık */
+        top: 14px;
+        right: 10px;
         width: 43px!important;
         height: 44px!important; 
         border: 1px solid #ffc2d1 !important;
-        background: linear-gradient(135deg, #0ea5e9, #2563eb);
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         border: 2px solid rgba(255, 117, 140, 0.5);
-        border-radius: 50%; /* Tam yuvarlak yapar */
+        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 24px;
         cursor: pointer;
         z-index: 999998;
-        bbox-shadow: 0 4px 12px rgba(255, 105, 180, 0.15) !important; /* Parlamayı yumuşattık */
+        box-shadow: 0 4px 12px rgba(255, 105, 180, 0.15) !important;
         transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
@@ -5622,6 +5621,39 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         margin-bottom: 8px;
     }
 
+    /* KATEGORİ LİSTESİ GRID (100 KATEGORİ İÇİN) */
+    .kategori-grid-liste {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        width: 100%;
+        max-height: 380px;
+        overflow-y: auto;
+        padding-right: 4px;
+    }
+
+    .kategori-grid-item {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 10px;
+        padding: 10px 8px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: #e2e8f0;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .kategori-grid-item:hover {
+        background: rgba(14, 165, 233, 0.25);
+        border-color: #38bdf8;
+        transform: translateY(-2px);
+    }
+
     /* MİNİ ÖĞRETİCİ CSS */
     .ogretici-ipucu-kutusu {
         background: rgba(14, 165, 233, 0.15);
@@ -5732,6 +5764,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         max-width: 420px;
         flex: 1;
         max-height: 520px;
+        touch-action: none;
     }
 
     #wow2OyunModalOverlay .grid-hucre {
@@ -5856,11 +5889,13 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         align-items: center;
         justify-content: center;
         gap: 6px;
-        transition: transform 0.1s ease;
+        transition: transform 0.1s ease, background-color 0.2s ease;
     }
 
     #wow2OyunModalOverlay .wow2-btn:active { transform: scale(0.97); }
     #wow2OyunModalOverlay .ana-btn { background: linear-gradient(135deg, #0ea5e9, #2563eb); color: white; }
+    #wow2OyunModalOverlay .extra-btn { background: linear-gradient(135deg, #a855f7, #6366f1); color: white; }
+    #wow2OyunModalOverlay .extra-btn.kilitli { background: rgba(255, 255, 255, 0.08); color: #64748b; border: 1px dashed rgba(255, 255, 255, 0.2); }
     #wow2OyunModalOverlay .alt-btn { background: rgba(255, 255, 255, 0.08); color: #cbd5e1; border: 1px solid rgba(255, 255, 255, 0.12); }
     #wow2OyunModalOverlay .tehlike-btn { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
 </style>
@@ -5883,11 +5918,10 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
         <!-- ÜST BAR -->
         <div class="oyun-ust-bar">
-            <span id="wow2BolumYazi" class="ust-bilgi-rozet">Bölüm 1/100</span>
+            <span id="wow2BolumYazi" class="ust-bilgi-rozet">Bölüm 1/200</span>
             <span id="wow2Skor" class="ust-bilgi-rozet">Puan: 0</span>
             <div class="sag-ust-butonlar">
                 <button class="ikon-btn" title="İpucu Al (-20 Puan)" onclick="wow2IpucuAl()">💡</button>
-                <!-- ÇARPI BUTONU: ÖNCE MENÜYE DÖNER, MENÜDEYSE OYUNU KAPATIR -->
                 <button class="ikon-btn" title="Menü / Çıkış" onclick="wow2CarpiTiklandi()">✕</button>
             </div>
         </div>
@@ -5896,10 +5930,12 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         <div id="wow2AnaMenu" class="wow2-modal">
             <div class="menu-baslik">
                 <h2>KELİME AVI</h2>
-                <p>100 Farklı Kategori & Bölüm</p>
+                <p>200 Bölüm + 100 Ekstra Bölüm</p>
+				<p>ÖNEMLİ: Kurallar ve Bilgi Kısmını Oku.<p>
             </div>
             <div class="menu-butonlar">
                 <button class="wow2-btn ana-btn" onclick="wow2OyunuBaslat()">🎮 Oyuna Başla</button>
+                <button id="wow2ExtraBtn" class="wow2-btn extra-btn kilitli" onclick="wow2ExtraMenuAc()">🔒 Ekstra Bölümler (200. Bölümde Açılır)</button>
                 <button class="wow2-btn alt-btn" onclick="wow2KurallarAc()">📜 Kurallar & Bilgi</button>
                 <button class="wow2-btn alt-btn" onclick="wow2TemaMenusuAc()">🎨 Tema Seçimi</button>
                 <button class="wow2-btn tehlike-btn" onclick="wow2KaydiSil()">🗑️ Kaydı Sil (Sıfırla)</button>
@@ -5907,11 +5943,23 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             </div>
         </div>
 
+        <!-- EKSTRA BÖLÜMLER / KATEGORİ SEÇİM MODALI -->
+        <div id="wow2ExtraMenu" class="wow2-modal gizli">
+            <div class="menu-baslik">
+                <h2>EKSTRA BÖLÜMLER</h2>
+                <p>100 Farklı Özel Kategori</p>
+            </div>
+            <div id="wow2KategoriListe" class="kategori-grid-liste"></div>
+            <div class="menu-butonlar" style="margin-top: 10px;">
+                <button class="wow2-btn ana-btn" onclick="wow2ExtraMenuKapat()">Geri Dön</button>
+            </div>
+        </div>
+
         <!-- ZORLAŞTIRILMIŞ MİNİ ÖĞRETİCİ MODALI -->
         <div id="wow2OgreticiMenu" class="wow2-modal gizli">
             <div class="menu-baslik">
                 <h2>Öğretici Bölüm</h2>
-                <p>Parmağını zikzak çizerek harfler üzerinde kaydır!</p>
+                <p>Parmağını zikzak çizerek harfler üzerinde kaydır! veya tektek tıka</p>
             </div>
 
             <div class="ogretici-ipucu-kutusu">
@@ -5937,11 +5985,15 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             </div>
             <div class="kurallar-icerik">
                 <ul>
-                    <li><b>Oyun Yapısı:</b> Oyunumuz tam <b>100 farklı tematik bölümden</b> oluşmaktadır.</li>
-                    <li><b>Sürüklemeli / Zikzaklı Seçim:</b> Parmağınızı veya farenizi harfler üzerinde sürükleyerek komşu harfleri birleştirebilirsiniz. Sadece düz değil, çapraz ve bükülmeli hat çizebilirsiniz.</li>
-                    <li><b>Puanlama:</b> Her doğru kelime <b>+40 puan</b> kazandırır.</li>
-                    <li><b>İpucu Kullanımı:</b> Sağ üstteki 💡 butonuna tıklayarak <b>-20 puan</b> karşılığında gizli kelimenin ilk harfini görebilirsiniz.</li>
-                    <li><b>Kayıt Sistemi:</b> Bölüm ve puan durumunuz tarayıcınıza otomatik kaydedilir.</li>
+                    <li><b>Ana Hikaye:</b> Oyun ilk aşamada <b>200 ana bölümden</b> oluşur.</li>
+                    <li><b>Ekstra Bölümler:</b> 200 bölümü tamamladığınızda <b>100 özel kategorilik</b> ekstra bölüm modunun kilidi açılır.</li>
+                    <li><b>Sürüklemeli / Zikzaklı Seçim:</b> Parmağınızı veya farenizi harfler üzerinde sürükleyerek komşu harfleri birleştirebilirsiniz.</li>
+                    <li><b>Puanlama:</b> Her doğru kelime <b>+20 puan</b> kazandırır.</li>
+                    <li><b>İpucu Kullanımı:</b> 💡 butonuna tıklayarak <b>-20 puan</b> karşılığında ipucu alabilirsiniz.</li>
+					<li>ÖNEMLİ: Oyuna başlamadan önce (tek seferlik) 🗑️ Kaydı Sil (Sıfırla) butonu ile sıfırlayıp başla.</li>
+					<li>ÖNEMLİ: Tarayıcı verilerini / önbelleğini (site verilerini) tamamen sıfırlarsanız veya temizlerseniz İlerleme Silinir.</li>
+					<li>ÖNEMLİ: Bildiğin kelimenin üstünden geçebilirsin tekrar kullanılabilir harfler.</li>
+					
                 </ul>
             </div>
             <div class="menu-butonlar">
@@ -5949,7 +6001,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             </div>
         </div>
 
-        <!-- TEMA MODALI (5 FARKLI TEMA) -->
+        <!-- TEMA MODALI -->
         <div id="wow2TemaMenu" class="wow2-modal gizli">
             <div class="menu-baslik">
                 <h2>TEMA SEÇİMİ</h2>
@@ -5994,6 +6046,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
 <script>
     const bolumVerileri = [
+        /* 1 - 200 ANA BÖLÜMLER */
         { kategori: "Uzay & Astronomi", kelimeler: ["GALAKSİ", "UZAY", "METEOR", "ROKET", "NEBULA", "YILDIZ"] },
         { kategori: "Okyanus & Deniz", kelimeler: ["MERCAN", "BALIK", "DENİZ", "YUNUS", "DALGA", "YENGEÇ"] },
         { kategori: "Doğa & Zirve", kelimeler: ["KARDELEN", "ZİRVE", "DOĞA", "ORMAN", "RÜZGÂR", "GÜNEŞ"] },
@@ -6044,56 +6097,258 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         { kategori: "İletişim & Uydu", kelimeler: ["ROKET", "UYDU", "SİNYAL", "TELSİZ", "ANTEN", "VERİ"] },
         { kategori: "Bilim & Deney", kelimeler: ["FİZİK", "KİMYA", "DENEY", "ATOM", "MOLEKÜL", "HÜCRE"] },
         { kategori: "Şampiyonluk", kelimeler: ["ŞAMPİYON", "REKOR", "MADALYA", "ZAFER", "BAŞARI", "ALKIŞ"] },
-        { kategori: "Elektronik & Devre", kelimeler: ["DIRENÇ", "KONDANSATÖR", "SENSÖR", "VOLTAJ", "KABLO", "AKIM"] },
+        { kategori: "Elektronik & Devre", kelimeler: ["DİRENÇ", "KONDANSATÖR", "SENSÖR", "VOLTAJ", "KABLO", "AKIM"] },
         { kategori: "Bilişim & Siber", kelimeler: ["ŞİFRE", "GÜVENLİK", "HACKER", "SUNUCU", "DUVAR", "AĞ"] },
         { kategori: "İnternet & Web", kelimeler: ["SİTE", "TARAYICI", "LİNK", "ETİKET", "ALAN", "ARAMA"] },
         { kategori: "Kır Bahçesi", kelimeler: ["PAPATYA", "ÇİMEN", "ARACIK", "TOHUM", "GÜBRE", "SULAMA"] },
         { kategori: "Baharat Çarşısı", kelimeler: ["NANE", "KEKİK", "TARÇIN", "KİMYON", "KARABİBER", "SUMAK"] },
         { kategori: "Kahvaltı Keyfi", kelimeler: ["PEYNİR", "ZEYTİN", "REÇEL", "YUMURTA", "BAL", "TEREYAĞI"] },
-        { kategori: "Fırın & Ekmek", kelimeler: ["EKMEK", "SIMIT", "POĞAÇA", "MAYA", "UN", "TEPSİ"] },
-        { kategori: "Sokak Lezzetleri", kelimeler: ["DÖNER", "KÖFTE", "KUMPİR", "MIDYE", "KOKOREÇ", "TANTUNİ"] },
-        { kategori: "Deniz Ürünleri", kelimeler: ["KARIDES", "AHTAPOT", "KALAMAR", "LEVREK", "ÇUPRA", "SARDALYA"] },
+        { kategori: "Fırın & Ekmek", kelimeler: ["EKMEK", "SİMİT", "POĞAÇA", "MAYA", "UN", "TEPSİ"] },
+        { kategori: "Sokak Lezzetleri", kelimeler: ["DÖNER", "KÖFTE", "KUMPİR", "MİDYE", "KOKOREÇ", "TANTUNİ"] },
+        { kategori: "Deniz Ürünleri", kelimeler: ["KARİDES", "AHTAPOT", "KALAMAR", "LEVREK", "ÇUPRA", "SARDALYA"] },
         { kategori: "Ev & Mobilya", kelimeler: ["KOLTUK", "MASA", "SANDALYE", "DOLAP", "HALI", "PERDE"] },
-        { kategori: "Mutfak Gereçleri", kelimeler: ["TAVUK", "TENCERE", "TABAĞI", "KAŞIK", "ÇATAL", "BIÇAK"] },
+        { kategori: "Mutfak Gereçleri", kelimeler: ["TAVA", "TENCERE", "TABAK", "KAŞIK", "ÇATAL", "BIÇAK"] },
         { kategori: "Banyo & Temizlik", kelimeler: ["SABUN", "ŞAMPUAN", "HAVLU", "AYNA", "KÖPÜK", "SU"] },
-        { kategori: "Moda & Giyim", kelimeler: ["ELBİSE", "PANTOLON", "GÖMLEK", "CEKET", "KEMER", "ŞAPKASI"] },
+        { kategori: "Moda & Giyim", kelimeler: ["ELBİSE", "PANTOLON", "GÖMLEK", "CEKET", "KEMER", "ŞAPKA"] },
         { kategori: "Ayakkabı Dünyası", kelimeler: ["BOT", "ÇİZME", "TERLİK", "SPOR", "TOPUKLU", "BAĞCIK"] },
         { kategori: "Takı & Aksesuar", kelimeler: ["YÜZÜK", "KOLYE", "BİLEZİK", "KÜPE", "SAAT", "TOKA"] },
-        { kategori: "Fotoğrafçılık", kelimeler: ["LENS", "OFLAŞ", "ODAK", "KADRAJ", "POZ", "TRİPOT"] },
+        { kategori: "Fotoğrafçılık", kelimeler: ["LENS", "FLAŞ", "ODAK", "KADRAJ", "POZ", "TRİPOT"] },
         { kategori: "Radyo & Yayın", kelimeler: ["STÜDYO", "MİKROFON", "YAYIN", "FREKANS", "SES", "KULAKLIK"] },
         { kategori: "Oyun & Konsol", kelimeler: ["KONTROL", "TUŞ", "EKRAN", "SKOR", "SEVİYE", "KAZANÇ"] },
         { kategori: "Satranç & Zeka", kelimeler: ["ŞAH", "MAT", "VEZİR", "PİYON", "KALE", "AT"] },
         { kategori: "Kişisel Bakım", kelimeler: ["KREM", "PARFÜM", "TARAK", "MAKYAJ", "LOSYON", "PAMUK"] },
-        { kategori: "Eczane & Şifa", kelimeler: ["VITAMIN", "SURUP", "SARGIL", "TERMOMETRE", "AŞI", "HAP"] },
+        { kategori: "Eczane & Şifa", kelimeler: ["VİTAMİN", "ŞURUP", "SARGI", "TERMOMETRE", "AŞI", "HAP"] },
         { kategori: "Astroloji & Burçlar", kelimeler: ["KOÇ", "BOĞA", "İKİZLER", "YENGEÇ", "ASLAN", "BAŞAK"] },
         { kategori: "Gökyüzü Olayları", kelimeler: ["TUTULMA", "HALE", "ŞİMŞEK", "YILDIRIM", "GÜNBATIMI", "ŞAFAK"] },
         { kategori: "Madenler & Taşlar", kelimeler: ["ELMAS", "ZÜMRÜT", "YAKUT", "SAFİR", "BAKIR", "DEMİR"] },
         { kategori: "Jeoloji & Yer", kelimeler: ["KAYA", "TOPRAK", "KATMAN", "DEPREM", "FAY", "FOSİL"] },
-        { kategori: "Arkeoloji & Kazı", kelimeler: ["KAZI", "LAHIT", "SÜTUN", "ÇANAK", "HARABE", "TABLET"] },
+        { kategori: "Arkeoloji & Kazı", kelimeler: ["KAZI", "LAHİT", "SÜTUN", "ÇANAK", "HARABE", "TABLET"] },
         { kategori: "Felsefe & Düşünce", kelimeler: ["FİKİR", "MANTIK", "BİLGİ", "AKIL", "SEZGİ", "GERÇEK"] },
         { kategori: "Psikoloji & Zihin", kelimeler: ["DUYGU", "BEKLEYİŞ", "ALGI", "HAFIZA", "RÜYA", "STRES"] },
-        { kategori: "Sosyoloji & Toplum", kelimeler: ["KÜLTÜR", "BİREY", "HALK", "GELENEK", "SINIFA", "BİRLİK"] },
-        { kategori: "Hukuk & Adalet", kelimeler: ["YASA", "HÂKİM", "MAHKEME", "AVUKAT", "HAK", "ADALET"] },
+        { kategori: "Sosyoloji & Toplum", kelimeler: ["KÜLTÜR", "BİREY", "HALK", "GELENEK", "SINIF", "BİRLİK"] },
+        { kategori: "Hukuk & Adalet", kelimeler: ["YASA", "HAKİM", "MAHKEME", "AVUKAT", "HAK", "ADALET"] },
         { kategori: "Siyaset & Yönetim", kelimeler: ["SEÇİM", "MECLİS", "SİYASET", "KARAR", "KANUN", "OY"] },
         { kategori: "Trafik & Sürüş", kelimeler: ["EHLİYET", "KAVŞAK", "SİNYAL", "KEMER", "FREN", "VİTES"] },
         { kategori: "Liman & Gemi", kelimeler: ["LİMAN", "KAPTAN", "GÜVERTE", "DÜMEN", "FENER", "İSKELE"] },
-        { kategori: "Havalimanı", kelimeler: ["TERMINAL", "BAGAJ", "KONTROL", "BINIŞ", "PIST", "HANGAR"] },
+        { kategori: "Havalimanı", kelimeler: ["TERMİNAL", "BAGAJ", "KONTROL", "BİNİŞ", "PİST", "HANGAR"] },
         { kategori: "Kampüs & Üniversite", kelimeler: ["KAMPÜS", "AMFİ", "PROFESÖR", "TEZ", "LİSANS", "KULÜP"] },
-        { kategori: "Kütüphane", kelimeler: ["RAFF", "SESSİZLİK", "KAYNAK", "ANSİKLOPEDİ", "ARŞİV", "OKUMA"] },
+        { kategori: "Kütüphane", kelimeler: ["RAF", "SESSİZLİK", "KAYNAK", "ANSİKLOPEDİ", "ARŞİV", "OKUMA"] },
         { kategori: "Yayıncılık", kelimeler: ["BASKI", "EDİTÖR", "DERGİ", "GAZETE", "MANŞET", "HABER"] },
         { kategori: "Pazarlama & Satış", kelimeler: ["REKLAM", "MARKA", "ÜRÜN", "İNDİRİM", "MÜŞTERİ", "KAMPANYA"] },
         { kategori: "Lojistik & Kargo", kelimeler: ["PAKET", "TESLİMAT", "DEPO", "ROTA", "ADRES", "TAKİP"] },
-        { kategori: "Otel & Konaklama", kelimeler: ["REZERVASYON", "ODASI", "LOBİ", "RESEPSİYON", "ANAHTAR", "LÜKS"] },
+        { kategori: "Otel & Konaklama", kelimeler: ["REZERVASYON", "ODA", "LOBİ", "RESEPSİYON", "ANAHTAR", "LÜKS"] },
         { kategori: "Gezgin & Turizm", kelimeler: ["TURİST", "MÜZE", "HARİTA", "GEZİ", "REHBER", "ANIT"] },
         { kategori: "Dağcılık & Tırmanış", kelimeler: ["KRAMPON", "HALAT", "KABAN", "ZİRVE", "BUZUL", "TIRMANIŞ"] },
-        { kategori: "Su Sporları", kelimeler: ["SÖRF", "KANO", "HAVUZ", "YÜZME", "DALDIRMA", "PALET"] },
+        { kategori: "Su Sporları", kelimeler: ["SÖRF", "KANO", "HAVUZ", "YÜZME", "DALMA", "PALET"] },
         { kategori: "Kış Sporları", kelimeler: ["BUZPATENİ", "KAYAK", "KIZAK", "SNOWBOARD", "PİST", "MONTAJ"] },
         { kategori: "Çocuk Oyunları", kelimeler: ["MİL", "SAKLAMBAÇ", "KAPMACA", "SEKSEK", "KALE", "MENDİL"] },
-        { kategori: "Motor Sporları", kelimeler: ["RALLİ", "KASK", "YARIŞ", "EGOZ", "PİST", "TRİBÜN"] },
+        { kategori: "Motor Sporları", kelimeler: ["RALLİ", "KASK", "YARIŞ", "EGZOZ", "PİST", "TRİBÜN"] },
         { kategori: "Açık Hava & Park", kelimeler: ["BANK", "YÜRÜYÜŞ", "HAVUZ", "ÇİM", "AĞAÇ", "GÖLGE"] },
         { kategori: "Zekâ Oyunu", kelimeler: ["BULMACA", "SUDOKU", "SAYI", "MANTIK", "AKIL", "ÇÖZÜM"] },
         { kategori: "Yılbaşı & Kutlama", kelimeler: ["HEDİYE", "PASTA", "MUM", "PARTİ", "MÜZİK", "KUTLAMA"] },
-        { kategori: "Büyük Zafer", kelimeler: ["ŞANLI", "BAYRAK", "TÖREN", "MARŞ", "BAĞIMSIZLIK", "VATAN"] }
+        { kategori: "Büyük Zafer", kelimeler: ["ŞANLI", "BAYRAK", "TÖREN", "MARŞ", "BAĞIMSIZLIK", "VATAN"] },
+        { kategori: "Siber Güvenlik", kelimeler: ["KORUMA", "TEHDİT", "ZAFİYET", "YAZILIM", "TARAMA", "YEDEK"] },
+        { kategori: "Tasarım & Grafik", kelimeler: ["PİKSEL", "VEKTÖR", "TEMA", "KATMAN", "PALET", "TUVAL"] },
+        { kategori: "Yapay Zeka", kelimeler: ["MODEL", "VERİ", "EĞİTİM", "ROBOT", "MANTIK", "MİMARİ"] },
+        { kategori: "Mobil Dünya", kelimeler: ["UYGULAMA", "EKRAN", "DOKUNMA", "BİLDİRİM", "PİL", "ŞARJ"] },
+        { kategori: "Tiyatro Sahnesi", kelimeler: ["DEKOR", "SUFLÖR", "KOSTÜM", "REJİ", "MİM", "REPLİK"] },
+        { kategori: "Müzikal Aletler", kelimeler: ["KEMAN", "FLÜT", "BATARYA", "ORG", "TAMBUR", "ZURNA"] },
+        { kategori: "Bale & Dans", kelimeler: ["RİTİM", "TUTU", "KOREOGRAFİ", "ADIM", "MÜZİK", "SAHNE"] },
+        { kategori: "Heykeltıraşlık", kelimeler: ["MERMER", "KİL", "YONTU", "KESKİ", "ÇAMUR", "FİGÜR"] },
+        { kategori: "Fotoğraf Stüdyosu", kelimeler: ["FLAŞ", "FON", "IŞIK", "SENSÖR", "DEKLANŞÖR", "AÇI"] },
+        { kategori: "Yayıncılık & TV", kelimeler: ["CANLI", "KANAL", "SUNUCU", "YAYIN", "REKLAM", "KUMANDA"] },
+        { kategori: "Tarım & Hasat", kelimeler: ["EKİM", "NADAS", "SULAMA", "SABAN", "SAPAN", "VERİM"] },
+        { kategori: "Hayvancılık", kelimeler: ["MERA", "OTLAK", "ÇOBAN", "SÜRÜ", "AĞIL", "SÜT"] },
+        { kategori: "Ormancılık", kelimeler: ["FİDAN", "AĞAÇ", "KÜTÜK", "BALTA", "KORU", "KOZALAK"] },
+        { kategori: "Maden Ocağı", kelimeler: ["KAZMA", "GALERİ", "KÖMÜR", "CEVHER", "KASK", "FOSİL"] },
+        { kategori: "Enerji & Güç", kelimeler: ["RÜZGAR", "GÜNEŞ", "SANTRAL", "TURBİN", "BARAJ", "NÜKLEER"] },
+        { kategori: "Aydınlatma", kelimeler: ["AMPUL", "AVİZE", "FENER", "MUM", "SPOT", "FLORESAN"] },
+        { kategori: "Isıtma & Soğutma", kelimeler: ["KOMBİ", "KLİMA", "RADYATÖR", "SOBA", "BACA", "PANEL"] },
+        { kategori: "Dikiş & Nakış", kelimeler: ["İĞNE", "İPLİK", "MAKAS", "DÜĞME", "DESEN", "KUMAŞ"] },
+        { kategori: "Dokumacılık", kelimeler: ["TEZGAH", "İLMEK", "MİKRO", "HALI", "KİLİM", "DESEN"] },
+        { kategori: "Kırtasiye", kelimeler: ["SİLGİ", "CETVEL", "PERGEL", "BANT", "ZIMBA", "DOSYA"] },
+        { kategori: "Ofis Yaşamı", kelimeler: ["TOPLANTI", "MASA", "PROJE", "RAPOR", "EPOSTA", "SUNUM"] },
+        { kategori: "Lojistik Depo", kelimeler: ["PALET", "FORKLİFT", "KUTU", "ETİKET", "STOK", "RAF"] },
+        { kategori: "Sipariş & Kargo", kelimeler: ["KURYER", "PAKET", "ADRES", "TAKİP", "TESLİM", "MÜHÜR"] },
+        { kategori: "Alışveriş Merkezi", kelimeler: ["MAĞAZA", "VİTRİN", "KASA", "FİŞ", "SEPET", "YÜRÜYEN"] },
+        { kategori: "Restoran & Garson", kelimeler: ["MENÜ", "SİPARİŞ", "TEPSİ", "AŞÇI", "HESAP", "BAHŞİŞ"] },
+        { kategori: "Pastane & Unlu", kelimeler: ["PASTA", "TURTA", "TART", "KREMA", "ÇİKOLATA", "ÇÖREK"] },
+        { kategori: "İçecek Dünyası", kelimeler: ["MEYVESUYU", "AYRAN", "ŞALGAM", "GAZOZ", "SODA", "ŞERBET"] },
+        { kategori: "Çay Saati", kelimeler: ["DEMLİK", "BARDAK", "ŞEKER", "TABAK", "KIVAM", "MOLA"] },
+        { kategori: "Dondurma Keyfi", kelimeler: ["KÜLAH", "KORNET", "KAP", "VANİLYA", "KARAÇALI", "BUZ"] },
+        { kategori: "Piknik Alanı", kelimeler: ["MANGAL", "KİLİM", "SEPET", "SEMAVER", "PARK", "DOĞA"] },
+        { kategori: "Plaj & Deniz", kelimeler: ["ŞEZLONG", "ŞEMSİYE", "HAVLU", "KALE", "GÜNEŞ", "DALGA"] },
+        { kategori: "Yat & Tekne", kelimeler: ["GÜVERTE", "KAPTAN", "SAMPAN", "ÇAPA", "RÜZGAR", "ROTA"] },
+        { kategori: "Kuru Temizleme", kelimeler: ["LEKE", "BUHAR", "ÜTÜ", "ASKI", "KUMAŞ", "YIKAMA"] },
+        { kategori: "Emlak & Konut", kelimeler: ["DAİRE", "MÜSTAKİL", "KİRA", "TAPU", "SALON", "BALKON"] },
+        { kategori: "İnşaat Şantiyesi", kelimeler: ["VİNÇ", "HARÇ", "BRİKET", "MİMAR", "BETON", "TUTKAL"] },
+        { kategori: "Tesisat & Tamir", kelimeler: ["BORU", "VANA", "ANAHTAR", "VİDA", "PENSE", "MATKAP"] },
+        { kategori: "Boyacılık", kelimeler: ["RULO", "FIRÇA", "TİNER", "ASTAR", "VERNİK", "RENK"] },
+        { kategori: "Marangozluk", kelimeler: ["AHŞAP", "TESTERE", "RENDE", "ÇİVİ", "TUTKAL", "PANEL"] },
+        { kategori: "Oto Tamir", kelimeler: ["BUJİ", "BALATA", "EGZOZ", "ŞANZIMAN", "AĞIRLIK", "YAĞ"] },
+        { kategori: "Oto Yıkama", kelimeler: ["KÖPÜK", "CİLA", "SÜNGER", "SÜPÜRGE", "KURULAMA", "SU"] },
+        { kategori: "Bisiklet Sürmek", kelimeler: ["PEDAL", "ZİNCİR", "KASK", "FREN", "GİDON", "TEKER"] },
+        { kategori: "Doğa Yürüyüşü", kelimeler: ["PATİKA", "BATON", "MAT", "SIRTÇANTASI", "ROTA", "ADIM"] },
+        { kategori: "Kamp Ateşi", kelimeler: ["ODUN", "KILÇIK", "KIVILCIM", "ALEV", "ÇALI", "GECE"] },
+        { kategori: "Astrofizik", kelimeler: ["FOTON", "KÜTLE", "GRAVİTE", "IŞIK", "ZAMAN", "ENERJİ"] },
+        { kategori: "Mikrobiyoloji", kelimeler: ["BAKTERİ", "VİRÜS", "DNA", "ENZİM", "DOKU", "LAMEL"] },
+        { kategori: "Genetik Bilimi", kelimeler: ["KROMOZOM", "GENOM", "MUTASYON", "HÜCRE", "SARMAL", "KOD"] },
+        { kategori: "Organik Kimya", kelimeler: ["KARBON", "SENTEZ", "BAĞ", "ASİT", "BAZ", "ÇÖZELTİ"] },
+        { kategori: "Rüzgar Sporları", kelimeler: ["YAMAÇ", "PARAŞÜT", "RÜZGAR", "SÖRF", "UÇURTMA", "SÜZÜLME"] },
+        { kategori: "Avcılık & İz", kelimeler: ["İZTUTMA", "TÜFEK", "PATİKA", "İZLEME", "TUZAK", "KAZANÇ"] },
+        { kategori: "Balıkçılık", kelimeler: ["OLTA", "AĞ", "YEM", "İĞNE", "MİSİNA", "MENDİREK"] },
+        { kategori: "Fotoğraf Kurgusu", kelimeler: ["KIRPMA", "MONTAJ", "AÇI", "DOYGUNLUK", "EFEKT", "KATMAN"] },
+        { kategori: "Ses Stüdyosu", kelimeler: ["AMFİ", "YALITIM", "KAYIT", "KARO", "PANEL", "KABLO"] },
+        { kategori: "E-Spor Turnuvası", kelimeler: ["LİG", "TAKIM", "HARİTA", "CİHAZ", "PİNG", "YAYIN"] },
+        { kategori: "Masa Oyunları", kelimeler: ["ZAR", "PUL", "TABLO", "KART", "HAMLE", "KAZANAN"] },
+        { kategori: "Akvaryum Dünyası", kelimeler: ["FİLTRE", "KUM", "MOTOR", "YEM", "SÜS", "CAM"] },
+        { kategori: "Kuş Gözlemciliği", kelimeler: ["DÜRBÜN", "TÜR", "ÖTÜŞ", "KANAT", "GÖÇ", "YUVA"] },
+        { kategori: "Botanik Bahçesi", kelimeler: ["SERA", "SULAMA", "TÜR", "SATIŞ", "SÖĞÜT", "GÖVDE"] },
+        { kategori: "Sera Yetiştiriciliği", kelimeler: ["NAYLON", "SICAKLIK", "NEM", "FİDE", "TOPRAKSIZ", "ÜRÜN"] },
+        { kategori: "Pazar Yeri", kelimeler: ["TEZGAH", "ETİKET", "TARTI", "POŞET", "SEBZE", "TELAŞ"] },
+        { kategori: "Bit Pazarı", kelimeler: ["ANTİKA", "KOLEKSİYON", "ESKİ", "LAMBA", "SAAT", "PAZARLIK"] },
+        { kategori: "Müzayede Salonu", kelimeler: ["PEY", "ÇEKİÇ", "TABLO", "TEKLİF", "ESER", "SATIŞ"] },
+        { kategori: "Kütüphane Arşivi", kelimeler: ["CİLT", "TASLAK", "GAZETE", "BELGE", "KAYIT", "MİKROFİLM"] },
+        { kategori: "Kültür Merkezi", kelimeler: ["SERGİ", "PANEL", "KONFERANS", "SALON", "AFİŞ", "BİLET"] },
+        { kategori: "Fuar & Stant", kelimeler: ["BROŞÜR", "STANT", "SUNUM", "SEKTÖR", "KARTVİZİT", "TEMAS"] },
+        { kategori: "Festival Coşkusu", kelimeler: ["SAHNE", "MÜZİK", "IŞIK", "BİLET", "ALAN", "EĞLENCE"] },
+        { kategori: "Lunapark Treni", kelimeler: ["HIZ", "KORKU", "RAY", "VAGON", "ÇIĞLIK", "KEMER"] },
+        { kategori: "Sirk Gösterisi", kelimeler: ["ÇADIR", "AKROBAT", "PALYAÇO", "İP", "DENGE", "GÖSTERİ"] },
+        { kategori: "Buz Pateni Pisti", kelimeler: ["PATEN", "BUZ", "PİST", "KAYMA", "MÜZİK", "DÖNÜŞ"] },
+        { kategori: "Bowling Salonu", kelimeler: ["LABUT", "TOP", "AYAKKABI", "FAUL", "SKOR", "HAT"] },
+        { kategori: "Bilardo Masası", kelimeler: ["ISTEKA", "TOP", "TEBEŞİR", "BANT", "DELİK", "CEB"] },
+        { kategori: "Masa Tenisi", kelimeler: ["RAKET", "FİLE", "TOP", "MASA", "SERVİS", "SAYI"] },
+        { kategori: "Kort Tenisi", kelimeler: ["RAKET", "KORT", "TOP", "SERVİS", "HAKEM", "SET"] },
+        { kategori: "Okçuluk", kelimeler: ["YAY", "OK", "HEDEF", "MİNDER", "SADAK", "ATIŞ"] },
+        { kategori: "Atıcılık", kelimeler: ["POLİGON", "HEDEF", "TÜFEK", "KASK", "ATIŞ", "TETİK"] },
+        { kategori: "Binicilik", kelimeler: ["AT", "EYER", "KASK", "KAMÇI", "ENGEL", "HİPODROM"] },
+        { kategori: "Güreş Meydanı", kelimeler: ["MİNDER", "CAZGIR", "PEHLİVAN", "KISPET", "YAĞ", "KÜNDE"] },
+        { kategori: "Boks Ringi", kelimeler: ["RİNG", "ELDİVEN", "RAUNT", "KÖŞE", "HAKEM", "NAKAVT"] },
+        { kategori: "Uzak Doğu Sporu", kelimeler: ["TATAMİ", "KUŞAK", "KİMONO", "SALON", "MÜCADELE", "DİSİPLİN"] },
+        { kategori: "Maraton Koşusu", kelimeler: ["PARKUR", "GÖĞÜS", "ÇİP", "BİTİŞ", "SU", "MADALYA"] },
+        { kategori: "Yüzme Yarışı", kelimeler: ["KULVAR", "BONUS", "GÖZLÜK", "PİST", "DÖNÜŞ", "ÇIKIŞ"] },
+        { kategori: "Kano & Rafting", kelimeler: ["KÜREK", "BOT", "CANYELEĞİ", "AKINTI", "KANYON", "KASK"] },
+        { kategori: "Mağaracılık", kelimeler: ["KASK", "FENER", "DİKİT", "SARKIT", "HALAT", "GİZEM"] },
+        { kategori: "Tırmanma Duvarı", kelimeler: ["TUTAMAK", "HALAT", "MİNDER", "AYAKKABI", "EMNİYET", "ROTA"] },
+        { kategori: "Bungee Jumping", kelimeler: ["HALAT", "KULE", "ATLAMA", "ADRENALİN", "SERBEST", "DÜŞÜŞ"] },
+        { kategori: "Skateboard Park", kelimeler: ["KAYKAY", "RAMPA", "TEKER", "TAHTA", "KASK", "NUMARA"] },
+        { kategori: "Paten Kayma", kelimeler: ["PATEN", "DİZLİK", "TEKER", "ASFALT", "DENGE", "HIZ"] },
+        { kategori: "Buz Hokeyi", kelimeler: ["DİSK", "SOPA", "PİST", "KASK", "KALE", "BUZ"] },
+        { kategori: "Golf Sahası", kelimeler: ["SOPA", "DELİK", "TOP", "ÇİM", "ARABA", "ENGEL"] },
+        { kategori: "Amerikan Futbolu", kelimeler: ["OVAL", "KASK", "OMUZLUK", "SAHA", "PAS", "SAYI"] },
+        { kategori: "Rugby Sahası", kelimeler: ["OVAL", "SAVAŞ", "PAS", "ÇİZGİ", "TAKIM", "MÜCADELE"] },
+        { kategori: "Badminton", kelimeler: ["TÜYLÜ", "RAKET", "FİLE", "KORT", "SERVİS", "SMAÇ"] },
+        { kategori: "Hentbol", kelimeler: ["KALE", "SALON", "PAS", "ŞUT", "ALTI", "HAKEM"] },
+        { kategori: "Su Topu", kelimeler: ["HAVUZ", "KAPAK", "KALE", "TOP", "YÜZME", "FAUL"] },
+        { kategori: "Körling Oyunu", kelimeler: ["BUZ", "SÜPÜRGE", "TAŞ", "HEDEF", "PİST", "TAKIM"] },
+        { kategori: "Formula Yarışı", kelimeler: ["ARABA", "PİST", "PİT", "KASK", "BAYRAK", "TUR"] },
+        { kategori: "Ralli Parkuru", kelimeler: ["TOPRAK", "VİRAJ", "COPİLOT", "ARABA", "TOZ", "SÜRE"] },
+        { kategori: "Karting Pisti", kelimeler: ["MİNİ", "YARIŞ", "PİST", "KASK", "PEDAL", "TUR"] },
+        { kategori: "Yat Yarışı", kelimeler: ["YELKEN", "RÜZGAR", "ŞAMANDIRA", "DÜMEN", "TAKIM", "DALGA"] },
+        { kategori: "Sörf Dalgası", kelimeler: ["TAHTA", "DALGA", "DENİZ", "DENGE", "ISLAK", "GÜNEŞ"] },
+        { kategori: "Büyük Şampiyonluk", kelimeler: ["ŞAMPİYON", "KUPA", "MADALYA", "LİDER", "ZAFER", "ZİRVE"] },
+
+        /* 201 - 300 EKSTRA KATEGORİLER (100 ADET) */
+        { kategori: "Süper Kahramanlar", kelimeler: ["ÇELİK", "MASKE", "PELERİN", "GÜÇ", "KOSTÜM", "KAHRAMAN"] },
+        { kategori: "Çizgi Film Alemi", kelimeler: ["ANİMASYON", "BÖLÜM", "MİZAH", "KARAKTER", "ÇİZİM", "KANAL"] },
+        { kategori: "Dünya Mutfakları", kelimeler: ["SUŞİ", "PİZZA", "TAKO", "MAKARNA", "NOODLE", "KÖRİ"] },
+        { kategori: "Nostaljik Oyuncaklar", kelimeler: ["BİLYE", "TOPAÇ", "SAPAN", "UD", "TETRİS", "BEBEK"] },
+        { kategori: "Sokak Oyunları", kelimeler: ["YAKANTOP", "MENDİL", "ÇELİK", "ÇOMAK", "KALE", "EBE"] },
+        { kategori: "Deniz Kıyısı Kasabası", kelimeler: ["BALIKÇI", "ÇAY", "TAKA", "DALGA", "YALI", "KUM"] },
+        { kategori: "Köy Kahvesi", kelimeler: ["SABAH", "ÇAY", "RUSTİK", "SOHBET", "OYUN", "TAHTA"] },
+        { kategori: "Ağaç Ev", kelimeler: ["TAHTA", "MERDİVEN", "DAL", "ORMAN", "ÇOCUK", "GİZLİ"] },
+        { kategori: "Gizli Ajan & Casus", kelimeler: ["GÖREV", "CASUS", "SİNYAL", "ŞİFRE", "TAKİP", "MASKE"] },
+        { kategori: "Polisiye & Suç", kelimeler: ["DEDEKTİF", "DELİL", "İZ", "İPUCU", "ZANLI", "OLAY"] },
+        { kategori: "Kripto & Blockchain", kelimeler: ["COIN", "BLOK", "CÜZDAN", "MADEN", "AĞ", "TAKAS"] },
+        { kategori: "Yapay Zeka Sanatı", kelimeler: ["PROMPT", "GÖRSEL", "MODEL", "PİKSEL", "ÜRETİM", "FİKİR"] },
+        { kategori: "Retro Oyunlar", kelimeler: ["ATARİ", "PİKSEL", "JETON", "SKOR", "KARTUŞ", "LEVEL"] },
+        { kategori: "VR & Sanal Gerçeklik", kelimeler: ["KASK", "GÖZLÜK", "BOYUT", "SİMÜLE", "EVREN", "AVATAR"] },
+        { kategori: "Siber Çılgınlık", kelimeler: ["NEON", "GECE", "SİSTEM", "KOD", "GELECEK", "ROBOT"] },
+        { kategori: "Akıllı Ev Teknolojisi", kelimeler: ["ROBOT", "OTOMATİK", "SES", "LAMBA", "KOMUT", "AĞ"] },
+        { kategori: "Yenilenebilir Enerji", kelimeler: ["RÜZGAR", "PİL", "SÜRDÜR", "BİO", "GÜNEŞ", "DOĞA"] },
+        { kategori: "Elektrikli Araçlar", kelimeler: ["ŞARJ", "BATARYA", "MENZİL", "SESSİZ", "SÜRÜŞ", "MOTOR"] },
+        { kategori: "Otonom Sürüş", kelimeler: ["SENSÖR", "YOL", "KAMERA", "RADAR", "Yazılım", "SÜRÜCÜSÜZ"] },
+        { kategori: "Drone Teknolojisi", kelimeler: ["PERVANE", "KUMANDA", "ÇEKİM", "UÇUŞ", "HAVADAN", "İHA"] },
+        { kategori: "Kahve Gurmesi", kelimeler: ["FİLTRE", "LATTE", "ÇEKİRDEK", "MEŞE", "AROMA", "DEMLEME"] },
+        { kategori: "Çikolata Atölyesi", kelimeler: ["KAKAO", "BITTER", "SÜTLÜ", "TRUF", "KREMA", "LEZZET"] },
+        { kategori: "Organik Tarım", kelimeler: ["GÜBRESİZ", "TOHUM", "GIDA", "TOPRAK", "SAĞLIK", "ÜRÜN"] },
+        { kategori: "Aromaterapi", kelimeler: ["YAĞ", "BİTKİ", "LAVANTA", "KOKU", "HUZUR", "MASAJ"] },
+        { kategori: "Yoga & Meditasyon", kelimeler: ["NEFES", "ZİHİN", "MAT", "ODAK", "DENGE", "HUZUR"] },
+        { kategori: "Pilates Fitness", kelimeler: ["ESNEK", "KAS", "SPOR", "MİNDER", "HAREKET", "SIRT"] },
+        { kategori: "Sağlıklı Beslenme", kelimeler: ["DETOKS", "DİYET", "PROTEİN", "SEBZE", "SU", "TAZE"] },
+        { kategori: "Açık Hava Sineması", kelimeler: ["PERDE", "MİNDER", "MISIR", "GECE", "YILDIZ", "FİLM"] },
+        { kategori: "Kamp Ateşi Müzikleri", kelimeler: ["GİTAR", "ŞARKI", "ATEŞ", "DOST", "GECE", "AKORT"] },
+        { kategori: "Yol Yolculuğu (Roadtrip)", kelimeler: ["ROTA", "MÜZİK", "YOL", "MANZARA", "MOLA", "BENZİN"] },
+        { kategori: "Antika Otomobiller", kelimeler: ["KLASİK", "KROM", "GARAJ", "MOTOR", "TIRAK", "DEĞER"] },
+        { kategori: "Deniz Kabukları", kelimeler: ["KUM", "DALGA", "SAHİL", "TOPLAMA", "SEDEF", "MARİN"] },
+        { kategori: "Mercan Resifleri", kelimeler: ["RENKLİ", "BALIK", "SÜNGER", "DERİNLİK", "OŞİNOGRAFİ", "TÜR"] },
+        { kategori: "Kutup Işıkları", kelimeler: ["AURORA", "GECE", "YEŞİL", "IŞIK", "DANS", "SOĞUK"] },
+        { kategori: "Kanyon Geçişi", kelimeler: ["VADİ", "KAYA", "RİVER", "TIRMANIŞ", "BOĞAZ", "MACERA"] },
+        { kategori: "Şelale & Çağlayan", kelimeler: ["SU", "DÖKÜLME", "KÖPÜK", "SES", "SERİNLİK", "DOĞA"] },
+        { kategori: "Mağara Keşfi", kelimeler: ["SARKIT", "DİKİT", "KARANLIK", "FENER", "KAYA", "DERİN"] },
+        { kategori: "Samanlık & Çiftlik", kelimeler: ["SAMAN", "KÜMES", "SÜRÜ", "KÖPEK", "AT", "HOROZ"] },
+        { kategori: "Bağ Bozumu", kelimeler: ["ÜZÜM", "SEPET", "BAĞ", "TOPLAMA", "GÜNEŞ", "LEZZET"] },
+        { kategori: "Zeytin Hasadı", kelimeler: ["ZEYTİN", "YAĞ", "SEPET", "AĞAÇ", "EGE", "TANE"] },
+        { kategori: "Kış Bahçesi", kelimeler: ["CAM", "SERA", "ÇİÇEK", "SICAK", "KAHVE", "KAR"] },
+        { kategori: "Ahşap Oymacılığı", kelimeler: ["DESEN", "KESKİ", "AĞAÇ", "TALAŞ", "CİLA", "SANAT"] },
+        { kategori: "Seramik & Çömlek", kelimeler: ["ÇAMUR", "ÇARK", "FIRIN", "SIR", "VAZO", "TABAK"] },
+        { kategori: "Ebru Sanatı", kelimeler: ["SU", "BOYA", "FIRTINA", "DESEN", "KAĞIT", "TARAĞI"] },
+        { kategori: "Minyatür Sanatı", kelimeler: ["İNCE", "FIRÇA", "DETAY", "RENK", "EL", "SANAT"] },
+        { kategori: "Kaligrafi & Hat", kelimeler: ["MÜREKKEP", "KAMIŞ", "HARF", "YAZI", "DESEN", "SANAT"] },
+        { kategori: "Origami Kağıt Katlama", kelimeler: ["KAĞIT", "KATLAMA", "KUŞ", "ŞEKİL", "JAPON", "SANAT"] },
+        { kategori: "Puzzle & Yapboz", kelimeler: ["PARÇA", "KUTU", "ODAK", "RESİM", "MANTIK", "BİRLEŞİM"] },
+        { kategori: "Kutu Oyunları Night", kelimeler: ["ZAR", "KART", "MASA", "SOHBET", "EĞLENCE", "REKABET"] },
+        { kategori: "Zeka Bilmeceleri", kelimeler: ["SURET", "MANTIK", "İPUCU", "AKIL", "ÇÖZÜM", "GİZEM"] },
+        { kategori: "Sokak Sanatı & Grafiti", kelimeler: ["SPREY", "DUVAR", "RENK", "SANAT", "SOKAK", "ÇİZİM"] },
+        { kategori: "Büyük Kütüphaneler", kelimeler: ["MİMARİ", "RAF", "SESSİZ", "TARİH", "KİTAP", "BİLGİ"] },
+        { kategori: "Tarihi Saat Kuleleri", kelimeler: ["MEYDAN", "ÇAN", "ZAMAN", "MİMARİ", "ŞEHİR", "KADRAN"] },
+        { kategori: "Eski Taş Köprüler", kelimeler: ["KEMER", "NEHİR", "TAŞ", "GEÇİT", "TARİH", "MİMAR"] },
+        { kategori: "Yeryüzü Şekilleri", kelimeler: ["PLATO", "OVALIK", "TEPE", "VADİ", "DAĞ", "KANYON"] },
+        { kategori: "Okyanus Akıntıları", kelimeler: ["SU", "SICAK", "SOĞUK", "RÜZGAR", "DALGA", "DENİZ"] },
+        { kategori: "Rüzgar Türbinleri", kelimeler: ["PERVANE", "KULE", "RÜZGAR", "ELEKTRİK", "TAVAN", "GÜÇ"] },
+        { kategori: "Güneş Tarlaları", kelimeler: ["PANEL", "IŞIK", "GÜNEŞ", "ENERJİ", "ÇEVRE", "GÜÇ"] },
+        { kategori: "Barajlar & Göletler", kelimeler: ["SU", "DUVAR", "SANTRAL", "KAPAK", "GÖL", "TUTMA"] },
+        { kategori: "Sualtı Mağaraları", kelimeler: ["DALGIÇ", "TÜP", "IŞIK", "KAYA", "DERİN", "GİZEM"] },
+        { kategori: "Buzul Gölleri", kelimeler: ["MAVİ", "SOĞUK", "ERİME", "DAĞ", "BUZ", "BERRAK"] },
+        { kategori: "Kümülüs Bulutları", kelimeler: ["BEYAZ", "PAMUK", "GÖKYÜZÜ", "HAVA", "GÜNEŞ", "RÜZGAR"] },
+        { kategori: "Şimşek & Yıldırım", kelimeler: ["IŞIK", "SES", "GÖK", "BULUT", "ENERJİ", "DEŞARJ"] },
+        { kategori: "Meteor Yağmuru", kelimeler: ["YILDIZ", "GECE", "AKMA", "GÖKYÜZÜ", "DİLEK", "UZAY"] },
+        { kategori: "Güneş Rüzgarı", kelimeler: ["PLAZMA", "SİNYAL", "UZAY", "ENERJİ", "GÜNEŞ", "ALAN"] },
+        { kategori: "Kuvars & Kristaller", kelimeler: ["IŞILTI", "TAŞ", "DOĞAL", "RENK", "PİRAMİT", "MADEN"] },
+        { kategori: "Dinozorlar Çağı", kelimeler: ["FOSİL", "TREX", "DEV", "MÜZE", "TUZAK", "TARİH"] },
+        { kategori: "Kayıp Kıta Atlantis", kelimeler: ["DENİZ", "BATIŞ", "GİZEM", "MEDENİYET", "EFSANE", "ŞEHİR"] },
+        { kategori: "Piramitler & Sfenks", kelimeler: ["MISIR", "KUM", "TAŞ", "ANIT", "KRAL", "MEZAR"] },
+        { kategori: "Mitolojik Yaratıklar", kelimeler: ["GRİFON", "GİGANT", "PERİ", "EJDER", "PEGASUS", "MASAL"] },
+        { kategori: "Şövalyeler & Zırh", kelimeler: ["KILIÇ", "KALKAN", "ZIRH", "AT", "ONUR", "KALE"] },
+        { kategori: "Samuray Disiplini", kelimeler: ["KATANA", "ONUR", "JAPON", "MÜCADELE", "RUH", "KASK"] },
+        { kategori: "Viking Gemileri", kelimeler: ["EJDER", "KÜREK", "DENİZ", "SAVAŞÇI", "BALTA", "RÜZGAR"] },
+        { kategori: "Kuzey Mitolojisi", kelimeler: ["THOR", "ODIN", "RAGNAROK", "BUZ", "ÇEKİÇ", "VALHALLA"] },
+        { kategori: "Mısır Tanrıları", kelimeler: ["RA", "ANUBIS", "OSIRIS", "TAPINAK", "PİRAMİT", "GÜNEŞ"] },
+        { kategori: "Yunan İlyada", kelimeler: ["TRUVA", "AT", "HEKTOR", "DESTAN", "SAVAŞ", "KALE"] },
+        { kategori: "Türk Efsaneleri", kelimeler: ["BOZKURT", "ERGENEKON", "DESTAN", "DAĞ", "DEMİR", "TÜREYİŞ"] },
+        { kategori: "Simya & İksir", kelimeler: ["ALTIN", "DENEY", "ŞİFA", "KAZAN", "GİZEM", "İKSİR"] },
+        { kategori: "Gece Gökyüzü", kelimeler: ["AY", "YILDIZ", "SAMANYOLU", "GECE", "KARANLIK", "IŞIK"] },
+        { kategori: "Göktaşı Krateri", kelimeler: ["ÇUKUR", "DÜŞME", "DEV", "ÇÖL", "KAYA", "UZAY"] },
+        { kategori: "Astroloji Evleri", kelimeler: ["HARİTA", "AÇI", "GEZEGEN", "YILDIZ", "BURÇ", "ZODYAK"] },
+        { kategori: "Gezegen Uyduları", kelimeler: ["TITAN", "EUROPA", "IO", "YÖRÜNGE", "BUZ", "UZAY"] },
+        { kategori: "Süpernova Patlaması", kelimeler: ["PATLAMA", "IŞIK", "DEV", "YILDIZ", "SON", "ENERJİ"] },
+        { kategori: "Kara Delik Bükülmesi", kelimeler: ["ÇEKİM", "IŞIK", "ZAMAN", "UZAY", "MERKEZ", "GİZEM"] },
+        { kategori: "Mars Araştırması", kelimeler: ["ARAÇ", "KIZIL", "TOPRAK", "GÖREV", "ROBOT", "SU"] },
+        { kategori: "Uzay İstasyonu", kelimeler: ["ASTRONOT", "YÖRÜNGE", "DÜNYA", "AĞIRLIKSIZ", "DENEY", "MODÜL"] },
+        { kategori: "Ay Yürüyüşü", kelimeler: ["ROKET", "KRATER", "ADIM", "BAYRAK", "ELBİSE", "UZAY"] },
+        { kategori: "Uzay Teleskobu", kelimeler: ["AYNA", "GÖRÜNTÜ", "DERİN", "NEBULA", "ODAK", "MERCEK"] },
+        { kategori: "Gelecek Şehirleri", kelimeler: ["UÇAN", "NEON", "GÖKDELEN", "SİBER", "ROBOT", "ENERJİ"] },
+        { kategori: "Kuantum Bilimi", kelimeler: ["ATOM", "PARÇACIK", "SPIN", "MANTIK", "FİZİK", "KOD"] },
+        { kategori: "Nanoteknoloji", kelimeler: ["MİKRO", "BOYUT", "HÜCRE", "MALZEME", "ROBOT", "MİMARİ"] },
+        { kategori: "Biyoteknoloji", kelimeler: ["DNA", "GEN", "AŞI", "HÜCRE", "LABORATUVAR", "ŞİFA"] },
+        { kategori: "Nörobilim & Beyin", kelimeler: ["SİNİR", "BEYİN", "HAFIZA", "ODAK", "SİNAPS", "ALGI"] },
+        { kategori: "Derin Öğrenme", kelimeler: ["AĞ", "VERİ", "YAPAY", "MODEL", "ZEKA", "EĞİTİM"] },
+        { kategori: "Robotik Kol", kelimeler: ["MOTOR", "KOL", "SANAYİ", "KOMUT", "HASSAS", "ROBOT"] },
+        { kategori: "Sibernetik Organ", kelimeler: ["PROTEZ", "SENSÖR", "SİNİR", "BİYONİK", "GÜÇ", "SİSTEM"] },
+        { kategori: "Sanal Evren Metaverse", kelimeler: ["AVATAR", "ARSA", "GÖZLÜK", "DÜNYA", "SİSTEM", "KULLANICI"] },
+        { kategori: "Büyük Veri (Big Data)", kelimeler: ["SUNUCU", "DEPO", "ANALİZ", "VERİ", "BULUT", "HIZ"] },
+        { kategori: "Bulut Bilişim", kelimeler: ["SUNUCU", "AĞ", "YEDEK", "SİSTEM", "ERİŞİM", "VERİ"] },
+        { kategori: "Büyük Şampiyonluk Finali", kelimeler: ["KUPA", "ŞAMPİYON", "STAD", "ALKIŞ", "REKOR", "ZAFER"] }
     ];
 
     const temalar = {
@@ -6121,6 +6376,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     function wow2OyunuAc() {
         document.getElementById('wow2OyunModalOverlay').classList.add('aktif');
         document.body.classList.add('wow2-oyun-kilitli');
+        wow2ExtraButonDurumuGuncelle();
     }
 
     function wow2OyunuKapat() {
@@ -6128,14 +6384,24 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         document.body.classList.remove('wow2-oyun-kilitli');
     }
 
-    /* ÇARPIYA BASILDIĞINDA KONTROL EDEN MEKANİZMA */
+    function wow2ExtraButonDurumuGuncelle() {
+        const btn = document.getElementById('wow2ExtraBtn');
+        if (mevcutBolumIndex >= 200) {
+            btn.classList.remove('kilitli');
+            btn.innerText = '⭐ Ekstra Bölümler (Açıldı)';
+        } else {
+            btn.classList.add('kilitli');
+            btn.innerText = `🔒 Ekstra Bölümler (${mevcutBolumIndex}/200)`;
+        }
+    }
+
     function wow2CarpiTiklandi() {
         const anaMenu = document.getElementById('wow2AnaMenu');
         const kurallarMenu = document.getElementById('wow2KurallarMenu');
         const temaMenu = document.getElementById('wow2TemaMenu');
         const ogreticiMenu = document.getElementById('wow2OgreticiMenu');
+        const extraMenu = document.getElementById('wow2ExtraMenu');
 
-        // Eğer alt menülerden biri açıksa ana menüye döner
         if (!kurallarMenu.classList.contains('gizli')) {
             kurallarMenu.classList.add('gizli');
             anaMenu.classList.remove('gizli');
@@ -6146,12 +6412,15 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             anaMenu.classList.remove('gizli');
             return;
         }
+        if (!extraMenu.classList.contains('gizli')) {
+            extraMenu.classList.add('gizli');
+            anaMenu.classList.remove('gizli');
+            return;
+        }
 
-        // Eğer oyunun içindeysek (Ana Menü gizliyse ve öğretici kapalıysa) Ana Menüyü açar
         if (anaMenu.classList.contains('gizli') && ogreticiMenu.classList.contains('gizli')) {
             anaMenu.classList.remove('gizli');
         } else {
-            // Zaten Ana Menüdeysek veya Öğreticideysek tamamen kapatıp siteye atar
             wow2OyunuKapat();
         }
     }
@@ -6161,7 +6430,38 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             wow2OgreticiBaslat();
         } else {
             document.getElementById('wow2AnaMenu').classList.add('gizli');
+            wow2BolumYukle(mevcutBolumIndex);
         }
+    }
+
+    function wow2ExtraMenuAc() {
+        if (mevcutBolumIndex < 200) {
+            alert(`Ekstra Bölümler modunu açmak için ilk 200 ana bölümü tamamlamalısın! Şu anki İlerlemen: ${mevcutBolumIndex}/200`);
+            return;
+        }
+
+        const container = document.getElementById('wow2KategoriListe');
+        container.innerHTML = '';
+
+        for (let i = 200; i < bolumVerileri.length; i++) {
+            const item = document.createElement('div');
+            item.className = 'kategori-grid-item';
+            item.innerText = `${i - 199}. ${bolumVerileri[i].kategori}`;
+            item.onclick = () => {
+                document.getElementById('wow2ExtraMenu').classList.add('gizli');
+                document.getElementById('wow2AnaMenu').classList.add('gizli');
+                wow2BolumYukle(i);
+            };
+            container.appendChild(item);
+        }
+
+        document.getElementById('wow2AnaMenu').classList.add('gizli');
+        document.getElementById('wow2ExtraMenu').classList.remove('gizli');
+    }
+
+    function wow2ExtraMenuKapat() {
+        document.getElementById('wow2ExtraMenu').classList.add('gizli');
+        document.getElementById('wow2AnaMenu').classList.remove('gizli');
     }
 
     function wow2BüyükGecisGoster(baslik, altYazi, callback) {
@@ -6176,7 +6476,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             if (typeof callback === 'function') {
                 callback();
             }
-        }, 2500);
+        }, 2000);
     }
 
     function wow2OgreticiBaslat() {
@@ -6214,11 +6514,19 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     }
 
     function wow2OgreticiHucreTıkla(hucre) {
-        if (hucre.classList.contains('bulundu')) return;
+        if (!hucre) return;
 
         if (ogreticiSecilenHucroler.length > 0) {
             const son = ogreticiSecilenHucroler[ogreticiSecilenHucroler.length - 1];
             if (son === hucre) return;
+            
+            if (ogreticiSecilenHucroler.length >= 2 && ogreticiSecilenHucroler[ogreticiSecilenHucroler.length - 2] === hucre) {
+                const cikan = ogreticiSecilenHucroler.pop();
+                cikan.classList.remove('secili');
+                wow2OgreticiYaziGuncelle();
+                return;
+            }
+
             const r1 = parseInt(son.dataset.row), c1 = parseInt(son.dataset.col);
             const r2 = parseInt(hucre.dataset.row), c2 = parseInt(hucre.dataset.col);
             if (Math.abs(r1 - r2) > 1 || Math.abs(c1 - c2) > 1) return;
@@ -6229,9 +6537,15 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             hucre.classList.add('secili');
             if (navigator.vibrate) navigator.vibrate(15);
             
-            const kelime = ogreticiSecilenHucroler.map(h => h.innerText).join('');
-            document.getElementById('wow2OgreticiSecilen').innerText = kelime;
+            wow2OgreticiYaziGuncelle();
+        }
+    }
 
+    function wow2OgreticiYaziGuncelle() {
+        const kelime = ogreticiSecilenHucroler.map(h => h.innerText).join('');
+        document.getElementById('wow2OgreticiSecilen').innerText = kelime.length > 0 ? kelime : '...';
+
+        if (kelime.length > 0) {
             if (ogreticiHedefler.includes(kelime) && !ogreticiBulunanlar.includes(kelime)) {
                 ogreticiBulunanlar.push(kelime);
                 ogreticiSecilenHucroler.forEach(h => {
@@ -6244,7 +6558,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
                 wow2OgreticiListesiGuncelle();
 
                 if (ogreticiBulunanlar.length === ogreticiHedefler.length) {
-                    wow2BüyükGecisGoster("Eğitim Tamamlandı!", "Oyun Başlıyor, Diğer Bölüme Geçiliyor...", () => {
+                    wow2BüyükGecisGoster("Eğitim Tamamlandı!", "Oyun Başlıyor...", () => {
                         wow2OgreticiBitir();
                     });
                 }
@@ -6283,6 +6597,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         ogreticiTamamlandi = true;
         localStorage.setItem('wow2_ogretici_ok', 'true');
         document.getElementById('wow2OgreticiMenu').classList.add('gizli');
+        wow2BolumYukle(mevcutBolumIndex);
     }
 
     function wow2KurallarAc() { document.getElementById('wow2KurallarMenu').classList.remove('gizli'); }
@@ -6298,7 +6613,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     }
 
     function wow2KaydiSil() {
-        if (confirm("Tüm oyun ilerlemeniz, puanınız ve öğretici kaydınız silinecek. Emin misiniz?")) {
+        if (confirm("Tüm oyun ilerlemeniz, puanınız ve ekstra bölüm kilitleriniz sıfırlanacak. Emin misiniz?")) {
             localStorage.removeItem('wow2_bolum');
             localStorage.removeItem('wow2_puan');
             localStorage.removeItem('wow2_ogretici_ok');
@@ -6306,6 +6621,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             toplamPuan = 0;
             ogreticiTamamlandi = false;
             document.getElementById('wow2Skor').innerText = `Puan: 0`;
+            wow2ExtraButonDurumuGuncelle();
             wow2BolumYukle(0);
             wow2BildirimGoster('🗑️ Kayıt Sıfırlandı!', 'yanlis');
         }
@@ -6318,11 +6634,11 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             [ 1, -1], [ 1, 0], [ 1, 1]
         ];
 
-        function karistir(dizi) { return dizi.sort(() => Math.random() - 0.5); }
+        function karistir(dizi) { return [...dizi].sort(() => Math.random() - 0.5); }
 
         function yolaKoy(matris, kelime, index, r, c, yol) {
             if (index === kelime.length) return yol;
-            const rastGeleYonler = karistir([...yonler]);
+            const rastGeleYonler = karistir(yonler);
             for (let [dr, dc] of rastGeleYonler) {
                 const yeniR = r + dr;
                 const yeniC = c + dc;
@@ -6331,10 +6647,13 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
                     const ayniHarfMi = matris[yeniR][yeniC] === kelime[index];
                     const yoldaVarMi = yol.some(p => p.r === yeniR && p.c === yeniC);
                     if ((!hucreDoluMu || ayniHarfMi) && !yoldaVarMi) {
+                        const eskiHarf = matris[yeniR][yeniC];
+                        matris[yeniR][yeniC] = kelime[index];
                         yol.push({r: yeniR, c: yeniC, harf: kelime[index]});
                         const sonuc = yolaKoy(matris, kelime, index + 1, yeniR, yeniC, yol);
                         if (sonuc) return sonuc;
                         yol.pop();
+                        matris[yeniR][yeniC] = eskiHarf;
                     }
                 }
             }
@@ -6345,7 +6664,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         let basariliTamamlandi = false;
         let genelDeneme = 0;
 
-        while (!basariliTamamlandi && genelDeneme < 100) {
+        while (!basariliTamamlandi && genelDeneme < 300) {
             genelDeneme++;
             matris = Array(satirSayisi).fill(null).map(() => Array(sutunSayisi).fill(''));
             let tumuYerlestirildi = true;
@@ -6353,16 +6672,19 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             for (let kelime of kelimeListesi) {
                 let basarili = false;
                 let deneme = 0;
-                while (!basarili && deneme < 150) {
+                while (!basarili && deneme < 60) {
                     deneme++;
                     const basR = Math.floor(Math.random() * satirSayisi);
                     const basC = Math.floor(Math.random() * sutunSayisi);
                     if (matris[basR][basC] === '' || matris[basR][basC] === kelime[0]) {
+                        const eskiHarf = matris[basR][basC];
+                        matris[basR][basC] = kelime[0];
                         const ilkYol = [{r: basR, c: basC, harf: kelime[0]}];
                         const yol = yolaKoy(matris, kelime, 1, basR, basC, ilkYol);
                         if (yol) {
-                            yol.forEach(p => matris[p.r][p.c] = p.harf);
                             basarili = true;
+                        } else {
+                            matris[basR][basC] = eskiHarf;
                         }
                     }
                 }
@@ -6394,13 +6716,19 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         const veri = bolumVerileri[index];
         mevcutKelimeler = veri.kelimeler;
         
-        document.getElementById('wow2BolumYazi').innerText = `Bölüm ${index + 1}/100`;
+        if (index >= 200) {
+            document.getElementById('wow2BolumYazi').innerText = `Ekstra Bölüm ${index - 199}/100`;
+        } else {
+            document.getElementById('wow2BolumYazi').innerText = `Bölüm ${index + 1}/200`;
+        }
+
         document.getElementById('wow2Skor').innerText = `Puan: ${toplamPuan}`;
         document.getElementById('wow2KategoriYazi').innerText = veri.kategori;
         
         bulunanKelimeler = [];
         secilenHucroler = [];
         wow2YaziGuncelle();
+        wow2ExtraButonDurumuGuncelle();
 
         const matris = zikzakMatrisUret(mevcutKelimeler, 9, 8);
         const gridContainer = document.getElementById('wow2GridKutular');
@@ -6426,11 +6754,20 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     }
 
     function wow2HucreTıkla(hucre) {
-        if (hucre.classList.contains('bulundu')) return;
+        if (!hucre) return;
 
         if (secilenHucroler.length > 0) {
             const sonHucre = secilenHucroler[secilenHucroler.length - 1];
             if (sonHucre === hucre) return;
+
+            if (secilenHucroler.length >= 2 && secilenHucroler[secilenHucroler.length - 2] === hucre) {
+                const cikan = secilenHucroler.pop();
+                if (!cikan.classList.contains('bulundu')) {
+                    cikan.classList.remove('secili');
+                }
+                wow2YaziGuncelle();
+                return;
+            }
 
             const r1 = parseInt(sonHucre.dataset.row);
             const c1 = parseInt(sonHucre.dataset.col);
@@ -6461,7 +6798,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         if (mevcutKelimeler.includes(mevcutKelime) && !bulunanKelimeler.includes(mevcutKelime)) {
             bulunanKelimeler.push(mevcutKelime);
             
-            toplamPuan += 40;
+            toplamPuan += 20;
             localStorage.setItem('wow2_puan', toplamPuan);
             document.getElementById('wow2Skor').innerText = `Puan: ${toplamPuan}`;
 
@@ -6470,20 +6807,31 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
                 h.classList.add('bulundu');
             });
             
-            wow2BildirimGoster(`🎉 Buldun (+40 Puan): ${mevcutKelime}`, 'dogru');
+            wow2BildirimGoster(`🎉 Buldun (+20 Puan): ${mevcutKelime}`, 'dogru');
             secilenHucroler = [];
             wow2YaziGuncelle();
             wow2KelimeListesiGuncelle();
 
             if (bulunanKelimeler.length === mevcutKelimeler.length) {
-                wow2BüyükGecisGoster(
-                    "🎉 Tebrikler!", 
-                    `${bolumVerileri[mevcutBolumIndex].kategori} Bölümü Tamamlandı. Diğer Bölüme Geçiliyor...`, 
-                    () => {
-                        mevcutBolumIndex++;
-                        wow2BolumYukle(mevcutBolumIndex);
-                    }
-                );
+                if (mevcutBolumIndex === 199) {
+                    wow2BüyükGecisGoster(
+                        "🏆 TEBRİKLER!", 
+                        "200 Ana Bölümü Tamamladın! 🎉 Ekstra Bölümler Modunun Kilitleri Açıldı!", 
+                        () => {
+                            mevcutBolumIndex++;
+                            wow2BolumYukle(mevcutBolumIndex);
+                        }
+                    );
+                } else {
+                    wow2BüyükGecisGoster(
+                        "🎉 Tebrikler!", 
+                        `${bolumVerileri[mevcutBolumIndex].kategori} Bölümü Tamamlandı. Diğer Bölüme Geçiliyor...`, 
+                        () => {
+                            mevcutBolumIndex++;
+                            wow2BolumYukle(mevcutBolumIndex);
+                        }
+                    );
+                }
             }
             return;
         }
@@ -6497,17 +6845,24 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             
             const gecici = [...secilenHucroler];
             secilenHucroler = [];
+            isDragging = false;
             gecici.forEach(h => h.classList.add('sallan'));
             
             setTimeout(() => {
-                gecici.forEach(h => h.classList.remove('sallan', 'secili'));
+                gecici.forEach(h => {
+                    h.classList.remove('sallan', 'secili');
+                });
                 wow2YaziGuncelle();
             }, 350);
         }
     }
 
     function wow2SecimiSifirla() {
-        secilenHucroler.forEach(h => h.classList.remove('secili'));
+        secilenHucroler.forEach(h => {
+            if (!h.classList.contains('bulundu')) {
+                h.classList.remove('secili');
+            }
+        });
         secilenHucroler = [];
         wow2YaziGuncelle();
     }
@@ -6555,8 +6910,11 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
     function dokunmaIsle(e, handler) {
         const touch = e.touches[0];
+        if (!touch) return;
         const target = document.elementFromPoint(touch.clientX, touch.clientY);
-        if (target && target.classList.contains('grid-hucre')) handler(target);
+        if (target && target.classList.contains('grid-hucre')) {
+            handler(target);
+        }
     }
 
     gridKutular.addEventListener('touchstart', (e) => { isDragging = true; dokunmaIsle(e, wow2HucreTıkla); }, { passive: true });
@@ -6575,8 +6933,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
     window.addEventListener('mouseup', () => isDragging = false);
     window.addEventListener('touchend', () => isDragging = false);
-
-    wow2BolumYukle(mevcutBolumIndex);
+    window.addEventListener('touchcancel', () => isDragging = false);
 </script>
 
 
