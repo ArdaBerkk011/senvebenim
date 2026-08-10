@@ -8006,7 +8006,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   .snake-stat-value { font-size: 11px; font-weight: 800; color: #38bdf8; }
   .snake-stat-value.xp-val { color: #c084fc; display: flex; justify-content: space-between; align-items: center; width: 100%; }
 
-  /* KUTU İÇİ XP İLERLEME ÇUBUĞU STİLLERİ */
+  /* KUTU İÇİ İLERLEME ÇUBUĞU */
   .xp-box-content {
     display: flex; flex-direction: column; gap: 3px; width: 100%; margin-top: 1px;
   }
@@ -8044,15 +8044,15 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     to { opacity: 1; transform: scale(1.05); }
   }
 
-  /* OYUN ALANI - 1.5X ROZETİNİN ALTINDAN MAVİ HİZAYA KADAR GENİŞLETİLDİ[cite: 1] */
+  /* OYUN ALANI - İŞARETLEDİĞİN HİZADA SABİTLENDİ */
   .canvas-container {
     position: relative; border-radius: 12px; overflow: hidden;
     border: 1px solid rgba(56, 189, 248, 0.25);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(56, 189, 248, 0.1);
     width: 100%; max-width: 420px;
-    flex: 1 1 auto;
-    min-height: 260px;
-    margin: 6px auto 10px auto; touch-action: none;
+    flex: 0 0 auto;
+    height: 300px; /* İşaretlediğin mavi çizgi yüksekliğine tam denk gelen ideal boy */
+    margin: 4px auto 6px auto; touch-action: none;
     display: flex; align-items: center; justify-content: center;
   }
 
@@ -8136,15 +8136,15 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
   .market-section-title { font-size: 10px; font-weight: 800; color: #38bdf8; text-transform: uppercase; margin: 4px 0 2px 0; text-align: left; width: 100%; max-width: 280px; border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding-bottom: 2px; }
 
-  /* TELEFON İÇİN AŞAĞI İNDİRİLMİŞ VE BOŞLUKLU YÖN BUTONLARI (MOR ÇİZGİ HİZASI)[cite: 1] */
+  /* TELEFON İÇİN OYUN EKRANININ ALTINDAKİ İDEAL YÖN BUTONLARI */
   .phone-controls {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 64px);
-    gap: 12px;
+    grid-template-rows: repeat(2, 60px);
+    gap: 10px;
     width: 100%;
-    max-width: 340px;
-    margin: auto auto 16px auto; 
+    max-width: 330px;
+    margin: auto auto 10px auto; 
     flex-shrink: 0;
     touch-action: manipulation;
     user-select: none;
@@ -8155,9 +8155,9 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   .phone-btn {
     background: radial-gradient(circle, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
     border: 2px solid rgba(56, 189, 248, 0.4);
-    border-radius: 18px;
+    border-radius: 16px;
     color: #38bdf8;
-    font-size: 28px;
+    font-size: 26px;
     font-weight: bold;
     display: flex;
     align-items: center;
@@ -8230,7 +8230,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     <canvas id="smoothSnakeCanvas"></canvas>
   </div>
 
-  <!-- TELEFON İÇİN AŞAĞI İNDİRİLMİŞ YÖN BUTONLARI -->
+  <!-- TELEFON İÇİN OYUN EKRANININ ALTINDAKİ YÖN BUTONLARI -->
   <div class="phone-controls">
     <button class="phone-btn btn-up" id="btnUp" onpointerdown="handleTouchDir('UP', event)">▲</button>
     <button class="phone-btn btn-left" id="btnLeft" onpointerdown="handleTouchDir('LEFT', event)">◄</button>
