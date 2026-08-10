@@ -7876,62 +7876,51 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
 
 
-<!-- GELİŞMİŞ MOBİL UYUMLU, ANINDA TEPKİ VEREN YILAN OYUNU -->
+
+<!-- MOBİL UYUMLU, XP BARLI VE GÜNLÜK GÖREV SİSTEMLİ YILAN OYUNU -->
 <style>
   /* SAĞ ÜSTTEKİ OYNA BUTONU */
   .snake-trigger-btn {
-    position: fixed;
-        color: #ff477e !important;
-        top: 14px;
-        right: 110px;
-        width: 43px !important;
-        height: 44px !important; 
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 2px solid rgba(255, 117, 140, 0.5);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        cursor: pointer;
-        z-index: 999998;
-        box-shadow: 0 4px 12px rgba(255, 105, 180, 0.15) !important;
-        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .snake-trigger-btn:hover {
-        transform: translateY(-2px) scale(1.03);
-        box-shadow: 0 14px 30px rgba(14, 165, 233, 0.6);
+    position: fixed !important;
+    top: max(15px, env(safe-area-inset-top)) !important;
+    right: 15px !important;
+    z-index: 99998 !important;
+    background: #0f172a;
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    border-radius: 50px;
+    padding: 10px 18px;
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(56, 189, 248, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    touch-action: manipulation;
+    transition: all 0.2s ease;
   }
-
   .snake-trigger-btn:active { transform: scale(0.92); }
 
-  /* TAM EKRAN OYUN MODAL KAPLAMASI */
+  /* TAM EKRAN OYUN MODALI */
   .snake-game-wrapper {
     position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    background: #0f172a !important;
-    display: flex !important;
-    flex-direction: column !important;
+    top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
+    width: 100vw !important; height: 100vh !important;
+    background: #090d16 !important;
+    display: flex !important; flex-direction: column !important;
     justify-content: flex-start !important;
     padding-top: max(10px, env(safe-area-inset-top)) !important;
-    padding-bottom: max(32px, env(safe-area-inset-bottom)) !important;
-    padding-left: 12px !important;
-    padding-right: 12px !important;
+    padding-bottom: max(10px, env(safe-area-inset-bottom)) !important;
+    padding-left: 8px !important; padding-right: 8px !important;
     z-index: 2147483647 !important;
     isolation: isolate !important;
-    opacity: 0;
-    pointer-events: none;
+    opacity: 0; pointer-events: none;
     transition: opacity 0.25s ease;
     box-sizing: border-box !important;
     font-family: 'Inter', -apple-system, sans-serif !important;
+    overflow: hidden;
   }
 
   .snake-game-wrapper.active {
@@ -7939,286 +7928,244 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     pointer-events: auto !important;
   }
 
-  /* ÜST BİLGİ ALANI */
+  /* ÜST BİLGİ VE BUTONLAR */
   .snake-premium-header {
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    gap: 6px !important;
-    width: 100% !important;
-    max-width: 500px !important;
-    margin: 0 auto 6px auto !important;
-    z-index: 10 !important;
-    flex-shrink: 0;
+    display: flex !important; flex-direction: column !important;
+    gap: 5px !important; width: 100% !important; max-width: 420px !important;
+    margin: 0 auto 4px auto !important; flex-shrink: 0;
+  }
+
+  .header-top-row, .header-bottom-row {
+    display: flex; justify-content: space-between; align-items: center; gap: 4px; width: 100%;
   }
 
   .snake-stat-box {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
-    padding: 3px 6px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+    border-radius: 6px; padding: 4px 6px;
+    display: flex; flex-direction: column; flex: 1;
+    box-sizing: border-box;
   }
 
-  .snake-stat-label {
-    font-size: 8px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #94a3b8;
-  }
+  .snake-stat-label { font-size: 7px; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; }
+  .snake-stat-value { font-size: 11px; font-weight: 800; color: #38bdf8; }
+  .snake-stat-value.xp-val { color: #c084fc; display: flex; justify-content: space-between; align-items: center; width: 100%; }
 
-  .snake-stat-value {
-    font-size: 13px;
-    font-weight: 800;
-    color: #38bdf8;
+  /* KUTU İÇİ XP İLERLEME ÇUBUĞU STİLLERİ */
+  .xp-box-content {
+    display: flex; flex-direction: column; gap: 3px; width: 100%; margin-top: 1px;
   }
-
-  .snake-stat-value.high-score { color: #facc15; }
+  .xp-bar-track-inbox { width: 100%; height: 4px; background: rgba(255, 255, 255, 0.12); border-radius: 2px; overflow: hidden; position: relative; }
+  .xp-bar-fill-inbox { height: 100%; background: linear-gradient(90deg, #a855f7, #c084fc); width: 0%; border-radius: 2px; transition: width 0.4s ease; }
 
   .icon-action-btn {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: #f8fafc;
-    border-radius: 8px;
-    width: 30px;
-    height: 30px;
-    font-size: 13px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    touch-action: manipulation;
+    background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #f8fafc; border-radius: 6px; width: 28px; height: 28px;
+    font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    touch-action: manipulation; flex-shrink: 0;
   }
 
-  .leaderboard-toggle-btn {
-    background: rgba(250, 204, 21, 0.1);
-    border: 1px solid rgba(250, 204, 21, 0.3);
-    color: #facc15;
-    border-radius: 8px;
-    padding: 5px 7px;
-    font-size: 10px;
-    font-weight: 700;
-    cursor: pointer;
-    touch-action: manipulation;
+  .header-btn {
+    border-radius: 6px; padding: 5px 8px; font-size: 10px; font-weight: 700;
+    cursor: pointer; touch-action: manipulation; border: 1px solid transparent; flex: 1; text-align: center;
   }
+  .market-toggle-btn { background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.4); color: #c084fc; }
+  .quest-toggle-btn { background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.4); color: #60a5fa; }
+  .leaderboard-toggle-btn { background: rgba(250, 204, 21, 0.1); border-color: rgba(250, 204, 21, 0.3); color: #facc15; }
 
   .snake-close-btn {
-    background: rgba(239, 68, 68, 0.2);
-    border: 1px solid rgba(239, 68, 68, 0.4);
-    color: #ef4444;
-    border-radius: 8px;
-    width: 30px;
-    height: 30px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    touch-action: manipulation;
+    background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #ef4444; border-radius: 6px; width: 28px; height: 28px; font-size: 16px; font-weight: bold;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; touch-action: manipulation; flex-shrink: 0;
+  }
+
+  /* AKTİF GÜÇ ROZETLERİ */
+  .buff-bar { display: flex; gap: 6px; justify-content: center; align-items: center; min-height: 14px; margin-bottom: 2px; flex-shrink: 0; }
+  .buff-badge { font-size: 9px; padding: 1px 5px; border-radius: 10px; font-weight: 700; animation: pulseBuff 1s infinite alternate; }
+  .buff-multi { background: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid #eab308; }
+
+  @keyframes pulseBuff {
+    from { opacity: 0.7; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1.05); }
   }
 
   /* OYUN ALANI */
   .canvas-container {
-    position: relative;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 2px solid rgba(56, 189, 248, 0.3);
-    box-shadow: 0 0 15px rgba(56, 189, 248, 0.15);
-    width: 100%;
-    max-width: 420px;
-    height: 52vh;
-    min-height: 240px;
-    margin: 0 auto 8px auto;
-    touch-action: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+    position: relative; border-radius: 12px; overflow: hidden;
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(56, 189, 248, 0.1);
+    width: 100%; max-width: 420px;
+    flex: 1 1 auto;
+    min-height: 200px;
+    max-height: 50vh;
+    margin: 2px auto 6px auto; touch-action: none;
+    display: flex; align-items: center; justify-content: center;
   }
 
-  canvas#smoothSnakeCanvas {
-    background-color: #030712;
-    display: block;
-    width: 100% !important;
-    height: 100% !important;
+  .canvas-container.shake { animation: screenShake 0.3s ease-in-out; }
+  @keyframes screenShake {
+    0% { transform: translate(0, 0); }
+    20% { transform: translate(-6px, 4px); }
+    40% { transform: translate(6px, -4px); }
+    60% { transform: translate(-4px, -2px); }
+    80% { transform: translate(4px, 2px); }
+    100% { transform: translate(0, 0); }
   }
 
+  canvas#smoothSnakeCanvas { background-color: #050811; display: block; width: 100% !important; height: 100% !important; }
+
+  /* OVERLAY / MENÜ SİSTEMİ */
   .snake-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(3, 7, 18, 0.92);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    z-index: 10;
-    padding: 12px;
-    box-sizing: border-box;
+    position: absolute; top: 85px; left: 12px; right: 12px; bottom: 12px;
+    background: rgba(5, 8, 17, 0.98);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 14px;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    gap: 8px; z-index: 20; padding: 15px; box-sizing: border-box; overflow-y: auto;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
   }
-
   .snake-overlay.hidden { display: none !important; }
 
-  .overlay-title {
-    font-size: 16px;
-    font-weight: 800;
-    color: #f8fafc;
-    margin: 0;
-    text-align: center;
-    white-space: pre-line;
-  }
+  .overlay-title { font-size: 15px; font-weight: 800; color: #f8fafc; margin: 0; text-align: center; white-space: pre-line; }
 
   .start-btn {
-    background: #3b82f6;
-    color: #fff;
-    border: none;
-    padding: 8px 16px;
-    font-size: 13px;
-    font-weight: 700;
-    border-radius: 8px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-    touch-action: manipulation;
+    background: #3b82f6; color: #fff; border: none; padding: 8px 16px;
+    font-size: 12px; font-weight: 700; border-radius: 8px; cursor: pointer;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); touch-action: manipulation; flex-shrink: 0;
   }
-
   .start-btn:active { transform: scale(0.95); }
 
-  .player-input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    width: 100%;
-    max-width: 200px;
-  }
+  .player-input-group { display: flex; flex-direction: column; gap: 6px; width: 100%; max-width: 200px; align-items: center; }
+  .player-name-input { background: #1e293b; border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; padding: 6px 10px; border-radius: 6px; font-size: 11px; text-align: center; outline: none; width: 100%; box-sizing: border-box; }
 
-  .player-name-input {
-    background: #1e293b;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #fff;
-    padding: 6px 10px;
-    border-radius: 6px;
-    font-size: 12px;
-    text-align: center;
-    outline: none;
-  }
-
-  .leaderboard-list {
-    width: 100%;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-  }
-
-  .leaderboard-item {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 5px 8px;
-    border-radius: 6px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 11px;
-  }
-
-  .leaderboard-rank { font-weight: 800; color: #38bdf8; width: 20px; }
+  .leaderboard-list { width: 100%; max-width: 280px; list-style: none; padding: 0; margin: 0 auto; display: flex; flex-direction: column; gap: 4px; }
+  .leaderboard-item { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); padding: 5px 8px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
+  .leaderboard-rank { font-weight: 800; color: #38bdf8; width: 22px; }
   .leaderboard-name { flex: 1; text-align: left; color: #f8fafc; font-weight: 600; }
   .leaderboard-score { font-weight: 800; color: #facc15; }
 
-  /* MODERN, ARALARI BOŞLUKLU VE ANİMASYONLU KONTROL PANELİ */
-  .snake-controls {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: 46px 46px;
-    gap: 10px;
-    width: 100%;
-    max-width: 260px;
-    margin: 0 auto;
-    flex-shrink: 0;
-    touch-action: manipulation;
+  /* MARKET & GÖREV STİLLERİ */
+  .market-list, .quest-list { width: 100%; display: flex; flex-direction: column; gap: 5px; max-width: 280px; margin: 0 auto; }
+  .skin-card, .quest-card {
+    background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px; padding: 5px 8px; display: flex; justify-content: space-between; align-items: center;
+  }
+  .skin-info, .quest-info { display: flex; flex-direction: column; gap: 2px; font-size: 10px; color: #f8fafc; text-align: left; }
+  .skin-main-row { display: flex; align-items: center; gap: 6px; font-weight: 700; }
+  .skin-preview { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+  .skin-select-btn {
+    padding: 3px 8px; font-size: 9px; font-weight: 800; border-radius: 5px; border: none; cursor: pointer; touch-action: manipulation;
+  }
+  .skin-select-btn.active { background: #22c55e; color: #fff; }
+  .skin-select-btn.locked { background: rgba(255, 255, 255, 0.1); color: #94a3b8; cursor: not-allowed; }
+  .skin-select-btn.unlocked { background: #38bdf8; color: #0f172a; }
+  .skin-select-btn.claim-btn { background: #eab308; color: #0f172a; animation: pulseBuff 1s infinite alternate; }
+
+  .market-section-title { font-size: 10px; font-weight: 800; color: #38bdf8; text-transform: uppercase; margin: 4px 0 2px 0; text-align: left; width: 100%; max-width: 280px; border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding-bottom: 2px; }
+
+  /* TELEFON İÇİN ERGONOMİK YÖN BUTONLARI */
+  .phone-controls {
+    display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 44px);
+    gap: 6px; width: 100%; max-width: 260px; margin: 0 auto; flex-shrink: 0; touch-action: manipulation;
   }
 
-  .p-btn {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    color: #f8fafc;
-    border-radius: 14px;
-    font-size: 18px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    touch-action: manipulation;
-    user-select: none;
-    -webkit-user-select: none;
-    transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1), background 0.1s ease, border-color 0.1s ease, box-shadow 0.1s ease;
+  .phone-btn {
+    background: radial-gradient(circle, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+    border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; color: #38bdf8;
+    font-size: 16px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    touch-action: manipulation; user-select: none; -webkit-user-select: none;
+    transition: transform 0.08s ease, background 0.08s ease;
   }
 
-  .p-btn:active, .p-btn.touched {
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.45), rgba(56, 189, 248, 0.2)) !important;
-    border-color: rgba(56, 189, 248, 0.7) !important;
-    box-shadow: 0 2px 6px rgba(56, 189, 248, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.25) !important;
-    transform: scale(0.91);
+  .phone-btn:active, .phone-btn.touched {
+    background: #38bdf8 !important; color: #0f172a !important; transform: scale(0.92);
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.6) !important;
   }
 
-  .p-up { grid-column: 2; grid-row: 1; }
-  .p-left { grid-column: 1; grid-row: 2; }
-  .p-right { grid-column: 3; grid-row: 2; }
-  .p-down { grid-column: 2; grid-row: 2; }
+  .btn-up { grid-column: 2; grid-row: 1; }
+  .btn-left { grid-column: 1; grid-row: 2; }
+  .btn-down { grid-column: 2; grid-row: 2; }
+  .btn-right { grid-column: 3; grid-row: 2; }
 </style>
 
 <!-- SAĞ ÜST TETİKLEME BUTONU -->
 <button class="snake-trigger-btn" id="openSnakeModalBtn">
-  <span>🐍</span>
+  <span>🐍</span> Oyna
 </button>
 
 <!-- TAM EKRAN OYUN MODALI -->
 <div class="snake-game-wrapper" id="snakeGameWrapper">
   <div class="snake-premium-header">
-    <div class="snake-stat-box">
-      <span class="snake-stat-label">SKOR</span>
-      <span class="snake-stat-value" id="sScore">0</span>
+    <!-- 1. ÜST SATIR: Skor, Seviye & XP Kutusu (İçinde Bar ile), Duraklat, Ses, Kapat -->
+    <div class="header-top-row">
+      <div class="snake-stat-box">
+        <span class="snake-stat-label">SKOR</span>
+        <span class="snake-stat-value" id="sScore">0</span>
+      </div>
+      <div class="snake-stat-box">
+        <span class="snake-stat-label">SEVİYE / XP</span>
+        <div class="snake-stat-value xp-val">
+          <span id="sLevelText">Lv.1</span>
+          <span id="xpPercentText" style="font-size: 9px; font-weight: 700;">%0</span>
+        </div>
+        <!-- KUTU İÇİ İLERLEME ÇUBUĞU -->
+        <div class="xp-box-content">
+          <div class="xp-bar-track-inbox">
+            <div class="xp-bar-fill-inbox" id="xpBarFill"></div>
+          </div>
+        </div>
+      </div>
+      <button class="icon-action-btn" id="pauseBtn" onclick="togglePauseGame()">⏸️</button>
+      <button class="icon-action-btn" id="soundToggleBtn" onclick="toggleAudio()">🔊</button>
+      <button class="snake-close-btn" id="closeSnakeModalBtn">&times;</button>
     </div>
-    <div class="snake-stat-box">
-      <span class="snake-stat-label">REKOR</span>
-      <span class="snake-stat-value high-score" id="sHighScore">0</span>
+    <!-- 2. ÜST SATIR: Market, Görevler, Sıralama -->
+    <div class="header-bottom-row">
+      <button class="header-btn market-toggle-btn" id="showMarketBtn" onclick="toggleMarketView()">🛒 Market</button>
+      <button class="header-btn quest-toggle-btn" id="showQuestBtn" onclick="toggleQuestView()">📋 Görevler</button>
+      <button class="header-btn leaderboard-toggle-btn" id="showLbBtn" onclick="toggleLeaderboardView()">🏆 Sıralama</button>
     </div>
-    <button class="icon-action-btn" id="soundToggleBtn" onclick="toggleAudio()">🔊</button>
-    <button class="leaderboard-toggle-btn" id="showLbBtn" onclick="toggleLeaderboardView()">🏆 Sıralama</button>
-    <button class="snake-close-btn" id="closeSnakeModalBtn">&times;</button>
   </div>
   
+  <div class="buff-bar" id="buffBar"></div>
+
   <div class="canvas-container" id="canvasContainer">
-    <div id="snakeOverlay" class="snake-overlay">
-      <p class="overlay-title" id="overlayText">YILAN OYUNU</p>
-
-      <div id="nameInputGroup" class="player-input-group" style="display: none;">
-        <p style="font-size:11px; color:#94a3b8; margin:0; text-align:center;">Firebase kaydı için ismini gir kral:</p>
-        <input type="text" id="playerNameInput" class="player-name-input" placeholder="İsmini Gir..." maxlength="12" />
-        <button class="start-btn" style="background:#22c55e;" id="saveNameBtn" onclick="savePlayerName()">KAYDET</button>
-      </div>
-
-      <div id="leaderboardView" style="display: none; width: 100%;">
-        <ul id="leaderboardList" class="leaderboard-list"></ul>
-      </div>
-
-      <button class="start-btn" id="startBtn" onclick="initAndStartGame()">OYUNA BAŞLA</button>
-    </div>
     <canvas id="smoothSnakeCanvas"></canvas>
   </div>
 
-  <!-- MODERN KOMPAKT KONTROL PANELİ -->
-  <div class="snake-controls">
-    <button class="p-btn p-up" id="btnUp" ontouchstart="handleTouchDir('UP', event)" onmousedown="setSmoothDir('UP')">▲</button>
-    <button class="p-btn p-left" id="btnLeft" ontouchstart="handleTouchDir('LEFT', event)" onmousedown="setSmoothDir('LEFT')">◄</button>
-    <button class="p-btn p-down" id="btnDown" ontouchstart="handleTouchDir('DOWN', event)" onmousedown="setSmoothDir('DOWN')">▼</button>
-    <button class="p-btn p-right" id="btnRight" ontouchstart="handleTouchDir('RIGHT', event)" onmousedown="setSmoothDir('RIGHT')">►</button>
+  <!-- TELEFON İÇİN ERGONOMİK YÖN BUTONLARI -->
+  <div class="phone-controls">
+    <button class="phone-btn btn-up" id="btnUp" onpointerdown="handleTouchDir('UP', event)">▲</button>
+    <button class="phone-btn btn-left" id="btnLeft" onpointerdown="handleTouchDir('LEFT', event)">◄</button>
+    <button class="phone-btn btn-down" id="btnDown" onpointerdown="handleTouchDir('DOWN', event)">▼</button>
+    <button class="phone-btn btn-right" id="btnRight" onpointerdown="handleTouchDir('RIGHT', event)">►</button>
+  </div>
+
+  <!-- ÜSTTEN AŞAĞIDA VE ORTALANMIŞ MENÜ/OVERLAY KATMANI -->
+  <div id="snakeOverlay" class="snake-overlay">
+    <p class="overlay-title" id="overlayText">YILAN OYUNU</p>
+
+    <div id="nameInputGroup" class="player-input-group" style="display: none;">
+      <p style="font-size:10px; color:#94a3b8; margin:0; text-align:center;">Firebase kaydı için ismini gir kral:</p>
+      <input type="text" id="playerNameInput" class="player-name-input" placeholder="İsmini Gir..." maxlength="12" />
+      <button class="start-btn" style="background:#22c55e; width:100%;" id="saveNameBtn" onclick="savePlayerName()">KAYDET</button>
+    </div>
+
+    <div id="leaderboardView" style="display: none; width: 100%;">
+      <ul id="leaderboardList" class="leaderboard-list"></ul>
+    </div>
+
+    <div id="marketView" style="display: none; width: 100%; align-items: center; display: flex; flex-direction: column;">
+      <div class="market-list" id="marketList"></div>
+    </div>
+
+    <div id="questView" style="display: none; width: 100%; align-items: center; display: flex; flex-direction: column;">
+      <p id="questTimerLabel" style="font-size: 10px; color: #38bdf8; margin: 0 0 5px 0; font-weight: 700;"></p>
+      <div class="quest-list" id="questList"></div>
+    </div>
+
+    <button class="start-btn" id="startBtn" onclick="initAndStartGame()">OYUNA BAŞLA</button>
   </div>
 </div>
 
@@ -8238,9 +8185,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     appId: "1:757056025025:web:ac890dcb32184bc5f37f40"
   };
 
-  if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-  }
+  if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
   const auth = firebase.auth();
   const db = firebase.database();
   const leaderboardRef = db.ref("snake_leaderboard");
@@ -8249,14 +8194,118 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   let isAudioEnabled = true;
   let audioCtx = null;
 
+  let playerXP = parseInt(localStorage.getItem("snake_player_xp") || "0", 10);
+  let playerLevel = parseInt(localStorage.getItem("snake_player_level") || "1", 10);
+  
+  const SKINS = [
+    { id: 'green', name: 'Klasik Yeşil', reqLevel: 1, color: '#22c55e', bgPreview: '#22c55e' },
+    { id: 'neon_blue', name: 'Mavi Neon Vücut', reqLevel: 5, color: '#06b6d4', bgPreview: '#06b6d4' },
+    { id: 'fire_trail', name: 'Alev İzi Desenli Vücut', reqLevel: 15, color: '#ef4444', bgPreview: '#ef4444' },
+    { id: 'ghost', name: 'Yarı Saydam Hayalet', reqLevel: 25, color: 'galaxy', bgPreview: '#a855f7' },
+    { id: 'galaxy', name: 'Kozmik Galaksi Vücut', reqLevel: 50, color: 'galaxy', bgPreview: 'linear-gradient(45deg, #a855f7, #3b82f6)' },
+    { id: 'rainbow', name: 'Gökkuşağı Kuyruk', reqLevel: 70, color: 'rainbow', bgPreview: 'linear-gradient(45deg, red, yellow, green, blue)' }
+  ];
+  let currentSkin = localStorage.getItem("snake_selected_skin") || "green";
+
+  const HATS = [
+    { id: 'none', name: 'Şapka Yok', reqLevel: 1 },
+    { id: 'neon_stripe', name: 'Neon Çizgili Kafa', reqLevel: 10 },
+    { id: 'pirate', name: 'Korsan Şapkesi 🏴‍☠️', reqLevel: 20 },
+    { id: 'cyber_glasses', name: 'Siberpunk Gözlük 🕶️', reqLevel: 35 },
+    { id: 'crown', name: 'Kral Tacı 👑', reqLevel: 60 },
+    { id: 'daisy', name: 'Papatya Taç 🌼', reqLevel: 85 },
+    { id: 'dragon_horns', name: 'Ejderha Boynuzları 🐲', reqLevel: 100 }
+  ];
+  let currentHat = localStorage.getItem("snake_selected_hat") || "none";
+
+  let dailyQuests = JSON.parse(localStorage.getItem("snake_daily_quests") || "null");
+  let lastQuestReset = parseInt(localStorage.getItem("snake_last_quest_reset") || "0", 10);
+
+  function checkAndResetQuests() {
+    const now = Date.now();
+    const oneDayMs = 24 * 60 * 60 * 1000;
+    if (!dailyQuests || (now - lastQuestReset > oneDayMs)) {
+      const questPool = [
+        { id: 'q1', text: 'Tek oyunda 150 skora ulaş', target: 150, type: 'single_score', rewardXp: 350, progress: 0, claimed: false },
+        { id: 'q2', text: 'Toplamda 3 oyun oyna', target: 3, type: 'games_played', rewardXp: 250, progress: 0, claimed: false },
+        { id: 'q3', text: 'Tek oyunda 300 skora ulaş', target: 300, type: 'single_score', rewardXp: 700, progress: 0, claimed: false },
+        { id: 'q4', text: 'Toplamda 5 oyun oyna', target: 5, type: 'games_played', rewardXp: 500, progress: 0, claimed: false },
+        { id: 'q5', text: 'Toplam 500 skor topla', target: 500, type: 'total_score', rewardXp: 500, progress: 0, claimed: false }
+      ];
+      questPool.sort(() => 0.5 - Math.random());
+      dailyQuests = questPool.slice(0, 3);
+      lastQuestReset = now;
+      localStorage.setItem("snake_daily_quests", JSON.stringify(dailyQuests));
+      localStorage.setItem("snake_last_quest_reset", lastQuestReset.toString());
+    }
+  }
+  checkAndResetQuests();
+
+  function updateQuestProgress(type, amount) {
+    let updated = false;
+    dailyQuests.forEach(q => {
+      if (!q.claimed) {
+        if (q.type === type) {
+          if (type === 'single_score') {
+            if (amount > q.progress) { q.progress = Math.min(q.target, amount); updated = true; }
+          } else {
+            q.progress = Math.min(q.target, q.progress + amount); updated = true;
+          }
+        } else if (type === 'total_score' && q.type === 'total_score') {
+          q.progress = Math.min(q.target, q.progress + amount); updated = true;
+        }
+      }
+    });
+    if (updated) {
+      localStorage.setItem("snake_daily_quests", JSON.stringify(dailyQuests));
+    }
+  }
+
+  function addXP(amount) {
+    playerXP += amount;
+    let xpNeededForNext = playerLevel * 100;
+    while (playerXP >= xpNeededForNext) {
+      playerXP -= xpNeededForNext;
+      playerLevel++;
+      xpNeededForNext = playerLevel * 100;
+    }
+    localStorage.setItem("snake_player_xp", playerXP.toString());
+    localStorage.setItem("snake_player_level", playerLevel.toString());
+    updateLevelDisplay();
+    syncToFirebase();
+  }
+
+  function updateLevelDisplay() {
+    const xpNeeded = playerLevel * 100;
+    const percent = Math.min(100, Math.floor((playerXP / xpNeeded) * 100));
+    
+    const levelText = document.getElementById("sLevelText");
+    const percentText = document.getElementById("xpPercentText");
+    const barFill = document.getElementById("xpBarFill");
+
+    if (levelText) levelText.innerText = `Lv.${playerLevel} (${playerXP}/${xpNeeded}xp)`;
+    if (percentText) percentText.innerText = `%${percent}`;
+    if (barFill) barFill.style.width = `${percent}%`;
+  }
+  updateLevelDisplay();
+
+  function syncToFirebase() {
+    if (currentUserUid) {
+      leaderboardRef.child(currentUserUid).update({
+        level: playerLevel,
+        xp: playerXP,
+        skin: currentSkin,
+        hat: currentHat
+      });
+    }
+  }
+
   function initAudioCtx() {
     if (!audioCtx) {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
       if (AudioContext) audioCtx = new AudioContext();
     }
-    if (audioCtx && audioCtx.state === 'suspended') {
-      audioCtx.resume();
-    }
+    if (audioCtx && audioCtx.state === 'suspended') { audioCtx.resume(); }
   }
 
   function playSound(type) {
@@ -8267,24 +8316,32 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     try {
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
+      osc.connect(gain); gain.connect(audioCtx.destination);
 
       if (type === 'eat') {
-        osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.08);
+        osc.frequency.setValueAtTime(500, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(900, audioCtx.currentTime + 0.07);
         gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.08);
+        gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.07);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.07);
+      } else if (type === 'powerup') {
+        osc.frequency.setValueAtTime(350, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1100, audioCtx.currentTime + 0.15);
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.15);
       } else if (type === 'die') {
         osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(180, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.3);
+        osc.frequency.setValueAtTime(160, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.3);
         gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
         gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.3);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+      } else if (type === 'click') {
+        osc.frequency.setValueAtTime(280, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.03);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.03);
       }
     } catch (e) {}
   }
@@ -8306,8 +8363,26 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     if (user) {
       currentUserUid = user.uid;
       leaderboardRef.child(currentUserUid).once("value", (snapshot) => {
-        if (snapshot.exists() && snapshot.val().name) {
-          localStorage.setItem("snake_player_name", snapshot.val().name);
+        if (snapshot.exists()) {
+          const val = snapshot.val();
+          if (val.name) localStorage.setItem("snake_player_name", val.name);
+          if (val.level) {
+            playerLevel = val.level;
+            localStorage.setItem("snake_player_level", playerLevel.toString());
+          }
+          if (val.xp) {
+            playerXP = val.xp;
+            localStorage.setItem("snake_player_xp", playerXP.toString());
+          }
+          if (val.skin) {
+            currentSkin = val.skin;
+            localStorage.setItem("snake_selected_skin", val.skin);
+          }
+          if (val.hat) {
+            currentHat = val.hat;
+            localStorage.setItem("snake_selected_hat", val.hat);
+          }
+          updateLevelDisplay();
         }
       });
     } else {
@@ -8329,7 +8404,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     const canvas = document.getElementById("smoothSnakeCanvas");
     const ctx = canvas.getContext("2d");
     const scoreEl = document.getElementById("sScore");
-    const highScoreEl = document.getElementById("sHighScore");
     const snakeOverlay = document.getElementById("snakeOverlay");
     const overlayText = document.getElementById("overlayText");
     const startBtn = document.getElementById("startBtn");
@@ -8337,20 +8411,33 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     const playerNameInput = document.getElementById("playerNameInput");
     const leaderboardView = document.getElementById("leaderboardView");
     const leaderboardList = document.getElementById("leaderboardList");
+    const marketView = document.getElementById("marketView");
+    const marketList = document.getElementById("marketList");
+    const questView = document.getElementById("questView");
+    const questList = document.getElementById("questList");
+    const questTimerLabel = document.getElementById("questTimerLabel");
+    const buffBar = document.getElementById("buffBar");
 
-    const gridSize = 10;
-    let tileCountX = 30;
-    let tileCountY = 30;
-    const MOVE_INTERVAL = 100;
+    const gridSize = 12;
+    let tileCountX = 25;
+    let tileCountY = 25;
+    
+    const BASE_SPEED = 125; 
+    let currentMoveInterval = BASE_SPEED;
     const fruits = ['🍎', '🍇', '🍓', '🍊', '🍉'];
     
     let snake = [];
     let food = { x: 10, y: 10, type: 'fruit', symbol: '🍎' };
     let particles = [];
+    
     let dx = 1, dy = 0;
     let nextDx = 1, nextDy = 0;
+    let canChangeDirection = true;
+
     let score = 0;
-    let globalHighScore = 0;
+    let animFrameCounter = 0;
+    let multiplierTimer = null;
+    let isMultiplierActive = false;
 
     let lastMoveTime = 0;
     let isGameRunning = false;
@@ -8364,6 +8451,13 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       canvas.height = Math.floor(rect.height);
       tileCountX = Math.floor(canvas.width / gridSize);
       tileCountY = Math.floor(canvas.height / gridSize);
+
+      snake.forEach(seg => {
+        if (seg.x >= tileCountX) seg.x = tileCountX - 1;
+        if (seg.y >= tileCountY) seg.y = tileCountY - 1;
+        if (seg.prevX >= tileCountX) seg.prevX = tileCountX - 1;
+        if (seg.prevY >= tileCountY) seg.prevY = tileCountY - 1;
+      });
     }
 
     function openGameModal() {
@@ -8386,31 +8480,31 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     closeBtn.addEventListener("click", closeGameModal);
     window.addEventListener("resize", () => {
       if (gameWrapper.classList.contains("active")) {
-        resizeCanvas();
-        render();
+        resizeCanvas(); render(1);
       }
     });
 
-    leaderboardRef.orderByChild("score").limitToLast(1).on("value", (snapshot) => {
-      snapshot.forEach((child) => {
-        if (child.val().score > globalHighScore) {
-          globalHighScore = child.val().score;
-          highScoreEl.innerText = globalHighScore;
-        }
-      });
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden && isGameRunning && !isGameOver) pauseGame();
+    });
+    window.addEventListener("blur", () => {
+      if (isGameRunning && !isGameOver) pauseGame();
     });
 
     function pauseGame() {
-      isGameRunning = false;
-      isPaused = true;
+      isGameRunning = false; isPaused = true;
       if (animId) cancelAnimationFrame(animId);
+      showOverlayMenu("OYUN DURAKLATILDI", "DEVAM ET", window.resumeGame);
     }
+
+    window.togglePauseGame = function() {
+      if (isGameOver) return;
+      if (isGameRunning) pauseGame(); else window.resumeGame();
+    };
 
     window.resumeGame = function() {
       if (isPaused) {
-        isPaused = false;
-        isGameRunning = true;
-        hideOverlay();
+        isPaused = false; isGameRunning = true; hideOverlay();
         lastMoveTime = performance.now();
         if (animId) cancelAnimationFrame(animId);
         animId = requestAnimationFrame(gameLoop);
@@ -8433,11 +8527,15 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       userRecordRef.once("value", (snapshot) => {
         const existingData = snapshot.val();
         const existingScore = existingData ? (existingData.score || 0) : 0;
-        if (!existingData || currentScore > existingScore) {
-          userRecordRef.set({ name: playerName, score: Math.max(currentScore, existingScore), timestamp: Date.now() });
-        } else if (existingData && existingData.name !== playerName) {
-          userRecordRef.update({ name: playerName });
-        }
+        userRecordRef.set({ 
+          name: playerName, 
+          score: Math.max(currentScore, existingScore), 
+          level: playerLevel,
+          xp: playerXP,
+          skin: currentSkin,
+          hat: currentHat,
+          timestamp: Date.now() 
+        });
       });
     }
 
@@ -8456,7 +8554,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             leaderboardList.innerHTML += `
               <li class="leaderboard-item">
                 <span class="leaderboard-rank">${medals[index] || (index + 1) + '.'}</span>
-                <span class="leaderboard-name">${escapeHtml(item.name)}</span>
+                <span class="leaderboard-name">${escapeHtml(item.name)} (Lv.${item.level || 1})</span>
                 <span class="leaderboard-score">${item.score}</span>
               </li>
             `;
@@ -8474,9 +8572,171 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         startBtn.innerText = isPaused ? "DEVAM ET" : "OYUNA BAŞLA";
         startBtn.onclick = isPaused ? window.resumeGame : window.initAndStartGame;
       } else {
+        marketView.style.display = "none";
+        questView.style.display = "none";
         nameInputGroup.style.display = "none";
         overlayText.innerText = "🏆 CANLI REKORLAR";
         renderLeaderboard();
+        startBtn.innerText = isGameOver ? "OYNA" : "DEVAM ET";
+        startBtn.onclick = isGameOver ? window.initAndStartGame : window.resumeGame;
+        snakeOverlay.classList.remove("hidden");
+      }
+    };
+
+    window.renderMarket = function() {
+      marketList.innerHTML = "";
+      
+      marketList.innerHTML += `<div class="market-section-title">🐍 Vücut Skinleri</div>`;
+      SKINS.forEach(skin => {
+        const isUnlocked = playerLevel >= skin.reqLevel;
+        const isSelected = currentSkin === skin.id;
+
+        let btnHtml = "";
+        if (isSelected) {
+          btnHtml = `<button class="skin-select-btn active">SEÇİLİ</button>`;
+        } else if (isUnlocked) {
+          btnHtml = `<button class="skin-select-btn unlocked" onclick="selectSkin('${skin.id}')">SEÇ</button>`;
+        } else {
+          btnHtml = `<button class="skin-select-btn locked" disabled>Lv.${skin.reqLevel} Gerekli</button>`;
+        }
+
+        marketList.innerHTML += `
+          <div class="skin-card">
+            <div class="skin-info">
+              <div class="skin-main-row">
+                <span class="skin-preview" style="background: ${skin.bgPreview}"></span>
+                <span>${skin.name}</span>
+              </div>
+            </div>
+            ${btnHtml}
+          </div>
+        `;
+      });
+
+      marketList.innerHTML += `<div class="market-section-title" style="margin-top: 8px;">🎩 Kafa Şapkaları</div>`;
+      HATS.forEach(hat => {
+        const isUnlocked = playerLevel >= hat.reqLevel;
+        const isSelected = currentHat === hat.id;
+
+        let btnHtml = "";
+        if (isSelected) {
+          btnHtml = `<button class="skin-select-btn active">SEÇİLİ</button>`;
+        } else if (isUnlocked) {
+          btnHtml = `<button class="skin-select-btn unlocked" onclick="selectHat('${hat.id}')">SEÇ</button>`;
+        } else {
+          btnHtml = `<button class="skin-select-btn locked" disabled>Lv.${hat.reqLevel} Gerekli</button>`;
+        }
+
+        marketList.innerHTML += `
+          <div class="skin-card">
+            <div class="skin-info">
+              <div class="skin-main-row">
+                <span>✨</span>
+                <span>${hat.name}</span>
+              </div>
+            </div>
+            ${btnHtml}
+          </div>
+        `;
+      });
+
+      marketView.style.display = "block";
+    };
+
+    window.selectSkin = function(skinId) {
+      playSound('click');
+      currentSkin = skinId;
+      localStorage.setItem("snake_selected_skin", skinId);
+      syncToFirebase();
+      renderMarket();
+    };
+
+    window.selectHat = function(hatId) {
+      playSound('click');
+      currentHat = hatId;
+      localStorage.setItem("snake_selected_hat", hatId);
+      syncToFirebase();
+      renderMarket();
+    };
+
+    window.toggleMarketView = function() {
+      if (isGameRunning) pauseGame();
+      if (marketView.style.display === "block") {
+        marketView.style.display = "none";
+        overlayText.innerText = isPaused ? "OYUN DURAKLATILDI" : "YILAN OYUNU";
+        startBtn.innerText = isPaused ? "DEVAM ET" : "OYUNA BAŞLA";
+        startBtn.onclick = isPaused ? window.resumeGame : window.initAndStartGame;
+      } else {
+        leaderboardView.style.display = "none";
+        questView.style.display = "none";
+        nameInputGroup.style.display = "none";
+        overlayText.innerText = "🛒 SEVİYE MARKETİ";
+        renderMarket();
+        startBtn.innerText = isGameOver ? "OYNA" : "DEVAM ET";
+        startBtn.onclick = isGameOver ? window.initAndStartGame : window.resumeGame;
+        snakeOverlay.classList.remove("hidden");
+      }
+    };
+
+    window.renderQuests = function() {
+      checkAndResetQuests();
+      questList.innerHTML = "";
+      
+      const now = Date.now();
+      const timeLeft = (lastQuestReset + 24 * 60 * 60 * 1000) - now;
+      const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+      const mins = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+      questTimerLabel.innerText = `⏳ Yeni görevlere kalan: ${hours}s ${mins}dk`;
+
+      dailyQuests.forEach((q, index) => {
+        let btnHtml = "";
+        const isCompleted = q.progress >= q.target;
+        if (q.claimed) {
+          btnHtml = `<button class="skin-select-btn active" disabled>ALINDI</button>`;
+        } else if (isCompleted) {
+          btnHtml = `<button class="skin-select-btn claim-btn" onclick="claimQuest(${index})">+${q.rewardXp} XP</button>`;
+        } else {
+          btnHtml = `<button class="skin-select-btn locked" disabled>${q.progress}/${q.target}</button>`;
+        }
+
+        questList.innerHTML += `
+          <div class="quest-card">
+            <div class="quest-info">
+              <span style="font-weight:700;">${q.text}</span>
+              <span style="font-size:8px; color:#94a3b8;">Ödül: +${q.rewardXp} XP (${q.progress}/${q.target})</span>
+            </div>
+            ${btnHtml}
+          </div>
+        `;
+      });
+
+      questView.style.display = "block";
+    };
+
+    window.claimQuest = function(index) {
+      playSound('powerup');
+      const q = dailyQuests[index];
+      if (!q.claimed && q.progress >= q.target) {
+        q.claimed = true;
+        localStorage.setItem("snake_daily_quests", JSON.stringify(dailyQuests));
+        addXP(q.rewardXp);
+        renderQuests();
+      }
+    };
+
+    window.toggleQuestView = function() {
+      if (isGameRunning) pauseGame();
+      if (questView.style.display === "block") {
+        questView.style.display = "none";
+        overlayText.innerText = isPaused ? "OYUN DURAKLATILDI" : "YILAN OYUNU";
+        startBtn.innerText = isPaused ? "DEVAM ET" : "OYUNA BAŞLA";
+        startBtn.onclick = isPaused ? window.resumeGame : window.initAndStartGame;
+      } else {
+        leaderboardView.style.display = "none";
+        marketView.style.display = "none";
+        nameInputGroup.style.display = "none";
+        overlayText.innerText = "📋 GÜNLÜK GÖREVLER";
+        renderQuests();
         startBtn.innerText = isGameOver ? "OYNA" : "DEVAM ET";
         startBtn.onclick = isGameOver ? window.initAndStartGame : window.resumeGame;
         snakeOverlay.classList.remove("hidden");
@@ -8498,14 +8758,14 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       const diffX = e.changedTouches[0].clientX - touchStartX;
       const diffY = e.changedTouches[0].clientY - touchStartY;
       if (Math.abs(diffX) > Math.abs(diffY)) {
-        if (Math.abs(diffX) > 10) {
-          if (diffX > 0 && dx === 0) { nextDx = 1; nextDy = 0; }
-          else if (diffX < 0 && dx === 0) { nextDx = -1; nextDy = 0; }
+        if (Math.abs(diffX) > 12) {
+          if (diffX > 0) setDirection(1, 0);
+          else setDirection(-1, 0);
         }
       } else {
-        if (Math.abs(diffY) > 10) {
-          if (diffY > 0 && dy === 0) { nextDx = 0; nextDy = 1; }
-          else if (diffY < 0 && dy === 0) { nextDx = 0; nextDy = -1; }
+        if (Math.abs(diffY) > 12) {
+          if (diffY > 0) setDirection(0, 1);
+          else setDirection(0, -1);
         }
       }
     }, { passive: true });
@@ -8513,14 +8773,12 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     document.addEventListener("keydown", handleKey);
 
     window.initAndStartGame = function() {
-      initAudioCtx();
-      resizeCanvas();
-      resetGameData();
-      isGameOver = false;
-      isPaused = false;
-      hideOverlay();
-      isGameRunning = true;
-      lastMoveTime = performance.now();
+      initAudioCtx(); resizeCanvas(); resetGameData();
+      isGameOver = false; isPaused = false; hideOverlay();
+      isGameRunning = true; lastMoveTime = performance.now();
+      
+      updateQuestProgress('games_played', 1);
+
       if (animId) cancelAnimationFrame(animId);
       animId = requestAnimationFrame(gameLoop);
     };
@@ -8529,135 +8787,429 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       snakeOverlay.classList.add("hidden");
       nameInputGroup.style.display = "none";
       leaderboardView.style.display = "none";
+      marketView.style.display = "none";
+      questView.style.display = "none";
     }
 
     function showOverlayMenu(title, btnText, btnAction) {
-      overlayText.innerText = title;
-      startBtn.innerText = btnText;
-      startBtn.onclick = btnAction;
-      nameInputGroup.style.display = "none";
+      overlayText.innerText = title; startBtn.innerText = btnText;
+      startBtn.onclick = btnAction; nameInputGroup.style.display = "none";
       snakeOverlay.classList.remove("hidden");
     }
 
     function gameLoop(currentTime) {
       if (!isGameRunning) return;
       animId = requestAnimationFrame(gameLoop);
-      if (currentTime - lastMoveTime >= MOVE_INTERVAL) {
+      animFrameCounter++;
+
+      let elapsed = currentTime - lastMoveTime;
+      if (elapsed >= currentMoveInterval) {
         lastMoveTime = currentTime;
         updateGameLogic();
+        elapsed = 0;
       }
-      render();
+
+      const progress = Math.min(1, elapsed / currentMoveInterval);
+      render(progress);
+    }
+
+    function triggerScreenShake() {
+      canvasContainer.classList.remove("shake");
+      void canvasContainer.offsetWidth;
+      canvasContainer.classList.add("shake");
+      setTimeout(() => canvasContainer.classList.remove("shake"), 300);
+    }
+
+    function updateBuffBar() {
+      buffBar.innerHTML = "";
+      if (isMultiplierActive) buffBar.innerHTML += `<span class="buff-badge buff-multi">✨ 1.5X SKOR</span>`;
+    }
+
+    function setDirection(newDx, newDy) {
+      if (!canChangeDirection) return;
+      if (newDx !== 0 && dx === -newDx) return;
+      if (newDy !== 0 && dy === -newDy) return;
+
+      nextDx = newDx;
+      nextDy = newDy;
+      canChangeDirection = false;
     }
 
     function updateGameLogic() {
       dx = nextDx; dy = nextDy;
-      const head = { x: snake[0].x + dx, y: snake[0].y + dy };
-      if (checkCollision(head)) { endGame("💥 OYUN BİTTİ!"); return; }
-      snake.unshift(head);
-      if (head.x === food.x && head.y === food.y) {
-        playSound('eat');
+      canChangeDirection = true;
+
+      const oldSnake = snake.map(s => ({ x: s.x, y: s.y }));
+      
+      let newHeadX = snake[0].x + dx;
+      let newHeadY = snake[0].y + dy;
+
+      if (newHeadX < 0) newHeadX = tileCountX - 1;
+      else if (newHeadX >= tileCountX) newHeadX = 0;
+
+      if (newHeadY < 0) newHeadY = tileCountY - 1;
+      else if (newHeadY >= tileCountY) newHeadY = 0;
+
+      if (checkCollision({ x: newHeadX, y: newHeadY })) {
+        endGame("💥 OYUN BİTTİ!");
+        return;
+      }
+
+      const newHead = { x: newHeadX, y: newHeadY, prevX: oldSnake[0].x, prevY: oldSnake[0].y };
+      const newSnake = [newHead];
+
+      for (let i = 0; i < snake.length - 1; i++) {
+        newSnake.push({
+          x: oldSnake[i].x,
+          y: oldSnake[i].y,
+          prevX: oldSnake[i + 1] ? oldSnake[i + 1].x : oldSnake[i].x,
+          prevY: oldSnake[i + 1] ? oldSnake[i + 1].y : oldSnake[i].y
+        });
+      }
+
+      if (newHeadX === food.x && newHeadY === food.y) {
+        let earnedScore = 10;
+        if (food.type === 'star') { earnedScore = 30; playSound('powerup'); }
+        else if (food.type === 'double') {
+          isMultiplierActive = true; earnedScore = 20; playSound('powerup');
+          if (multiplierTimer) clearTimeout(multiplierTimer);
+          multiplierTimer = setTimeout(() => { isMultiplierActive = false; updateBuffBar(); }, 8000);
+        } else { playSound('eat'); }
+
+        if (isMultiplierActive) earnedScore = Math.round(earnedScore * 1.5);
+        score += earnedScore; scoreEl.innerText = score;
+
+        updateQuestProgress('single_score', score);
+        updateQuestProgress('total_score', earnedScore);
+
+        const speedBoost = Math.floor(score / 50) * 4;
+        currentMoveInterval = Math.max(75, BASE_SPEED - speedBoost);
+        
         triggerVibrate(25);
         createParticles(food.x * gridSize + gridSize/2, food.y * gridSize + gridSize/2);
-        score += (food.type === 'star' ? 30 : 10);
-        scoreEl.innerText = score;
-        generateFood();
-      } else {
-        snake.pop();
+        
+        const tailIdx = oldSnake.length - 1;
+        newSnake.push({
+          x: oldSnake[tailIdx].x,
+          y: oldSnake[tailIdx].y,
+          prevX: oldSnake[tailIdx].x,
+          prevY: oldSnake[tailIdx].y
+        });
+
+        updateBuffBar(); generateFood();
       }
+
+      snake = newSnake;
     }
 
     function endGame(message) {
-      playSound('die');
-      triggerVibrate(120);
-      isGameRunning = false;
-      if (animId) cancelAnimationFrame(animId);
-      isGameOver = true;
-      isPaused = false;
+      playSound('die'); triggerVibrate(120); triggerScreenShake();
+      isGameRunning = false; if (animId) cancelAnimationFrame(animId);
+      isGameOver = true; isPaused = false;
+
+      let xpEarned = Math.round(score * 1);
+      if (xpEarned < 10 && score > 0) xpEarned = 10;
+      addXP(xpEarned);
 
       const savedName = localStorage.getItem("snake_player_name");
       if (!savedName) {
-        overlayText.innerText = message;
+        overlayText.innerText = message + `\n+${xpEarned} XP Kazandın!`;
         startBtn.style.display = "none";
-        nameInputGroup.style.display = "flex";
-        playerNameInput.value = "";
+        nameInputGroup.style.display = "flex"; playerNameInput.value = "";
       } else {
         processFirebaseScore(savedName, score);
-        showOverlayMenu(`${message}\nSkorun: ${score}`, "YENİDEN BAŞLA", window.initAndStartGame);
+        showOverlayMenu(`${message}\nSkorun: ${score} | +${xpEarned} XP`, "YENİDEN BAŞLA", window.initAndStartGame);
         startBtn.style.display = "block";
       }
       snakeOverlay.classList.remove("hidden");
     }
 
-    function render() {
-      ctx.fillStyle = "#030712"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-      drawGrid(); updateParticles(); drawFood(); drawSnake();
+    function render(progress = 1) {
+      ctx.fillStyle = "#050811"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+      drawGrid(); updateParticles(); drawFood(); drawSmoothSnake(progress);
     }
+    
     function drawGrid() {
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.02)"; ctx.lineWidth = 1; ctx.beginPath();
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.025)"; ctx.lineWidth = 1; ctx.beginPath();
       for (let i = 0; i <= canvas.width; i += gridSize) { ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); }
       for (let j = 0; j <= canvas.height; j += gridSize) { ctx.moveTo(0, j); ctx.lineTo(canvas.width, j); }
       ctx.stroke();
     }
-    function drawSnake() {
-      for (let i = 0; i < snake.length; i++) {
-        const x = snake[i].x * gridSize; const y = snake[i].y * gridSize;
-        if (i === 0) { ctx.fillStyle = "#4ade80"; ctx.beginPath(); ctx.roundRect(x, y, gridSize, gridSize, 3); ctx.fill(); }
-        else { const alpha = Math.max(0.3, 1 - (i / snake.length) * 0.7); ctx.fillStyle = `rgba(34, 197, 94, ${alpha})`; ctx.beginPath(); ctx.roundRect(x + 1, y + 1, gridSize - 2, gridSize - 2, 2); ctx.fill(); }
+
+    function drawSmoothSnake(t) {
+      if (snake.length === 0) return;
+
+      const interpolatedCoords = snake.map(seg => {
+        let diffX = seg.x - seg.prevX;
+        if (diffX > 1) diffX -= tileCountX;
+        if (diffX < -1) diffX += tileCountX;
+        let rx = seg.prevX + diffX * t;
+        rx = (rx + tileCountX) % tileCountX;
+
+        let diffY = seg.y - seg.prevY;
+        if (diffY > 1) diffY -= tileCountY;
+        if (diffY < -1) diffY += tileCountY;
+        let ry = seg.prevY + diffY * t;
+        ry = (ry + tileCountY) % tileCountY;
+
+        return {
+          cx: rx * gridSize + gridSize / 2,
+          cy: ry * gridSize + gridSize / 2
+        };
+      });
+
+      for (let i = 0; i < interpolatedCoords.length - 1; i++) {
+        let p1 = interpolatedCoords[i];
+        let p2 = interpolatedCoords[i + 1];
+        let dist = Math.hypot(p1.cx - p2.cx, p1.cy - p2.cy);
+
+        if (dist < gridSize * 3) {
+          ctx.beginPath();
+          ctx.strokeStyle = "rgba(0, 0, 0, 0.45)";
+          ctx.lineWidth = gridSize;
+          ctx.lineCap = "round";
+          ctx.lineJoin = "round";
+          ctx.moveTo(p1.cx + 1.5, p1.cy + 2);
+          ctx.lineTo(p2.cx + 1.5, p2.cy + 2);
+          ctx.stroke();
+        }
+      }
+
+      for (let i = 0; i < interpolatedCoords.length - 1; i++) {
+        let p1 = interpolatedCoords[i];
+        let p2 = interpolatedCoords[i + 1];
+        let dist = Math.hypot(p1.cx - p2.cx, p1.cy - p2.cy);
+
+        if (dist < gridSize * 3) {
+          let strokeColor = "#22c55e";
+          if (currentSkin === 'neon_blue') strokeColor = "#06b6d4";
+          else if (currentSkin === 'fire_trail') strokeColor = "#ef4444";
+          else if (currentSkin === 'ghost') strokeColor = "rgba(168, 85, 247, 0.7)";
+          else if (currentSkin === 'rainbow') strokeColor = `hsl(${(animFrameCounter * 5 + i * 25) % 360}, 100%, 50%)`;
+          else if (currentSkin === 'galaxy') strokeColor = `hsl(${(animFrameCounter * 3 + i * 15 + 240) % 360}, 90%, 60%)`;
+
+          ctx.beginPath();
+          ctx.strokeStyle = strokeColor;
+          ctx.lineWidth = gridSize - 1;
+          ctx.lineCap = "round";
+          ctx.lineJoin = "round";
+          ctx.moveTo(p1.cx, p1.cy);
+          ctx.lineTo(p2.cx, p2.cy);
+          ctx.stroke();
+        }
+      }
+
+      const headCoord = interpolatedCoords[0];
+      const angle = Math.atan2(dy, dx);
+
+      ctx.save();
+      ctx.translate(headCoord.cx, headCoord.cy);
+      ctx.rotate(angle);
+
+      const tongueFlicker = Math.sin(animFrameCounter * 0.25);
+      if (tongueFlicker > 0.2) {
+        ctx.strokeStyle = "#ef4444";
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(gridSize / 2, 0);
+        ctx.lineTo(gridSize / 2 + 5, 0);
+        ctx.lineTo(gridSize / 2 + 8, -2.5);
+        ctx.moveTo(gridSize / 2 + 5, 0);
+        ctx.lineTo(gridSize / 2 + 8, 2.5);
+        ctx.stroke();
+      }
+
+      let headColor = "#4ade80";
+      if (currentSkin === 'neon_blue') headColor = "#22d3ee";
+      else if (currentSkin === 'fire_trail') headColor = "#f87171";
+      else if (currentSkin === 'ghost') headColor = "#c084fc";
+      else if (currentSkin === 'rainbow') headColor = `hsl(${(animFrameCounter * 5) % 360}, 100%, 60%)`;
+      else if (currentSkin === 'galaxy') headColor = "#c084fc";
+
+      ctx.fillStyle = headColor;
+      ctx.beginPath();
+      ctx.arc(0, 0, gridSize / 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      const eyeOffsetY = gridSize / 4;
+      const eyeOffsetX = gridSize / 6;
+
+      ctx.fillStyle = "#ffffff";
+      ctx.beginPath(); ctx.arc(eyeOffsetX, -eyeOffsetY, 2.2, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(eyeOffsetX, eyeOffsetY, 2.2, 0, Math.PI * 2); ctx.fill();
+
+      ctx.fillStyle = "#000000";
+      ctx.beginPath(); ctx.arc(eyeOffsetX + 0.5, -eyeOffsetY, 1, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(eyeOffsetX + 0.5, eyeOffsetY, 1, 0, Math.PI * 2); ctx.fill();
+
+      ctx.restore();
+
+      if (currentHat !== 'none') {
+        ctx.save();
+        let hatOffsetY = -gridSize * 0.55;
+        if (dy === -1) {
+          hatOffsetY = gridSize * 0.55;
+        }
+        ctx.translate(headCoord.cx, headCoord.cy + hatOffsetY);
+
+        if (currentHat === 'crown') {
+          ctx.fillStyle = "#facc15";
+          ctx.beginPath();
+          ctx.moveTo(-6, 3);
+          ctx.lineTo(-7, -4);
+          ctx.lineTo(-3, -1);
+          ctx.lineTo(0, -5);
+          ctx.lineTo(3, -1);
+          ctx.lineTo(7, -4);
+          ctx.lineTo(6, 3);
+          ctx.closePath();
+          ctx.fill();
+          ctx.strokeStyle = "#ca8a04";
+          ctx.lineWidth = 1;
+          ctx.stroke();
+          ctx.fillStyle = "#ef4444";
+          ctx.fillRect(-1, -1, 2, 2);
+        } 
+        else if (currentHat === 'neon_stripe') {
+          ctx.fillStyle = "#06b6d4";
+          ctx.fillRect(-6, -2, 12, 3);
+        }
+        else if (currentHat === 'pirate') {
+          ctx.fillStyle = "#1e293b";
+          ctx.beginPath();
+          ctx.moveTo(-8, 2); ctx.lineTo(8, 2); ctx.lineTo(0, -6); ctx.closePath();
+          ctx.fill();
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(-1, -3, 2, 2);
+        } 
+        else if (currentHat === 'cyber_glasses') {
+          ctx.strokeStyle = "#eab308";
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.arc(3, -3, 3, 0, Math.PI * 2);
+          ctx.arc(3, 3, 3, 0, Math.PI * 2);
+          ctx.moveTo(3, -1); ctx.lineTo(3, 1);
+          ctx.stroke();
+          ctx.fillStyle = "rgba(56, 189, 248, 0.4)";
+          ctx.beginPath();
+          ctx.arc(3, -3, 2.5, 0, Math.PI * 2);
+          ctx.arc(3, 3, 2.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        else if (currentHat === 'daisy') {
+          ctx.fillStyle = "#facc15";
+          ctx.beginPath(); ctx.arc(0, 0, 3, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = "#ffffff";
+          ctx.beginPath(); ctx.arc(0, -4, 2, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.arc(0, 4, 2, 0, Math.PI * 2); ctx.fill();
+        }
+        else if (currentHat === 'dragon_horns') {
+          ctx.fillStyle = "#ef4444";
+          ctx.beginPath();
+          ctx.moveTo(-4, -2); ctx.lineTo(-8, -8); ctx.lineTo(-2, -4); ctx.closePath();
+          ctx.moveTo(4, -2); ctx.lineTo(8, -8); ctx.lineTo(2, -4); ctx.closePath();
+          ctx.fill();
+        }
+
+        ctx.restore();
       }
     }
+
     function generateFood() {
       food.x = Math.floor(Math.random() * (tileCountX - 2)) + 1;
       food.y = Math.floor(Math.random() * (tileCountY - 2)) + 1;
-      food.type = Math.random() < 0.15 ? 'star' : 'fruit';
-      food.symbol = food.type === 'star' ? '⭐' : fruits[Math.floor(Math.random() * fruits.length)];
+      
+      const rand = Math.random();
+      if (rand < 0.15) { food.type = 'star'; food.symbol = '⭐'; }
+      else if (rand < 0.25) { food.type = 'double'; food.symbol = '💎'; }
+      else { food.type = 'fruit'; food.symbol = fruits[Math.floor(Math.random() * fruits.length)]; }
     }
-    function drawFood() { ctx.font = `${gridSize - 1}px sans-serif`; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText(food.symbol, food.x * gridSize + gridSize/2, food.y * gridSize + gridSize/2); }
+
+    function drawFood() {
+      const fcx = food.x * gridSize + gridSize / 2;
+      const fcy = food.y * gridSize + gridSize / 2;
+      const scale = 1 + Math.sin(animFrameCounter * 0.12) * 0.12;
+
+      ctx.save();
+      ctx.translate(fcx, fcy);
+      ctx.scale(scale, scale);
+
+      ctx.font = `${gridSize}px sans-serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(food.symbol, 0, 0);
+
+      ctx.restore();
+    }
+
     function createParticles(x, y) {
-      for (let i = 0; i < 5; i++) particles.push({ x: x, y: y, vx: (Math.random() - 0.5) * 3, vy: (Math.random() - 0.5) * 3, radius: Math.random() * 1.5 + 0.5, color: food.type === 'star' ? '#facc15' : '#4ade80', life: 10 });
+      const pColor = food.type === 'star' ? '#facc15' : '#4ade80';
+      for (let i = 0; i < 7; i++) {
+        particles.push({
+          x: x, y: y,
+          vx: (Math.random() - 0.5) * 3.5, vy: (Math.random() - 0.5) * 3.5,
+          radius: Math.random() * 1.8 + 0.5,
+          color: pColor, life: 14
+        });
+      }
     }
+
     function updateParticles() {
-      for (let i = particles.length - 1; i >= 0; i--) { const p = particles[i]; p.x += p.vx; p.y += p.vy; p.life--; ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill(); if (p.life <= 0) particles.splice(i, 1); }
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i]; p.x += p.vx; p.y += p.vy; p.life--;
+        ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill();
+        if (p.life <= 0) particles.splice(i, 1);
+      }
     }
+
     function handleKey(e) {
-      if (!isGameRunning) return; const k = e.keyCode;
-      if ([37, 38, 39, 40].includes(k)) e.preventDefault();
-      if ((k === 37 || k === 65) && dx === 0) { nextDx = -1; nextDy = 0; }
-      if ((k === 38 || k === 87) && dy === 0) { nextDx = 0; nextDy = -1; }
-      if ((k === 39 || k === 68) && dx === 0) { nextDx = 1; nextDy = 0; }
-      if ((k === 40 || k === 83) && dy === 0) { nextDx = 0; nextDy = 1; }
+      const k = e.keyCode;
+      if ([80, 27].includes(k)) { window.togglePauseGame(); return; }
+      
+      if ([37, 38, 39, 40, 32].includes(k)) {
+        if (gameWrapper.classList.contains("active")) e.preventDefault();
+      }
+      
+      if (!isGameRunning) return;
+
+      if (k === 37 || k === 65) setDirection(-1, 0);
+      if (k === 38 || k === 87) setDirection(0, -1);
+      if (k === 39 || k === 68) setDirection(1, 0);
+      if (k === 40 || k === 83) setDirection(0, 1);
     }
 
     window.handleTouchDir = function(dir, e) {
-      e.preventDefault();
+      if (e) e.preventDefault();
+      playSound('click'); triggerVibrate(15);
       if (!isGameRunning) return;
-      if (dir === 'LEFT' && dx === 0) { nextDx = -1; nextDy = 0; }
-      if (dir === 'UP' && dy === 0) { nextDx = 0; nextDy = -1; }
-      if (dir === 'RIGHT' && dx === 0) { nextDx = 1; nextDy = 0; }
-      if (dir === 'DOWN' && dy === 0) { nextDx = 0; nextDy = 1; }
-    };
-
-    window.setSmoothDir = function(dir) {
-      if (!isGameRunning) return;
-      if (dir === 'LEFT' && dx === 0) { nextDx = -1; nextDy = 0; }
-      if (dir === 'UP' && dy === 0) { nextDx = 0; nextDy = -1; }
-      if (dir === 'RIGHT' && dx === 0) { nextDx = 1; nextDy = 0; }
-      if (dir === 'DOWN' && dy === 0) { nextDx = 0; nextDy = 1; }
+      if (dir === 'LEFT') setDirection(-1, 0);
+      if (dir === 'UP') setDirection(0, -1);
+      if (dir === 'RIGHT') setDirection(1, 0);
+      if (dir === 'DOWN') setDirection(0, 1);
     };
 
     function checkCollision(head) {
-      if (head.x < 0 || head.x >= tileCountX || head.y < 0 || head.y >= tileCountY) return true;
       for (let i = 0; i < snake.length; i++) { if (snake[i].x === head.x && snake[i].y === head.y) return true; }
       return false;
     }
+
     function resetGameData() {
       const startX = Math.floor(tileCountX / 2);
       const startY = Math.floor(tileCountY / 2);
-      snake = [{ x: startX, y: startY }, { x: startX - 1, y: startY }, { x: startX - 2, y: startY }];
-      particles = []; dx = 1; dy = 0; nextDx = 1; nextDy = 0; score = 0; scoreEl.innerText = score; generateFood();
+      snake = [
+        { x: startX, y: startY, prevX: startX, prevY: startY },
+        { x: startX - 1, y: startY, prevX: startX - 1, prevY: startY },
+        { x: startX - 2, y: startY, prevX: startX - 2, prevY: startY }
+      ];
+      particles = []; dx = 1; dy = 0; nextDx = 1; nextDy = 0; canChangeDirection = true;
+      score = 0; scoreEl.innerText = score;
+      currentMoveInterval = BASE_SPEED;
+      isMultiplierActive = false;
+      if (multiplierTimer) clearTimeout(multiplierTimer);
+      updateBuffBar(); generateFood();
     }
   })();
 </script>
-
 
   
   
