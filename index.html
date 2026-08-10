@@ -7877,36 +7877,30 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
 
 
-<!-- MOBİL UYUMLU, XP BARLI VE GÜNLÜK GÖREV SİSTEMLİ YILAN OYUNU -->
+<!-- MOBİL UYUMLU, XP BARLI, GOOGLE GİRİŞİ ZORUNLU YILAN OYUNU (STABİL FİNAL SÜRÜM) -->
 <style>
   /* SAĞ ÜSTTEKİ OYNA BUTONU */
   .snake-trigger-btn {
-    position: fixed;
-        color: #ff477e !important;
-        top: 14px;
-        right: 110px;
-        width: 43px !important;
-        height: 44px !important; 
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 2px solid rgba(255, 117, 140, 0.5);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        cursor: pointer;
-        z-index: 99998;
-        box-shadow: 0 4px 12px rgba(255, 105, 180, 0.15) !important;
-        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .snake-trigger-btn:hover {
-        transform: translateY(-2px) scale(1.03);
-        box-shadow: 0 14px 30px rgba(14, 165, 233, 0.6);
+    position: fixed !important;
+    top: max(15px, env(safe-area-inset-top)) !important;
+    right: 15px !important;
+    z-index: 99998 !important;
+    background: #0f172a;
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    border-radius: 50px;
+    padding: 10px 18px;
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(56, 189, 248, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    touch-action: manipulation;
+    transition: all 0.2s ease;
   }
-
   .snake-trigger-btn:active { transform: scale(0.92); }
 
   /* TAM EKRAN OYUN MODALI */
@@ -8027,7 +8021,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     border: 1px solid rgba(56, 189, 248, 0.3);
     border-radius: 14px;
     display: flex; flex-direction: column; justify-content: center; align-items: center;
-    gap: 8px; z-index: 20; padding: 15px; box-sizing: border-box; overflow-y: auto;
+    gap: 10px; z-index: 20; padding: 15px; box-sizing: border-box; overflow-y: auto;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
   }
   .snake-overlay.hidden { display: none !important; }
@@ -8041,8 +8035,27 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   }
   .start-btn:active { transform: scale(0.95); }
 
-  .player-input-group { display: flex; flex-direction: column; gap: 6px; width: 100%; max-width: 200px; align-items: center; }
-  .player-name-input { background: #1e293b; border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; padding: 6px 10px; border-radius: 6px; font-size: 11px; text-align: center; outline: none; width: 100%; box-sizing: border-box; }
+  .google-btn {
+    background: #4285f4; color: #fff; border: none; padding: 10px 14px;
+    font-size: 12px; font-weight: 700; border-radius: 8px; cursor: pointer;
+    box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3); touch-action: manipulation;
+    display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; max-width: 220px;
+  }
+  .google-btn:active { transform: scale(0.95); }
+
+  /* GİRİŞ NOTU KUTUSU */
+  .auth-notice-box {
+    background: rgba(56, 189, 248, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 10px;
+    color: #94a3b8;
+    text-align: center;
+    line-height: 1.4;
+    max-width: 250px;
+  }
+  .auth-notice-box strong { color: #38bdf8; }
 
   .leaderboard-list { width: 100%; max-width: 280px; list-style: none; padding: 0; margin: 0 auto; display: flex; flex-direction: column; gap: 4px; }
   .leaderboard-item { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); padding: 5px 8px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
@@ -8097,13 +8110,13 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
 <!-- SAĞ ÜST TETİKLEME BUTONU -->
 <button class="snake-trigger-btn" id="openSnakeModalBtn">
-  <span>🐍</span>
+  <span>🐍</span> Oyna
 </button>
 
 <!-- TAM EKRAN OYUN MODALI -->
 <div class="snake-game-wrapper" id="snakeGameWrapper">
   <div class="snake-premium-header">
-    <!-- 1. ÜST SATIR: Skor, Seviye & XP Kutusu (İçinde Bar ile), Duraklat, Ses, Kapat -->
+    <!-- 1. ÜST SATIR: Skor, Seviye & XP Kutusu, Duraklat, Ses, Kapat -->
     <div class="header-top-row">
       <div class="snake-stat-box">
         <span class="snake-stat-label">SKOR</span>
@@ -8152,10 +8165,17 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   <div id="snakeOverlay" class="snake-overlay">
     <p class="overlay-title" id="overlayText">YILAN OYUNU</p>
 
-    <div id="nameInputGroup" class="player-input-group" style="display: none;">
-      <p style="font-size:10px; color:#94a3b8; margin:0; text-align:center;">Firebase kaydı için ismini gir kral:</p>
-      <input type="text" id="playerNameInput" class="player-name-input" placeholder="İsmini Gir..." maxlength="12" />
-      <button class="start-btn" style="background:#22c55e; width:100%;" id="saveNameBtn" onclick="savePlayerName()">KAYDET</button>
+    <!-- GOOGLE İLE GİRİŞ ALANI VE BİLGİLENDİRME NOTU -->
+    <div id="authGroup" style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%;">
+      <div id="authNotice" class="auth-notice-box">
+        Oyun verilerinizin, seviyenizin ve skorlarınızın kaybolmaması için <strong>Google ile giriş yapılması zorunludur.</strong>
+        <br><br>
+        Tüm ilerlemeniz bulut veritabanına kaydedilecektir. Lütfen giriş yaptığınız <strong>Gmail adresinizi unutmayın!</strong>
+      </div>
+      <button class="google-btn" id="googleLoginBtn" onclick="loginWithGoogle()">
+        <span>🌐</span> Google ile Giriş Yap
+      </button>
+      <div id="userInfoLabel" style="font-size: 11px; color: #38bdf8; font-weight: 700; display: none;"></div>
     </div>
 
     <div id="leaderboardView" style="display: none; width: 100%;">
@@ -8171,20 +8191,20 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       <div class="quest-list" id="questList"></div>
     </div>
 
-    <button class="start-btn" id="startBtn" onclick="initAndStartGame()">OYUNA BAŞLA</button>
+    <!-- OYUNA BAŞLA BUTONU (GİRİŞ YAPILMADAN GÖRÜNMEZ) -->
+    <button class="start-btn" id="startBtn" style="display: none;" onclick="initAndStartGame()">OYUNA BAŞLA</button>
   </div>
 </div>
 
-<!-- FIREBASE SDK COMPAT -->
+<!-- FIREBASE SDK COMPAT (FIRESTORE EKLENDİ) -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script>
   const firebaseConfig = {
     apiKey: "AIzaSyBpZQQW4FHbSFtdedXGEN9aSuGVrHOftjw",
     authDomain: "kedi-oyunu.firebaseapp.com",
-    databaseURL: "https://kedi-oyunu-default-rtdb.europe-west1.firebasedatabase.app",
     projectId: "kedi-oyunu",
     storageBucket: "kedi-oyunu.firebasestorage.app",
     messagingSenderId: "757056025025",
@@ -8193,8 +8213,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
   if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
   const auth = firebase.auth();
-  const db = firebase.database();
-  const leaderboardRef = db.ref("snake_leaderboard");
+  const db = firebase.firestore();
 
   let currentUserUid = null;
   let isAudioEnabled = true;
@@ -8297,12 +8316,15 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
   function syncToFirebase() {
     if (currentUserUid) {
-      leaderboardRef.child(currentUserUid).update({
+      const savedName = (auth.currentUser && auth.currentUser.displayName) || localStorage.getItem("snake_player_name") || "Oyuncu";
+      db.collection("snake_users").doc(currentUserUid).set({
+        name: savedName,
         level: playerLevel,
         xp: playerXP,
         skin: currentSkin,
-        hat: currentHat
-      });
+        hat: currentHat,
+        timestamp: Date.now()
+      }, { merge: true });
     }
   }
 
@@ -8365,34 +8387,95 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     if (isAudioEnabled) initAudioCtx();
   };
 
-  auth.onAuthStateChanged((user) => {
-    if (user) {
-      currentUserUid = user.uid;
-      leaderboardRef.child(currentUserUid).once("value", (snapshot) => {
-        if (snapshot.exists()) {
-          const val = snapshot.val();
-          if (val.name) localStorage.setItem("snake_player_name", val.name);
-          if (val.level) {
-            playerLevel = val.level;
-            localStorage.setItem("snake_player_level", playerLevel.toString());
-          }
-          if (val.xp) {
-            playerXP = val.xp;
-            localStorage.setItem("snake_player_xp", playerXP.toString());
-          }
-          if (val.skin) {
-            currentSkin = val.skin;
-            localStorage.setItem("snake_selected_skin", val.skin);
-          }
-          if (val.hat) {
-            currentHat = val.hat;
-            localStorage.setItem("snake_selected_hat", val.hat);
-          }
-          updateLevelDisplay();
+  window.loginWithGoogle = function() {
+    initAudioCtx();
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider)
+      .then((result) => {
+        const user = result.user;
+        currentUserUid = user.uid;
+        const displayName = user.displayName || "Oyuncu";
+        localStorage.setItem("snake_player_name", displayName);
+        loadUserDataFromFirestore(user.uid, displayName);
+      })
+      .catch((error) => {
+        console.error("Google Login Error:", error);
+        if (error.code !== "auth/popup-closed-by-user") {
+          alert("Giriş hatası: " + error.message);
         }
       });
+  };
+
+  function loadUserDataFromFirestore(uid, defaultName) {
+    const userDocRef = db.collection("snake_users").doc(uid);
+    userDocRef.get().then((docSnap) => {
+      if (docSnap.exists) {
+        const val = docSnap.data();
+        if (val.name) localStorage.setItem("snake_player_name", val.name);
+        if (val.level !== undefined) {
+          playerLevel = val.level;
+          localStorage.setItem("snake_player_level", playerLevel.toString());
+        }
+        if (val.xp !== undefined) {
+          playerXP = val.xp;
+          localStorage.setItem("snake_player_xp", playerXP.toString());
+        }
+        if (val.skin) {
+          currentSkin = val.skin;
+          localStorage.setItem("snake_selected_skin", val.skin);
+        }
+        if (val.hat) {
+          currentHat = val.hat;
+          localStorage.setItem("snake_selected_hat", val.hat);
+        }
+      } else {
+        userDocRef.set({
+          name: defaultName || "Oyuncu",
+          score: 0,
+          level: playerLevel,
+          xp: playerXP,
+          skin: currentSkin,
+          hat: currentHat,
+          timestamp: Date.now()
+        });
+      }
+      updateLevelDisplay();
+      updateAuthUI();
+    });
+  }
+
+  function updateAuthUI() {
+    const user = auth.currentUser;
+    const googleBtn = document.getElementById("googleLoginBtn");
+    const userInfoLabel = document.getElementById("userInfoLabel");
+    const authNotice = document.getElementById("authNotice");
+    const startBtn = document.getElementById("startBtn");
+    
+    if (user && !user.isAnonymous) {
+      if (googleBtn) googleBtn.style.display = "none";
+      if (authNotice) authNotice.style.display = "none";
+      if (userInfoLabel) {
+        userInfoLabel.style.display = "block";
+        userInfoLabel.innerText = "👤 Hoş Geldin, " + (user.displayName || "Oyuncu");
+      }
+      if (startBtn) startBtn.style.display = "block";
     } else {
-      auth.signInAnonymously().catch((err) => {});
+      if (googleBtn) googleBtn.style.display = "flex";
+      if (authNotice) authNotice.style.display = "block";
+      if (userInfoLabel) userInfoLabel.style.display = "none";
+      if (startBtn) startBtn.style.display = "none";
+    }
+  }
+
+  /* TEMİZLENMİŞ VE SAĞLAMLAŞTIRILMIŞ AUTH LISTENER */
+  auth.onAuthStateChanged((user) => {
+    if (user && !user.isAnonymous) {
+      currentUserUid = user.uid;
+      const userName = user.displayName || localStorage.getItem("snake_player_name") || "Oyuncu";
+      loadUserDataFromFirestore(user.uid, userName);
+    } else {
+      currentUserUid = null;
+      updateAuthUI();
     }
   });
 
@@ -8413,8 +8496,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     const snakeOverlay = document.getElementById("snakeOverlay");
     const overlayText = document.getElementById("overlayText");
     const startBtn = document.getElementById("startBtn");
-    const nameInputGroup = document.getElementById("nameInputGroup");
-    const playerNameInput = document.getElementById("playerNameInput");
     const leaderboardView = document.getElementById("leaderboardView");
     const leaderboardList = document.getElementById("leaderboardList");
     const marketView = document.getElementById("marketView");
@@ -8451,6 +8532,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     let isGameOver = true;
     let animId = null;
 
+    /* DÜZELTİLMİŞ VE TAŞMA ENGELLEMELİ RESIZE FONKSİYONU */
     function resizeCanvas() {
       const rect = canvasContainer.getBoundingClientRect();
       canvas.width = Math.floor(rect.width);
@@ -8472,6 +8554,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       openBtn.style.display = "none";
       document.body.style.overflow = "hidden";
       resizeCanvas();
+      updateAuthUI();
       if (isPaused) showOverlayMenu("OYUN DURAKLATILDI", "DEVAM ET", window.resumeGame);
     }
 
@@ -8517,40 +8600,30 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       }
     };
 
-    window.savePlayerName = function() {
-      const name = playerNameInput.value.trim();
-      if (!name) { alert("Lütfen ismini gir kral!"); return; }
-      localStorage.setItem("snake_player_name", name);
-      nameInputGroup.style.display = "none";
-      processFirebaseScore(name, score);
-      showOverlayMenu("YILAN OYUNU", "OYUNA BAŞLA", window.initAndStartGame);
-      startBtn.style.display = "block";
-    };
-
+    /* DÜZELTİLMİŞ ÖNCELİKLİ İSİM SAKLAMA / SKOR GÖNDERME */
     function processFirebaseScore(playerName, currentScore) {
-      if (!currentUserUid || !playerName) return;
-      const userRecordRef = leaderboardRef.child(currentUserUid);
-      userRecordRef.once("value", (snapshot) => {
-        const existingData = snapshot.val();
-        const existingScore = existingData ? (existingData.score || 0) : 0;
-        userRecordRef.set({ 
-          name: playerName, 
-          score: Math.max(currentScore, existingScore), 
+      if (!currentUserUid) return;
+      const finalName = (auth.currentUser && auth.currentUser.displayName) || playerName || "Oyuncu";
+      const userDocRef = db.collection("snake_users").doc(currentUserUid);
+      userDocRef.get().then((docSnap) => {
+        const existingScore = docSnap.exists ? (docSnap.data().score || 0) : 0;
+        userDocRef.set({ 
+          name: finalName, 
+          score: Math.max(currentScore || 0, existingScore), 
           level: playerLevel,
           xp: playerXP,
           skin: currentSkin,
           hat: currentHat,
           timestamp: Date.now() 
-        });
+        }, { merge: true });
       });
     }
 
     function renderLeaderboard() {
       leaderboardList.innerHTML = `<li class="leaderboard-item" style="justify-content:center; color:#94a3b8;">Yükleniyor...</li>`;
-      leaderboardRef.orderByChild("score").limitToLast(5).once("value", (snapshot) => {
+      db.collection("snake_users").orderBy("score", "desc").limit(5).get().then((querySnapshot) => {
         let lb = [];
-        snapshot.forEach((child) => { lb.push(child.val()); });
-        lb.reverse();
+        querySnapshot.forEach((doc) => { lb.push(doc.data()); });
         leaderboardList.innerHTML = "";
         if (lb.length === 0) {
           leaderboardList.innerHTML = `<li class="leaderboard-item" style="justify-content:center; color:#94a3b8;">Henüz rekor yok</li>`;
@@ -8560,13 +8633,15 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             leaderboardList.innerHTML += `
               <li class="leaderboard-item">
                 <span class="leaderboard-rank">${medals[index] || (index + 1) + '.'}</span>
-                <span class="leaderboard-name">${escapeHtml(item.name)} (Lv.${item.level || 1})</span>
-                <span class="leaderboard-score">${item.score}</span>
+                <span class="leaderboard-name">${escapeHtml(item.name || "Oyuncu")} (Lv.${item.level || 1})</span>
+                <span class="leaderboard-score">${item.score || 0}</span>
               </li>
             `;
           });
         }
         leaderboardView.style.display = "block";
+      }).catch((err) => {
+        leaderboardList.innerHTML = `<li class="leaderboard-item" style="justify-content:center; color:#ef4444;">Yüklenemedi</li>`;
       });
     }
 
@@ -8580,7 +8655,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       } else {
         marketView.style.display = "none";
         questView.style.display = "none";
-        nameInputGroup.style.display = "none";
         overlayText.innerText = "🏆 CANLI REKORLAR";
         renderLeaderboard();
         startBtn.innerText = isGameOver ? "OYNA" : "DEVAM ET";
@@ -8675,7 +8749,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       } else {
         leaderboardView.style.display = "none";
         questView.style.display = "none";
-        nameInputGroup.style.display = "none";
         overlayText.innerText = "🛒 SEVİYE MARKETİ";
         renderMarket();
         startBtn.innerText = isGameOver ? "OYNA" : "DEVAM ET";
@@ -8740,7 +8813,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       } else {
         leaderboardView.style.display = "none";
         marketView.style.display = "none";
-        nameInputGroup.style.display = "none";
         overlayText.innerText = "📋 GÜNLÜK GÖREVLER";
         renderQuests();
         startBtn.innerText = isGameOver ? "OYNA" : "DEVAM ET";
@@ -8779,6 +8851,11 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     document.addEventListener("keydown", handleKey);
 
     window.initAndStartGame = function() {
+      if (!auth.currentUser || auth.currentUser.isAnonymous) {
+        alert("Oyuna başlamak için önce Google ile giriş yapmalısın!");
+        return;
+      }
+
       initAudioCtx(); resizeCanvas(); resetGameData();
       isGameOver = false; isPaused = false; hideOverlay();
       isGameRunning = true; lastMoveTime = performance.now();
@@ -8791,7 +8868,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
     function hideOverlay() {
       snakeOverlay.classList.add("hidden");
-      nameInputGroup.style.display = "none";
       leaderboardView.style.display = "none";
       marketView.style.display = "none";
       questView.style.display = "none";
@@ -8799,7 +8875,8 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
     function showOverlayMenu(title, btnText, btnAction) {
       overlayText.innerText = title; startBtn.innerText = btnText;
-      startBtn.onclick = btnAction; nameInputGroup.style.display = "none";
+      startBtn.onclick = btnAction;
+      updateAuthUI();
       snakeOverlay.classList.remove("hidden");
     }
 
@@ -8917,16 +8994,11 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       if (xpEarned < 10 && score > 0) xpEarned = 10;
       addXP(xpEarned);
 
-      const savedName = localStorage.getItem("snake_player_name");
-      if (!savedName) {
-        overlayText.innerText = message + `\n+${xpEarned} XP Kazandın!`;
-        startBtn.style.display = "none";
-        nameInputGroup.style.display = "flex"; playerNameInput.value = "";
-      } else {
-        processFirebaseScore(savedName, score);
-        showOverlayMenu(`${message}\nSkorun: ${score} | +${xpEarned} XP`, "YENİDEN BAŞLA", window.initAndStartGame);
-        startBtn.style.display = "block";
-      }
+      const user = auth.currentUser;
+      const savedName = (user && user.displayName) || localStorage.getItem("snake_player_name") || "Oyuncu";
+
+      processFirebaseScore(savedName, score);
+      showOverlayMenu(`${message}\nSkorun: ${score} | +${xpEarned} XP`, "YENİDEN BAŞLA", window.initAndStartGame);
       snakeOverlay.classList.remove("hidden");
     }
 
