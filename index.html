@@ -7347,13 +7347,10 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 </script>
 
 
+
 <!-- ============================================================ -->
 <!-- ŞANS ÇARKI, CANLI SAYAÇ, SES EFEKTLERİ & TELEGRAM BİLDİRİM -->
 <!-- ============================================================ -->
-
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
 <style>
     :root {
@@ -7517,6 +7514,9 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     .bildirim-item { font-size: 11px; padding: 6px 8px; background: #ffffff; border-left: 3px solid #ff477e; border-radius: 6px; margin-bottom: 4px; }
 </style>
 
+<!-- Confetti Script -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
 <!-- Buton -->
 <button id="openCarkModalBtn" 
         onclick="document.getElementById('carkModalOverlay').classList.add('active');" 
@@ -7524,12 +7524,12 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         style="
     position: fixed;
     color: #ff477e !important;
-    top: 14px;          /* Zarın üst mesafesiyle aynı seviye */
-    right: 60px;        /* 80px yaparak zarın sol yanına kaydırdık */
+    top: 14px;
+    right: 60px;
     z-index: 99999;
     width: 43px!important;
     height: 44px!important; 
-    border: 1px solid #ffc2d1 !important;             /* Kenarına sitenin tarzında ince pembe bir çizgi çektik */
+    border: 1px solid #ffc2d1 !important;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(12px);
@@ -7540,11 +7540,12 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     justify-content: center;
     font-size: 24px;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(255, 105, 180, 0.15) !important; /* Parlamayı yumuşattık */
+    box-shadow: 0 4px 12px rgba(255, 105, 180, 0.15) !important;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     padding: 0;
     transition: transform 0.2s ease, border-color 0.2s ease;
 
+  
 " onmouseover="this.style.transform='scale(1.1)'; this.style.borderColor='#ff477e';" onmouseout="this.style.transform='scale(1)'; this.style.borderColor='#f8bbd0';">
     🎡
 </button>
@@ -7593,8 +7594,16 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 </div>
 
 <script>
+    window.switchCarkTab = function(tabId) {
+        document.querySelectorAll('.cark-tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.cark-tab-content').forEach(c => c.classList.remove('active'));
+        if(tabId === 'carkTab') document.querySelectorAll('.cark-tab-btn')[0].classList.add('active');
+        else document.querySelectorAll('.cark-tab-btn')[1].classList.add('active');
+        const targetTab = document.getElementById(tabId);
+        if (targetTab) targetTab.classList.add('active');
+    };
+
     document.addEventListener('DOMContentLoaded', function() {
-        // GITHUB DEPENDENCY'DEN ALINAN TOKEN & CHAT ID
         const TELEGRAM_BOT_TOKEN = "8834454895:AAFqOrZziBAvPm3UZSIdtoLoubI0oCYQwe4";
         const TELEGRAM_CHAT_ID = "8059288514";
 
@@ -7650,7 +7659,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             modalOverlay.onclick = (e) => { if (e.target === modalOverlay) modalOverlay.classList.remove('active'); };
         }
 
-        const firebaseConfig = {
+        const carkConfig = {
             apiKey: "AIzaSyDdxnuTvAdYs4rDBVlfpT44A7VEpp06xyE",
             authDomain: "cark-7df7c.firebaseapp.com",
             databaseURL: "https://cark-7df7c-default-rtdb.europe-west1.firebasedatabase.app",
@@ -7660,10 +7669,38 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             appId: "1:413334951088:web:7efb5a57475b637d929775"
         };
 
-        if (typeof firebase !== 'undefined' && !firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
+        let carkDb = null;
+
+        function loadScript(src) {
+            return new Promise((resolve, reject) => {
+                const s = document.createElement('script');
+                s.src = src;
+                s.onload = resolve;
+                s.onerror = reject;
+                document.head.appendChild(s);
+            });
         }
-        const db = (typeof firebase !== 'undefined') ? firebase.database() : null;
+
+        // Realtime Database Modülünü Dinamik ve Garanti Yükle
+        async function initCarkFirebase() {
+            try {
+                if (typeof firebase === 'undefined' || !firebase.database) {
+                    if (typeof firebase === 'undefined') {
+                        await loadScript("https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js");
+                    }
+                    await loadScript("https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js");
+                }
+                
+                let carkApp = firebase.apps.find(a => a.name === 'carkApp');
+                if (!carkApp) {
+                    carkApp = firebase.initializeApp(carkConfig, 'carkApp');
+                }
+                carkDb = firebase.database(carkApp);
+                setupRealtimeListeners();
+            } catch (err) {
+                console.error("Çark Firebase Başlatılamadı:", err);
+            }
+        }
 
         const prizes = [
             { id: "hakliyim", text: "👑 Haklıyım Kuponu", bg: "#ff758c" },
@@ -7696,69 +7733,63 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             spinner.style.background = `conic-gradient(${conicGradient})`;
         }
 
-        window.switchCarkTab = function(tabId) {
-            document.querySelectorAll('.cark-tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.cark-tab-content').forEach(c => c.classList.remove('active'));
-            if(tabId === 'carkTab') document.querySelectorAll('.cark-tab-btn')[0].classList.add('active');
-            else document.querySelectorAll('.cark-tab-btn')[1].classList.add('active');
-            document.getElementById(tabId).classList.add('active');
-        };
+        function setupRealtimeListeners() {
+            if (!carkDb) return;
+            
+            const kuponRef = carkDb.ref('kuponEnvanter');
+            kuponRef.on('value', (snapshot) => {
+                const kuponlar = snapshot.val() || {};
+                const container = document.getElementById('kuponGridContainer');
+                if (!container) return;
 
-        if (!db) return;
+                document.querySelectorAll('.kupon-kart').forEach(el => el.remove());
+                container.innerHTML = "";
+                let toplam = 0;
+                let varOlanKuponSayisi = 0;
 
-        const kuponRef = db.ref('kuponEnvanter');
-        kuponRef.on('value', (snapshot) => {
-            const kuponlar = snapshot.val() || {};
-            const container = document.getElementById('kuponGridContainer');
-            if (!container) return;
+                Object.keys(kuponBilgileri).forEach(id => {
+                    const adet = kuponlar[id] || 0;
+                    if (adet > 0) {
+                        toplam += adet;
+                        varOlanKuponSayisi++;
+                        const info = kuponBilgileri[id];
+                        const kartHtml = `
+                            <div class="kupon-kart">
+                                <div class="kupon-baslik">${info.baslik}</div>
+                                <div class="kupon-detay">${info.detay}</div>
+                                <button class="kupon-item-btn" onclick="kuponKullan('${id}', '${info.adi}')">Harca (${adet})</button>
+                            </div>
+                        `;
+                        container.insertAdjacentHTML('beforeend', kartHtml);
+                    }
+                });
 
-            document.querySelectorAll('.kupon-kart').forEach(el => el.remove());
-            container.innerHTML = "";
-            let toplam = 0;
-            let varOlanKuponSayisi = 0;
-
-            Object.keys(kuponBilgileri).forEach(id => {
-                const adet = kuponlar[id] || 0;
-                if (adet > 0) {
-                    toplam += adet;
-                    varOlanKuponSayisi++;
-                    const info = kuponBilgileri[id];
-                    const kartHtml = `
-                        <div class="kupon-kart">
-                            <div class="kupon-baslik">${info.baslik}</div>
-                            <div class="kupon-detay">${info.detay}</div>
-                            <button class="kupon-item-btn" onclick="kuponKullan('${id}', '${info.adi}')">Harca (${adet})</button>
-                        </div>
-                    `;
-                    container.insertAdjacentHTML('beforeend', kartHtml);
+                if (varOlanKuponSayisi === 0) {
+                    container.innerHTML = `<div style="grid-column: 1 / -1; padding: 25px 10px; background: #ffffff; border: 2px dashed #cbd5e1; border-radius: 16px; color: #64748b; font-size: 13px;">🎁 <b>Henüz hiç kuponun yok!</b><br><span style="font-size: 11px; color: #94a3b8; margin-top:4px; display:inline-block;">Çarkı çevirerek yeni kuponlar kazanabilirsin.</span></div>`;
                 }
+
+                const badge = document.getElementById('toplamKuponBadge');
+                if (badge) badge.innerText = toplam;
             });
 
-            if (varOlanKuponSayisi === 0) {
-                container.innerHTML = `<div style="grid-column: 1 / -1; padding: 25px 10px; background: #ffffff; border: 2px dashed #cbd5e1; border-radius: 16px; color: #64748b; font-size: 13px;">🎁 <b>Henüz hiç kuponun yok!</b><br><span style="font-size: 11px; color: #94a3b8; margin-top:4px; display:inline-block;">Çarkı çevirerek yeni kuponlar kazanabilirsin.</span></div>`;
-            }
-
-            const badge = document.getElementById('toplamKuponBadge');
-            if (badge) badge.innerText = toplam;
-        });
-
-        const bildirimRef = db.ref('kuponGecmisi');
-        bildirimRef.on('value', (snapshot) => {
-            const veriler = snapshot.val();
-            const liste = document.getElementById('bildirimListe');
-            if (!liste) return;
-            liste.innerHTML = "";
-            if (!veriler) {
-                liste.innerHTML = '<li style="font-size:11px; color:#94a3b8;">Henüz kupon harcanmadı.</li>';
-                return;
-            }
-            Object.values(veriler).reverse().forEach(item => {
-                const li = document.createElement('li');
-                li.className = 'bildirim-item';
-                li.innerHTML = `🎟️ <b>${item.kuponAdi}</b> kullanıldı! <br><span style="font-size:10px; color:#94a3b8;">🕒 ${item.tarih}</span>`;
-                liste.appendChild(li);
+            const bildirimRef = carkDb.ref('kuponGecmisi');
+            bildirimRef.on('value', (snapshot) => {
+                const veriler = snapshot.val();
+                const liste = document.getElementById('bildirimListe');
+                if (!liste) return;
+                liste.innerHTML = "";
+                if (!veriler) {
+                    liste.innerHTML = '<li style="font-size:11px; color:#94a3b8;">Henüz kupon harcanmadı.</li>';
+                    return;
+                }
+                Object.values(veriler).reverse().forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = 'bildirim-item';
+                    li.innerHTML = `🎟️ <b>${item.kuponAdi}</b> kullanıldı! <br><span style="font-size:10px; color:#94a3b8;">🕒 ${item.tarih}</span>`;
+                    liste.appendChild(li);
+                });
             });
-        });
+        }
 
         let isSpinning = false;
         let currentRotation = 0;
@@ -7792,15 +7823,27 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
         const spinBtn = document.getElementById('spinBtn');
         if (spinBtn) {
-            spinBtn.onclick = () => {
+            spinBtn.onclick = async () => {
                 if (isSpinning) return;
                 initAudio();
+
                 const resultBox = document.getElementById('resultBox');
+                
+                if (!carkDb) {
+                    await initCarkFirebase();
+                }
+
+                if (!carkDb) {
+                    resultBox.style.color = "#e11d48";
+                    resultBox.innerText = "Veritabanına bağlanılamadı!";
+                    return;
+                }
+
                 resultBox.innerHTML = "Kontrol ediliyor... ⏳";
 
                 const now = new Date().getTime();
                 const intervalMs = 7 * 24 * 60 * 60 * 1000;
-                const dbRef = db.ref('askCark');
+                const dbRef = carkDb.ref('askCark');
 
                 dbRef.once('value').then((snapshot) => {
                     const data = snapshot.val() || {};
@@ -7836,7 +7879,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
                         const selectedIndex = Math.floor((360 - actualDegrees) / sliceAngle) % totalPrizes;
                         const wonPrize = prizes[selectedIndex];
 
-                        kuponRef.child(wonPrize.id).transaction(m => (m || 0) + 1);
+                        carkDb.ref('kuponEnvanter').child(wonPrize.id).transaction(m => (m || 0) + 1);
                         dbRef.set({ sonCevirmeTarihi: new Date().getTime(), kilitli: true });
 
                         if (typeof confetti === 'function') confetti({ particleCount: 90, spread: 70, origin: { y: 0.65 } });
@@ -7850,17 +7893,22 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
                         isSpinning = false;
                         startCountdown(new Date().getTime() + intervalMs);
                     }, 4500);
+                }).catch(err => {
+                    console.error("Firebase Çark Okuma Hatası:", err);
+                    resultBox.style.color = "#e11d48";
+                    resultBox.innerText = "Veri okunamadı!";
                 });
             };
         }
 
         window.kuponKullan = function(kuponId, kuponAdi) {
             initAudio();
+            if (!carkDb) return;
             if (confirm(`"${kuponAdi}" hakkını kullanmak istediğine emin misin?`)) {
-                kuponRef.child(kuponId).transaction((m) => (m && m > 0) ? m - 1 : 0, (err, committed) => {
+                carkDb.ref('kuponEnvanter').child(kuponId).transaction((m) => (m && m > 0) ? m - 1 : 0, (err, committed) => {
                     if (committed) {
                         const tarih = new Date().toLocaleString('tr-TR', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
-                        bildirimRef.push({ kuponAdi: kuponAdi, tarih: tarih });
+                        carkDb.ref('kuponGecmisi').push({ kuponAdi: kuponAdi, tarih: tarih });
                         if (typeof confetti === 'function') confetti({ particleCount: 90, spread: 70 });
                         playWinSound();
 
@@ -7871,8 +7919,12 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
                 });
             }
         };
+
+        // Firebase'i Asenkron Başlat
+        initCarkFirebase();
     });
 </script>
+  
 
 
 
@@ -7881,28 +7933,31 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 <style>
   /* SAĞ ÜSTTEKİ OYNA BUTONU */
   .snake-trigger-btn {
-    position: fixed !important;
-    top: max(15px, env(safe-area-inset-top)) !important;
-    right: 15px !important;
-    z-index: 99998 !important;
-    background: #0f172a;
-    color: #38bdf8;
-    border: 1px solid rgba(56, 189, 248, 0.4);
-    border-radius: 50px;
-    padding: 10px 18px;
-    font-family: 'Inter', -apple-system, sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(56, 189, 248, 0.2);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    touch-action: manipulation;
-    transition: all 0.2s ease;
-  }
-  .snake-trigger-btn:active { transform: scale(0.92); }
+    position: fixed;
+        color: #ff477e !important;
+        top: 14px;
+        right: 110px;
+        width: 43px !important;
+        height: 44px !important; 
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 2px solid rgba(255, 117, 140, 0.5);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        cursor: pointer;
+        z-index: 999998;
+        box-shadow: 0 4px 12px rgba(255, 105, 180, 0.15) !important;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
 
+    .snake-trigger-btn:hover {
+        transform: translateY(-2px) scale(1.03);
+        box-shadow: 0 14px 30px rgba(14, 165, 233, 0.6);
+    }
   /* TAM EKRAN OYUN MODALI */
   .snake-game-wrapper {
     position: fixed !important;
@@ -8110,7 +8165,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
 <!-- SAĞ ÜST TETİKLEME BUTONU -->
 <button class="snake-trigger-btn" id="openSnakeModalBtn">
-  <span>🐍</span> Oyna
+  <span>🐍</span> 
 </button>
 
 <!-- TAM EKRAN OYUN MODALI -->
