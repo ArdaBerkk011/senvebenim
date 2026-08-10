@@ -5367,15 +5367,23 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
 
 <style>
+    /* OYUN AÇIKKEN ARKA PLAN KAYDIRMASINI VE AÇMA BUTONUNU GİZLER */
+    body.wow2-oyun-kilitli {
+        overflow: hidden !important;
+    }
+
+    body.wow2-oyun-kilitli .wow2-sabit-ac-btn {
+        display: none !important;
+    }
+
     /* SİTENİN SAĞ ÜSTÜNDEKİ SABİT OYUN BUTONU */
     .wow2-sabit-ac-btn {
         position: fixed;
         color: #ff477e !important;
         top: 14px;
         right: 10px;
-        width: 43px!important;
-        height: 44px!important; 
-        border: 1px solid #ffc2d1 !important;
+        width: 43px !important;
+        height: 44px !important; 
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
@@ -5666,7 +5674,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         width: 260px;
         height: 260px;
         margin: 10px auto;
-        touch-action: manipulation;
+        touch-action: none;
     }
 
     .ogretici-grid .grid-hucre {
@@ -5696,7 +5704,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         justify-content: space-between;
         align-items: center;
         padding: 10px 8px;
-        touch-action: manipulation;
+        touch-action: none;
     }
 
     #wow2OyunModalOverlay .wow2-bulmaca-arkaplan-kapsul::before {
@@ -5755,7 +5763,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         max-width: 420px;
         flex: 1;
         max-height: 520px;
-        touch-action: manipulation;
+        touch-action: none;
     }
 
     #wow2OyunModalOverlay .grid-hucre {
@@ -5950,7 +5958,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         <div id="wow2OgreticiMenu" class="wow2-modal gizli">
             <div class="menu-baslik">
                 <h2>Öğretici Bölüm</h2>
-                <p>Harflere sırasıyla tıklayarak kelimeyi oluştur!</p>
+                <p>Harflere sırayla tıklayarak kelimeleri oluştur!</p>
             </div>
 
             <div class="ogretici-ipucu-kutusu">
@@ -5978,7 +5986,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
                 <ul>
                     <li><b>Ana Hikaye:</b> Oyun ilk aşamada <b>200 ana bölümden</b> oluşur.</li>
                     <li><b>Ekstra Bölümler:</b> 200 bölümü tamamladığınızda <b>100 özel kategorilik</b> ekstra bölüm modunun kilidi açılır.</li>
-                    <li><b>Tıklayarak Seçim:</b> Harflere sırasıyla tıklayarak komşu harfleri birleştirebilirsiniz.</li>
+                    <li><b>Tıklamalı Seçim:</b> Komşu harflere sırayla tıklayarak kelimeleri birleştirebilirsiniz.</li>
                     <li><b>Puanlama:</b> Her doğru kelime <b>+20 puan</b> kazandırır.</li>
                     <li><b>İpucu Kullanımı:</b> 💡 butonuna tıklayarak <b>-20 puan</b> karşılığında ipucu alabilirsiniz.</li>
                     <li>ÖNEMLİ: Oyuna başlamadan önce (tek seferlik) 🗑️ Kaydı Sil (Sıfırla) butonu ile sıfırlayıp başla.</li>
@@ -6257,7 +6265,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         { kategori: "Akıllı Ev Teknolojisi", kelimeler: ["ROBOT", "OTOMATİK", "SES", "LAMBA", "KOMUT", "AĞ"] },
         { kategori: "Yenilenebilir Enerji", kelimeler: ["RÜZGAR", "PİL", "SÜRDÜR", "BİO", "GÜNEŞ", "DOĞA"] },
         { kategori: "Elektrikli Araçlar", kelimeler: ["ŞARJ", "BATARYA", "MENZİL", "SESSİZ", "SÜRÜŞ", "MOTOR"] },
-        { kategori: "Otonom Sürüş", kelimeler: ["SENSÖR", "YOL", "KAMERA", "RADAR", "Yazılım", "SÜRÜCÜSÜZ"] },
+        { kategori: "Otonom Sürüş", kelimeler: ["SENSÖR", "YOL", "KAMERA", "RADAR", "YAZILIM", "SÜRÜCÜSÜZ"] },
         { kategori: "Drone Teknolojisi", kelimeler: ["PERVANE", "KUMANDA", "ÇEKİM", "UÇUŞ", "HAVADAN", "İHA"] },
         { kategori: "Kahve Gurmesi", kelimeler: ["FİLTRE", "LATTE", "ÇEKİRDEK", "MEŞE", "AROMA", "DEMLEME"] },
         { kategori: "Çikolata Atölyesi", kelimeler: ["KAKAO", "BITTER", "SÜTLÜ", "TRUF", "KREMA", "LEZZET"] },
@@ -6352,6 +6360,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     let mevcutBolumIndex = parseInt(localStorage.getItem('wow2_bolum')) || 0;
     let toplamPuan = parseInt(localStorage.getItem('wow2_puan')) || 0;
     let ogreticiTamamlandi = localStorage.getItem('wow2_ogretici_ok') === 'true';
+    let aktifTema = localStorage.getItem('wow2_secilen_tema') || 'doga';
 
     let secilenHucroler = [];
     let bulunanKelimeler = [];
@@ -6495,6 +6504,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
                 hucre.dataset.col = c;
 
                 hucre.addEventListener('click', () => wow2OgreticiHucreTıkla(hucre));
+
                 grid.appendChild(hucre);
             });
         });
@@ -6594,6 +6604,8 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
     function wow2TemaDegistir(temaKey) {
         if (temalar[temaKey]) {
+            aktifTema = temaKey;
+            localStorage.setItem('wow2_secilen_tema', temaKey);
             document.getElementById('wow2Kapsul').style.backgroundImage = `url('${temalar[temaKey]}')`;
             wow2TemaMenusuKapat();
         }
@@ -6604,9 +6616,11 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             localStorage.removeItem('wow2_bolum');
             localStorage.removeItem('wow2_puan');
             localStorage.removeItem('wow2_ogretici_ok');
+            localStorage.removeItem('wow2_secilen_tema');
             mevcutBolumIndex = 0;
             toplamPuan = 0;
             ogreticiTamamlandi = false;
+            aktifTema = 'doga';
             document.getElementById('wow2Skor').innerText = `Puan: 0`;
             wow2ExtraButonDurumuGuncelle();
             wow2BolumYukle(0);
@@ -6730,12 +6744,13 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
                 hucre.dataset.col = c;
                 
                 hucre.addEventListener('click', () => wow2HucreTıkla(hucre));
+                
                 gridContainer.appendChild(hucre);
             });
         });
 
         wow2KelimeListesiGuncelle();
-        document.getElementById('wow2Kapsul').style.backgroundImage = `url('${temalar.doga}')`;
+        document.getElementById('wow2Kapsul').style.backgroundImage = `url('${temalar[aktifTema] || temalar.doga}')`;
     }
 
     function wow2HucreTıkla(hucre) {
@@ -6747,9 +6762,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
             if (secilenHucroler.length >= 2 && secilenHucroler[secilenHucroler.length - 2] === hucre) {
                 const cikan = secilenHucroler.pop();
-                if (!cikan.classList.contains('bulundu')) {
-                    cikan.classList.remove('secili');
-                }
+                cikan.classList.remove('secili');
                 wow2YaziGuncelle();
                 return;
             }
@@ -6843,9 +6856,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
     function wow2SecimiSifirla() {
         secilenHucroler.forEach(h => {
-            if (!h.classList.contains('bulundu')) {
-                h.classList.remove('secili');
-            }
+            h.classList.remove('secili');
         });
         secilenHucroler = [];
         wow2YaziGuncelle();
@@ -6889,7 +6900,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         });
     }
 </script>
-
 
   
 
