@@ -8051,8 +8051,8 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(56, 189, 248, 0.1);
     width: 100%; max-width: 420px;
     flex: 1 1 auto;
-    min-height: 200px;
-    max-height: 50vh;
+    min-height: 180px;
+    max-height: 42vh;
     margin: 2px auto 6px auto; touch-action: none;
     display: flex; align-items: center; justify-content: center;
   }
@@ -8137,30 +8137,55 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
   .market-section-title { font-size: 10px; font-weight: 800; color: #38bdf8; text-transform: uppercase; margin: 4px 0 2px 0; text-align: left; width: 100%; max-width: 280px; border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding-bottom: 2px; }
 
-  /* TELEFON İÇİN ERGONOMİK YÖN BUTONLARI */
+  /* TELEFON İÇİN GENİŞ VE ERGONOMİK ARTI (D-PAD) YÖN BUTONLARI */
   .phone-controls {
-    display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 44px);
-    gap: 6px; width: 100%; max-width: 260px; margin: 0 auto; flex-shrink: 0; touch-action: manipulation;
+    display: grid;
+    grid-template-columns: repeat(3, 58px);
+    grid-template-rows: repeat(3, 58px);
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 240px;
+    margin: 4px auto 8px auto;
+    flex-shrink: 0;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .phone-btn {
-    background: radial-gradient(circle, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
-    border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; color: #38bdf8;
-    font-size: 16px; display: flex; align-items: center; justify-content: center;
-    cursor: pointer; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    touch-action: manipulation; user-select: none; -webkit-user-select: none;
+    background: radial-gradient(circle, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
+    border: 2px solid rgba(56, 189, 248, 0.4);
+    border-radius: 16px;
+    color: #38bdf8;
+    font-size: 22px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
     transition: transform 0.08s ease, background 0.08s ease;
+    width: 100%;
+    height: 100%;
   }
 
   .phone-btn:active, .phone-btn.touched {
-    background: #38bdf8 !important; color: #0f172a !important; transform: scale(0.92);
-    box-shadow: 0 0 15px rgba(56, 189, 248, 0.6) !important;
+    background: #38bdf8 !important;
+    color: #0f172a !important;
+    transform: scale(0.88);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.8) !important;
   }
 
-  .btn-up { grid-column: 2; grid-row: 1; }
-  .btn-left { grid-column: 1; grid-row: 2; }
-  .btn-down { grid-column: 2; grid-row: 2; }
+  .btn-up    { grid-column: 2; grid-row: 1; }
+  .btn-left  { grid-column: 1; grid-row: 2; }
   .btn-right { grid-column: 3; grid-row: 2; }
+  .btn-down  { grid-column: 2; grid-row: 3; }
 </style>
 
 <!-- SAĞ ÜST TETİKLEME BUTONU -->
@@ -8208,12 +8233,12 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     <canvas id="smoothSnakeCanvas"></canvas>
   </div>
 
-  <!-- TELEFON İÇİN ERGONOMİK YÖN BUTONLARI -->
+  <!-- TELEFON İÇİN ERGONOMİK ARTI D-PAD YÖN BUTONLARI -->
   <div class="phone-controls">
     <button class="phone-btn btn-up" id="btnUp" onpointerdown="handleTouchDir('UP', event)">▲</button>
     <button class="phone-btn btn-left" id="btnLeft" onpointerdown="handleTouchDir('LEFT', event)">◄</button>
-    <button class="phone-btn btn-down" id="btnDown" onpointerdown="handleTouchDir('DOWN', event)">▼</button>
     <button class="phone-btn btn-right" id="btnRight" onpointerdown="handleTouchDir('RIGHT', event)">►</button>
+    <button class="phone-btn btn-down" id="btnDown" onpointerdown="handleTouchDir('DOWN', event)">▼</button>
   </div>
 
   <!-- ÜSTTEN AŞAĞIDA VE ORTALANMIŞ MENÜ/OVERLAY KATMANI -->
