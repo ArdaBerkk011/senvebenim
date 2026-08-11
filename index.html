@@ -8683,69 +8683,74 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     };
 
     function processFirebaseScore(playerName, currentScore) {
-      // UID yoksa veya geçersizse işlemi direkt durdur
-      const user = auth.currentUser;
-      const activeUid = currentUserUid || (user ? user.uid : null);
-      if (!activeUid || (user && user.isAnonymous)) return;
+  const user = auth.currentUser;
+  const activeUid = currentUserUid || (user ? user.uid : null);
+  if (!activeUid || (user && user.isAnonymous)) return;
 
-      const finalName = (user && user.displayName) || playerName || "Oyuncu";
-      const userDocRef = db.collection("snake_users").doc(activeUid);
+  const finalName = (user && user.displayName) || playerName || "Oyuncu";
+  const userDocRef = db.collection("snake_users").doc(activeUid);
 
-      userDocRef.get().then((docSnap) => {
-        let existingScore = 0;
-        if (docSnap.exists) {
-          existingScore = docSnap.data().score || 0;
-        }
+  userDocRef.get().then((docSnap) => {
+    // Number() ile veritabanındaki skorun sayı olduğunu garanti ediyoruz
+    const existingScore = docSnap.exists ? Number(docSnap.data().score || 0) : 0;
+    const currentScoreNum = Number(currentScore || 0);
 
-        // SADECE yeni skor eskisinden büyükse timestamp'i güncelle, 
-        // böylece gerçek rekor tarihi bozulmaz!
-        const newScore = Math.max(currentScore || 0, existingScore);
-        
-        const updateData = {
-          name: finalName,
-          score: newScore,
-          level: playerLevel,
-          xp: playerXP,
-          skin: currentSkin,
-          hat: currentHat
-        };
+    // Gerçek rekor hesabı
+    const newScore = Math.max(currentScoreNum, existingScore);
+    
+    const updateData = {
+      name: finalName,
+      score: Number(newScore), // Firebase'e SAYI olarak gönderiyoruz
+      level: Number(playerLevel || 1),
+      xp: Number(playerXP || 0),
+      skin: currentSkin,
+      hat: currentHat
+    };
 
-        // Eğer yeni bir rekor kırıldıysa veya kayıt ilk kez açılıyorsa timestamp güncellenir
-        if (newScore > existingScore || !docSnap.exists) {
-          updateData.timestamp = Date.now();
-        }
-
-        userDocRef.set(updateData, { merge: true });
-      }).catch((error) => {
-        console.error("Skor kaydedilirken hata oluştu:", error);
-      });
+    if (newScore > existingScore || !docSnap.exists) {
+      updateData.timestamp = Date.now();
     }
 
+    userDocRef.set(updateData, { merge: true });
+  }).catch((err) => console.error("Skor kaydetme hatası:", err));
+}
+     
     function renderLeaderboard() {
-      leaderboardList.innerHTML = `<li class="leaderboard-item" style="justify-content:center; color:#94a3b8;">Yükleniyor...</li>`;
-      db.collection("snake_users").orderBy("score", "desc").limit(5).get().then((querySnapshot) => {
-        let lb = [];
-        querySnapshot.forEach((doc) => { lb.push(doc.data()); });
-        leaderboardList.innerHTML = "";
-        if (lb.length === 0) {
-          leaderboardList.innerHTML = `<li class="leaderboard-item" style="justify-content:center; color:#94a3b8;">Henüz rekor yok</li>`;
-        } else {
-          const medals = ['🥇', '🥈', '🥉', '4.', '5.'];
-          lb.forEach((item, index) => {
-            leaderboardList.innerHTML += `
-              <li class="leaderboard-item">
-                <span class="leaderboard-rank">${medals[index] || (index + 1) + '.'}</span>
-                <span class="leaderboard-name">${escapeHtml(item.name || "Oyuncu")} (Lv.${item.level || 1})</span>
-                <span class="leaderboard-score">${item.score || 0}</span>
-              </li>
-            `;
-          });
-        }
-        leaderboardView.style.display = "block";
-      }).catch((err) => {
-        leaderboardList.innerHTML = `<li class="leaderboard-item" style="justify-content:center; color:#ef4444;">Yüklenemedi</li>`;
+  leaderboardList.innerHTML = `<li class="leaderboard-item" style="justify-content:center; color:#94a3b8;">Yükleniyor...</li>`;
+  
+  db.collection("snake_users").orderBy("score", "desc").limit(5).get().then((querySnapshot) => {
+    let lb = [];
+    querySnapshot.forEach((doc) => { 
+      let data = doc.data();
+      // Skorun sayı olduğundan emin oluyoruz
+      data.score = Number(data.score || 0);
+      lb.push(data); 
+    });
+
+    // Javascript tarafında da skora göre büyükten küçüğe tekrar diziyoruz
+    lb.sort((a, b) => b.score - a.score);
+
+    leaderboardList.innerHTML = "";
+    if (lb.length === 0) {
+      leaderboardList.innerHTML = `<li class="leaderboard-item" style="justify-content:center; color:#94a3b8;">Henüz rekor yok</li>`;
+    } else {
+      const medals = ['🥇', '🥈', '🥉', '4.', '5.'];
+      lb.forEach((item, index) => {
+        leaderboardList.innerHTML += `
+          <li class="leaderboard-item">
+            <span class="leaderboard-rank">${medals[index] || (index + 1) + '.'}</span>
+            <span class="leaderboard-name">${escapeHtml(item.name || "Oyuncu")} (Lv.${item.level || 1})</span>
+            <span class="leaderboard-score">${item.score}</span>
+          </li>
+        `;
       });
     }
+    leaderboardView.style.display = "block";
+  }).catch((err) => {
+    console.error("Liderlik tablosu hatası:", err);
+    leaderboardList.innerHTML = `<li class="leaderboard-item" style="justify-content:center; color:#ef4444;">Yüklenemedi</li>`;
+  });
+}
 
     window.toggleLeaderboardView = function() {
       if (isGameRunning) pauseGame();
