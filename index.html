@@ -7928,7 +7928,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
 
 
-<!-- MOBİL UYUMLU, XP BARLI, GOOGLE GİRİŞİ ZORUNLU YILAN OYUNU (GECE 00:00 SIFIRLAMALI FİNAL SÜRÜM) -->
+<!-- MOBİL UYUMLU, XP BARLI, GOOGLE GİRİŞİ ZORUNLU YILAN OYUNU (GÜVENLİK VE VERİTABANI KİLİTLİ FİNAL SÜRÜM) -->
 <style>
   /* SAĞ ÜSTTEKİ OYNA BUTONU */
   .snake-trigger-btn {
@@ -8343,13 +8343,13 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
   let dailyQuests = JSON.parse(localStorage.getItem("snake_daily_quests") || "null");
   let lastQuestDay = localStorage.getItem("snake_last_quest_day") || "";
+  let lastDailyRewardDay = localStorage.getItem("snake_last_daily_reward_day") || "";
 
   function getTodayDateString() {
     const d = new Date();
     return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
   }
 
-  /* GECE 00:00 SIFIRLAMA MANTIĞI */
   function checkAndResetQuests() {
     const todayStr = getTodayDateString();
 
@@ -8388,6 +8388,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     });
     if (updated) {
       localStorage.setItem("snake_daily_quests", JSON.stringify(dailyQuests));
+      syncToFirebase();
     }
   }
 
@@ -8418,6 +8419,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   }
   updateLevelDisplay();
 
+  /* HER BİLGİYİ FIREBASE'E ANINDA SENKRONİZE EDEN MANTIK */
   function syncToFirebase() {
     if (currentUserUid) {
       const user = auth.currentUser;
@@ -8430,6 +8432,9 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         xp: playerXP,
         skin: currentSkin,
         hat: currentHat,
+        lastQuestDay: lastQuestDay,
+        lastDailyRewardDay: lastDailyRewardDay,
+        dailyQuests: JSON.stringify(dailyQuests),
         timestamp: Date.now()
       }, { merge: true });
     }
@@ -8513,6 +8518,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       });
   };
 
+  /* ÖNBELLEK SİLİNSE DAHİ BİLGİLERİ BULUTTAN ÇEKEN MANTIK */
   function loadUserDataFromFirestore(uid, defaultName) {
     const userDocRef = db.collection("snake_users").doc(uid);
     const user = auth.currentUser;
@@ -8546,6 +8552,22 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
           localStorage.setItem("snake_selected_hat", val.hat);
         }
 
+        // ÖDÜL VE GÖREV BİLGİLERİNİ VERİTABANINDAN YÜKLE
+        if (val.lastDailyRewardDay) {
+          lastDailyRewardDay = val.lastDailyRewardDay;
+          localStorage.setItem("snake_last_daily_reward_day", val.lastDailyRewardDay);
+        }
+        if (val.lastQuestDay) {
+          lastQuestDay = val.lastQuestDay;
+          localStorage.setItem("snake_last_quest_day", val.lastQuestDay);
+        }
+        if (val.dailyQuests && val.lastQuestDay === getTodayDateString()) {
+          try {
+            dailyQuests = JSON.parse(val.dailyQuests);
+            localStorage.setItem("snake_daily_quests", val.dailyQuests);
+          } catch(e){}
+        }
+
         userDocRef.set({ photoURL: photoURL }, { merge: true });
       } else {
         userDocRef.set({
@@ -8556,6 +8578,9 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
           xp: Number(playerXP || 0),
           skin: currentSkin,
           hat: currentHat,
+          lastQuestDay: lastQuestDay,
+          lastDailyRewardDay: lastDailyRewardDay,
+          dailyQuests: JSON.stringify(dailyQuests),
           timestamp: Date.now()
         }, { merge: true });
       }
@@ -8758,7 +8783,10 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
           level: Number(playerLevel || 1),
           xp: Number(playerXP || 0),
           skin: currentSkin,
-          hat: currentHat
+          hat: currentHat,
+          lastQuestDay: lastQuestDay,
+          lastDailyRewardDay: lastDailyRewardDay,
+          dailyQuests: JSON.stringify(dailyQuests)
         };
 
         if (newScore > existingScore || !docSnap.exists) {
@@ -8929,12 +8957,11 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       }
     };
 
-    /* GECE 00:00 KONTROLLÜ GÖREVLER SİSTEMİ */
+    /* GÖREVLER ARAYÜZÜ */
     window.renderQuests = function() {
       checkAndResetQuests();
       questList.innerHTML = "";
       
-      // GECE YARISINA (00:00:00) KALAN SÜREYİ HESAPLA
       const now = new Date();
       const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
       const diffMs = tomorrow - now;
@@ -8945,7 +8972,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
       // 1. GÜNLÜK GİRİŞ ÖDÜLÜ
       const todayStr = getTodayDateString();
-      const lastDailyRewardDay = localStorage.getItem("snake_last_daily_reward_day") || "";
       const isDailyClaimed = (lastDailyRewardDay === todayStr);
 
       let dailyRewardBtn = "";
@@ -8992,19 +9018,36 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       updateAuthUI();
     };
 
+    /* GÜVENLİK KİLİTLİ ÖDÜL ALMA MANTIKLARI */
     window.claimDailyReward = function() {
-      playSound('powerup');
+      if (!auth.currentUser || auth.currentUser.isAnonymous) {
+        alert("Ödül almak için önce Google ile giriş yapmalısın!");
+        return;
+      }
+
       const todayStr = getTodayDateString();
+      if (lastDailyRewardDay === todayStr) {
+        alert("Bugünün ödülünü zaten aldın!");
+        return;
+      }
+
+      playSound('powerup');
       addXP(250);
+      lastDailyRewardDay = todayStr;
       localStorage.setItem("snake_last_daily_reward_day", todayStr);
       syncToFirebase();
       renderQuests();
     };
 
     window.claimQuest = function(index) {
-      playSound('powerup');
+      if (!auth.currentUser || auth.currentUser.isAnonymous) {
+        alert("Ödül almak için önce Google ile giriş yapmalısın!");
+        return;
+      }
+
       const q = dailyQuests[index];
       if (!q.claimed && q.progress >= q.target) {
+        playSound('powerup');
         q.claimed = true;
         localStorage.setItem("snake_daily_quests", JSON.stringify(dailyQuests));
         addXP(q.rewardXp);
