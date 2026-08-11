@@ -7928,7 +7928,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
 
 
-<!-- MOBİL UYUMLU, XP BARLI, MODERN UYARI KUTULU YILAN OYUNU -->
+<!-- MOBİL UYUMLU, XP BARLI, MODERN UYARI KUTULU VE TAM ORTALANMIŞ FİNAL SÜRÜM -->
 <style>
   /* SAĞ ÜSTTEKİ OYNA BUTONU */
   .snake-trigger-btn {
@@ -8086,32 +8086,32 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
   canvas#smoothSnakeCanvas { background-color: #050811; display: block; width: 100% !important; height: 100% !important; }
 
-  /* OVERLAY / MENÜ SİSTEMİ */
+  /* OVERLAY / MENÜ SİSTEMİ (DİKEY ORTALANMIŞ) */
   .snake-overlay {
-    position: absolute; top: 100px; left: 16px; right: 16px; bottom: auto;
+    position: absolute; top: 10px; left: 12px; right: 12px; bottom: 10px;
     background: rgba(5, 8, 17, 0.98);
     border: 1px solid rgba(56, 189, 248, 0.3);
     border-radius: 14px;
     display: flex; flex-direction: column; justify-content: center; align-items: center;
-    gap: 6px; z-index: 20; padding: 14px 12px; box-sizing: border-box;
+    gap: 10px; z-index: 20; padding: 16px 12px; box-sizing: border-box;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
   }
   .snake-overlay.hidden { display: none !important; }
 
-  .overlay-title { font-size: 13px; font-weight: 800; color: #f8fafc; margin: 0; text-align: center; white-space: pre-line; line-height: 1.3; }
+  .overlay-title { font-size: 14px; font-weight: 800; color: #f8fafc; margin: 0; text-align: center; white-space: pre-line; line-height: 1.3; }
 
   .start-btn {
-    background: #3b82f6; color: #fff; border: none; padding: 8px 16px;
-    font-size: 11px; font-weight: 700; border-radius: 8px; cursor: pointer;
+    background: #3b82f6; color: #fff; border: none; padding: 10px 20px;
+    font-size: 11.5px; font-weight: 700; border-radius: 8px; cursor: pointer;
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); touch-action: manipulation; flex-shrink: 0;
   }
   .start-btn:active { transform: scale(0.95); }
 
   .google-btn {
-    background: #4285f4; color: #fff; border: none; padding: 9px 12px;
-    font-size: 11px; font-weight: 700; border-radius: 8px; cursor: pointer;
+    background: #4285f4; color: #fff; border: none; padding: 10px 14px;
+    font-size: 11.5px; font-weight: 700; border-radius: 8px; cursor: pointer;
     box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3); touch-action: manipulation;
-    display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; max-width: 210px;
+    display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; max-width: 220px;
   }
   .google-btn:active { transform: scale(0.95); }
 
@@ -8120,12 +8120,12 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     background: rgba(56, 189, 248, 0.08);
     border: 1px solid rgba(56, 189, 248, 0.25);
     border-radius: 8px;
-    padding: 8px;
-    font-size: 9.5px;
+    padding: 10px;
+    font-size: 10px;
     color: #94a3b8;
     text-align: center;
-    line-height: 1.35;
-    max-width: 240px;
+    line-height: 1.4;
+    max-width: 250px;
   }
   .auth-notice-box strong { color: #38bdf8; }
 
@@ -8225,14 +8225,14 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   .btn-right { grid-column: 3; grid-row: 2; }
   .btn-down  { grid-column: 2; grid-row: 2; }
 
-  /* YENİ MODERN TOAST BİLDİRİM KUTUSU */
+  /* YENİ KUSURSUZ ÖN PLANDA TOAST BİLDİRİM KUTUSU */
   .custom-toast-overlay {
     position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.65);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     display: flex; align-items: center; justify-content: center;
-    z-index: 2147483647;
+    z-index: 2147483648 !important; /* Oyun modalından bile daha üst katman */
     opacity: 0; pointer-events: none;
     transition: opacity 0.25s ease;
     padding: 20px;
@@ -8242,13 +8242,13 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   }
   .custom-toast-card {
     background: #0f172a;
-    border: 1.5px solid rgba(56, 189, 248, 0.4);
+    border: 1.5px solid rgba(56, 189, 248, 0.5);
     border-radius: 16px;
-    padding: 18px 16px;
+    padding: 20px 16px;
     max-width: 290px;
     width: 100%;
     text-align: center;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(56, 189, 248, 0.15);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9), 0 0 25px rgba(56, 189, 248, 0.2);
     transform: scale(0.9);
     transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: flex; flex-direction: column; align-items: center; gap: 12px;
@@ -8256,13 +8256,13 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   .custom-toast-overlay.active .custom-toast-card {
     transform: scale(1);
   }
-  .toast-icon { font-size: 32px; margin-bottom: -4px; }
-  .toast-msg { color: #f8fafc; font-size: 12px; font-weight: 600; line-height: 1.4; margin: 0; }
+  .toast-icon { font-size: 34px; margin-bottom: -4px; }
+  .toast-msg { color: #f8fafc; font-size: 12.5px; font-weight: 600; line-height: 1.4; margin: 0; }
   .toast-close-btn {
     background: linear-gradient(135deg, #38bdf8, #0284c7);
-    color: #fff; font-weight: 800; font-size: 11px;
-    border: none; padding: 8px 24px; border-radius: 8px;
-    cursor: pointer; box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+    color: #fff; font-weight: 800; font-size: 11.5px;
+    border: none; padding: 9px 24px; border-radius: 8px;
+    cursor: pointer; box-shadow: 0 4px 12px rgba(56, 189, 248, 0.4);
     touch-action: manipulation; transition: transform 0.1s ease;
   }
   .toast-close-btn:active { transform: scale(0.95); }
@@ -8273,7 +8273,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   <span>🐍</span> 
 </button>
 
-<!-- YENİ BİLDİRİM KUTUSU (MODAL TOAST) -->
+<!-- YENİ EN ÜST KATMAN TOAST BİLDİRİM KUTUSU -->
 <div class="custom-toast-overlay" id="customToastOverlay">
   <div class="custom-toast-card">
     <div class="toast-icon" id="toastIcon">🔒</div>
@@ -8330,12 +8330,12 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     <button class="phone-btn btn-down" id="btnDown" onpointerdown="handleTouchDir('DOWN', event)">▼</button>
   </div>
 
-  <!-- ÜSTTEN AŞAĞIDA VE ORTALANMIŞ MENÜ/OVERLAY KATMANI -->
+  <!-- ÜSTTEN AŞAĞIDA VE DİKEY ORTALANMIŞ MENÜ/OVERLAY KATMANI -->
   <div id="snakeOverlay" class="snake-overlay">
     <p class="overlay-title" id="overlayText">YILAN OYUNU</p>
 
-    <!-- GOOGLE İLE GİRİŞ ALANI VE BİLGİLENDİRME NOTU -->
-    <div id="authGroup" style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%;">
+    <!-- GOOGLE İLE GİRİŞ ALANI VE BİLGİLENDİRME NOTU (TAM ORTADA) -->
+    <div id="authGroup" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; width: 100%;">
       <div id="authNotice" class="auth-notice-box">
         Oyun verilerinizin, seviyenizin ve skorlarınızın kaybolmaması için <strong>Google ile giriş yapılması zorunludur.</strong>
         <br><br>
@@ -8394,7 +8394,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   let audioCtx = null;
   let activeLbTab = 'all';
 
-  /* ÖZEL MODERN UYARI KUTUSU FONKSİYONU */
   function showCustomToast(msg, icon = "🔒") {
     playSound('click');
     const toastOverlay = document.getElementById("customToastOverlay");
