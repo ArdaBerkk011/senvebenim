@@ -8531,45 +8531,46 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     }).catch((err) => console.error("Kullanıcı verisi yükleme hatası:", err));
   }
   function updateAuthUI() {
-    const user = auth.currentUser;
-    const googleBtn = document.getElementById("googleLoginBtn");
-    const userInfoLabel = document.getElementById("userInfoLabel");
-    const authNotice = document.getElementById("authNotice");
-    const startBtn = document.getElementById("startBtn");
-    
-    if (user && !user.isAnonymous) {
-      if (googleBtn) googleBtn.style.display = "none";
-      if (authNotice) authNotice.style.display = "none";
-      
-      if (userInfoLabel) {
-        userInfoLabel.style.display = "block";
-        const newText = "👤 Hoş Geldin, " + (user.displayName || "Oyuncu");
-        
-        // EĞER YAZI ZATEN AYNIYSA ASLA TEKRAR YAZDIRMA
-        if (userInfoLabel.innerText !== newText) {
-          userInfoLabel.innerText = newText;
-        }
-      }
-      
-      if (startBtn) startBtn.style.display = "block";
-    } else {
-      if (googleBtn) googleBtn.style.display = "flex";
-      if (authNotice) authNotice.style.display = "block";
-      if (userInfoLabel) userInfoLabel.style.display = "none";
-      if (startBtn) startBtn.style.display = "none";
-    }
-  }
+  const user = auth.currentUser;
+  const googleBtn = document.getElementById("googleLoginBtn");
+  const userInfoLabel = document.getElementById("userInfoLabel");
+  const authNotice = document.getElementById("authNotice");
+  const startBtn = document.getElementById("startBtn");
 
-  auth.onAuthStateChanged((user) => {
-    if (user && !user.isAnonymous) {
-      currentUserUid = user.uid;
-      const userName = user.displayName || localStorage.getItem("snake_player_name") || "Oyuncu";
-      loadUserDataFromFirestore(user.uid, userName);
-    } else {
-      currentUserUid = null;
-      updateAuthUI();
+  if (user && !user.isAnonymous) {
+    if (googleBtn) googleBtn.style.display = "none";
+    if (authNotice) authNotice.style.display = "none";
+    if (startBtn) startBtn.style.display = "block";
+
+    if (userInfoLabel) {
+      // SADECE oyun başlamadıysa veya ana menüdeysek göster
+      if (typeof isGameRunning !== "undefined" && isGameRunning) {
+        userInfoLabel.style.display = "none";
+      } else {
+        userInfoLabel.style.display = "block";
+        const displayName = user.displayName || localStorage.getItem("snake_player_name") || "Oyuncu";
+        userInfoLabel.innerText = "👤 Hoş Geldin, " + displayName;
+      }
     }
-  });
+  } else {
+    if (googleBtn) googleBtn.style.display = "flex";
+    if (authNotice) authNotice.style.display = "block";
+    if (userInfoLabel) userInfoLabel.style.display = "none";
+    if (startBtn) startBtn.style.display = "none";
+  }
+}
+
+auth.onAuthStateChanged((user) => {
+  if (user && !user.isAnonymous) {
+    currentUserUid = user.uid;
+    const userName = user.displayName || localStorage.getItem("snake_player_name") || "Oyuncu";
+    loadUserDataFromFirestore(user.uid, userName);
+    updateAuthUI(); // Giriş yapıldığında da arayüzü güncelliyoruz!
+  } else {
+    currentUserUid = null;
+    updateAuthUI();
+  }
+});
 
   (function() {
     const gameWrapper = document.getElementById("snakeGameWrapper");
@@ -9315,14 +9316,27 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     }
 
     function generateFood() {
-      food.x = Math.floor(Math.random() * (tileCountX - 2)) + 1;
-      food.y = Math.floor(Math.random() * (tileCountY - 2)) + 1;
-      
-      const rand = Math.random();
-      if (rand < 0.15) { food.type = 'star'; food.symbol = '⭐'; }
-      else if (rand < 0.25) { food.type = 'double'; food.symbol = '💎'; }
-      else { food.type = 'fruit'; food.symbol = fruits[Math.floor(Math.random() * fruits.length)]; }
-    }
+  let newX, newY, isOnSnake;
+
+  // Yem yılanın gövdesine DENK GELMEYENE KADAR yeni koordinat seçer
+  do {
+    newX = Math.floor(Math.random() * (tileCountX - 2)) + 1;
+    newY = Math.floor(Math.random() * (tileCountY - 2)) + 1;
+
+    // Seçilen koordinat yılanın herhangi bir parçasıyla çakışıyor mu kontrol et
+    isOnSnake = snake.some(segment => segment.x === newX && segment.y === newY);
+  } while (isOnSnake);
+
+  // Güvenli koordinatları yeme ata
+  food.x = newX;
+  food.y = newY;
+
+  // Özel yem türlerini ve simgelerini seç
+  const rand = Math.random();
+  if (rand < 0.15) { food.type = 'star'; food.symbol = '⭐'; }
+  else if (rand < 0.25) { food.type = 'double'; food.symbol = '💎'; }
+  else { food.type = 'fruit'; food.symbol = fruits[Math.floor(Math.random() * fruits.length)]; }
+}
 
     function drawFood() {
       const fcx = food.x * gridSize + gridSize / 2;
