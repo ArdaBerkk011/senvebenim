@@ -7966,8 +7966,8 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     background: #090d16 !important;
     display: flex !important; flex-direction: column !important;
     justify-content: flex-start !important;
-    padding-top: max(10px, env(safe-area-inset-top)) !important;
-    padding-bottom: max(10px, env(safe-area-inset-bottom)) !important;
+    padding-top: max(8px, env(safe-area-inset-top)) !important;
+    padding-bottom: max(8px, env(safe-area-inset-bottom)) !important;
     padding-left: 8px !important; padding-right: 8px !important;
     z-index: 2147483647 !important;
     isolation: isolate !important;
@@ -7986,8 +7986,8 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   /* ÜST BİLGİ VE BUTONLAR */
   .snake-premium-header {
     display: flex !important; flex-direction: column !important;
-    gap: 5px !important; width: 100% !important; max-width: 420px !important;
-    margin: 0 auto 4px auto !important; flex-shrink: 0;
+    gap: 4px !important; width: 100% !important; max-width: 420px !important;
+    margin: 0 auto 2px auto !important; flex-shrink: 0;
   }
 
   .header-top-row, .header-bottom-row {
@@ -7997,7 +7997,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   .snake-stat-box {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 6px; padding: 4px 6px;
+    border-radius: 6px; padding: 3px 6px;
     display: flex; flex-direction: column; flex: 1;
     box-sizing: border-box;
   }
@@ -8008,20 +8008,20 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
   /* KUTU İÇİ İLERLEME ÇUBUĞU */
   .xp-box-content {
-    display: flex; flex-direction: column; gap: 3px; width: 100%; margin-top: 1px;
+    display: flex; flex-direction: column; gap: 2px; width: 100%; margin-top: 1px;
   }
-  .xp-bar-track-inbox { width: 100%; height: 4px; background: rgba(255, 255, 255, 0.12); border-radius: 2px; overflow: hidden; position: relative; }
+  .xp-bar-track-inbox { width: 100%; height: 3px; background: rgba(255, 255, 255, 0.12); border-radius: 2px; overflow: hidden; position: relative; }
   .xp-bar-fill-inbox { height: 100%; background: linear-gradient(90deg, #a855f7, #c084fc); width: 0%; border-radius: 2px; transition: width 0.4s ease; }
 
   .icon-action-btn {
     background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);
-    color: #f8fafc; border-radius: 6px; width: 28px; height: 28px;
-    font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    color: #f8fafc; border-radius: 6px; width: 26px; height: 26px;
+    font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center;
     touch-action: manipulation; flex-shrink: 0;
   }
 
   .header-btn {
-    border-radius: 6px; padding: 5px 8px; font-size: 10px; font-weight: 700;
+    border-radius: 6px; padding: 4px 8px; font-size: 10px; font-weight: 700;
     cursor: pointer; touch-action: manipulation; border: 1px solid transparent; flex: 1; text-align: center;
   }
   .market-toggle-btn { background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.4); color: #c084fc; }
@@ -8030,12 +8030,12 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
   .snake-close-btn {
     background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4);
-    color: #ef4444; border-radius: 6px; width: 28px; height: 28px; font-size: 16px; font-weight: bold;
+    color: #ef4444; border-radius: 6px; width: 26px; height: 26px; font-size: 15px; font-weight: bold;
     cursor: pointer; display: flex; align-items: center; justify-content: center; touch-action: manipulation; flex-shrink: 0;
   }
 
   /* AKTİF GÜÇ ROZETLERİ */
-  .buff-bar { display: flex; gap: 6px; justify-content: center; align-items: center; min-height: 14px; margin-bottom: 2px; flex-shrink: 0; }
+  .buff-bar { display: flex; gap: 6px; justify-content: center; align-items: center; min-height: 12px; margin-bottom: 2px; flex-shrink: 0; }
   .buff-badge { font-size: 9px; padding: 1px 5px; border-radius: 10px; font-weight: 700; animation: pulseBuff 1s infinite alternate; }
   .buff-multi { background: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid #eab308; }
 
@@ -8044,15 +8044,15 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     to { opacity: 1; transform: scale(1.05); }
   }
 
-  /* OYUN ALANI - İŞARETLEDİĞİN HİZADA SABİTLENDİ */
+  /* OYUN ALANI - AŞAĞIYA DOĞRU UZATILDI */
   .canvas-container {
     position: relative; border-radius: 12px; overflow: hidden;
     border: 1px solid rgba(56, 189, 248, 0.25);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(56, 189, 248, 0.1);
     width: 100%; max-width: 420px;
-    flex: 0 0 auto;
-    height: 300px; /* İşaretlediğin mavi çizgi yüksekliğine tam denk gelen ideal boy */
-    margin: 4px auto 6px auto; touch-action: none;
+    flex: 1 1 auto; /* Kalan boşluğa göre esneyip aşağıya doğru uzar */
+    min-height: 220px;
+    margin: 2px auto 4px auto; touch-action: none;
     display: flex; align-items: center; justify-content: center;
   }
 
@@ -8070,30 +8070,30 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
   /* OVERLAY / MENÜ SİSTEMİ */
   .snake-overlay {
-    position: absolute; top: 85px; left: 12px; right: 12px; bottom: 12px;
+    position: absolute; top: 75px; left: 10px; right: 10px; bottom: 10px;
     background: rgba(5, 8, 17, 0.98);
     border: 1px solid rgba(56, 189, 248, 0.3);
     border-radius: 14px;
     display: flex; flex-direction: column; justify-content: center; align-items: center;
-    gap: 10px; z-index: 20; padding: 15px; box-sizing: border-box; overflow-y: auto;
+    gap: 8px; z-index: 20; padding: 12px; box-sizing: border-box; overflow-y: auto;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
   }
   .snake-overlay.hidden { display: none !important; }
 
-  .overlay-title { font-size: 15px; font-weight: 800; color: #f8fafc; margin: 0; text-align: center; white-space: pre-line; }
+  .overlay-title { font-size: 14px; font-weight: 800; color: #f8fafc; margin: 0; text-align: center; white-space: pre-line; }
 
   .start-btn {
     background: #3b82f6; color: #fff; border: none; padding: 8px 16px;
-    font-size: 12px; font-weight: 700; border-radius: 8px; cursor: pointer;
+    font-size: 11px; font-weight: 700; border-radius: 8px; cursor: pointer;
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); touch-action: manipulation; flex-shrink: 0;
   }
   .start-btn:active { transform: scale(0.95); }
 
   .google-btn {
-    background: #4285f4; color: #fff; border: none; padding: 10px 14px;
-    font-size: 12px; font-weight: 700; border-radius: 8px; cursor: pointer;
+    background: #4285f4; color: #fff; border: none; padding: 9px 12px;
+    font-size: 11px; font-weight: 700; border-radius: 8px; cursor: pointer;
     box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3); touch-action: manipulation;
-    display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; max-width: 220px;
+    display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; max-width: 210px;
   }
   .google-btn:active { transform: scale(0.95); }
 
@@ -8102,49 +8102,49 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     background: rgba(56, 189, 248, 0.08);
     border: 1px solid rgba(56, 189, 248, 0.25);
     border-radius: 8px;
-    padding: 10px;
-    font-size: 10px;
+    padding: 8px;
+    font-size: 9.5px;
     color: #94a3b8;
     text-align: center;
-    line-height: 1.4;
-    max-width: 250px;
+    line-height: 1.35;
+    max-width: 240px;
   }
   .auth-notice-box strong { color: #38bdf8; }
 
-  .leaderboard-list { width: 100%; max-width: 280px; list-style: none; padding: 0; margin: 0 auto; display: flex; flex-direction: column; gap: 4px; }
-  .leaderboard-item { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); padding: 5px 8px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
+  .leaderboard-list { width: 100%; max-width: 270px; list-style: none; padding: 0; margin: 0 auto; display: flex; flex-direction: column; gap: 4px; }
+  .leaderboard-item { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); padding: 4px 8px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
   .leaderboard-rank { font-weight: 800; color: #38bdf8; width: 22px; }
   .leaderboard-name { flex: 1; text-align: left; color: #f8fafc; font-weight: 600; }
   .leaderboard-score { font-weight: 800; color: #facc15; }
 
   /* MARKET & GÖREV STİLLERİ */
-  .market-list, .quest-list { width: 100%; display: flex; flex-direction: column; gap: 5px; max-width: 280px; margin: 0 auto; }
+  .market-list, .quest-list { width: 100%; display: flex; flex-direction: column; gap: 4px; max-width: 270px; margin: 0 auto; }
   .skin-card, .quest-card {
     background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px; padding: 5px 8px; display: flex; justify-content: space-between; align-items: center;
+    border-radius: 8px; padding: 4px 8px; display: flex; justify-content: space-between; align-items: center;
   }
   .skin-info, .quest-info { display: flex; flex-direction: column; gap: 2px; font-size: 10px; color: #f8fafc; text-align: left; }
   .skin-main-row { display: flex; align-items: center; gap: 6px; font-weight: 700; }
   .skin-preview { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
   .skin-select-btn {
-    padding: 3px 8px; font-size: 9px; font-weight: 800; border-radius: 5px; border: none; cursor: pointer; touch-action: manipulation;
+    padding: 3px 7px; font-size: 9px; font-weight: 800; border-radius: 5px; border: none; cursor: pointer; touch-action: manipulation;
   }
   .skin-select-btn.active { background: #22c55e; color: #fff; }
   .skin-select-btn.locked { background: rgba(255, 255, 255, 0.1); color: #94a3b8; cursor: not-allowed; }
   .skin-select-btn.unlocked { background: #38bdf8; color: #0f172a; }
   .skin-select-btn.claim-btn { background: #eab308; color: #0f172a; animation: pulseBuff 1s infinite alternate; }
 
-  .market-section-title { font-size: 10px; font-weight: 800; color: #38bdf8; text-transform: uppercase; margin: 4px 0 2px 0; text-align: left; width: 100%; max-width: 280px; border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding-bottom: 2px; }
+  .market-section-title { font-size: 9.5px; font-weight: 800; color: #38bdf8; text-transform: uppercase; margin: 3px 0 2px 0; text-align: left; width: 100%; max-width: 270px; border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding-bottom: 2px; }
 
-  /* TELEFON İÇİN OYUN EKRANININ ALTINDAKİ İDEAL YÖN BUTONLARI */
+  /* TELEFON İÇİN EKRANDA ORTALANMIŞ VE TIKLANABİLİR YÖN BUTONLARI */
   .phone-controls {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 60px);
-    gap: 10px;
+    grid-template-rows: repeat(2, 56px); /* Butonlar tamamen ekrana sığacak şekilde optimize edildi */
+    gap: 8px;
     width: 100%;
-    max-width: 330px;
-    margin: auto auto 10px auto; 
+    max-width: 310px;
+    margin: 4px auto 6px auto; /* Yukarı çekildi, alt şeritte sıkışmıyor */
     flex-shrink: 0;
     touch-action: manipulation;
     user-select: none;
@@ -8155,15 +8155,15 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   .phone-btn {
     background: radial-gradient(circle, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
     border: 2px solid rgba(56, 189, 248, 0.4);
-    border-radius: 16px;
+    border-radius: 14px;
     color: #38bdf8;
-    font-size: 26px;
+    font-size: 24px;
     font-weight: bold;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
     touch-action: manipulation;
     user-select: none;
     -webkit-user-select: none;
@@ -8176,7 +8176,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     background: #38bdf8 !important;
     color: #0f172a !important;
     transform: scale(0.90);
-    box-shadow: 0 0 20px rgba(56, 189, 248, 0.8) !important;
+    box-shadow: 0 0 16px rgba(56, 189, 248, 0.8) !important;
   }
 
   .btn-up    { grid-column: 2; grid-row: 1; }
@@ -8203,7 +8203,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         <span class="snake-stat-label">SEVİYE / XP</span>
         <div class="snake-stat-value xp-val">
           <span id="sLevelText">Lv.1</span>
-          <span id="xpPercentText" style="font-size: 9px; font-weight: 700;">%0</span>
+          <span id="xpPercentText" style="font-size: 8.5px; font-weight: 700;">%0</span>
         </div>
         <!-- KUTU İÇİ İLERLEME ÇUBUĞU -->
         <div class="xp-box-content">
@@ -8230,7 +8230,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     <canvas id="smoothSnakeCanvas"></canvas>
   </div>
 
-  <!-- TELEFON İÇİN OYUN EKRANININ ALTINDAKİ YÖN BUTONLARI -->
+  <!-- TELEFON İÇİN EKRANDA ORTALANMIŞ TIKLANABİLİR YÖN BUTONLARI -->
   <div class="phone-controls">
     <button class="phone-btn btn-up" id="btnUp" onpointerdown="handleTouchDir('UP', event)">▲</button>
     <button class="phone-btn btn-left" id="btnLeft" onpointerdown="handleTouchDir('LEFT', event)">◄</button>
@@ -8767,7 +8767,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         `;
       });
 
-      marketList.innerHTML += `<div class="market-section-title" style="margin-top: 8px;">🎩 Kafa Şapkaları</div>`;
+      marketList.innerHTML += `<div class="market-section-title" style="margin-top: 6px;">🎩 Kafa Şapkaları</div>`;
       HATS.forEach(hat => {
         const isUnlocked = playerLevel >= hat.reqLevel;
         const isSelected = currentHat === hat.id;
