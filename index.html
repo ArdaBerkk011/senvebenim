@@ -7997,9 +7997,15 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   .snake-stat-box {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 6px; padding: 3px 6px;
-    display: flex; flex-direction: column; flex: 1;
+    border-radius: 6px; 
+    /* padding değerini 3px 6px yerine şu şekilde yap */
+    padding: 6px 6px; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; /* İçerikleri tam ortaya hizalar */
+    flex: 1;
     box-sizing: border-box;
+    min-height: 44px; /* Biraz daha artırdık */
   }
 
   .snake-stat-label { font-size: 7px; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; }
@@ -8051,7 +8057,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(56, 189, 248, 0.1);
     width: 100%; max-width: 420px;
     flex: 0 0 auto;
-    height: 375px; 
+    height: 385px; 
     margin: 2px auto; touch-action: none;
     display: flex; align-items: center; justify-content: center;
   }
@@ -8144,7 +8150,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     gap: 6px;
     width: 100%;
     max-width: 300px;
-    margin: 13px auto 12px auto; /* Üst ve alt boşluk dengelenerek tuşlar yukarı ortalandı */
+    margin: 16px auto 12px auto; /* Üst ve alt boşluk dengelenerek tuşlar yukarı ortalandı */
     flex-shrink: 0;
     touch-action: manipulation;
     user-select: none;
