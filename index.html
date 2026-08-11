@@ -8683,20 +8683,41 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     };
 
     function processFirebaseScore(playerName, currentScore) {
-      if (!currentUserUid) return;
-      const finalName = (auth.currentUser && auth.currentUser.displayName) || playerName || "Oyuncu";
-      const userDocRef = db.collection("snake_users").doc(currentUserUid);
+      // UID yoksa veya geçersizse işlemi direkt durdur
+      const user = auth.currentUser;
+      const activeUid = currentUserUid || (user ? user.uid : null);
+      if (!activeUid || (user && user.isAnonymous)) return;
+
+      const finalName = (user && user.displayName) || playerName || "Oyuncu";
+      const userDocRef = db.collection("snake_users").doc(activeUid);
+
       userDocRef.get().then((docSnap) => {
-        const existingScore = docSnap.exists ? (docSnap.data().score || 0) : 0;
-        userDocRef.set({ 
-          name: finalName, 
-          score: Math.max(currentScore || 0, existingScore), 
+        let existingScore = 0;
+        if (docSnap.exists) {
+          existingScore = docSnap.data().score || 0;
+        }
+
+        // SADECE yeni skor eskisinden büyükse timestamp'i güncelle, 
+        // böylece gerçek rekor tarihi bozulmaz!
+        const newScore = Math.max(currentScore || 0, existingScore);
+        
+        const updateData = {
+          name: finalName,
+          score: newScore,
           level: playerLevel,
           xp: playerXP,
           skin: currentSkin,
-          hat: currentHat,
-          timestamp: Date.now() 
-        }, { merge: true });
+          hat: currentHat
+        };
+
+        // Eğer yeni bir rekor kırıldıysa veya kayıt ilk kez açılıyorsa timestamp güncellenir
+        if (newScore > existingScore || !docSnap.exists) {
+          updateData.timestamp = Date.now();
+        }
+
+        userDocRef.set(updateData, { merge: true });
+      }).catch((error) => {
+        console.error("Skor kaydedilirken hata oluştu:", error);
       });
     }
 
