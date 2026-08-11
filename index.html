@@ -8364,18 +8364,19 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   }
 
   function addXP(amount) {
-    playerXP += amount;
-    let xpNeededForNext = playerLevel * 100;
-    while (playerXP >= xpNeededForNext) {
-      playerXP -= xpNeededForNext;
-      playerLevel++;
-      xpNeededForNext = playerLevel * 100;
-    }
-    localStorage.setItem("snake_player_xp", playerXP.toString());
-    localStorage.setItem("snake_player_level", playerLevel.toString());
-    updateLevelDisplay();
-    syncToFirebase();
+  playerXP += amount;
+  let xpNeededForNext = playerLevel * 100;
+  while (playerXP >= xpNeededForNext) {
+    playerXP -= xpNeededForNext;
+    playerLevel++;
+    xpNeededForNext = playerLevel * 100;
   }
+  localStorage.setItem("snake_player_xp", playerXP.toString());
+  localStorage.setItem("snake_player_level", playerLevel.toString());
+  updateLevelDisplay();
+  
+  // syncToFirebase(); -> BU SATIR SİLİNDİ! (Çakışmayı önlemek için kaydı processFirebaseScore yapacak)
+}
 
   function updateLevelDisplay() {
     const xpNeeded = playerLevel * 100;
@@ -8690,7 +8691,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       }
     };
 
-    function processFirebaseScore(playerName, currentScore) {
+    function processFirebaseScore(playerName, currentScore, earnedXP = 0) {
   const user = auth.currentUser;
   const activeUid = currentUserUid || (user ? user.uid : null);
   if (!activeUid || (user && user.isAnonymous)) return;
@@ -8699,26 +8700,28 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   const userDocRef = db.collection("snake_users").doc(activeUid);
 
   userDocRef.get().then((docSnap) => {
-    // Number() ile veritabanındaki skorun sayı olduğunu garanti ediyoruz
+    // Veritabanındaki eski skoru sayı olarak alıyoruz
     const existingScore = docSnap.exists ? Number(docSnap.data().score || 0) : 0;
     const currentScoreNum = Number(currentScore || 0);
 
-    // Gerçek rekor hesabı
+    // Düşük skor rekoru asla ezemez
     const newScore = Math.max(currentScoreNum, existingScore);
     
     const updateData = {
       name: finalName,
-      score: Number(newScore), // Firebase'e SAYI olarak gönderiyoruz
+      score: Number(newScore),
       level: Number(playerLevel || 1),
       xp: Number(playerXP || 0),
       skin: currentSkin,
       hat: currentHat
     };
 
+    // Sadece GERÇEKTEN yeni bir rekor kırıldıysa tarih güncellensin
     if (newScore > existingScore || !docSnap.exists) {
       updateData.timestamp = Date.now();
     }
 
+    // TEK BİR PAKET HALİNDE VE MERGE İLE KAYDEDİYORUZ
     userDocRef.set(updateData, { merge: true });
   }).catch((err) => console.error("Skor kaydetme hatası:", err));
 }
@@ -9101,22 +9104,25 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     }
 
     function endGame(message) {
-      playSound('die'); triggerVibrate(120); triggerScreenShake();
-      isGameRunning = false; if (animId) cancelAnimationFrame(animId);
-      isGameOver = true; isPaused = false;
+  playSound('die'); triggerVibrate(120); triggerScreenShake();
+  isGameRunning = false; if (animId) cancelAnimationFrame(animId);
+  isGameOver = true; isPaused = false;
 
-      let xpEarned = Math.round(score * 1);
-      if (xpEarned < 10 && score > 0) xpEarned = 10;
-      addXP(xpEarned);
+  let xpEarned = Math.round(score * 1);
+  if (xpEarned < 10 && score > 0) xpEarned = 10;
+  
+  // XP'yi önce lokalde ekliyoruz
+  addXP(xpEarned);
 
-      const user = auth.currentUser;
-      const savedName = (user && user.displayName) || localStorage.getItem("snake_player_name") || "Oyuncu";
+  const user = auth.currentUser;
+  const savedName = (user && user.displayName) || localStorage.getItem("snake_player_name") || "Oyuncu";
 
-      processFirebaseScore(savedName, score);
-      showOverlayMenu(`${message}\nSkorun: ${score} | +${xpEarned} XP`, "YENİDEN BAŞLA", window.initAndStartGame);
-      snakeOverlay.classList.remove("hidden");
-    }
+  // Skoru ve XP'yi TEK BİR güvenli paket olarak Firebase'e gönderiyoruz
+  processFirebaseScore(savedName, score, xpEarned);
 
+  showOverlayMenu(`${message}\nSkorun: ${score} | +${xpEarned} XP`, "YENİDEN BAŞLA", window.initAndStartGame);
+  snakeOverlay.classList.remove("hidden");
+}
     function render(progress = 1) {
       ctx.fillStyle = "#050811"; ctx.fillRect(0, 0, canvas.width, canvas.height);
       drawGrid(); updateParticles(); drawFood(); drawSmoothSnake(progress);
