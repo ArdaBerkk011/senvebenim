@@ -8129,11 +8129,29 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   }
   .auth-notice-box strong { color: #38bdf8; }
 
+  /* LİDERLİK TABLOSU VE PROFİL FOTOĞRAFI STİLİ */
   .leaderboard-list { width: 100%; max-width: 270px; list-style: none; padding: 0; margin: 0 auto; display: flex; flex-direction: column; gap: 4px; }
   .leaderboard-item { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); padding: 4px 8px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
   .leaderboard-rank { font-weight: 800; color: #38bdf8; width: 22px; }
-  .leaderboard-name { flex: 1; text-align: left; color: #f8fafc; font-weight: 600; }
+  .leaderboard-avatar { width: 20px; height: 20px; border-radius: 50%; border: 1px solid #38bdf8; margin-right: 6px; flex-shrink: 0; object-fit: cover; }
+  .leaderboard-name-container { display: flex; align-items: center; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .leaderboard-name { color: #f8fafc; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .leaderboard-score { font-weight: 800; color: #facc15; }
+
+  /* GÜNLÜK ÖDÜL KUTUSU */
+  .daily-reward-box {
+    background: rgba(234, 179, 8, 0.15);
+    border: 1px solid rgba(234, 179, 8, 0.4);
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 8px;
+    text-align: center;
+    width: 100%;
+    max-width: 230px;
+    animation: pulseBuff 1s infinite alternate;
+  }
+  .daily-reward-title { font-size: 11px; font-weight: 800; color: #facc15; margin-bottom: 2px; }
+  .daily-reward-desc { font-size: 9px; color: #cbd5e1; }
 
   /* MARKET & GÖREV STİLLERİ */
   .market-list, .quest-list { width: 100%; display: flex; flex-direction: column; gap: 4px; max-width: 270px; margin: 0 auto; }
@@ -8259,6 +8277,12 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   <!-- ÜSTTEN AŞAĞIDA VE ORTALANMIŞ MENÜ/OVERLAY KATMANI -->
   <div id="snakeOverlay" class="snake-overlay">
     <p class="overlay-title" id="overlayText">YILAN OYUNU</p>
+
+    <!-- GÜNLÜK GİRİŞ ÖDÜLÜ BİLDİRİMİ -->
+    <div id="dailyRewardNotice" class="daily-reward-box" style="display: none;">
+      <div class="daily-reward-title">🎁 GÜNLÜK GİRİŞ ÖDÜLÜ!</div>
+      <div class="daily-reward-desc">Bugün giriş yaptığın için <strong>+250 XP</strong> kazandın!</div>
+    </div>
 
     <!-- GOOGLE İLE GİRİŞ ALANI VE BİLGİLENDİRME NOTU -->
     <div id="authGroup" style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%;">
@@ -8410,15 +8434,41 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
   function syncToFirebase() {
     if (currentUserUid) {
-      const savedName = (auth.currentUser && auth.currentUser.displayName) || localStorage.getItem("snake_player_name") || "Oyuncu";
+      const user = auth.currentUser;
+      const savedName = (user && user.displayName) || localStorage.getItem("snake_player_name") || "Oyuncu";
+      const photoURL = (user && user.photoURL) || "";
       db.collection("snake_users").doc(currentUserUid).set({
         name: savedName,
+        photoURL: photoURL,
         level: playerLevel,
         xp: playerXP,
         skin: currentSkin,
         hat: currentHat,
         timestamp: Date.now()
       }, { merge: true });
+    }
+  }
+
+  /* GÜNÜN YEREL TARİHİNİ ALAN YARDIMCI */
+  function getTodayString() {
+    const d = new Date();
+    return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+  }
+
+  /* GÜNLÜK GİRİŞ ÖDÜLÜ KONTROLÜ */
+  function checkDailyReward() {
+    const today = getTodayString();
+    const lastRewardDate = localStorage.getItem("snake_last_daily_reward");
+
+    if (lastRewardDate !== today) {
+      addXP(250);
+      localStorage.setItem("snake_last_daily_reward", today);
+      
+      const rewardBox = document.getElementById("dailyRewardNotice");
+      if (rewardBox) {
+        rewardBox.style.display = "block";
+        setTimeout(() => { rewardBox.style.display = "none"; }, 5000);
+      }
     }
   }
 
@@ -8502,6 +8552,9 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
   function loadUserDataFromFirestore(uid, defaultName) {
     const userDocRef = db.collection("snake_users").doc(uid);
+    const user = auth.currentUser;
+    const photoURL = (user && user.photoURL) || "";
+
     userDocRef.get().then((docSnap) => {
       if (docSnap.exists) {
         const val = docSnap.data();
@@ -8529,9 +8582,12 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
           currentHat = val.hat;
           localStorage.setItem("snake_selected_hat", val.hat);
         }
+
+        userDocRef.set({ photoURL: photoURL }, { merge: true });
       } else {
         userDocRef.set({
           name: defaultName || "Oyuncu",
+          photoURL: photoURL,
           score: 0,
           level: Number(playerLevel || 1),
           xp: Number(playerXP || 0),
@@ -8542,10 +8598,11 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       }
       updateLevelDisplay();
       updateAuthUI();
+      checkDailyReward();
     }).catch((err) => console.error("Kullanıcı verisi yükleme hatası:", err));
   }
 
-  /* GÜNCELLENMİŞ AUTH UI LOGIC (SADECE KULLANICI ADI GÖSTERME) */
+  /* GÜNCELLENMİŞ AUTH UI LOGIC */
   function updateAuthUI() {
     const user = auth.currentUser;
     const googleBtn = document.getElementById("googleLoginBtn");
@@ -8557,7 +8614,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     const marketView = document.getElementById("marketView");
     const questView = document.getElementById("questView");
 
-    // Alt menülerden veya oyun durumlarından biri aktifse ismi gizle
     const isSubViewOpen = (leaderboardView && leaderboardView.style.display === "block") ||
                           (marketView && marketView.style.display === "block") ||
                           (questView && questView.style.display === "block") ||
@@ -8726,6 +8782,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       if (!activeUid || (user && user.isAnonymous)) return;
 
       const finalName = (user && user.displayName) || playerName || "Oyuncu";
+      const photoURL = (user && user.photoURL) || "";
       const userDocRef = db.collection("snake_users").doc(activeUid);
 
       userDocRef.get().then((docSnap) => {
@@ -8735,6 +8792,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         
         const updateData = {
           name: finalName,
+          photoURL: photoURL,
           score: Number(newScore),
           level: Number(playerLevel || 1),
           xp: Number(playerXP || 0),
@@ -8750,6 +8808,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       }).catch((err) => console.error("Skor kaydetme hatası:", err));
     }
      
+    /* PROFİL FOTOĞRAFLI LİDERLİK TABLOSU */
     function renderLeaderboard() {
       leaderboardList.innerHTML = `<li class="leaderboard-item" style="justify-content:center; color:#94a3b8;">Yükleniyor...</li>`;
       
@@ -8769,10 +8828,17 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         } else {
           const medals = ['🥇', '🥈', '🥉', '4.', '5.'];
           lb.forEach((item, index) => {
+            const avatarHtml = item.photoURL 
+              ? `<img src="${escapeHtml(item.photoURL)}" class="leaderboard-avatar" alt="profil">`
+              : `<span class="leaderboard-avatar" style="display:inline-flex; align-items:center; justify-content:center; background:#1e293b; font-size:10px;">👤</span>`;
+
             leaderboardList.innerHTML += `
               <li class="leaderboard-item">
                 <span class="leaderboard-rank">${medals[index] || (index + 1) + '.'}</span>
-                <span class="leaderboard-name">${escapeHtml(item.name || "Oyuncu")} (Lv.${item.level || 1})</span>
+                <div class="leaderboard-name-container">
+                  ${avatarHtml}
+                  <span class="leaderboard-name">${escapeHtml(item.name || "Oyuncu")} (Lv.${item.level || 1})</span>
+                </div>
                 <span class="leaderboard-score">${item.score}</span>
               </li>
             `;
@@ -8971,6 +9037,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     };
 
     function escapeHtml(str) {
+      if (!str) return "";
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
 
