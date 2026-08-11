@@ -8489,12 +8489,21 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       if (docSnap.exists) {
         const val = docSnap.data();
         if (val.name) localStorage.setItem("snake_player_name", val.name);
+        
+        // REKOR SKORU VERİTABANINDAN OKUYUP OYUNA YÜKLÜYORUZ
+        if (val.score !== undefined) {
+          const fetchedScore = Number(val.score || 0);
+          localStorage.setItem("snake_high_score", fetchedScore.toString());
+          // Eğer oyunda kullandığın bir highScore / topScore değişkeni varsa onu da güncelle:
+          if (typeof highScore !== "undefined") highScore = fetchedScore;
+        }
+
         if (val.level !== undefined) {
-          playerLevel = val.level;
+          playerLevel = Number(val.level);
           localStorage.setItem("snake_player_level", playerLevel.toString());
         }
         if (val.xp !== undefined) {
-          playerXP = val.xp;
+          playerXP = Number(val.xp);
           localStorage.setItem("snake_player_xp", playerXP.toString());
         }
         if (val.skin) {
@@ -8509,18 +8518,17 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         userDocRef.set({
           name: defaultName || "Oyuncu",
           score: 0,
-          level: playerLevel,
-          xp: playerXP,
+          level: Number(playerLevel || 1),
+          xp: Number(playerXP || 0),
           skin: currentSkin,
           hat: currentHat,
           timestamp: Date.now()
-        });
+        }, { merge: true });
       }
       updateLevelDisplay();
       updateAuthUI();
-    });
+    }).catch((err) => console.error("Kullanıcı verisi yükleme hatası:", err));
   }
-
   function updateAuthUI() {
     const user = auth.currentUser;
     const googleBtn = document.getElementById("googleLoginBtn");
