@@ -8972,6 +8972,8 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     /* GİRİŞ KONTROLLÜ SIRALAMA BUTONU */
     window.toggleLeaderboardView = function() {
       if (!auth.currentUser || auth.currentUser.isAnonymous) {
+        document.getElementById("snakeGameWrapper").classList.add("active");
+        document.getElementById("openSnakeModalBtn").style.display = "none";
         showCustomToast("Sıralama tablosunu görebilmek için önce Google ile giriş yapmalısın!", "🏆");
         return;
       }
@@ -9075,6 +9077,8 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     /* GİRİŞ KONTROLLÜ MARKET BUTONU */
     window.toggleMarketView = function() {
       if (!auth.currentUser || auth.currentUser.isAnonymous) {
+        document.getElementById("snakeGameWrapper").classList.add("active");
+        document.getElementById("openSnakeModalBtn").style.display = "none";
         showCustomToast("Markete erişebilmek için önce Google ile giriş yapmalısın!", "🛒");
         return;
       }
@@ -9199,6 +9203,8 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     /* GİRİŞ KONTROLLÜ GÖREVLER BUTONU */
     window.toggleQuestView = function() {
       if (!auth.currentUser || auth.currentUser.isAnonymous) {
+        document.getElementById("snakeGameWrapper").classList.add("active");
+        document.getElementById("openSnakeModalBtn").style.display = "none";
         showCustomToast("Görevlere erişebilmek için önce Google ile giriş yapmalısın!", "📋");
         return;
       }
