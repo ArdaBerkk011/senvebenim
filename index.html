@@ -8007,7 +8007,15 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     box-sizing: border-box;
     min-height: 44px; /* Biraz daha artırdık */
   }
+/* Sol taraftaki Skor kutusunu biraz daraltıyoruz */
+  .snake-stat-box:first-child {
+    flex: 0.7; 
+  }
 
+  /* Sağ taraftaki Seviye/XP kutusunu genişletip barı rahatlatıyoruz */
+  .snake-stat-box:last-child {
+    flex: 1.4; 
+  }
   .snake-stat-label { font-size: 7px; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; }
   .snake-stat-value { font-size: 11px; font-weight: 800; color: #38bdf8; }
   .snake-stat-value.xp-val { color: #c084fc; display: flex; justify-content: space-between; align-items: center; width: 100%; }
@@ -8527,6 +8535,8 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     });
   }
 
+  let lastProcessedUserUid = null; // En son işlenen kullanıcıyı takip etmek için
+
   function updateAuthUI() {
     const user = auth.currentUser;
     const googleBtn = document.getElementById("googleLoginBtn");
@@ -8534,6 +8544,11 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     const authNotice = document.getElementById("authNotice");
     const startBtn = document.getElementById("startBtn");
     
+    // Eğer kullanıcı değişmediyse ve aynı kullanıcı işlem yapmaya devam ediyorsa arayüzü gereksiz yere baştan çizme
+    const currentUid = user && !user.isAnonymous ? user.uid : "guest";
+    if (currentUid === lastProcessedUserUid) return;
+    lastProcessedUserUid = currentUid;
+
     if (user && !user.isAnonymous) {
       if (googleBtn) googleBtn.style.display = "none";
       if (authNotice) authNotice.style.display = "none";
