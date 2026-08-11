@@ -7928,7 +7928,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
 
 
-<!-- MOBİL UYUMLU, XP BARLI, MODERN UYARI KUTULU YILAN OYUNU -->
+<!-- MOBİL UYUMLU, ŞAPKA VE SKİN SİSTEMLİ, KUSURSUZ KATMAN AYARLI TAM YILAN OYUNU -->
 <style>
   /* SAĞ ÜSTTEKİ OYNA BUTONU */
   .snake-trigger-btn {
@@ -7958,7 +7958,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     box-shadow: 0 14px 30px rgba(14, 165, 233, 0.6);
   }
 
-  /* TAM EKRAN OYUN MODALI */
+  /* TAM EKRAN OYUN MODALI (EN ÜST KATMAN) */
   .snake-game-wrapper {
     position: fixed !important;
     top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
@@ -7994,7 +7994,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     display: flex; justify-content: space-between; align-items: center; gap: 4px; width: 100%;
   }
 
-  /* SKOR VE SEVİYE KUTULARI YENİ DÜZEN */
   .snake-stat-box {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -8004,32 +8003,18 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     box-sizing: border-box; overflow: hidden;
   }
 
-  /* SKOR KUTUSU DAR VE SABİT */
-  .score-box-custom {
-    flex: 0 0 65px !important;
-    width: 65px !important;
-    max-width: 65px !important;
-  }
-
-  /* SEVİYE / XP KUTUSU TÜM KALAN ALANI KAPLAR */
-  .xp-box-custom {
-    flex: 1 1 auto !important;
-    min-width: 0 !important;
-  }
+  .score-box-custom { flex: 0 0 65px !important; width: 65px !important; max-width: 65px !important; }
+  .xp-box-custom { flex: 1 1 auto !important; min-width: 0 !important; }
 
   .snake-stat-label { font-size: 7px; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; white-space: nowrap; }
   .snake-stat-value { font-size: 11px; font-weight: 800; color: #38bdf8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .snake-stat-value.xp-val { color: #c084fc; display: flex; justify-content: space-between; align-items: center; width: 100%; white-space: nowrap; overflow: hidden; }
   #sLevelText { font-size: 9.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-  /* KUTU İÇİ İLERLEME ÇUBUĞU */
-  .xp-box-content {
-    display: flex; flex-direction: column; gap: 2px; width: 100%; margin-top: 1px;
-  }
+  .xp-box-content { display: flex; flex-direction: column; gap: 2px; width: 100%; margin-top: 1px; }
   .xp-bar-track-inbox { width: 100%; height: 3px; background: rgba(255, 255, 255, 0.12); border-radius: 2px; overflow: hidden; position: relative; }
   .xp-bar-fill-inbox { height: 100%; background: linear-gradient(90deg, #a855f7, #c084fc); width: 0%; border-radius: 2px; transition: width 0.4s ease; }
 
-  /* BÜYÜTÜLMÜŞ SAĞ AKSİYON BUTONLARI */
   .icon-action-btn {
     background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);
     color: #f8fafc; border-radius: 6px; width: 34px !important; height: 34px !important;
@@ -8037,7 +8022,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     touch-action: manipulation; flex-shrink: 0;
   }
 
-  /* BÜYÜTÜLMÜŞ MENÜ BUTONLARI */
   .header-btn {
     border-radius: 6px; padding: 6px 10px; font-size: 11.5px; font-weight: 700;
     cursor: pointer; touch-action: manipulation; border: 1px solid transparent; flex: 1; text-align: center;
@@ -8052,7 +8036,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     cursor: pointer; display: flex; align-items: center; justify-content: center; touch-action: manipulation; flex-shrink: 0;
   }
 
-  /* AKTİF GÜÇ ROZETLERİ */
   .buff-bar { display: flex; gap: 6px; justify-content: center; align-items: center; min-height: 10px; flex-shrink: 0; margin: 1px 0; }
   .buff-badge { font-size: 9px; padding: 1px 5px; border-radius: 10px; font-weight: 700; animation: pulseBuff 1s infinite alternate; }
   .buff-multi { background: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid #eab308; }
@@ -8062,103 +8045,64 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     to { opacity: 1; transform: scale(1.05); }
   }
 
-  /* OYUN ALANI */
   .canvas-container {
     position: relative; border-radius: 12px; overflow: hidden;
     border: 1px solid rgba(56, 189, 248, 0.25);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(56, 189, 248, 0.1);
     width: 100%; max-width: 420px;
-    flex: 0 0 auto;
-    height: 385px; 
+    flex: 0 0 auto; height: 385px; 
     margin: 2px auto; touch-action: none;
     display: flex; align-items: center; justify-content: center;
   }
 
-  .canvas-container.shake { animation: screenShake 0.3s ease-in-out; }
-  @keyframes screenShake {
-    0% { transform: translate(0, 0); }
-    20% { transform: translate(-6px, 4px); }
-    40% { transform: translate(6px, -4px); }
-    60% { transform: translate(-4px, -2px); }
-    80% { transform: translate(4px, 2px); }
-    100% { transform: translate(0, 0); }
-  }
-
   canvas#smoothSnakeCanvas { background-color: #050811; display: block; width: 100% !important; height: 100% !important; }
 
-  /* OVERLAY / MENÜ SİSTEMİ */
+  /* ORTALANMIŞ OYUN İÇİ MENÜ (MODAL) */
   .snake-overlay {
-    position: absolute; top: 100px; left: 16px; right: 16px; bottom: auto;
-    background: rgba(5, 8, 17, 0.98);
-    border: 1px solid rgba(56, 189, 248, 0.3);
-    border-radius: 14px;
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-    gap: 6px; z-index: 20; padding: 14px 12px; box-sizing: border-box;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
+    position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important;
+    width: 85% !important; max-width: 300px !important; background: rgba(10, 15, 28, 0.98) !important;
+    border: 1px solid rgba(56, 189, 248, 0.4) !important; border-radius: 20px !important;
+    display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important;
+    gap: 12px !important; z-index: 20 !important; padding: 20px !important; box-sizing: border-box !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9), 0 0 20px rgba(56, 189, 248, 0.2) !important;
   }
   .snake-overlay.hidden { display: none !important; }
 
-  .overlay-title { font-size: 13px; font-weight: 800; color: #f8fafc; margin: 0; text-align: center; white-space: pre-line; line-height: 1.3; }
+  .overlay-title { font-size: 14px; font-weight: 800; color: #f8fafc; margin: 0; text-align: center; }
 
   .start-btn {
-    background: #3b82f6; color: #fff; border: none; padding: 8px 16px;
+    background: #3b82f6; color: #fff; border: none; padding: 9px 20px;
     font-size: 11px; font-weight: 700; border-radius: 8px; cursor: pointer;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); touch-action: manipulation; flex-shrink: 0;
   }
-  .start-btn:active { transform: scale(0.95); }
 
   .google-btn {
     background: #4285f4; color: #fff; border: none; padding: 9px 12px;
     font-size: 11px; font-weight: 700; border-radius: 8px; cursor: pointer;
-    box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3); touch-action: manipulation;
     display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; max-width: 210px;
   }
-  .google-btn:active { transform: scale(0.95); }
 
-  /* GİRİŞ NOTU KUTUSU */
   .auth-notice-box {
-    background: rgba(56, 189, 248, 0.08);
-    border: 1px solid rgba(56, 189, 248, 0.25);
-    border-radius: 8px;
-    padding: 8px;
-    font-size: 9.5px;
-    color: #94a3b8;
-    text-align: center;
-    line-height: 1.35;
-    max-width: 240px;
+    background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25);
+    border-radius: 8px; padding: 8px; font-size: 9.5px; color: #94a3b8; text-align: center; line-height: 1.35; max-width: 240px;
   }
-  .auth-notice-box strong { color: #38bdf8; }
 
-  /* LİDERLİK TABLOSU VE ORTALANMIŞ İÇ SEKMELER */
   .leaderboard-tabs {
-    display: flex !important;
-    gap: 6px !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 4px auto 8px auto !important;
-    justify-content: center !important;
-    align-items: center !important;
-    box-sizing: border-box !important;
+    display: flex !important; gap: 6px !important; width: 100% !important; margin: 4px auto 8px auto !important; justify-content: center !important;
   }
   .lb-tab-btn {
-    flex: 1 1 0px !important;
-    padding: 6px 0 !important; font-size: 10px !important; font-weight: 800 !important; border-radius: 6px !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important; background: rgba(255, 255, 255, 0.05) !important;
-    color: #94a3b8 !important; cursor: pointer !important; text-align: center !important; transition: all 0.2s ease !important;
+    flex: 1 1 0px !important; padding: 6px 0 !important; font-size: 10px !important; font-weight: 800 !important; border-radius: 6px !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important; background: rgba(255, 255, 255, 0.05) !important; color: #94a3b8 !important; cursor: pointer !important; text-align: center !important;
   }
-  .lb-tab-btn.active {
-    background: rgba(250, 204, 21, 0.2) !important; border-color: #facc15 !important; color: #facc15 !important;
-  }
+  .lb-tab-btn.active { background: rgba(250, 204, 21, 0.2) !important; border-color: #facc15 !important; color: #facc15 !important; }
 
   .leaderboard-list { width: 100%; max-width: 270px; list-style: none; padding: 0; margin: 0 auto; display: flex; flex-direction: column; gap: 4px; }
   .leaderboard-item { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); padding: 4px 8px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
   .leaderboard-rank { font-weight: 800; color: #38bdf8; width: 22px; }
-  .leaderboard-avatar { width: 20px; height: 20px; border-radius: 50%; border: 1px solid #38bdf8; margin-right: 6px; flex-shrink: 0; object-fit: cover; }
+  .leaderboard-avatar { width: 20px; height: 20px; border-radius: 50%; border: 1px solid #38bdf8; margin-right: 6px; object-fit: cover; }
   .leaderboard-name-container { display: flex; align-items: center; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .leaderboard-name { color: #f8fafc; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .leaderboard-score { font-weight: 800; color: #facc15; }
 
-  /* MARKET & GÖREV STİLLERİ */
   .market-list, .quest-list { width: 100%; display: flex; flex-direction: column; gap: 4px; max-width: 270px; margin: 0 auto; }
   .skin-card, .quest-card {
     background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1);
@@ -8167,113 +8111,58 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   .skin-info, .quest-info { display: flex; flex-direction: column; gap: 2px; font-size: 10px; color: #f8fafc; text-align: left; }
   .skin-main-row { display: flex; align-items: center; gap: 6px; font-weight: 700; }
   .skin-preview { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
-  .skin-select-btn {
-    padding: 3px 7px; font-size: 9px; font-weight: 800; border-radius: 5px; border: none; cursor: pointer; touch-action: manipulation;
-  }
+  .skin-select-btn { padding: 3px 7px; font-size: 9px; font-weight: 800; border-radius: 5px; border: none; cursor: pointer; }
   .skin-select-btn.active { background: #22c55e; color: #fff; }
   .skin-select-btn.locked { background: rgba(255, 255, 255, 0.1); color: #94a3b8; cursor: not-allowed; }
   .skin-select-btn.unlocked { background: #38bdf8; color: #0f172a; }
   .skin-select-btn.claim-btn { background: #eab308; color: #0f172a; animation: pulseBuff 1s infinite alternate; }
+  .market-section-title { font-size: 9.5px; font-weight: 800; color: #38bdf8; text-transform: uppercase; margin: 3px 0; text-align: left; width: 100%; border-bottom: 1px solid rgba(56, 189, 248, 0.2); }
 
-  .market-section-title { font-size: 9.5px; font-weight: 800; color: #38bdf8; text-transform: uppercase; margin: 3px 0 2px 0; text-align: left; width: 100%; max-width: 270px; border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding-bottom: 2px; }
-
-  /* TELEFON İÇİN EKRANDA YÖN BUTONLARI */
+  /* TELEFON YÖN BUTONLARI */
   .phone-controls {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 52px);
-    gap: 6px;
-    width: 100%;
-    max-width: 300px;
-    margin: 16px auto 12px auto;
-    flex-shrink: 0;
-    touch-action: manipulation;
-    user-select: none;
-    -webkit-user-select: none;
-    -webkit-tap-highlight-color: transparent;
+    display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 52px); gap: 6px; width: 100%; max-width: 300px; margin: 16px auto 12px auto;
   }
-
   .phone-btn {
     background: radial-gradient(circle, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
-    border: 2px solid rgba(56, 189, 248, 0.4);
-    border-radius: 14px;
-    color: #38bdf8;
-    font-size: 22px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-    touch-action: manipulation;
-    user-select: none;
-    -webkit-user-select: none;
-    transition: transform 0.08s ease, background 0.08s ease;
-    width: 100%;
-    height: 100%;
+    border: 2px solid rgba(56, 189, 248, 0.4); border-radius: 14px; color: #38bdf8; font-size: 22px; font-weight: bold;
+    display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
   }
-
-  .phone-btn:active, .phone-btn.touched {
-    background: #38bdf8 !important;
-    color: #0f172a !important;
-    transform: scale(0.90);
-    box-shadow: 0 0 16px rgba(56, 189, 248, 0.8) !important;
-  }
-
   .btn-up    { grid-column: 2; grid-row: 1; }
   .btn-left  { grid-column: 1; grid-row: 2; }
   .btn-right { grid-column: 3; grid-row: 2; }
   .btn-down  { grid-column: 2; grid-row: 2; }
 
-  /* YENİ MODERN TOAST BİLDİRİM KUTUSU */
+  /* KUSURSUZ EN ÜST KATMAN UYARI KUTUSU */
   .custom-toast-overlay {
     position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.65);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     display: flex; align-items: center; justify-content: center;
-    z-index: 2147483648;
+    z-index: 99999999 !important;
     opacity: 0; pointer-events: none;
     transition: opacity 0.25s ease;
     padding: 20px;
   }
-  .custom-toast-overlay.active {
-    opacity: 1; pointer-events: auto;
-  }
+  .custom-toast-overlay.active { opacity: 1; pointer-events: auto; }
   .custom-toast-card {
-    background: #0f172a;
-    border: 1.5px solid rgba(56, 189, 248, 0.4);
-    border-radius: 16px;
-    padding: 18px 16px;
-    max-width: 290px;
-    width: 100%;
-    text-align: center;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(56, 189, 248, 0.15);
-    transform: scale(0.9);
-    transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: #0f172a; border: 1.5px solid rgba(56, 189, 248, 0.5); border-radius: 16px;
+    padding: 20px 16px; max-width: 290px; width: 100%; text-align: center;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9), 0 0 25px rgba(56, 189, 248, 0.2);
     display: flex; flex-direction: column; align-items: center; gap: 12px;
   }
-  .custom-toast-overlay.active .custom-toast-card {
-    transform: scale(1);
-  }
-  .toast-icon { font-size: 32px; margin-bottom: -4px; }
-  .toast-msg { color: #f8fafc; font-size: 12px; font-weight: 600; line-height: 1.4; margin: 0; }
+  .toast-icon { font-size: 34px; margin-bottom: -4px; }
+  .toast-msg { color: #f8fafc; font-size: 12.5px; font-weight: 600; line-height: 1.4; margin: 0; }
   .toast-close-btn {
-    background: linear-gradient(135deg, #38bdf8, #0284c7);
-    color: #fff; font-weight: 800; font-size: 11px;
-    border: none; padding: 8px 24px; border-radius: 8px;
-    cursor: pointer; box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
-    touch-action: manipulation; transition: transform 0.1s ease;
+    background: linear-gradient(135deg, #38bdf8, #0284c7); color: #fff; font-weight: 800; font-size: 11.5px;
+    border: none; padding: 9px 24px; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 12px rgba(56, 189, 248, 0.4);
   }
-  .toast-close-btn:active { transform: scale(0.95); }
 </style>
 
 <!-- SAĞ ÜST TETİKLEME BUTONU -->
-<button class="snake-trigger-btn" id="openSnakeModalBtn">
-  <span>🐍</span> 
-</button>
+<button class="snake-trigger-btn" id="openSnakeModalBtn"><span>🐍</span></button>
 
-<!-- YENİ BİLDİRİM KUTUSU (MODAL TOAST) -->
+<!-- EN ÜST KATMAN UYARI KUTUSU -->
 <div class="custom-toast-overlay" id="customToastOverlay">
   <div class="custom-toast-card">
     <div class="toast-icon" id="toastIcon">🔒</div>
@@ -8285,7 +8174,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 <!-- TAM EKRAN OYUN MODALI -->
 <div class="snake-game-wrapper" id="snakeGameWrapper">
   <div class="snake-premium-header">
-    <!-- 1. ÜST SATIR: Skor (Dar), Seviye & XP Kutusu (Geniş), Duraklat, Ses, Kapat -->
     <div class="header-top-row">
       <div class="snake-stat-box score-box-custom">
         <span class="snake-stat-label">SKOR</span>
@@ -8297,57 +8185,49 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
           <span id="sLevelText">Lv.1</span>
           <span id="xpPercentText" style="font-size: 8.5px; font-weight: 700;">%0</span>
         </div>
-        <!-- KUTU İÇİ İLERLEME ÇUBUĞU -->
         <div class="xp-box-content">
           <div class="xp-bar-track-inbox">
             <div class="xp-bar-fill-inbox" id="xpBarFill"></div>
           </div>
         </div>
       </div>
-      <button class="icon-action-btn" id="pauseBtn" onclick="togglePauseGame()">⏸️</button>
-      <button class="icon-action-btn" id="soundToggleBtn" onclick="toggleAudio()">🔊</button>
+      <button class="icon-action-btn" onclick="togglePauseGame()">⏸️</button>
+      <button class="icon-action-btn" onclick="toggleAudio()">🔊</button>
       <button class="snake-close-btn" id="closeSnakeModalBtn">&times;</button>
     </div>
-    <!-- 2. ÜST SATIR: Market, Görevler, Sıralama -->
     <div class="header-bottom-row">
-      <button class="header-btn market-toggle-btn" id="showMarketBtn" onclick="toggleMarketView()">🛒 Market</button>
-      <button class="header-btn quest-toggle-btn" id="showQuestBtn" onclick="toggleQuestView()">📋 Görevler</button>
-      <button class="header-btn leaderboard-toggle-btn" id="showLbBtn" onclick="toggleLeaderboardView()">🏆 Sıralama</button>
+      <button class="header-btn market-toggle-btn" onclick="toggleMarketView()">🛒 Market</button>
+      <button class="header-btn quest-toggle-btn" onclick="toggleQuestView()">📋 Görevler</button>
+      <button class="header-btn leaderboard-toggle-btn" onclick="toggleLeaderboardView()">🏆 Sıralama</button>
     </div>
   </div>
   
   <div class="buff-bar" id="buffBar"></div>
 
-  <div class="canvas-container" id="canvasContainer">
+  <div class="canvas-container">
     <canvas id="smoothSnakeCanvas"></canvas>
   </div>
 
-  <!-- TELEFON İÇİN EKRANDA ORTALANMIŞ TIKLANABİLİR YÖN BUTONLARI -->
   <div class="phone-controls">
-    <button class="phone-btn btn-up" id="btnUp" onpointerdown="handleTouchDir('UP', event)">▲</button>
-    <button class="phone-btn btn-left" id="btnLeft" onpointerdown="handleTouchDir('LEFT', event)">◄</button>
-    <button class="phone-btn btn-right" id="btnRight" onpointerdown="handleTouchDir('RIGHT', event)">►</button>
-    <button class="phone-btn btn-down" id="btnDown" onpointerdown="handleTouchDir('DOWN', event)">▼</button>
+    <button class="phone-btn btn-up" onpointerdown="handleTouchDir('UP', event)">▲</button>
+    <button class="phone-btn btn-left" onpointerdown="handleTouchDir('LEFT', event)">◄</button>
+    <button class="phone-btn btn-right" onpointerdown="handleTouchDir('RIGHT', event)">►</button>
+    <button class="phone-btn btn-down" onpointerdown="handleTouchDir('DOWN', event)">▼</button>
   </div>
 
-  <!-- ÜSTTEN AŞAĞIDA VE ORTALANMIŞ MENÜ/OVERLAY KATMANI -->
   <div id="snakeOverlay" class="snake-overlay">
     <p class="overlay-title" id="overlayText">YILAN OYUNU</p>
 
-    <!-- GOOGLE İLE GİRİŞ ALANI VE BİLGİLENDİRME NOTU -->
-    <div id="authGroup" style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%;">
-      <div id="authNotice" class="auth-notice-box">
-        Oyun verilerinizin, seviyenizin ve skorlarınızın kaybolmaması için <strong>Google ile giriş yapılması zorunludur.</strong>
-        <br><br>
-        Tüm ilerlemeniz bulut veritabanına kaydedilecektir. Lütfen giriş yaptığınız <strong>Gmail adresinizi unutmayın!</strong>
+    <div id="authGroup" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; width: 100%;">
+      <div class="auth-notice-box">
+        Oyun verilerinin kaybolmaması için <strong>Google ile giriş yapmalısın.</strong>
       </div>
-      <button class="google-btn" id="googleLoginBtn" onclick="loginWithGoogle()">
+      <button class="google-btn" onclick="loginWithGoogle()">
         <span>🌐</span> Google ile Giriş Yap
       </button>
       <div id="userInfoLabel" style="font-size: 11px; color: #38bdf8; font-weight: 700; display: none;"></div>
     </div>
 
-    <!-- LİDERLİK TABLOSU VE ORTALANMIŞ SEKMELERİ -->
     <div id="leaderboardView" style="display: none; width: 100%;">
       <div class="leaderboard-tabs">
         <button class="lb-tab-btn active" id="lbTabAll" onclick="switchLbTab('all')">🏆 Tüm Zamanlar</button>
@@ -8365,7 +8245,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       <div class="quest-list" id="questList"></div>
     </div>
 
-    <!-- OYUNA BAŞLA BUTONU (GİRİŞ YAPILMADAN GÖRÜNMEZ) -->
     <button class="start-btn" id="startBtn" style="display: none;" onclick="initAndStartGame()">OYUNA BAŞLA</button>
   </div>
 </div>
@@ -8394,7 +8273,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   let audioCtx = null;
   let activeLbTab = 'all';
 
-  /* ÖZEL MODERN UYARI KUTUSU FONKSİYONU */
   function showCustomToast(msg, icon = "🔒") {
     playSound('click');
     const toastOverlay = document.getElementById("customToastOverlay");
@@ -8449,7 +8327,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
   function checkAndResetQuests() {
     const todayStr = getTodayDateString();
-
     if (!dailyQuests || lastQuestDay !== todayStr) {
       const questPool = [
         { id: 'q1', text: 'Tek oyunda 150 skora ulaş', target: 150, type: 'single_score', rewardXp: 350, progress: 0, claimed: false },
@@ -8461,7 +8338,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       questPool.sort(() => 0.5 - Math.random());
       dailyQuests = questPool.slice(0, 3);
       lastQuestDay = todayStr;
-      
       localStorage.setItem("snake_daily_quests", JSON.stringify(dailyQuests));
       localStorage.setItem("snake_last_quest_day", lastQuestDay);
     }
@@ -8505,7 +8381,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   function updateLevelDisplay() {
     const xpNeeded = playerLevel * 100;
     const percent = Math.min(100, Math.floor((playerXP / xpNeeded) * 100));
-    
     const levelText = document.getElementById("sLevelText");
     const percentText = document.getElementById("xpPercentText");
     const barFill = document.getElementById("xpBarFill");
@@ -8548,12 +8423,10 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     if (!isAudioEnabled) return;
     initAudioCtx();
     if (!audioCtx) return;
-
     try {
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
       osc.connect(gain); gain.connect(audioCtx.destination);
-
       if (type === 'eat') {
         osc.frequency.setValueAtTime(500, audioCtx.currentTime);
         osc.frequency.exponentialRampToValueAtTime(900, audioCtx.currentTime + 0.07);
@@ -8623,13 +8496,9 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       if (docSnap.exists) {
         const val = docSnap.data();
         if (val.name) localStorage.setItem("snake_player_name", val.name);
-        
         if (val.score !== undefined) {
-          const fetchedScore = Number(val.score || 0);
-          localStorage.setItem("snake_high_score", fetchedScore.toString());
-          if (typeof highScore !== "undefined") highScore = fetchedScore;
+          localStorage.setItem("snake_high_score", Number(val.score || 0).toString());
         }
-
         if (val.level !== undefined) {
           playerLevel = Number(val.level);
           localStorage.setItem("snake_player_level", playerLevel.toString());
@@ -8646,7 +8515,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
           currentHat = val.hat;
           localStorage.setItem("snake_selected_hat", val.hat);
         }
-
         if (val.lastDailyRewardDay) {
           lastDailyRewardDay = val.lastDailyRewardDay;
           localStorage.setItem("snake_last_daily_reward_day", val.lastDailyRewardDay);
@@ -8661,7 +8529,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
             localStorage.setItem("snake_daily_quests", val.dailyQuests);
           } catch(e){}
         }
-
         userDocRef.set({ photoURL: photoURL }, { merge: true });
       } else {
         userDocRef.set({
@@ -8682,7 +8549,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       }
       updateLevelDisplay();
       updateAuthUI();
-    }).catch((err) => console.error("Kullanıcı verisi yükleme hatası:", err));
+    }).catch((err) => console.error("Kullanıcı veri yükleme hatası:", err));
   }
 
   function updateAuthUI() {
@@ -8707,16 +8574,10 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       if (googleBtn) googleBtn.style.display = "none";
       if (authNotice) authNotice.style.display = "none";
       if (startBtn) startBtn.style.display = "block";
-
       if (userInfoLabel) {
         const displayName = user.displayName || localStorage.getItem("snake_player_name") || "Oyuncu";
         userInfoLabel.innerText = "👤 " + displayName;
-        
-        if (isSubViewOpen) {
-          userInfoLabel.style.display = "none";
-        } else {
-          userInfoLabel.style.display = "block";
-        }
+        userInfoLabel.style.display = isSubViewOpen ? "none" : "block";
       }
     } else {
       if (googleBtn) googleBtn.style.display = "flex";
@@ -8729,9 +8590,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   auth.onAuthStateChanged((user) => {
     if (user && !user.isAnonymous) {
       currentUserUid = user.uid;
-      const userName = user.displayName || localStorage.getItem("snake_player_name") || "Oyuncu";
-      loadUserDataFromFirestore(user.uid, userName);
-      updateAuthUI();
+      loadUserDataFromFirestore(user.uid, user.displayName || "Oyuncu");
     } else {
       currentUserUid = null;
       updateAuthUI();
@@ -8767,7 +8626,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     const gridSize = 12;
     let tileCountX = 25;
     let tileCountY = 25;
-    
     const BASE_SPEED = 125; 
     let currentMoveInterval = BASE_SPEED;
     const fruits = ['🍎', '🍇', '🍓', '🍊', '🍉'];
@@ -8775,16 +8633,13 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     let snake = [];
     let food = { x: 10, y: 10, type: 'fruit', symbol: '🍎' };
     let particles = [];
-    
     let dx = 1, dy = 0;
     let nextDx = 1, nextDy = 0;
     let canChangeDirection = true;
-
     let score = 0;
     let animFrameCounter = 0;
     let multiplierTimer = null;
     let isMultiplierActive = false;
-
     let lastMoveTime = 0;
     let isGameRunning = false;
     let isPaused = false;
@@ -8797,13 +8652,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       canvas.height = Math.floor(rect.height);
       tileCountX = Math.floor(canvas.width / gridSize);
       tileCountY = Math.floor(canvas.height / gridSize);
-
-      snake.forEach(seg => {
-        if (seg.x >= tileCountX) seg.x = tileCountX - 1;
-        if (seg.y >= tileCountY) seg.y = tileCountY - 1;
-        if (seg.prevX >= tileCountX) seg.prevX = tileCountX - 1;
-        if (seg.prevY >= tileCountY) seg.prevY = tileCountY - 1;
-      });
     }
 
     function openGameModal() {
@@ -8825,18 +8673,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
     openBtn.addEventListener("click", openGameModal);
     closeBtn.addEventListener("click", closeGameModal);
-    window.addEventListener("resize", () => {
-      if (gameWrapper.classList.contains("active")) {
-        resizeCanvas(); render(1);
-      }
-    });
-
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden && isGameRunning && !isGameOver) pauseGame();
-    });
-    window.addEventListener("blur", () => {
-      if (isGameRunning && !isGameOver) pauseGame();
-    });
 
     function pauseGame() {
       isGameRunning = false; isPaused = true;
@@ -8884,7 +8720,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         const newAllTimeScore = Math.max(currentScoreNum, existingScore);
         const newTodayScore = Math.max(currentScoreNum, existingTodayScore);
 
-        const updateData = {
+        userDocRef.set({
           name: finalName,
           photoURL: photoURL,
           score: Number(newAllTimeScore),
@@ -8896,26 +8732,19 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
           hat: currentHat,
           lastQuestDay: lastQuestDay,
           lastDailyRewardDay: lastDailyRewardDay,
-          dailyQuests: JSON.stringify(dailyQuests)
-        };
-
-        if (newAllTimeScore > existingScore || !docSnap.exists) {
-          updateData.timestamp = Date.now();
-        }
-
-        userDocRef.set(updateData, { merge: true });
-      }).catch((err) => console.error("Skor kaydetme hatası:", err));
+          dailyQuests: JSON.stringify(dailyQuests),
+          timestamp: Date.now()
+        }, { merge: true });
+      }).catch((err) => console.error("Skor hatası:", err));
     }
-     
+
     function renderLeaderboard() {
       leaderboardList.innerHTML = `<li class="leaderboard-item" style="justify-content:center; color:#94a3b8;">Yükleniyor...</li>`;
       const todayStr = getTodayDateString();
-
       let query = db.collection("snake_users");
-      let scoreField = "score";
+      let scoreField = (activeLbTab === 'today') ? "todayScore" : "score";
 
       if (activeLbTab === 'today') {
-        scoreField = "todayScore";
         query = query.where("todayDate", "==", todayStr);
       }
 
@@ -8924,14 +8753,12 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         querySnapshot.forEach((doc) => { 
           let data = doc.data();
           data.displayScore = Number(data[scoreField] || 0);
-          if (data.displayScore > 0) {
-            lb.push(data); 
-          }
+          if (data.displayScore > 0) lb.push(data); 
         });
 
         lb.sort((a, b) => b.displayScore - a.displayScore);
-
         leaderboardList.innerHTML = "";
+        
         if (lb.length === 0) {
           leaderboardList.innerHTML = `<li class="leaderboard-item" style="justify-content:center; color:#94a3b8;">Henüz rekor yok</li>`;
         } else {
@@ -8956,7 +8783,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         leaderboardView.style.display = "block";
         updateAuthUI();
       }).catch((err) => {
-        console.error("Liderlik tablosu hatası:", err);
         leaderboardList.innerHTML = `<li class="leaderboard-item" style="justify-content:center; color:#ef4444;">Yüklenemedi</li>`;
       });
     }
@@ -8969,15 +8795,12 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       renderLeaderboard();
     };
 
-    /* GİRİŞ KONTROLLÜ SIRALAMA BUTONU */
     window.toggleLeaderboardView = function() {
+      openGameModal(); // Önce oyun modalını aç ki arkada görünsün
       if (!auth.currentUser || auth.currentUser.isAnonymous) {
-        document.getElementById("snakeGameWrapper").classList.add("active");
-        document.getElementById("openSnakeModalBtn").style.display = "none";
         showCustomToast("Sıralama tablosunu görebilmek için önce Google ile giriş yapmalısın!", "🏆");
         return;
       }
-
       if (isGameRunning) pauseGame();
       if (leaderboardView.style.display === "block") {
         leaderboardView.style.display = "none";
@@ -8999,29 +8822,17 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
     window.renderMarket = function() {
       marketList.innerHTML = "";
-      
       marketList.innerHTML += `<div class="market-section-title">🐍 Vücut Skinleri</div>`;
       SKINS.forEach(skin => {
         const isUnlocked = playerLevel >= skin.reqLevel;
         const isSelected = currentSkin === skin.id;
-
-        let btnHtml = "";
-        if (isSelected) {
-          btnHtml = `<button class="skin-select-btn active">SEÇİLİ</button>`;
-        } else if (isUnlocked) {
-          btnHtml = `<button class="skin-select-btn unlocked" onclick="selectSkin('${skin.id}')">SEÇ</button>`;
-        } else {
-          btnHtml = `<button class="skin-select-btn locked" disabled>Lv.${skin.reqLevel} Gerekli</button>`;
-        }
+        let btnHtml = isSelected ? `<button class="skin-select-btn active">SEÇİLİ</button>` :
+                      isUnlocked ? `<button class="skin-select-btn unlocked" onclick="selectSkin('${skin.id}')">SEÇ</button>` :
+                      `<button class="skin-select-btn locked" disabled>Lv.${skin.reqLevel}</button>`;
 
         marketList.innerHTML += `
           <div class="skin-card">
-            <div class="skin-info">
-              <div class="skin-main-row">
-                <span class="skin-preview" style="background: ${skin.bgPreview}"></span>
-                <span>${skin.name}</span>
-              </div>
-            </div>
+            <div class="skin-info"><div class="skin-main-row"><span class="skin-preview" style="background: ${skin.bgPreview}"></span><span>${skin.name}</span></div></div>
             ${btnHtml}
           </div>
         `;
@@ -9031,58 +8842,39 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       HATS.forEach(hat => {
         const isUnlocked = playerLevel >= hat.reqLevel;
         const isSelected = currentHat === hat.id;
-
-        let btnHtml = "";
-        if (isSelected) {
-          btnHtml = `<button class="skin-select-btn active">SEÇİLİ</button>`;
-        } else if (isUnlocked) {
-          btnHtml = `<button class="skin-select-btn unlocked" onclick="selectHat('${hat.id}')">SEÇ</button>`;
-        } else {
-          btnHtml = `<button class="skin-select-btn locked" disabled>Lv.${hat.reqLevel} Gerekli</button>`;
-        }
+        let btnHtml = isSelected ? `<button class="skin-select-btn active">SEÇİLİ</button>` :
+                      isUnlocked ? `<button class="skin-select-btn unlocked" onclick="selectHat('${hat.id}')">SEÇ</button>` :
+                      `<button class="skin-select-btn locked" disabled>Lv.${hat.reqLevel}</button>`;
 
         marketList.innerHTML += `
           <div class="skin-card">
-            <div class="skin-info">
-              <div class="skin-main-row">
-                <span>✨</span>
-                <span>${hat.name}</span>
-              </div>
-            </div>
+            <div class="skin-info"><div class="skin-main-row"><span>✨</span><span>${hat.name}</span></div></div>
             ${btnHtml}
           </div>
         `;
       });
-
       marketView.style.display = "block";
       updateAuthUI();
     };
 
     window.selectSkin = function(skinId) {
-      playSound('click');
-      currentSkin = skinId;
+      playSound('click'); currentSkin = skinId;
       localStorage.setItem("snake_selected_skin", skinId);
-      syncToFirebase();
-      renderMarket();
+      syncToFirebase(); renderMarket();
     };
 
     window.selectHat = function(hatId) {
-      playSound('click');
-      currentHat = hatId;
+      playSound('click'); currentHat = hatId;
       localStorage.setItem("snake_selected_hat", hatId);
-      syncToFirebase();
-      renderMarket();
+      syncToFirebase(); renderMarket();
     };
 
-    /* GİRİŞ KONTROLLÜ MARKET BUTONU */
     window.toggleMarketView = function() {
+      openGameModal(); // Önce oyun modalını aç
       if (!auth.currentUser || auth.currentUser.isAnonymous) {
-        document.getElementById("snakeGameWrapper").classList.add("active");
-        document.getElementById("openSnakeModalBtn").style.display = "none";
         showCustomToast("Markete erişebilmek için önce Google ile giriş yapmalısın!", "🛒");
         return;
       }
-
       if (isGameRunning) pauseGame();
       if (marketView.style.display === "block") {
         marketView.style.display = "none";
@@ -9102,113 +8894,69 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       }
     };
 
-    /* GÖREVLER ARAYÜZÜ */
     window.renderQuests = function() {
       checkAndResetQuests();
       questList.innerHTML = "";
-      
       const now = new Date();
       const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
       const diffMs = tomorrow - now;
-      
       const hours = Math.floor(diffMs / (1000 * 60 * 60));
       const mins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-      questTimerLabel.innerText = `⏳ Gece 00:00 sıfırlanmasına kalan: ${hours}s ${mins}dk`;
+      questTimerLabel.innerText = `⏳ Sıfırlanmaya kalan: ${hours}s ${mins}dk`;
 
-      // 1. GÜNLÜK GİRİŞ ÖDÜLÜ
       const todayStr = getTodayDateString();
       const isDailyClaimed = (lastDailyRewardDay === todayStr);
-
-      let dailyRewardBtn = "";
-      if (isDailyClaimed) {
-        dailyRewardBtn = `<button class="skin-select-btn active" disabled>ALINDI</button>`;
-      } else {
-        dailyRewardBtn = `<button class="skin-select-btn claim-btn" onclick="claimDailyReward()">+250 XP</button>`;
-      }
+      let dailyRewardBtn = isDailyClaimed ? `<button class="skin-select-btn active" disabled>ALINDI</button>` : `<button class="skin-select-btn claim-btn" onclick="claimDailyReward()">+250 XP</button>`;
 
       questList.innerHTML += `
         <div class="quest-card" style="border: 1px solid rgba(250, 204, 21, 0.4); background: rgba(250, 204, 21, 0.08);">
-          <div class="quest-info">
-            <span style="font-weight:800; color:#facc15;">🎁 Günlük Giriş Ödülü</span>
-            <span style="font-size:8px; color:#cbd5e1;">Her gün 00:00'dan sonra ödülünü al!</span>
-          </div>
+          <div class="quest-info"><span style="font-weight:800; color:#facc15;">🎁 Günlük Giriş Ödülü</span></div>
           ${dailyRewardBtn}
         </div>
       `;
 
-      // 2. RASTGELE GÜNLÜK GÖREVLER
       dailyQuests.forEach((q, index) => {
-        let btnHtml = "";
-        const isCompleted = q.progress >= q.target;
-        if (q.claimed) {
-          btnHtml = `<button class="skin-select-btn active" disabled>ALINDI</button>`;
-        } else if (isCompleted) {
-          btnHtml = `<button class="skin-select-btn claim-btn" onclick="claimQuest(${index})">+${q.rewardXp} XP</button>`;
-        } else {
-          btnHtml = `<button class="skin-select-btn locked" disabled>${q.progress}/${q.target}</button>`;
-        }
+        let btnHtml = q.claimed ? `<button class="skin-select-btn active" disabled>ALINDI</button>` :
+                      (q.progress >= q.target) ? `<button class="skin-select-btn claim-btn" onclick="claimQuest(${index})">+${q.rewardXp} XP</button>` :
+                      `<button class="skin-select-btn locked" disabled>${q.progress}/${q.target}</button>`;
 
         questList.innerHTML += `
           <div class="quest-card">
-            <div class="quest-info">
-              <span style="font-weight:700;">${q.text}</span>
-              <span style="font-size:8px; color:#94a3b8;">Ödül: +${q.rewardXp} XP (${q.progress}/${q.target})</span>
-            </div>
+            <div class="quest-info"><span style="font-weight:700;">${q.text}</span></div>
             ${btnHtml}
           </div>
         `;
       });
-
       questView.style.display = "block";
       updateAuthUI();
     };
 
     window.claimDailyReward = function() {
-      if (!auth.currentUser || auth.currentUser.isAnonymous) {
-        showCustomToast("Ödül almak için önce Google ile giriş yapmalısın!", "🎁");
-        return;
-      }
-
+      if (!auth.currentUser || auth.currentUser.isAnonymous) return;
       const todayStr = getTodayDateString();
-      if (lastDailyRewardDay === todayStr) {
-        showCustomToast("Bugünün ödülünü zaten aldın!", "✅");
-        return;
-      }
-
-      playSound('powerup');
-      addXP(250);
+      if (lastDailyRewardDay === todayStr) return;
+      playSound('powerup'); addXP(250);
       lastDailyRewardDay = todayStr;
       localStorage.setItem("snake_last_daily_reward_day", todayStr);
-      syncToFirebase();
-      renderQuests();
+      syncToFirebase(); renderQuests();
     };
 
     window.claimQuest = function(index) {
-      if (!auth.currentUser || auth.currentUser.isAnonymous) {
-        showCustomToast("Ödül almak için önce Google ile giriş yapmalısın!", "📋");
-        return;
-      }
-
+      if (!auth.currentUser || auth.currentUser.isAnonymous) return;
       const q = dailyQuests[index];
       if (!q.claimed && q.progress >= q.target) {
-        playSound('powerup');
-        q.claimed = true;
+        playSound('powerup'); q.claimed = true;
         localStorage.setItem("snake_daily_quests", JSON.stringify(dailyQuests));
-        addXP(q.rewardXp);
-        syncToFirebase();
-        renderQuests();
+        addXP(q.rewardXp); syncToFirebase(); renderQuests();
       }
     };
 
-    /* GİRİŞ KONTROLLÜ GÖREVLER BUTONU */
     window.toggleQuestView = function() {
+      openGameModal(); // Önce oyun modalını aç
       if (!auth.currentUser || auth.currentUser.isAnonymous) {
-        document.getElementById("snakeGameWrapper").classList.add("active");
-        document.getElementById("openSnakeModalBtn").style.display = "none";
         showCustomToast("Görevlere erişebilmek için önce Google ile giriş yapmalısın!", "📋");
         return;
       }
-
       if (isGameRunning) pauseGame();
       if (questView.style.display === "block") {
         questView.style.display = "none";
@@ -9245,13 +8993,11 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       const diffY = e.changedTouches[0].clientY - touchStartY;
       if (Math.abs(diffX) > Math.abs(diffY)) {
         if (Math.abs(diffX) > 12) {
-          if (diffX > 0) setDirection(1, 0);
-          else setDirection(-1, 0);
+          if (diffX > 0) setDirection(1, 0); else setDirection(-1, 0);
         }
       } else {
         if (Math.abs(diffY) > 12) {
-          if (diffY > 0) setDirection(0, 1);
-          else setDirection(0, -1);
+          if (diffY > 0) setDirection(0, 1); else setDirection(0, -1);
         }
       }
     }, { passive: true });
@@ -9263,13 +9009,10 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         showCustomToast("Oyuna başlamak için önce Google ile giriş yapmalısın!", "🎮");
         return;
       }
-
       initAudioCtx(); resizeCanvas(); resetGameData();
       isGameOver = false; isPaused = false; hideOverlay();
       isGameRunning = true; lastMoveTime = performance.now();
-      
       updateQuestProgress('games_played', 1);
-
       if (animId) cancelAnimationFrame(animId);
       animId = requestAnimationFrame(gameLoop);
     };
@@ -9293,16 +9036,13 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       if (!isGameRunning) return;
       animId = requestAnimationFrame(gameLoop);
       animFrameCounter++;
-
       let elapsed = currentTime - lastMoveTime;
       if (elapsed >= currentMoveInterval) {
         lastMoveTime = currentTime;
         updateGameLogic();
         elapsed = 0;
       }
-
-      const progress = Math.min(1, elapsed / currentMoveInterval);
-      render(progress);
+      render(Math.min(1, elapsed / currentMoveInterval));
     }
 
     function triggerScreenShake() {
@@ -9321,26 +9061,15 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       if (!canChangeDirection) return;
       if (newDx !== 0 && dx === -newDx) return;
       if (newDy !== 0 && dy === -newDy) return;
-
-      nextDx = newDx;
-      nextDy = newDy;
+      nextDx = newDx; nextDy = newDy;
       canChangeDirection = false;
     }
 
     function updateGameLogic() {
-      dx = nextDx; dy = nextDy;
-      canChangeDirection = true;
-
+      dx = nextDx; dy = nextDy; canChangeDirection = true;
       const oldSnake = snake.map(s => ({ x: s.x, y: s.y }));
-      
-      let newHeadX = snake[0].x + dx;
-      let newHeadY = snake[0].y + dy;
-
-      if (newHeadX < 0) newHeadX = tileCountX - 1;
-      else if (newHeadX >= tileCountX) newHeadX = 0;
-
-      if (newHeadY < 0) newHeadY = tileCountY - 1;
-      else if (newHeadY >= tileCountY) newHeadY = 0;
+      let newHeadX = (snake[0].x + dx + tileCountX) % tileCountX;
+      let newHeadY = (snake[0].y + dy + tileCountY) % tileCountY;
 
       if (checkCollision({ x: newHeadX, y: newHeadY })) {
         endGame("💥 OYUN BİTTİ!");
@@ -9352,8 +9081,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
       for (let i = 0; i < snake.length - 1; i++) {
         newSnake.push({
-          x: oldSnake[i].x,
-          y: oldSnake[i].y,
+          x: oldSnake[i].x, y: oldSnake[i].y,
           prevX: oldSnake[i + 1] ? oldSnake[i + 1].x : oldSnake[i].x,
           prevY: oldSnake[i + 1] ? oldSnake[i + 1].y : oldSnake[i].y
         });
@@ -9370,27 +9098,17 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
         if (isMultiplierActive) earnedScore = Math.round(earnedScore * 1.5);
         score += earnedScore; scoreEl.innerText = score;
-
         updateQuestProgress('single_score', score);
         updateQuestProgress('total_score', earnedScore);
 
-        const speedBoost = Math.floor(score / 50) * 4;
-        currentMoveInterval = Math.max(75, BASE_SPEED - speedBoost);
-        
+        currentMoveInterval = Math.max(75, BASE_SPEED - Math.floor(score / 50) * 4);
         triggerVibrate(25);
         createParticles(food.x * gridSize + gridSize/2, food.y * gridSize + gridSize/2);
         
         const tailIdx = oldSnake.length - 1;
-        newSnake.push({
-          x: oldSnake[tailIdx].x,
-          y: oldSnake[tailIdx].y,
-          prevX: oldSnake[tailIdx].x,
-          prevY: oldSnake[tailIdx].y
-        });
-
+        newSnake.push({ x: oldSnake[tailIdx].x, y: oldSnake[tailIdx].y, prevX: oldSnake[tailIdx].x, prevY: oldSnake[tailIdx].y });
         updateBuffBar(); generateFood();
       }
-
       snake = newSnake;
     }
 
@@ -9398,17 +9116,10 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       playSound('die'); triggerVibrate(120); triggerScreenShake();
       isGameRunning = false; if (animId) cancelAnimationFrame(animId);
       isGameOver = true; isPaused = false;
-
-      let xpEarned = Math.round(score * 1);
-      if (xpEarned < 10 && score > 0) xpEarned = 10;
-      
+      let xpEarned = Math.max(10, Math.round(score * 1));
       addXP(xpEarned);
-
       const user = auth.currentUser;
-      const savedName = (user && user.displayName) || localStorage.getItem("snake_player_name") || "Oyuncu";
-
-      processFirebaseScore(savedName, score, xpEarned);
-
+      processFirebaseScore((user && user.displayName) || "Oyuncu", score, xpEarned);
       showOverlayMenu(`${message}\nSkorun: ${score} | +${xpEarned} XP`, "YENİDEN BAŞLA", window.initAndStartGame);
       snakeOverlay.classList.remove("hidden");
     }
@@ -9427,119 +9138,39 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
     function drawSmoothSnake(t) {
       if (snake.length === 0) return;
+      const coords = snake.map(seg => ({
+        cx: ((seg.prevX + (seg.x - seg.prevX) * t) + tileCountX) % tileCountX * gridSize + gridSize / 2,
+        cy: ((seg.prevY + (seg.y - seg.prevY) * t) + tileCountY) % tileCountY * gridSize + gridSize / 2
+      }));
 
-      const interpolatedCoords = snake.map(seg => {
-        let diffX = seg.x - seg.prevX;
-        if (diffX > 1) diffX -= tileCountX;
-        if (diffX < -1) diffX += tileCountX;
-        let rx = seg.prevX + diffX * t;
-        rx = (rx + tileCountX) % tileCountX;
-
-        let diffY = seg.y - seg.prevY;
-        if (diffY > 1) diffY -= tileCountY;
-        if (diffY < -1) diffY += tileCountY;
-        let ry = seg.prevY + diffY * t;
-        ry = (ry + tileCountY) % tileCountY;
-
-        return {
-          cx: rx * gridSize + gridSize / 2,
-          cy: ry * gridSize + gridSize / 2
-        };
-      });
-
-      for (let i = 0; i < interpolatedCoords.length - 1; i++) {
-        let p1 = interpolatedCoords[i];
-        let p2 = interpolatedCoords[i + 1];
-        let dist = Math.hypot(p1.cx - p2.cx, p1.cy - p2.cy);
-
-        if (dist < gridSize * 3) {
-          ctx.beginPath();
-          ctx.strokeStyle = "rgba(0, 0, 0, 0.45)";
-          ctx.lineWidth = gridSize;
-          ctx.lineCap = "round";
-          ctx.lineJoin = "round";
-          ctx.moveTo(p1.cx + 1.5, p1.cy + 2);
-          ctx.lineTo(p2.cx + 1.5, p2.cy + 2);
-          ctx.stroke();
+      for (let i = 0; i < coords.length - 1; i++) {
+        let p1 = coords[i], p2 = coords[i + 1];
+        if (Math.hypot(p1.cx - p2.cx, p1.cy - p2.cy) < gridSize * 3) {
+          ctx.beginPath(); ctx.strokeStyle = "rgba(0, 0, 0, 0.45)"; ctx.lineWidth = gridSize; ctx.lineCap = "round";
+          ctx.moveTo(p1.cx, p1.cy + 2); ctx.lineTo(p2.cx, p2.cy + 2); ctx.stroke();
         }
       }
 
-      for (let i = 0; i < interpolatedCoords.length - 1; i++) {
-        let p1 = interpolatedCoords[i];
-        let p2 = interpolatedCoords[i + 1];
-        let dist = Math.hypot(p1.cx - p2.cx, p1.cy - p2.cy);
-
-        if (dist < gridSize * 3) {
-          let strokeColor = "#22c55e";
-          if (currentSkin === 'neon_blue') strokeColor = "#06b6d4";
-          else if (currentSkin === 'fire_trail') strokeColor = "#ef4444";
-          else if (currentSkin === 'ghost') strokeColor = "rgba(168, 85, 247, 0.7)";
-          else if (currentSkin === 'rainbow') strokeColor = `hsl(${(animFrameCounter * 5 + i * 25) % 360}, 100%, 50%)`;
-          else if (currentSkin === 'galaxy') strokeColor = `hsl(${(animFrameCounter * 3 + i * 15 + 240) % 360}, 90%, 60%)`;
-
-          ctx.beginPath();
-          ctx.strokeStyle = strokeColor;
-          ctx.lineWidth = gridSize - 1;
-          ctx.lineCap = "round";
-          ctx.lineJoin = "round";
-          ctx.moveTo(p1.cx, p1.cy);
-          ctx.lineTo(p2.cx, p2.cy);
-          ctx.stroke();
+      for (let i = 0; i < coords.length - 1; i++) {
+        let p1 = coords[i], p2 = coords[i + 1];
+        if (Math.hypot(p1.cx - p2.cx, p1.cy - p2.cy) < gridSize * 3) {
+          let color = (currentSkin === 'neon_blue') ? "#06b6d4" : (currentSkin === 'fire_trail') ? "#ef4444" : (currentSkin === 'ghost') ? "rgba(168, 85, 247, 0.7)" : (currentSkin === 'rainbow') ? `hsl(${(animFrameCounter * 5 + i * 25) % 360}, 100%, 50%)` : (currentSkin === 'galaxy') ? `hsl(${(animFrameCounter * 3 + i * 15 + 240) % 360}, 90%, 60%)` : "#22c55e";
+          ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = gridSize - 1; ctx.lineCap = "round";
+          ctx.moveTo(p1.cx, p1.cy); ctx.lineTo(p2.cx, p2.cy); ctx.stroke();
         }
       }
 
-      const headCoord = interpolatedCoords[0];
-      const angle = Math.atan2(dy, dx);
-
-      ctx.save();
-      ctx.translate(headCoord.cx, headCoord.cy);
-      ctx.rotate(angle);
-
-      const tongueFlicker = Math.sin(animFrameCounter * 0.25);
-      if (tongueFlicker > 0.2) {
-        ctx.strokeStyle = "#ef4444";
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.moveTo(gridSize / 2, 0);
-        ctx.lineTo(gridSize / 2 + 5, 0);
-        ctx.lineTo(gridSize / 2 + 8, -2.5);
-        ctx.moveTo(gridSize / 2 + 5, 0);
-        ctx.lineTo(gridSize / 2 + 8, 2.5);
-        ctx.stroke();
-      }
-
-      let headColor = "#4ade80";
-      if (currentSkin === 'neon_blue') headColor = "#22d3ee";
-      else if (currentSkin === 'fire_trail') headColor = "#f87171";
-      else if (currentSkin === 'ghost') headColor = "#c084fc";
-      else if (currentSkin === 'rainbow') headColor = `hsl(${(animFrameCounter * 5) % 360}, 100%, 60%)`;
-      else if (currentSkin === 'galaxy') headColor = "#c084fc";
-
-      ctx.fillStyle = headColor;
-      ctx.beginPath();
-      ctx.arc(0, 0, gridSize / 2, 0, Math.PI * 2);
-      ctx.fill();
-
-      const eyeOffsetY = gridSize / 4;
-      const eyeOffsetX = gridSize / 6;
-
-      ctx.fillStyle = "#ffffff";
-      ctx.beginPath(); ctx.arc(eyeOffsetX, -eyeOffsetY, 2.2, 0, Math.PI * 2); ctx.fill();
-      ctx.beginPath(); ctx.arc(eyeOffsetX, eyeOffsetY, 2.2, 0, Math.PI * 2); ctx.fill();
-
-      ctx.fillStyle = "#000000";
-      ctx.beginPath(); ctx.arc(eyeOffsetX + 0.5, -eyeOffsetY, 1, 0, Math.PI * 2); ctx.fill();
-      ctx.beginPath(); ctx.arc(eyeOffsetX + 0.5, eyeOffsetY, 1, 0, Math.PI * 2); ctx.fill();
-
+      const head = coords[0];
+      ctx.save(); ctx.translate(head.cx, head.cy); ctx.rotate(Math.atan2(dy, dx));
+      ctx.fillStyle = (currentSkin === 'neon_blue') ? "#22d3ee" : (currentSkin === 'fire_trail') ? "#f87171" : (currentSkin === 'ghost' || currentSkin === 'galaxy') ? "#c084fc" : (currentSkin === 'rainbow') ? `hsl(${(animFrameCounter * 5) % 360}, 100%, 60%)` : "#4ade80";
+      ctx.beginPath(); ctx.arc(0, 0, gridSize / 2, 0, Math.PI * 2); ctx.fill();
       ctx.restore();
 
       if (currentHat !== 'none') {
         ctx.save();
         let hatOffsetY = -gridSize * 0.55;
-        if (dy === -1) {
-          hatOffsetY = gridSize * 0.55;
-        }
-        ctx.translate(headCoord.cx, headCoord.cy + hatOffsetY);
+        if (dy === -1) hatOffsetY = gridSize * 0.55;
+        ctx.translate(head.cx, head.cy + hatOffsetY);
 
         if (currentHat === 'crown') {
           ctx.fillStyle = "#facc15";
@@ -9548,105 +9179,54 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
           ctx.lineTo(0, -5); ctx.lineTo(3, -1); ctx.lineTo(7, -4);
           ctx.lineTo(6, 3); ctx.closePath();
           ctx.fill();
-          ctx.strokeStyle = "#ca8a04"; ctx.lineWidth = 1; ctx.stroke();
-          ctx.fillStyle = "#ef4444"; ctx.fillRect(-1, -1, 2, 2);
-        } 
-        else if (currentHat === 'neon_stripe') {
+        } else if (currentHat === 'neon_stripe') {
           ctx.fillStyle = "#06b6d4";
           ctx.fillRect(-6, -2, 12, 3);
-        }
-        else if (currentHat === 'pirate') {
+        } else if (currentHat === 'pirate') {
           ctx.fillStyle = "#1e293b";
-          ctx.beginPath();
-          ctx.moveTo(-8, 2); ctx.lineTo(8, 2); ctx.lineTo(0, -6); ctx.closePath();
+          ctx.beginPath(); ctx.moveTo(-8, 2); ctx.lineTo(8, 2); ctx.lineTo(0, -6); ctx.closePath();
           ctx.fill();
-          ctx.fillStyle = "#ffffff";
-          ctx.fillRect(-1, -3, 2, 2);
-        } 
-        else if (currentHat === 'cyber_glasses') {
-          ctx.strokeStyle = "#eab308";
-          ctx.lineWidth = 1.5;
-          ctx.beginPath();
-          ctx.arc(3, -3, 3, 0, Math.PI * 2);
-          ctx.arc(3, 3, 3, 0, Math.PI * 2);
-          ctx.moveTo(3, -1); ctx.lineTo(3, 1);
-          ctx.stroke();
-          ctx.fillStyle = "rgba(56, 189, 248, 0.4)";
-          ctx.beginPath();
-          ctx.arc(3, -3, 2.5, 0, Math.PI * 2);
-          ctx.arc(3, 3, 2.5, 0, Math.PI * 2);
-          ctx.fill();
-        }
-        else if (currentHat === 'daisy') {
-          ctx.fillStyle = "#facc15";
-          ctx.beginPath(); ctx.arc(0, 0, 3, 0, Math.PI * 2); ctx.fill();
-          ctx.fillStyle = "#ffffff";
-          ctx.beginPath(); ctx.arc(0, -4, 2, 0, Math.PI * 2); ctx.fill();
-          ctx.beginPath(); ctx.arc(0, 4, 2, 0, Math.PI * 2); ctx.fill();
-        }
-        else if (currentHat === 'dragon_horns') {
+        } else if (currentHat === 'cyber_glasses') {
+          ctx.strokeStyle = "#eab308"; ctx.lineWidth = 1.5;
+          ctx.beginPath(); ctx.arc(3, -3, 3, 0, Math.PI * 2); ctx.stroke();
+        } else if (currentHat === 'daisy') {
+          ctx.fillStyle = "#facc15"; ctx.beginPath(); ctx.arc(0, 0, 3, 0, Math.PI * 2); ctx.fill();
+        } else if (currentHat === 'dragon_horns') {
           ctx.fillStyle = "#ef4444";
-          ctx.beginPath();
-          ctx.moveTo(-4, -2); ctx.lineTo(-8, -8); ctx.lineTo(-2, -4); ctx.closePath();
-          ctx.moveTo(4, -2); ctx.lineTo(8, -8); ctx.lineTo(2, -4); ctx.closePath();
-          ctx.fill();
+          ctx.beginPath(); ctx.moveTo(-4, -2); ctx.lineTo(-8, -8); ctx.lineTo(-2, -4); ctx.closePath(); ctx.fill();
         }
-
         ctx.restore();
       }
     }
 
     function generateFood() {
-      let newX, newY, isOnSnake;
-
+      let newX, newY;
       do {
         newX = Math.floor(Math.random() * (tileCountX - 2)) + 1;
         newY = Math.floor(Math.random() * (tileCountY - 2)) + 1;
-
-        isOnSnake = snake.some(segment => segment.x === newX && segment.y === newY);
-      } while (isOnSnake);
-
-      food.x = newX;
-      food.y = newY;
-
+      } while (snake.some(s => s.x === newX && s.y === newY));
+      food.x = newX; food.y = newY;
       const rand = Math.random();
-      if (rand < 0.15) { food.type = 'star'; food.symbol = '⭐'; }
-      else if (rand < 0.25) { food.type = 'double'; food.symbol = '💎'; }
-      else { food.type = 'fruit'; food.symbol = fruits[Math.floor(Math.random() * fruits.length)]; }
+      food.type = (rand < 0.15) ? 'star' : (rand < 0.25) ? 'double' : 'fruit';
+      food.symbol = (food.type === 'star') ? '⭐' : (food.type === 'double') ? '💎' : fruits[Math.floor(Math.random() * fruits.length)];
     }
 
     function drawFood() {
       const fcx = food.x * gridSize + gridSize / 2;
       const fcy = food.y * gridSize + gridSize / 2;
-      const scale = 1 + Math.sin(animFrameCounter * 0.12) * 0.12;
-
-      ctx.save();
-      ctx.translate(fcx, fcy);
-      ctx.scale(scale, scale);
-
-      ctx.font = `${gridSize}px sans-serif`;
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(food.symbol, 0, 0);
-
-      ctx.restore();
+      ctx.font = `${gridSize}px sans-serif`; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillText(food.symbol, fcx, fcy);
     }
 
     function createParticles(x, y) {
-      const pColor = food.type === 'star' ? '#facc15' : '#4ade80';
       for (let i = 0; i < 7; i++) {
-        particles.push({
-          x: x, y: y,
-          vx: (Math.random() - 0.5) * 3.5, vy: (Math.random() - 0.5) * 3.5,
-          radius: Math.random() * 1.8 + 0.5,
-          color: pColor, life: 14
-        });
+        particles.push({ x: x, y: y, vx: (Math.random() - 0.5) * 3.5, vy: (Math.random() - 0.5) * 3.5, radius: Math.random() * 1.8 + 0.5, color: '#4ade80', life: 14 });
       }
     }
 
     function updateParticles() {
       for (let i = particles.length - 1; i >= 0; i--) {
-        const p = particles[i]; p.x += p.vx; p.y += p.vy; p.life--;
+        let p = particles[i]; p.x += p.vx; p.y += p.vy; p.life--;
         ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill();
         if (p.life <= 0) particles.splice(i, 1);
       }
@@ -9655,13 +9235,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     function handleKey(e) {
       const k = e.keyCode;
       if ([80, 27].includes(k)) { window.togglePauseGame(); return; }
-      
-      if ([37, 38, 39, 40, 32].includes(k)) {
-        if (gameWrapper.classList.contains("active")) e.preventDefault();
-      }
-      
       if (!isGameRunning) return;
-
       if (k === 37 || k === 65) setDirection(-1, 0);
       if (k === 38 || k === 87) setDirection(0, -1);
       if (k === 39 || k === 68) setDirection(1, 0);
@@ -9679,23 +9253,15 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     };
 
     function checkCollision(head) {
-      for (let i = 0; i < snake.length; i++) { if (snake[i].x === head.x && snake[i].y === head.y) return true; }
-      return false;
+      return snake.some(s => s.x === head.x && s.y === head.y);
     }
 
     function resetGameData() {
-      const startX = Math.floor(tileCountX / 2);
-      const startY = Math.floor(tileCountY / 2);
-      snake = [
-        { x: startX, y: startY, prevX: startX, prevY: startY },
-        { x: startX - 1, y: startY, prevX: startX - 1, prevY: startY },
-        { x: startX - 2, y: startY, prevX: startX - 2, prevY: startY }
-      ];
+      const startX = Math.floor(tileCountX / 2), startY = Math.floor(tileCountY / 2);
+      snake = [{ x: startX, y: startY, prevX: startX, prevY: startY }, { x: startX - 1, y: startY, prevX: startX - 1, prevY: startY }];
       particles = []; dx = 1; dy = 0; nextDx = 1; nextDy = 0; canChangeDirection = true;
-      score = 0; scoreEl.innerText = score;
-      currentMoveInterval = BASE_SPEED;
-      isMultiplierActive = false;
-      if (multiplierTimer) clearTimeout(multiplierTimer);
+      score = 0; scoreEl.innerText = score; currentMoveInterval = BASE_SPEED;
+      isMultiplierActive = false; if (multiplierTimer) clearTimeout(multiplierTimer);
       updateBuffBar(); generateFood();
     }
   })();
