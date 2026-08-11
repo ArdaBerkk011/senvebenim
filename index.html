@@ -7994,17 +7994,20 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     display: flex; justify-content: space-between; align-items: center; gap: 4px; width: 100%;
   }
 
+  /* SKOR VE SEVİYE KUTULARI EŞİTLENDİ & SABİTLENDİ */
   .snake-stat-box {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 6px; padding: 3px 6px;
-    display: flex; flex-direction: column; flex: 1;
-    box-sizing: border-box;
+    display: flex; flex-direction: column; flex: 1; min-width: 0;
+    height: 38px; justify-content: center;
+    box-sizing: border-box; overflow: hidden;
   }
 
-  .snake-stat-label { font-size: 7px; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; }
-  .snake-stat-value { font-size: 11px; font-weight: 800; color: #38bdf8; }
-  .snake-stat-value.xp-val { color: #c084fc; display: flex; justify-content: space-between; align-items: center; width: 100%; }
+  .snake-stat-label { font-size: 7px; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; white-space: nowrap; }
+  .snake-stat-value { font-size: 11px; font-weight: 800; color: #38bdf8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .snake-stat-value.xp-val { color: #c084fc; display: flex; justify-content: space-between; align-items: center; width: 100%; white-space: nowrap; overflow: hidden; }
+  #sLevelText { font-size: 9px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
   /* KUTU İÇİ İLERLEME ÇUBUĞU */
   .xp-box-content {
@@ -8044,7 +8047,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     to { opacity: 1; transform: scale(1.05); }
   }
 
-  /* OYUN ALANI - İDEAL KARE ORANI (325px) */
+  /* OYUN ALANI */
   .canvas-container {
     position: relative; border-radius: 12px; overflow: hidden;
     border: 1px solid rgba(56, 189, 248, 0.25);
@@ -8070,7 +8073,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
   /* OVERLAY / MENÜ SİSTEMİ */
   .snake-overlay {
-    position: absolute; top: 100px; left: 16px; right: 16px; bottom: auto; /* bottom: 10px'i sildik ki kendi içeriği kadar (dikeyde kısa) kalsın */
+    position: absolute; top: 100px; left: 16px; right: 16px; bottom: auto;
     background: rgba(5, 8, 17, 0.98);
     border: 1px solid rgba(56, 189, 248, 0.3);
     border-radius: 14px;
@@ -8144,7 +8147,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     gap: 6px;
     width: 100%;
     max-width: 300px;
-    margin: 16px auto 12px auto; /* Üst ve alt boşluk dengelenerek tuşlar yukarı ortalandı */
+    margin: 16px auto 12px auto;
     flex-shrink: 0;
     touch-action: manipulation;
     user-select: none;
@@ -8273,7 +8276,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   </div>
 </div>
 
-<!-- FIREBASE SDK COMPAT (FIRESTORE EKLENDİ) -->
+<!-- FIREBASE SDK COMPAT -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -8364,19 +8367,17 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   }
 
   function addXP(amount) {
-  playerXP += amount;
-  let xpNeededForNext = playerLevel * 100;
-  while (playerXP >= xpNeededForNext) {
-    playerXP -= xpNeededForNext;
-    playerLevel++;
-    xpNeededForNext = playerLevel * 100;
+    playerXP += amount;
+    let xpNeededForNext = playerLevel * 100;
+    while (playerXP >= xpNeededForNext) {
+      playerXP -= xpNeededForNext;
+      playerLevel++;
+      xpNeededForNext = playerLevel * 100;
+    }
+    localStorage.setItem("snake_player_xp", playerXP.toString());
+    localStorage.setItem("snake_player_level", playerLevel.toString());
+    updateLevelDisplay();
   }
-  localStorage.setItem("snake_player_xp", playerXP.toString());
-  localStorage.setItem("snake_player_level", playerLevel.toString());
-  updateLevelDisplay();
-  
-  // syncToFirebase(); -> BU SATIR SİLİNDİ! (Çakışmayı önlemek için kaydı processFirebaseScore yapacak)
-}
 
   function updateLevelDisplay() {
     const xpNeeded = playerLevel * 100;
@@ -8491,11 +8492,9 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
         const val = docSnap.data();
         if (val.name) localStorage.setItem("snake_player_name", val.name);
         
-        // REKOR SKORU VERİTABANINDAN OKUYUP OYUNA YÜKLÜYORUZ
         if (val.score !== undefined) {
           const fetchedScore = Number(val.score || 0);
           localStorage.setItem("snake_high_score", fetchedScore.toString());
-          // Eğer oyunda kullandığın bir highScore / topScore değişkeni varsa onu da güncelle:
           if (typeof highScore !== "undefined") highScore = fetchedScore;
         }
 
@@ -8530,47 +8529,62 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       updateAuthUI();
     }).catch((err) => console.error("Kullanıcı verisi yükleme hatası:", err));
   }
+
+  /* GÜNCELLENMİŞ AUTH UI LOGIC (HOŞ GELDİN YAZISI KONTROLÜ) */
   function updateAuthUI() {
-  const user = auth.currentUser;
-  const googleBtn = document.getElementById("googleLoginBtn");
-  const userInfoLabel = document.getElementById("userInfoLabel");
-  const authNotice = document.getElementById("authNotice");
-  const startBtn = document.getElementById("startBtn");
+    const user = auth.currentUser;
+    const googleBtn = document.getElementById("googleLoginBtn");
+    const userInfoLabel = document.getElementById("userInfoLabel");
+    const authNotice = document.getElementById("authNotice");
+    const startBtn = document.getElementById("startBtn");
 
-  if (user && !user.isAnonymous) {
-    if (googleBtn) googleBtn.style.display = "none";
-    if (authNotice) authNotice.style.display = "none";
-    if (startBtn) startBtn.style.display = "block";
+    const leaderboardView = document.getElementById("leaderboardView");
+    const marketView = document.getElementById("marketView");
+    const questView = document.getElementById("questView");
 
-    if (userInfoLabel) {
-      // SADECE oyun başlamadıysa veya ana menüdeysek göster
-      if (typeof isGameRunning !== "undefined" && isGameRunning) {
-        userInfoLabel.style.display = "none";
-      } else {
-        userInfoLabel.style.display = "block";
+    // Alt menülerden veya oyun durumlarından biri aktifse hoş geldin yazısını gizle
+    const isSubViewOpen = (leaderboardView && leaderboardView.style.display === "block") ||
+                          (marketView && marketView.style.display === "block") ||
+                          (questView && questView.style.display === "block") ||
+                          (typeof isGameRunning !== "undefined" && isGameRunning) ||
+                          (typeof isPaused !== "undefined" && isPaused) ||
+                          (typeof isGameOver !== "undefined" && !isGameOver);
+
+    if (user && !user.isAnonymous) {
+      if (googleBtn) googleBtn.style.display = "none";
+      if (authNotice) authNotice.style.display = "none";
+      if (startBtn) startBtn.style.display = "block";
+
+      if (userInfoLabel) {
         const displayName = user.displayName || localStorage.getItem("snake_player_name") || "Oyuncu";
         userInfoLabel.innerText = "👤 Hoş Geldin, " + displayName;
+        
+        // Sadece ana menüdeyken görünür kıl
+        if (isSubViewOpen) {
+          userInfoLabel.style.display = "none";
+        } else {
+          userInfoLabel.style.display = "block";
+        }
       }
+    } else {
+      if (googleBtn) googleBtn.style.display = "flex";
+      if (authNotice) authNotice.style.display = "block";
+      if (userInfoLabel) userInfoLabel.style.display = "none";
+      if (startBtn) startBtn.style.display = "none";
     }
-  } else {
-    if (googleBtn) googleBtn.style.display = "flex";
-    if (authNotice) authNotice.style.display = "block";
-    if (userInfoLabel) userInfoLabel.style.display = "none";
-    if (startBtn) startBtn.style.display = "none";
   }
-}
 
-auth.onAuthStateChanged((user) => {
-  if (user && !user.isAnonymous) {
-    currentUserUid = user.uid;
-    const userName = user.displayName || localStorage.getItem("snake_player_name") || "Oyuncu";
-    loadUserDataFromFirestore(user.uid, userName);
-    updateAuthUI(); // Giriş yapıldığında da arayüzü güncelliyoruz!
-  } else {
-    currentUserUid = null;
-    updateAuthUI();
-  }
-});
+  auth.onAuthStateChanged((user) => {
+    if (user && !user.isAnonymous) {
+      currentUserUid = user.uid;
+      const userName = user.displayName || localStorage.getItem("snake_player_name") || "Oyuncu";
+      loadUserDataFromFirestore(user.uid, userName);
+      updateAuthUI();
+    } else {
+      currentUserUid = null;
+      updateAuthUI();
+    }
+  });
 
   (function() {
     const gameWrapper = document.getElementById("snakeGameWrapper");
@@ -8693,76 +8707,70 @@ auth.onAuthStateChanged((user) => {
     };
 
     function processFirebaseScore(playerName, currentScore, earnedXP = 0) {
-  const user = auth.currentUser;
-  const activeUid = currentUserUid || (user ? user.uid : null);
-  if (!activeUid || (user && user.isAnonymous)) return;
+      const user = auth.currentUser;
+      const activeUid = currentUserUid || (user ? user.uid : null);
+      if (!activeUid || (user && user.isAnonymous)) return;
 
-  const finalName = (user && user.displayName) || playerName || "Oyuncu";
-  const userDocRef = db.collection("snake_users").doc(activeUid);
+      const finalName = (user && user.displayName) || playerName || "Oyuncu";
+      const userDocRef = db.collection("snake_users").doc(activeUid);
 
-  userDocRef.get().then((docSnap) => {
-    // Veritabanındaki eski skoru sayı olarak alıyoruz
-    const existingScore = docSnap.exists ? Number(docSnap.data().score || 0) : 0;
-    const currentScoreNum = Number(currentScore || 0);
+      userDocRef.get().then((docSnap) => {
+        const existingScore = docSnap.exists ? Number(docSnap.data().score || 0) : 0;
+        const currentScoreNum = Number(currentScore || 0);
+        const newScore = Math.max(currentScoreNum, existingScore);
+        
+        const updateData = {
+          name: finalName,
+          score: Number(newScore),
+          level: Number(playerLevel || 1),
+          xp: Number(playerXP || 0),
+          skin: currentSkin,
+          hat: currentHat
+        };
 
-    // Düşük skor rekoru asla ezemez
-    const newScore = Math.max(currentScoreNum, existingScore);
-    
-    const updateData = {
-      name: finalName,
-      score: Number(newScore),
-      level: Number(playerLevel || 1),
-      xp: Number(playerXP || 0),
-      skin: currentSkin,
-      hat: currentHat
-    };
+        if (newScore > existingScore || !docSnap.exists) {
+          updateData.timestamp = Date.now();
+        }
 
-    // Sadece GERÇEKTEN yeni bir rekor kırıldıysa tarih güncellensin
-    if (newScore > existingScore || !docSnap.exists) {
-      updateData.timestamp = Date.now();
+        userDocRef.set(updateData, { merge: true });
+      }).catch((err) => console.error("Skor kaydetme hatası:", err));
     }
-
-    // TEK BİR PAKET HALİNDE VE MERGE İLE KAYDEDİYORUZ
-    userDocRef.set(updateData, { merge: true });
-  }).catch((err) => console.error("Skor kaydetme hatası:", err));
-}
      
     function renderLeaderboard() {
-  leaderboardList.innerHTML = `<li class="leaderboard-item" style="justify-content:center; color:#94a3b8;">Yükleniyor...</li>`;
-  
-  db.collection("snake_users").orderBy("score", "desc").limit(5).get().then((querySnapshot) => {
-    let lb = [];
-    querySnapshot.forEach((doc) => { 
-      let data = doc.data();
-      // Skorun sayı olduğundan emin oluyoruz
-      data.score = Number(data.score || 0);
-      lb.push(data); 
-    });
+      leaderboardList.innerHTML = `<li class="leaderboard-item" style="justify-content:center; color:#94a3b8;">Yükleniyor...</li>`;
+      
+      db.collection("snake_users").orderBy("score", "desc").limit(5).get().then((querySnapshot) => {
+        let lb = [];
+        querySnapshot.forEach((doc) => { 
+          let data = doc.data();
+          data.score = Number(data.score || 0);
+          lb.push(data); 
+        });
 
-    // Javascript tarafında da skora göre büyükten küçüğe tekrar diziyoruz
-    lb.sort((a, b) => b.score - a.score);
+        lb.sort((a, b) => b.score - a.score);
 
-    leaderboardList.innerHTML = "";
-    if (lb.length === 0) {
-      leaderboardList.innerHTML = `<li class="leaderboard-item" style="justify-content:center; color:#94a3b8;">Henüz rekor yok</li>`;
-    } else {
-      const medals = ['🥇', '🥈', '🥉', '4.', '5.'];
-      lb.forEach((item, index) => {
-        leaderboardList.innerHTML += `
-          <li class="leaderboard-item">
-            <span class="leaderboard-rank">${medals[index] || (index + 1) + '.'}</span>
-            <span class="leaderboard-name">${escapeHtml(item.name || "Oyuncu")} (Lv.${item.level || 1})</span>
-            <span class="leaderboard-score">${item.score}</span>
-          </li>
-        `;
+        leaderboardList.innerHTML = "";
+        if (lb.length === 0) {
+          leaderboardList.innerHTML = `<li class="leaderboard-item" style="justify-content:center; color:#94a3b8;">Henüz rekor yok</li>`;
+        } else {
+          const medals = ['🥇', '🥈', '🥉', '4.', '5.'];
+          lb.forEach((item, index) => {
+            leaderboardList.innerHTML += `
+              <li class="leaderboard-item">
+                <span class="leaderboard-rank">${medals[index] || (index + 1) + '.'}</span>
+                <span class="leaderboard-name">${escapeHtml(item.name || "Oyuncu")} (Lv.${item.level || 1})</span>
+                <span class="leaderboard-score">${item.score}</span>
+              </li>
+            `;
+          });
+        }
+        leaderboardView.style.display = "block";
+        updateAuthUI();
+      }).catch((err) => {
+        console.error("Liderlik tablosu hatası:", err);
+        leaderboardList.innerHTML = `<li class="leaderboard-item" style="justify-content:center; color:#ef4444;">Yüklenemedi</li>`;
       });
     }
-    leaderboardView.style.display = "block";
-  }).catch((err) => {
-    console.error("Liderlik tablosu hatası:", err);
-    leaderboardList.innerHTML = `<li class="leaderboard-item" style="justify-content:center; color:#ef4444;">Yüklenemedi</li>`;
-  });
-}
 
     window.toggleLeaderboardView = function() {
       if (isGameRunning) pauseGame();
@@ -8771,6 +8779,7 @@ auth.onAuthStateChanged((user) => {
         overlayText.innerText = isPaused ? "OYUN DURAKLATILDI" : "YILAN OYUNU";
         startBtn.innerText = isPaused ? "DEVAM ET" : "OYUNA BAŞLA";
         startBtn.onclick = isPaused ? window.resumeGame : window.initAndStartGame;
+        updateAuthUI();
       } else {
         marketView.style.display = "none";
         questView.style.display = "none";
@@ -8779,6 +8788,7 @@ auth.onAuthStateChanged((user) => {
         startBtn.innerText = isGameOver ? "OYNA" : "DEVAM ET";
         startBtn.onclick = isGameOver ? window.initAndStartGame : window.resumeGame;
         snakeOverlay.classList.remove("hidden");
+        updateAuthUI();
       }
     };
 
@@ -8840,6 +8850,7 @@ auth.onAuthStateChanged((user) => {
       });
 
       marketView.style.display = "block";
+      updateAuthUI();
     };
 
     window.selectSkin = function(skinId) {
@@ -8865,6 +8876,7 @@ auth.onAuthStateChanged((user) => {
         overlayText.innerText = isPaused ? "OYUN DURAKLATILDI" : "YILAN OYUNU";
         startBtn.innerText = isPaused ? "DEVAM ET" : "OYUNA BAŞLA";
         startBtn.onclick = isPaused ? window.resumeGame : window.initAndStartGame;
+        updateAuthUI();
       } else {
         leaderboardView.style.display = "none";
         questView.style.display = "none";
@@ -8873,6 +8885,7 @@ auth.onAuthStateChanged((user) => {
         startBtn.innerText = isGameOver ? "OYNA" : "DEVAM ET";
         startBtn.onclick = isGameOver ? window.initAndStartGame : window.resumeGame;
         snakeOverlay.classList.remove("hidden");
+        updateAuthUI();
       }
     };
 
@@ -8909,6 +8922,7 @@ auth.onAuthStateChanged((user) => {
       });
 
       questView.style.display = "block";
+      updateAuthUI();
     };
 
     window.claimQuest = function(index) {
@@ -8929,6 +8943,7 @@ auth.onAuthStateChanged((user) => {
         overlayText.innerText = isPaused ? "OYUN DURAKLATILDI" : "YILAN OYUNU";
         startBtn.innerText = isPaused ? "DEVAM ET" : "OYUNA BAŞLA";
         startBtn.onclick = isPaused ? window.resumeGame : window.initAndStartGame;
+        updateAuthUI();
       } else {
         leaderboardView.style.display = "none";
         marketView.style.display = "none";
@@ -8937,6 +8952,7 @@ auth.onAuthStateChanged((user) => {
         startBtn.innerText = isGameOver ? "OYNA" : "DEVAM ET";
         startBtn.onclick = isGameOver ? window.initAndStartGame : window.resumeGame;
         snakeOverlay.classList.remove("hidden");
+        updateAuthUI();
       }
     };
 
@@ -8990,13 +9006,14 @@ auth.onAuthStateChanged((user) => {
       leaderboardView.style.display = "none";
       marketView.style.display = "none";
       questView.style.display = "none";
+      updateAuthUI();
     }
 
     function showOverlayMenu(title, btnText, btnAction) {
       overlayText.innerText = title; startBtn.innerText = btnText;
       startBtn.onclick = btnAction;
-      updateAuthUI();
       snakeOverlay.classList.remove("hidden");
+      updateAuthUI();
     }
 
     function gameLoop(currentTime) {
@@ -9105,25 +9122,24 @@ auth.onAuthStateChanged((user) => {
     }
 
     function endGame(message) {
-  playSound('die'); triggerVibrate(120); triggerScreenShake();
-  isGameRunning = false; if (animId) cancelAnimationFrame(animId);
-  isGameOver = true; isPaused = false;
+      playSound('die'); triggerVibrate(120); triggerScreenShake();
+      isGameRunning = false; if (animId) cancelAnimationFrame(animId);
+      isGameOver = true; isPaused = false;
 
-  let xpEarned = Math.round(score * 1);
-  if (xpEarned < 10 && score > 0) xpEarned = 10;
-  
-  // XP'yi önce lokalde ekliyoruz
-  addXP(xpEarned);
+      let xpEarned = Math.round(score * 1);
+      if (xpEarned < 10 && score > 0) xpEarned = 10;
+      
+      addXP(xpEarned);
 
-  const user = auth.currentUser;
-  const savedName = (user && user.displayName) || localStorage.getItem("snake_player_name") || "Oyuncu";
+      const user = auth.currentUser;
+      const savedName = (user && user.displayName) || localStorage.getItem("snake_player_name") || "Oyuncu";
 
-  // Skoru ve XP'yi TEK BİR güvenli paket olarak Firebase'e gönderiyoruz
-  processFirebaseScore(savedName, score, xpEarned);
+      processFirebaseScore(savedName, score, xpEarned);
 
-  showOverlayMenu(`${message}\nSkorun: ${score} | +${xpEarned} XP`, "YENİDEN BAŞLA", window.initAndStartGame);
-  snakeOverlay.classList.remove("hidden");
-}
+      showOverlayMenu(`${message}\nSkorun: ${score} | +${xpEarned} XP`, "YENİDEN BAŞLA", window.initAndStartGame);
+      snakeOverlay.classList.remove("hidden");
+    }
+
     function render(progress = 1) {
       ctx.fillStyle = "#050811"; ctx.fillRect(0, 0, canvas.width, canvas.height);
       drawGrid(); updateParticles(); drawFood(); drawSmoothSnake(progress);
@@ -9255,20 +9271,12 @@ auth.onAuthStateChanged((user) => {
         if (currentHat === 'crown') {
           ctx.fillStyle = "#facc15";
           ctx.beginPath();
-          ctx.moveTo(-6, 3);
-          ctx.lineTo(-7, -4);
-          ctx.lineTo(-3, -1);
-          ctx.lineTo(0, -5);
-          ctx.lineTo(3, -1);
-          ctx.lineTo(7, -4);
-          ctx.lineTo(6, 3);
-          ctx.closePath();
+          ctx.moveTo(-6, 3); ctx.lineTo(-7, -4); ctx.lineTo(-3, -1);
+          ctx.lineTo(0, -5); ctx.lineTo(3, -1); ctx.lineTo(7, -4);
+          ctx.lineTo(6, 3); ctx.closePath();
           ctx.fill();
-          ctx.strokeStyle = "#ca8a04";
-          ctx.lineWidth = 1;
-          ctx.stroke();
-          ctx.fillStyle = "#ef4444";
-          ctx.fillRect(-1, -1, 2, 2);
+          ctx.strokeStyle = "#ca8a04"; ctx.lineWidth = 1; ctx.stroke();
+          ctx.fillStyle = "#ef4444"; ctx.fillRect(-1, -1, 2, 2);
         } 
         else if (currentHat === 'neon_stripe') {
           ctx.fillStyle = "#06b6d4";
@@ -9316,27 +9324,23 @@ auth.onAuthStateChanged((user) => {
     }
 
     function generateFood() {
-  let newX, newY, isOnSnake;
+      let newX, newY, isOnSnake;
 
-  // Yem yılanın gövdesine DENK GELMEYENE KADAR yeni koordinat seçer
-  do {
-    newX = Math.floor(Math.random() * (tileCountX - 2)) + 1;
-    newY = Math.floor(Math.random() * (tileCountY - 2)) + 1;
+      do {
+        newX = Math.floor(Math.random() * (tileCountX - 2)) + 1;
+        newY = Math.floor(Math.random() * (tileCountY - 2)) + 1;
 
-    // Seçilen koordinat yılanın herhangi bir parçasıyla çakışıyor mu kontrol et
-    isOnSnake = snake.some(segment => segment.x === newX && segment.y === newY);
-  } while (isOnSnake);
+        isOnSnake = snake.some(segment => segment.x === newX && segment.y === newY);
+      } while (isOnSnake);
 
-  // Güvenli koordinatları yeme ata
-  food.x = newX;
-  food.y = newY;
+      food.x = newX;
+      food.y = newY;
 
-  // Özel yem türlerini ve simgelerini seç
-  const rand = Math.random();
-  if (rand < 0.15) { food.type = 'star'; food.symbol = '⭐'; }
-  else if (rand < 0.25) { food.type = 'double'; food.symbol = '💎'; }
-  else { food.type = 'fruit'; food.symbol = fruits[Math.floor(Math.random() * fruits.length)]; }
-}
+      const rand = Math.random();
+      if (rand < 0.15) { food.type = 'star'; food.symbol = '⭐'; }
+      else if (rand < 0.25) { food.type = 'double'; food.symbol = '💎'; }
+      else { food.type = 'fruit'; food.symbol = fruits[Math.floor(Math.random() * fruits.length)]; }
+    }
 
     function drawFood() {
       const fcx = food.x * gridSize + gridSize / 2;
