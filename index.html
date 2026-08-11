@@ -8023,8 +8023,9 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     touch-action: manipulation; flex-shrink: 0;
   }
 
+  /* BÜYÜTÜLMÜŞ MENÜ BUTONLARI */
   .header-btn {
-    border-radius: 6px; padding: 4px 8px; font-size: 10px; font-weight: 700;
+    border-radius: 6px; padding: 6px 10px; font-size: 11.5px; font-weight: 700;
     cursor: pointer; touch-action: manipulation; border: 1px solid transparent; flex: 1; text-align: center;
   }
   .market-toggle-btn { background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.4); color: #c084fc; }
@@ -8139,7 +8140,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
   .market-section-title { font-size: 9.5px; font-weight: 800; color: #38bdf8; text-transform: uppercase; margin: 3px 0 2px 0; text-align: left; width: 100%; max-width: 270px; border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding-bottom: 2px; }
 
-  /* TELEFON İÇİN EKRANDA Dİpten KURTARILMIŞ TIKLANABİLİR YÖN BUTONLARI */
+  /* TELEFON İÇİN EKRANDA YÖN BUTONLARI */
   .phone-controls {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -8530,7 +8531,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     }).catch((err) => console.error("Kullanıcı verisi yükleme hatası:", err));
   }
 
-  /* GÜNCELLENMİŞ AUTH UI LOGIC (HOŞ GELDİN YAZISI KONTROLÜ) */
+  /* GÜNCELLENMİŞ AUTH UI LOGIC (SADECE KULLANICI ADI GÖSTERME) */
   function updateAuthUI() {
     const user = auth.currentUser;
     const googleBtn = document.getElementById("googleLoginBtn");
@@ -8542,7 +8543,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     const marketView = document.getElementById("marketView");
     const questView = document.getElementById("questView");
 
-    // Alt menülerden veya oyun durumlarından biri aktifse hoş geldin yazısını gizle
+    // Alt menülerden veya oyun durumlarından biri aktifse ismi gizle
     const isSubViewOpen = (leaderboardView && leaderboardView.style.display === "block") ||
                           (marketView && marketView.style.display === "block") ||
                           (questView && questView.style.display === "block") ||
@@ -8557,7 +8558,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
       if (userInfoLabel) {
         const displayName = user.displayName || localStorage.getItem("snake_player_name") || "Oyuncu";
-        userInfoLabel.innerText = "👤 Hoş Geldin, " + displayName;
+        userInfoLabel.innerText = "👤 " + displayName; // "Hoş Geldin" kaldırıldı, sadece simge ve isim kaldı
         
         // Sadece ana menüdeyken görünür kıl
         if (isSubViewOpen) {
@@ -9427,7 +9428,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     }
   })();
 </script>
-
     
   
   
