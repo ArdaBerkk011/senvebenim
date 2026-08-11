@@ -7997,35 +7997,14 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
   .snake-stat-box {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 6px; 
-    padding: 3px 6px; /* 6px yerine 3px'e çektik ki kutu incelsin */
-    display: flex; 
-    flex-direction: column; 
-    justify-content: center;
-    flex: 1;
+    border-radius: 6px; padding: 3px 6px;
+    display: flex; flex-direction: column; flex: 1;
     box-sizing: border-box;
-    min-height: 40px; /* 44px'ten 40px'e çektik */
   }
 
-  /* Skor kutusu için özel ayarlar */
-  .snake-stat-box:first-child {
-    flex: 0.6; /* 0.7'den 0.6'ya çekerek biraz daha daralttık */
-    align-items: center; /* Yazıları yatayda tam ortaya çeker */
-  }
-
-  /* Seviye/XP kutusu için özel ayarlar */
-  .snake-stat-box:last-child {
-    flex: 1.5; /* 1.4'ten 1.5'e çekerek biraz daha genişlettik */
-    padding: 3px 8px; /* İçine biraz daha nefes aldırdık */
-  }
-
-  .snake-stat-label { 
-    font-size: 7px; 
-    text-transform: uppercase; 
-    letter-spacing: 0.5px; 
-    color: #94a3b8; 
-    text-align: center; /* Label'ı da ortaladık */
-  }
+  .snake-stat-label { font-size: 7px; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; }
+  .snake-stat-value { font-size: 11px; font-weight: 800; color: #38bdf8; }
+  .snake-stat-value.xp-val { color: #c084fc; display: flex; justify-content: space-between; align-items: center; width: 100%; }
 
   /* KUTU İÇİ İLERLEME ÇUBUĞU */
   .xp-box-content {
@@ -8542,8 +8521,6 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     });
   }
 
-  let hasWelcomed = false; // Oturum boyunca sadece 1 kez bayrak tutar
-
   function updateAuthUI() {
     const user = auth.currentUser;
     const googleBtn = document.getElementById("googleLoginBtn");
@@ -8557,26 +8534,20 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
       
       if (userInfoLabel) {
         userInfoLabel.style.display = "block";
-        const welcomeText = "👤 Hoş Geldin, " + (user.displayName || "Oyuncu");
-        // Yazı zaten aynıysa DOM'u gereksiz yere tekrar tetikleyip oynatmasın
-        if (userInfoLabel.innerText !== welcomeText) {
-          userInfoLabel.innerText = welcomeText;
+        const newText = "👤 Hoş Geldin, " + (user.displayName || "Oyuncu");
+        
+        // EĞER YAZI ZATEN AYNIYSA ASLA TEKRAR YAZDIRMA
+        if (userInfoLabel.innerText !== newText) {
+          userInfoLabel.innerText = newText;
         }
       }
       
       if (startBtn) startBtn.style.display = "block";
-
-      if (!hasWelcomed) {
-        hasWelcomed = true;
-        // Eğer burada ekrana çıkan ekstra bir bildirim (toast/alert) kodu varsa, 
-        // o sadece ilk girişte 1 kez çalışmış olur.
-      }
     } else {
       if (googleBtn) googleBtn.style.display = "flex";
       if (authNotice) authNotice.style.display = "block";
       if (userInfoLabel) userInfoLabel.style.display = "none";
       if (startBtn) startBtn.style.display = "none";
-      hasWelcomed = false; // Çıkış yapılırsa bayrak sıfırlanır
     }
   }
 
