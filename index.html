@@ -8141,10 +8141,11 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 50px);
-    gap: 8px;
+    gap: 6px;
     width: 100%;
     max-width: 310px;
-    margin: 15px auto 4px auto; /* Yukarı kaydırıldı, ekranda tamamen görünüyor */
+    margin-top: 15px !important; /* !important ekleyerek tarayıcının bunu ezmesini engelledik */
+    margin-bottom: 10px !important;
     flex-shrink: 0;
     touch-action: manipulation;
     user-select: none;
