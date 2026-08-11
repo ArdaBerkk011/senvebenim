@@ -7998,27 +7998,34 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 6px; 
-    /* padding değerini 3px 6px yerine şu şekilde yap */
-    padding: 6px 6px; 
+    padding: 3px 6px; /* 6px yerine 3px'e çektik ki kutu incelsin */
     display: flex; 
     flex-direction: column; 
-    justify-content: center; /* İçerikleri tam ortaya hizalar */
+    justify-content: center;
     flex: 1;
     box-sizing: border-box;
-    min-height: 44px; /* Biraz daha artırdık */
-  }
-/* Sol taraftaki Skor kutusunu biraz daraltıyoruz */
-  .snake-stat-box:first-child {
-    flex: 0.7; 
+    min-height: 40px; /* 44px'ten 40px'e çektik */
   }
 
-  /* Sağ taraftaki Seviye/XP kutusunu genişletip barı rahatlatıyoruz */
-  .snake-stat-box:last-child {
-    flex: 1.4; 
+  /* Skor kutusu için özel ayarlar */
+  .snake-stat-box:first-child {
+    flex: 0.6; /* 0.7'den 0.6'ya çekerek biraz daha daralttık */
+    align-items: center; /* Yazıları yatayda tam ortaya çeker */
   }
-  .snake-stat-label { font-size: 7px; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; }
-  .snake-stat-value { font-size: 11px; font-weight: 800; color: #38bdf8; }
-  .snake-stat-value.xp-val { color: #c084fc; display: flex; justify-content: space-between; align-items: center; width: 100%; }
+
+  /* Seviye/XP kutusu için özel ayarlar */
+  .snake-stat-box:last-child {
+    flex: 1.5; /* 1.4'ten 1.5'e çekerek biraz daha genişlettik */
+    padding: 3px 8px; /* İçine biraz daha nefes aldırdık */
+  }
+
+  .snake-stat-label { 
+    font-size: 7px; 
+    text-transform: uppercase; 
+    letter-spacing: 0.5px; 
+    color: #94a3b8; 
+    text-align: center; /* Label'ı da ortaladık */
+  }
 
   /* KUTU İÇİ İLERLEME ÇUBUĞU */
   .xp-box-content {
@@ -8084,17 +8091,17 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
 
   /* OVERLAY / MENÜ SİSTEMİ */
   .snake-overlay {
-    position: absolute; top: 85px; left: 10px; right: 10px; bottom: 10px;
+    position: absolute; top: 100px; left: 16px; right: 16px; bottom: auto; /* bottom: 10px'i sildik ki kendi içeriği kadar (dikeyde kısa) kalsın */
     background: rgba(5, 8, 17, 0.98);
     border: 1px solid rgba(56, 189, 248, 0.3);
     border-radius: 14px;
     display: flex; flex-direction: column; justify-content: center; align-items: center;
-    gap: 8px; z-index: 20; padding: 12px; box-sizing: border-box; overflow-y: auto;
+    gap: 6px; z-index: 20; padding: 14px 12px; box-sizing: border-box;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
   }
   .snake-overlay.hidden { display: none !important; }
 
-  .overlay-title { font-size: 14px; font-weight: 800; color: #f8fafc; margin: 0; text-align: center; white-space: pre-line; }
+  .overlay-title { font-size: 13px; font-weight: 800; color: #f8fafc; margin: 0; text-align: center; white-space: pre-line; line-height: 1.3; }
 
   .start-btn {
     background: #3b82f6; color: #fff; border: none; padding: 8px 16px;
@@ -8535,7 +8542,7 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     });
   }
 
-  let lastProcessedUserUid = null; // En son işlenen kullanıcıyı takip etmek için
+  let hasWelcomed = false; // Oturum boyunca sadece 1 kez bayrak tutar
 
   function updateAuthUI() {
     const user = auth.currentUser;
@@ -8544,24 +8551,32 @@ Seninle geçen her an,<br>hayatımın en güzel sayfası.
     const authNotice = document.getElementById("authNotice");
     const startBtn = document.getElementById("startBtn");
     
-    // Eğer kullanıcı değişmediyse ve aynı kullanıcı işlem yapmaya devam ediyorsa arayüzü gereksiz yere baştan çizme
-    const currentUid = user && !user.isAnonymous ? user.uid : "guest";
-    if (currentUid === lastProcessedUserUid) return;
-    lastProcessedUserUid = currentUid;
-
     if (user && !user.isAnonymous) {
       if (googleBtn) googleBtn.style.display = "none";
       if (authNotice) authNotice.style.display = "none";
+      
       if (userInfoLabel) {
         userInfoLabel.style.display = "block";
-        userInfoLabel.innerText = "👤 Hoş Geldin, " + (user.displayName || "Oyuncu");
+        const welcomeText = "👤 Hoş Geldin, " + (user.displayName || "Oyuncu");
+        // Yazı zaten aynıysa DOM'u gereksiz yere tekrar tetikleyip oynatmasın
+        if (userInfoLabel.innerText !== welcomeText) {
+          userInfoLabel.innerText = welcomeText;
+        }
       }
+      
       if (startBtn) startBtn.style.display = "block";
+
+      if (!hasWelcomed) {
+        hasWelcomed = true;
+        // Eğer burada ekrana çıkan ekstra bir bildirim (toast/alert) kodu varsa, 
+        // o sadece ilk girişte 1 kez çalışmış olur.
+      }
     } else {
       if (googleBtn) googleBtn.style.display = "flex";
       if (authNotice) authNotice.style.display = "block";
       if (userInfoLabel) userInfoLabel.style.display = "none";
       if (startBtn) startBtn.style.display = "none";
+      hasWelcomed = false; // Çıkış yapılırsa bayrak sıfırlanır
     }
   }
 
