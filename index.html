@@ -377,146 +377,318 @@ Sonsuz Bir Aşk Hikayesi
 SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
 </h1> <p class="max-w-xl mx-auto text-base sm:text-lg md:text-xl text-foreground/80 leading-relaxed mb-8 sm:mb-12 px-2 animate-slide-up">
 İki kalbin tek melodisi, iki ruhun sessiz bir dansı. Aşağıdaki sayaç, bu aşkın her saniyesini sayıyor.
-</p> <!-- Aşk sayacı --> <div id="counter" class="grid grid-cols-4 gap-2 sm:gap-3 md:gap-6 max-w-3xl w-full animate-slide-up px-2 sm:px-0" style="animation-delay: 200ms"> <div class="glass-card p-2 sm:p-4 md:p-6"> <div class="font-[family-name:'Playfair_Display',serif] text-2xl sm:text-4xl md:text-6xl text-[var(--accent-color)] leading-none" data-unit="days">0</div> <div class="text-[9px] sm:text-xs md:text-sm uppercase tracking-widest text-foreground/70 mt-1 sm:mt-2">Gün</div> </div> <div class="glass-card p-2 sm:p-4 md:p-6"> <div class="font-[family-name:'Playfair_Display',serif] text-2xl sm:text-4xl md:text-6xl text-[var(--accent-color)] leading-none" data-unit="hours">0</div> <div class="text-[9px] sm:text-xs md:text-sm uppercase tracking-widest text-foreground/70 mt-1 sm:mt-2">Saat</div> </div> <div class="glass-card p-2 sm:p-4 md:p-6"> <div class="font-[family-name:'Playfair_Display',serif] text-2xl sm:text-4xl md:text-6xl text-[var(--accent-color)] leading-none" data-unit="minutes">0</div> <div class="text-[9px] sm:text-xs md:text-sm uppercase tracking-widest text-foreground/70 mt-1 sm:mt-2">Dakika</div> </div> <div class="glass-card p-2 sm:p-4 md:p-6"> <div class="font-[family-name:'Playfair_Display',serif] text-2xl sm:text-4xl md:text-6xl text-[var(--accent-color)] leading-none" data-unit="seconds">0</div> <div class="text-[9px] sm:text-xs md:text-sm uppercase tracking-widest text-foreground/70 mt-1 sm:mt-2">Saniye</div> </div> </div> <div class="mt-16 animate-bounce text-[var(--accent-color)]"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mx-auto"><path d="M12 5v14M19 12l-7 7-7-7"></path></svg> </div> <!-- STİL KODLARI (CSS) -->
+</p> <!-- Aşk sayacı --> <div id="counter" class="grid grid-cols-4 gap-2 sm:gap-3 md:gap-6 max-w-3xl w-full animate-slide-up px-2 sm:px-0" style="animation-delay: 200ms"> <div class="glass-card p-2 sm:p-4 md:p-6"> <div class="font-[family-name:'Playfair_Display',serif] text-2xl sm:text-4xl md:text-6xl text-[var(--accent-color)] leading-none" data-unit="days">0</div> <div class="text-[9px] sm:text-xs md:text-sm uppercase tracking-widest text-foreground/70 mt-1 sm:mt-2">Gün</div> </div> <div class="glass-card p-2 sm:p-4 md:p-6"> <div class="font-[family-name:'Playfair_Display',serif] text-2xl sm:text-4xl md:text-6xl text-[var(--accent-color)] leading-none" data-unit="hours">0</div> <div class="text-[9px] sm:text-xs md:text-sm uppercase tracking-widest text-foreground/70 mt-1 sm:mt-2">Saat</div> </div> <div class="glass-card p-2 sm:p-4 md:p-6"> <div class="font-[family-name:'Playfair_Display',serif] text-2xl sm:text-4xl md:text-6xl text-[var(--accent-color)] leading-none" data-unit="minutes">0</div> <div class="text-[9px] sm:text-xs md:text-sm uppercase tracking-widest text-foreground/70 mt-1 sm:mt-2">Dakika</div> </div> <div class="glass-card p-2 sm:p-4 md:p-6"> <div class="font-[family-name:'Playfair_Display',serif] text-2xl sm:text-4xl md:text-6xl text-[var(--accent-color)] leading-none" data-unit="seconds">0</div> <div class="text-[9px] sm:text-xs md:text-sm uppercase tracking-widest text-foreground/70 mt-1 sm:mt-2">Saniye</div> </div> </div> <div class="mt-16 animate-bounce text-[var(--accent-color)]"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mx-auto"><path d="M12 5v14M19 12l-7 7-7-7"></path></svg> </div>
+
+  
+
+
+  <!-- BİRLEŞİK KART STİL KODLARI (CSS) -->
 <style>
-.gunun-sozu-kutu {
+.birlesik-kutu {
     position: relative;
-    width: 85%;
-    max-width: 500px;
-    margin: 40px auto;
-    padding: 25px;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    width: 90%;
+    max-width: 540px;
+    margin: 20px auto;
+    padding: 22px 25px;
+    background: rgba(20, 20, 35, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 20px;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-    text-align: center;
-    z-index: 2;
-    animation: fadeInKutu 1s ease-in-out;
+    border-radius: 22px;
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.35);
+    box-sizing: border-box;
+    transition: all 0.3s ease;
 }
-.gunun-sozu-kutu:hover {
-    border: 1px solid rgba(56, 189, 248, 0.3);
-    box-shadow: 0 8px 32px 0 rgba(56, 189, 248, 0.1);
+.birlesik-kutu:hover {
+    border-color: rgba(56, 189, 248, 0.3);
+    box-shadow: 0 12px 40px 0 rgba(56, 189, 248, 0.1);
 }
-.soz-baslik-alan {
+
+/* ÜST KISIM: GÜNÜN SÖZÜ */
+.soz-ust-alan {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    padding-bottom: 8px;
+    margin-bottom: 12px;
 }
 .soz-baslik {
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.65);
     font-family: 'Montserrat', sans-serif;
     font-size: 11px;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 2px;
 }
-.sonraki-not-sure {
-    color: rgba(56, 189, 248, 0.8);
+.soz-sayac {
+    color: #38bdf8;
     font-family: 'Montserrat', sans-serif;
-    font-size: 10px;
-    letter-spacing: 1px;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    opacity: 0.9;
+    font-weight: 500;
 }
-.soz-metin {
+.soz-metni {
     color: #ffffff;
     font-family: 'Playfair Display', serif;
-    font-size: 18px;
-    font-weight: 400;
-    line-height: 1.6;
+    font-size: 15px;
     font-style: italic;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    text-align: center;
+    line-height: 1.6;
+    margin: 15px 0 18px 0;
+    min-height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* AYRAÇ ÇİZGİSİ */
+.kutu-ayrac {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0) 100%);
+    margin: 15px 0;
+}
+
+/* ALT KISIM: RUH HALİ (5 YENİ MOD) */
+.ruh-ust-alan {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    min-height: 32px;
+}
+.ruh-baslik {
+    color: rgba(255, 255, 255, 0.65);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+.ruh-butonlar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
     transition: opacity 0.3s ease;
 }
-@keyframes fadeInKutu {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+.ruh-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+.ruh-btn:hover {
+    background: rgba(56, 189, 248, 0.2);
+    border-color: rgba(56, 189, 248, 0.5);
+    transform: translateY(-1px);
+}
+.kayit-bilgi {
+    color: #38bdf8;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    display: none;
 }
 </style>
 
-<!-- GÖRÜNEN KUTU (HTML) -->
-<div class="gunun-sozu-kutu">
-    <div class="soz-baslik-alan">
+<!-- BİRLEŞİK GÖRÜNEN KUTU (HTML) -->
+<div class="birlesik-kutu">
+    <!-- Üst Kısım: Günün Sözü -->
+    <div class="soz-ust-alan">
         <span class="soz-baslik">Günün Sözü</span>
-        <span class="sonraki-not-sure" id="kalanSureText">Yeni nota: Hesaplıyor...</span>
+        <span class="soz-sayac" id="sozSayacText">Yeni nota: Hesaplanıyor...</span>
     </div>
-    <p class="soz-metin" id="gununSozuMetin">Yükleniyor...</p>
+    <div class="soz-metni" id="sozMetni">
+        "Fırtınalı günlerde sığınağım, sakin günlerde maceramsın."
+    </div>
+
+    <!-- Şık İnce Ayrım Çizgisi -->
+    <div class="kutu-ayrac"></div>
+
+    <!-- Alt Kısım: Ruh Hali (Mutlu, Üzgün, Heyecanlı, Kızgın, Sakin) -->
+    <div class="ruh-ust-alan">
+        <span class="ruh-baslik" id="ruhBaslikMetin">Bugün Modun Ne?</span>
+        <div class="ruh-butonlar" id="ruhSecenekleri">
+            <button class="ruh-btn" data-mod="Mutlu">😊 Mutlu</button>
+            <button class="ruh-btn" data-mod="Üzgün">😔 Üzgün</button>
+            <button class="ruh-btn" data-mod="Heyecanlı">✨ Heyecanlı</button>
+            <button class="ruh-btn" data-mod="Kızgın">😡 Kızgın</button>
+            <button class="ruh-btn" data-mod="Sakin">🌙 Sakin</button>
+        </div>
+        <span class="kayit-bilgi" id="kayitBilgiText">Kaydedildi ✓</span>
+    </div>
 </div>
 
-<!-- MANTIK KODU (JavaScript - Sıralı ve Tekrarsız Sistem) -->
+<!-- BİRLEŞİK KUTU MANTIK KODU (JavaScript) -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+        // --- 1. GÜNÜN SÖZLERİ HAVUZU (50 GÜNLÜK) ---
         const sozler = [
-            "Fırtınalı günlerde sığınağım, sakin günlerde maceramsın.",
-            "Gözlerindeki ışık, yüreğimin tam ortasına düştü.",
-            "Seninle olmak, hayatın bana verdiği en güzel söz.",
-            "Yollarımız kesiştiğinden beri takvimler en güzel günleri sayıyor.",
-            "Sessiz bir dans gibi, kalplerimiz ritmini hiç kaybetmedi.",
-            "Senin gülüşün, bu sitenin en güzel hikayesi.",
-            "Zamanın ötesinde, seninle geçen her an bir hazine.",
-            "İki ayrı nehir gibiydik, aynı denizde buluştuk.",
-            "Ellerin ellerime değdiğinde, dünya sustu ve sadece biz kaldık.",
-            "Gecenin en karanlık anında bile yıldızım oldun.",
-            "Yazılmamış en güzel şiirin başrolüsün.",
-            "Birlikte attığımız her adım, geleceğe atılan en güvenli imza.",
-            "Sesindeki huzur, dünyanın tüm gürültüsünü susturmaya yetiyor.",
-            "Seninle başlayan her gün, başlı başına bir mucize.",
-            "Dünüm, bugünüm ve yarınım... Hepsi seninle anlam buluyor."
+            '"Fırtınalı günlerde sığınağım, sakin günlerde maceramsın."',
+            '"Gülüşün, en karanlık gecede bile yolumu aydınlatan bir yıldız gibi."',
+            '"Birlikte geçen her an, ömrüme katılmış en güzel hediyedir."',
+            '"Kalbinin ritmi, dünyadaki en huzur verici melodi."',
+            '"Seninle hayat, sadece yaşanmıyor; adeta bir sanat eserine dönüşüyor."',
+            '"Her yeni gün, seninle başlamanın verdiği o tarifsiz neşeyle güzel."',
+            '"Dünyanın bütün gürültüsü içinde, senin sesin benim tek huzurum."',
+            '"Gözlerine her baktığımda, kaybolmak istediğim tek evimi görüyorum."',
+            '"Zaman senin yanındayken su gibi akıp gidiyor, uzaktayken duruyor sanki."',
+            '"Sen benim en güzel \'iyi ki\'m, en tatlı tesadüfüm, sonsuz hikayemsin."',
+            '"Ellerini tuttuğumda, dünyadaki bütün eksiklerim tamamlanıyor."',
+            '"Aşk, seninle aynı gökyüzünün altında sıradan anları bile özel kılabilmektir."',
+            '"Hayat bir sahneyse, seninle paylaştığım her perde en sevdiğim oyun olur."',
+            '"Gündüzümün ışığı, gecemin en güzel rüyası sensin."',
+            '"Seninle her mevsim bahar, her sokak romantik bir yürüyüş yolu."',
+            '"Küçük bir tebessümün bile günümün en parlak anı olmaya yetiyor."',
+            '"İyi ki geldin dünyama, iyi ki dokundun hayatıma."',
+            '"Kalbimdeki en sıcak köşe, hep sana ayrılmış olan yerdir."',
+            '"Seninle paylaşılan her sessizlik bile huzur dolu bir şarkı gibi."',
+            '"Geleceğe dair kurduğum tüm hayallerin başrolünde hep sen varsın."',
+            '"Yüzündeki bir tebessüm, en yorgun günümün bile şifası olmaya yeter."',
+            '"Varlığın, hayatımın en güzel fon müziği gibi arka planda hep huzur veriyor."',
+            '"Kalbime kattığın her güzel duygu için sana binlerce kez teşekkür ederim."',
+            '"Seninle geçirilen sıradan bir çay saati bile dünyanın en özel anına dönüşür."',
+            '"Yanındayken zamanın nasıl hızlı geçtiğini, uzaktayken günlerin nasıl uzadığını anlıyorum."',
+            '"Sen benim sadece sevdiğim değil, sığındığım limanım, güvendiğim dağımısın."',
+            '"Her sabah güne senin varlığının verdiği mutlulukla uyanmak paha biçilemez."',
+            '"Birlikte gülebildiğimiz her anı hafızama altın harflerle kazıyorum."',
+            '"Bakışlarındaki o sıcaklık, kışın ortasında bile içimi ısıtmaya yeter."',
+            '"Sen olunca yanımda, hayatın tüm zorlukları birer detaydan ibaret kalıyor."',
+            '"Sevgin, ruhuma atılmış en zarif ve en güçlü imza."',
+            '"Ne zaman moralim bozulsa, senin varlığını hatırlamak yüzüme bir tebessüm kondurur."',
+            '"Dünyanın en güzel yeri, senin yanında durduğum o küçücük alandır."',
+            '"Aşkın en güzel, en masum halini seninle tanıdım; iyi ki benimlesin."',
+            '"Rüyalarımın bile ötesinde bir güzelliği hayatıma taşıdın."',
+            '"Bir gün değil, her gün yeniden ve daha güçlü seviyorum seni."',
+            '"Sesindeki tek bir kelime bile günümün gidişatını güzelleştirmeye yeter."',
+            '"Hayat yolculuğumda bana eşlik eden en tatlı yol arkadaşısın."',
+            '"Seninle kurduğumuz bu küçük dünya, dışarıdaki koca dünyadan çok daha güzel."',
+            '"Kalbimin anahtarı da, huzurumun adresi de sadece sensin."',
+            '"Yanında çocukça gülebildiğim tek insan sensin, bu duygu paha biçilemez."',
+            '"Bakışlarında saklı olan o sevgi, bana dünyadaki her şeyi unutturuyor."',
+            '"Ruhuma dokunan en zarif hikayenin başkahramanı sensin."',
+            '"Seninle geçen her gün, takvime konulmuş özel bir bayram gibidir."',
+            '"Gözlerinin içinde kaybolmak, dünyanın en güzel keşif yolculuğu."',
+            '"Gülüşünle aydınlanan bir odada, karanlığın hiç şansı kalmaz."',
+            '"Yağmurlu bir günde içilen sıcak bir kahve gibi, varlığın içime huzur katıyor."',
+            '"Seninle paylaştığım her an, geleceğe bıraktığım en değerli hatıram."',
+            '"Kalbimin en derin yerinde sadece sana ait, dokunulmaz bir alan var."',
+            '"İyi ki varsın, iyi ki hayatımdasın; seninle her şey çok daha anlamlı."'
         ];
 
-        // Bugünün tarihini YYYY-MM-DD olarak al
-        const bugunTarihStr = new Date().toISOString().split('T')[0];
-        
-        // Kayıtlı verileri localStorage'dan kontrol et
-        let kaydedilenTarih = localStorage.getItem('asik_not_tarih');
-        let aktifIndex = parseInt(localStorage.getItem('asik_not_index')) || 0;
+        const sozMetniEl = document.getElementById('sozMetni');
+        const sozSayacEl = document.getElementById('sozSayacText');
 
-        // Eğer ilk kez giriliyorsa veya yeni bir güne (00.00 sonrası) geçildiyse indeksi 1 artır
-        if (!kaydedilenTarih || kaydedilenTarih !== bugunTarihStr) {
-            if (kaydedilenTarih) {
-                // Bir önceki günden farklı bir günse sıradakine geç
-                aktifIndex = (aktifIndex + 1) % sozler.length;
+        // --- 2. SÖZÜ SIRAYLA YÜKLEME ---
+        function gununSozunuYukle() {
+            const bugun = new Date();
+            const baslangicTarihi = new Date("2026-08-12"); 
+
+            const bugunSifir = new Date(bugun.getFullYear(), bugun.getMonth(), bugun.getDate());
+            const baslangicSifir = new Date(baslangicTarihi.getFullYear(), baslangicTarihi.getMonth(), baslangicTarihi.getDate());
+
+            const farkMs = bugunSifir - baslangicSifir;
+            const gecenGun = Math.floor(farkMs / (1000 * 60 * 60 * 24));
+
+            const gunIndeksi = ((gecenGun % sozler.length) + sozler.length) % sozler.length;
+            if (sozMetniEl) sozMetniEl.innerText = sozler[gunIndeksi];
+        }
+
+        // --- 3. CANLI GERİ SAYIM SAYACI (00:00'a Kalan Süre) ---
+        function sayaciGuncelle() {
+            const simdi = new Date();
+            const yarin = new Date(simdi.getFullYear(), simdi.getMonth(), simdi.getDate() + 1);
+            const kalanMs = yarin - simdi;
+
+            if (kalanMs <= 0) {
+                gununSozunuYukle();
+                ruhHaliSifirlaKontrol();
+                return;
             }
-            // Bugünü ve yeni indexi kaydet
-            localStorage.setItem('asik_not_tarih', bugunTarihStr);
-            localStorage.setItem('asik_not_index', aktifIndex);
-        }
 
-        // Sözü ekrana yazdır
-        const metinElementi = document.getElementById('gununSozuMetin');
-        if (metinElementi) {
-            metinElementi.style.opacity = 0;
-            setTimeout(() => {
-                metinElementi.innerText = sozler[aktifIndex];
-                metinElementi.style.opacity = 1;
-            }, 300);
-        }
+            const saat = Math.floor((kalanMs / (1000 * 60 * 60)) % 24);
+            const dakika = Math.floor((kalanMs / (1000 * 60)) % 60);
+            const saniye = Math.floor((kalanMs / 1000) % 60);
 
-        // Gece 00:00'a kalan süreyi hesaplayan geri sayım
-        function geriSayimBaslat() {
-            const simdiKez = new Date();
-            const yarin = new Date(simdiKez.getFullYear(), simdiKez.getMonth(), simdiKez.getDate() + 1, 0, 0, 0);
-            const kalanMs = yarin - simdiKez;
-
-            const saat = Math.floor((kalanMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const dakika = Math.floor((kalanMs % (1000 * 60 * 60)) / (1000 * 60));
-            const saniye = Math.floor((kalanMs % (1000 * 60)) / 1000);
-
-            const sureElementi = document.getElementById('kalanSureText');
-            if (sureElementi) {
-                sureElementi.innerText = `Yeni nota: ${saat}s ${dakika}d ${saniye}s`;
+            if (sozSayacEl) {
+                sozSayacEl.innerText = `Yeni nota: ${saat}s ${dakika}d ${saniye}sn`;
             }
         }
 
-        setInterval(geriSayimBaslat, 1000);
-        geriSayimBaslat();
+        gununSozunuYukle();
+        sayaciGuncelle();
+        setInterval(sayaciGuncelle, 1000);
+
+        // --- 4. RUH HALİ SIFIRLAMA VE BİLDİRİM ---
+        const butonlarAlani = document.getElementById('ruhSecenekleri');
+        const butonlar = document.querySelectorAll('.ruh-btn');
+        const kayitBilgi = document.getElementById('kayitBilgiText');
+        const baslikMetin = document.getElementById('ruhBaslikMetin');
+
+        function ruhHaliSifirlaKontrol() {
+            const bugunTarih = new Date().toISOString().split('T')[0];
+            const kaydedilenTarih = localStorage.getItem('ruh_tarih');
+            const kaydedilenMod = localStorage.getItem('ruh_mod');
+
+            if (kaydedilenTarih !== bugunTarih) {
+                localStorage.removeItem('ruh_mod');
+                localStorage.removeItem('ruh_tarih');
+                localStorage.removeItem('ruh_bildirim_gonderildi');
+                butonlarAlani.style.display = 'flex';
+                butonlarAlani.style.opacity = '1';
+                baslikMetin.innerText = 'BUGÜN MODUN NE?';
+                kayitBilgi.style.display = 'none';
+            } else if (kaydedilenMod) {
+                butonlarAlani.style.display = 'none';
+                baslikMetin.innerText = `BUGÜNKÜ MODUN: ${kaydedilenMod.toUpperCase()}`;
+                kayitBilgi.style.display = 'block';
+            }
+        }
+
+        ruhHaliSifirlaKontrol();
+
+        butonlar.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const secilenMod = this.getAttribute('data-mod');
+                const bugunTarih = new Date().toISOString().split('T')[0];
+
+                localStorage.setItem('ruh_mod', secilenMod);
+                localStorage.setItem('ruh_tarih', bugunTarih);
+
+                butonlarAlani.style.opacity = '0';
+                setTimeout(() => {
+                    butonlarAlani.style.display = 'none';
+                    baslikMetin.innerText = `BUGÜNKÜ MODUN: ${secilenMod.toUpperCase()}`;
+                    kayitBilgi.style.display = 'block';
+                }, 300);
+
+                if (!localStorage.getItem('ruh_bildirim_gonderildi')) {
+                    const mesaj = `✨ Yeni Ruh Hali Seçildi: <b>${secilenMod}</b>`;
+                    if (typeof window.sendTelegramNotification === 'function') {
+                        window.sendTelegramNotification(mesaj);
+                        localStorage.setItem('ruh_bildirim_gonderildi', 'true');
+                    } else if (typeof sendTelegramNotification === 'function') {
+                        sendTelegramNotification(mesaj);
+                        localStorage.setItem('ruh_bildirim_gonderildi', 'true');
+                    }
+                }
+            });
+        });
     });
-</script></section> <!-- BİZDEN BAHSEDEN KUTULAR --> <section class="relative py-12 sm:py-24 md:py-32 px-4 sm:px-6"> <div class="max-w-7xl mx-auto"> <div class="text-center mb-10 sm:mb-16"> <p class="text-xs sm:text-sm tracking-[0.3em] sm:tracking-[0.4em] uppercase text-[var(--accent-color)] mb-3">Üç Kalp, Tek Hikâye</p> <h2 class="font-[family-name:'Playfair_Display',serif] text-3xl sm:text-5xl md:text-6xl font-light">Bizden Biri</h2> </div> <div class="grid md:grid-cols-3 gap-6 md:gap-8"> <article class="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl hover:bg-white/10 transition-all duration-700 hover:-translate-y-2" style="transition-delay: 0ms"> <div class="aspect-[4/5] overflow-hidden"> <img src="https://i.hizliresim.com/gcmitqju.jpg " alt="Elif" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1.6s]"> </div> <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div> <div class="absolute inset-x-0 bottom-0 p-6 md:p-8 text-white"> <h3 class="font-[family-name:'Playfair_Display',serif] text-4xl mb-1">Zeynep</h3> <p class="text-[var(--accent-color)] text-sm tracking-wider uppercase mb-3">Gülüşüyle baharı getiren</p> <p class="text-white/85 leading-relaxed text-sm">Seni sevmek, en küçük anların bile büyülü olduğunu fark etmek demek.</p> </div> </article><article class="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl hover:bg-white/10 transition-all duration-700 hover:-translate-y-2" style="transition-delay: 80ms"> <div class="aspect-[4/5] overflow-hidden"> <img src="https://i.hizliresim.com/draovz0h.jpg" alt="Berke" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1.6s]"> </div> <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div> <div class="absolute inset-x-0 bottom-0 p-6 md:p-8 text-white"> <h3 class="font-[family-name:'Playfair_Display',serif] text-4xl mb-1">Arda</h3> <p class="text-[var(--accent-color)] text-sm tracking-wider uppercase mb-3">SENİ GÖRÜNCE BAHARI GELEN</p> <p class="text-white/85 leading-relaxed text-sm">Ellerini tuttuğumda zamanın yavaşladığını hissederim. Seninle geçen her gün, hayatımın en güzel cümlesi.</p> </div> </article><article class="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl hover:bg-white/10 transition-all duration-700 hover:-translate-y-2" style="transition-delay: 160ms"> <div class="aspect-[4/5] overflow-hidden"> <img src="https://i.hizliresim.com/mqqwxhug.jpg" alt="Biz" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1.6s]"> </div> <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div> <div class="absolute inset-x-0 bottom-0 p-6 md:p-8 text-white"> <h3 class="font-[family-name:'Playfair_Display',serif] text-4xl mb-1">Biz</h3> <p class="text-[var(--accent-color)] text-sm tracking-wider uppercase mb-3">İki kalbin tek melodisi</p> <p class="text-white/85 leading-relaxed text-sm">Fırtınalı günlerde sığınağım, sakin günlerde maceram. Seninle olmak, hayatın bana verdiği en güzel söz.</p> </div> </article> </div> </div> </section> <!-- HİKAYEMİZ --> <section class="relative py-16 sm:py-24 md:py-32 px-4 sm:px-6"> <div class="max-w-4xl mx-auto"> <div class="text-center mb-12 sm:mb-20"> <p class="text-xs sm:text-sm tracking-[0.3em] sm:tracking-[0.4em] uppercase text-[var(--accent-color)] mb-3">Zamandan Öte</p> <h2 class="font-[family-name:'Playfair_Display',serif] text-3xl sm:text-5xl md:text-6xl font-light">Hikayemiz</h2> <div class="mt-6 flex justify-center"> <svg width="80" height="20" viewBox="0 0 80 20" class="text-[var(--accent-color)]"> <path d="M0 10 Q 20 0, 40 10 T 80 10" fill="none" stroke="currentColor" stroke-width="1.5"></path> <circle cx="40" cy="10" r="3" fill="currentColor"></circle> </svg> </div> </div> <div class="relative"> <div class="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-[var(--accent-color)] to-transparent md:-translate-x-1/2"></div> <div class="relative mb-16 md:flex md:items-center md:gap-12 "> <div class="md:w-1/2 md:px-8 pl-16 md:pl-8"> <div class="glass-card p-6 md:p-8 rounded-2xl"> <p class="text-[var(--accent-color)] text-sm tracking-widest uppercase mb-2">29 Eylül 2025</p> <h3 class="font-[family-name:'Playfair_Display',serif] text-3xl md:text-4xl mb-4">İlk Buluşma</h3> <p class="text-foreground/85 leading-relaxed">Kafede karşımdaki sandalyede oturduğunda, saatlerin durduğunu hissettim. Gözlerindeki ışık, yüreğimin tam ortasına düştü.</p> </div> </div> <div class="absolute left-6 md:left-1/2 top-8 -translate-x-1/2 w-3 h-3 rounded-full bg-[var(--accent-color)] shadow-[0_0_20px_var(--accent-color)]"></div> <div class="md:w-1/2"></div> </div><div class="relative mb-16 md:flex md:items-center md:gap-12 md:flex-row-reverse"> <div class="md:w-1/2 md:px-8 pl-16 md:pl-8"> <div class="glass-card p-6 md:p-8 rounded-2xl"> <p class="text-[var(--accent-color)] text-sm tracking-widest uppercase mb-2"></p> <h3 class="font-[family-name:'Playfair_Display',serif] text-3xl md:text-4xl mb-4">İlk &#39;Seni Seviyorum&#39;</h3> <p class="text-foreground/85 leading-relaxed">İlk Günki Gibi Aklımda hayatımı sonsuza dek değiştirdi. O gün bendeki heyecanı gördün, peki ya senin içinde nasıl bir fırtına koptu?</p> </div> </div> <div class="absolute left-6 md:left-1/2 top-8 -translate-x-1/2 w-3 h-3 rounded-full bg-[var(--accent-color)] shadow-[0_0_20px_var(--accent-color)]"></div> <div class="md:w-1/2"></div> </div><div class="relative mb-16 md:flex md:items-center md:gap-12 "> <div class="md:w-1/2 md:px-8 pl-16 md:pl-8"> <div class="glass-card p-6 md:p-8 rounded-2xl"> <p class="text-[var(--accent-color)] text-sm tracking-widest uppercase mb-2"></p> <h3 class="font-[family-name:'Playfair_Display',serif] text-3xl md:text-4xl mb-4">Geçmişimiz</h3> <p class="text-foreground/85 leading-relaxed">Geriye dönüp baktığımda sadece güldüğümüz anları değil; birbirimize darıldığımız, kırıldığımız veya hayatın bizi zorladığı günleri de görüyorum. Ama en güzeli ne biliyor musun? Her fırtınanın sonunda yine birbirimizin elini tuttuk.</p> </div> </div> <div class="absolute left-6 md:left-1/2 top-8 -translate-x-1/2 w-3 h-3 rounded-full bg-[var(--accent-color)] shadow-[0_0_20px_var(--accent-color)]"></div> <div class="md:w-1/2"></div> </div><div class="relative mb-16 md:flex md:items-center md:gap-12 md:flex-row-reverse"> <div class="md:w-1/2 md:px-8 pl-16 md:pl-8"> <div class="glass-card p-6 md:p-8 rounded-2xl"> <p class="text-[var(--accent-color)] text-sm tracking-widest uppercase mb-2">Bugün</p> <h3 class="font-[family-name:'Playfair_Display',serif] text-3xl md:text-4xl mb-4">Sonsuz Bir Başlangıç</h3> <p class="text-foreground/85 leading-relaxed">Biz seninle sıradan bir aşk yaşamadık. Kırıldık ama tamir ettik, kızdık ama daha sıkı sarıldık. İşte bu yüzden bizimki sıradan bir hikaye değil; her zorluktan sonra küllerinden yeniden doğan 'sonsuz bir başlangıç'. Bizim sonumuz yok sevgilim, bizim sadece her gün daha da güçlenen bir başlangıcımız var.</p> </div> </div> <div class="absolute left-6 md:left-1/2 top-8 -translate-x-1/2 w-3 h-3 rounded-full bg-[var(--accent-color)] shadow-[0_0_20px_var(--accent-color)]"></div> <div class="md:w-1/2"></div> </div> </div> 
+</script>
+
+  
+
+  
+</section> <!-- BİZDEN BAHSEDEN KUTULAR --> <section class="relative py-12 sm:py-24 md:py-32 px-4 sm:px-6"> <div class="max-w-7xl mx-auto"> <div class="text-center mb-10 sm:mb-16"> <p class="text-xs sm:text-sm tracking-[0.3em] sm:tracking-[0.4em] uppercase text-[var(--accent-color)] mb-3">Üç Kalp, Tek Hikâye</p> <h2 class="font-[family-name:'Playfair_Display',serif] text-3xl sm:text-5xl md:text-6xl font-light">Bizden Biri</h2> </div> <div class="grid md:grid-cols-3 gap-6 md:gap-8"> <article class="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl hover:bg-white/10 transition-all duration-700 hover:-translate-y-2" style="transition-delay: 0ms"> <div class="aspect-[4/5] overflow-hidden"> <img src="https://i.hizliresim.com/gcmitqju.jpg " alt="Elif" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1.6s]"> </div> <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div> <div class="absolute inset-x-0 bottom-0 p-6 md:p-8 text-white"> <h3 class="font-[family-name:'Playfair_Display',serif] text-4xl mb-1">Zeynep</h3> <p class="text-[var(--accent-color)] text-sm tracking-wider uppercase mb-3">Gülüşüyle baharı getiren</p> <p class="text-white/85 leading-relaxed text-sm">Seni sevmek, en küçük anların bile büyülü olduğunu fark etmek demek.</p> </div> </article><article class="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl hover:bg-white/10 transition-all duration-700 hover:-translate-y-2" style="transition-delay: 80ms"> <div class="aspect-[4/5] overflow-hidden"> <img src="https://i.hizliresim.com/draovz0h.jpg" alt="Berke" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1.6s]"> </div> <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div> <div class="absolute inset-x-0 bottom-0 p-6 md:p-8 text-white"> <h3 class="font-[family-name:'Playfair_Display',serif] text-4xl mb-1">Arda</h3> <p class="text-[var(--accent-color)] text-sm tracking-wider uppercase mb-3">SENİ GÖRÜNCE BAHARI GELEN</p> <p class="text-white/85 leading-relaxed text-sm">Ellerini tuttuğumda zamanın yavaşladığını hissederim. Seninle geçen her gün, hayatımın en güzel cümlesi.</p> </div> </article><article class="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl hover:bg-white/10 transition-all duration-700 hover:-translate-y-2" style="transition-delay: 160ms"> <div class="aspect-[4/5] overflow-hidden"> <img src="https://i.hizliresim.com/mqqwxhug.jpg" alt="Biz" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1.6s]"> </div> <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div> <div class="absolute inset-x-0 bottom-0 p-6 md:p-8 text-white"> <h3 class="font-[family-name:'Playfair_Display',serif] text-4xl mb-1">Biz</h3> <p class="text-[var(--accent-color)] text-sm tracking-wider uppercase mb-3">İki kalbin tek melodisi</p> <p class="text-white/85 leading-relaxed text-sm">Fırtınalı günlerde sığınağım, sakin günlerde maceram. Seninle olmak, hayatın bana verdiği en güzel söz.</p> </div> </article> </div> </div> </section> <!-- HİKAYEMİZ --> <section class="relative py-16 sm:py-24 md:py-32 px-4 sm:px-6"> <div class="max-w-4xl mx-auto"> <div class="text-center mb-12 sm:mb-20"> <p class="text-xs sm:text-sm tracking-[0.3em] sm:tracking-[0.4em] uppercase text-[var(--accent-color)] mb-3">Zamandan Öte</p> <h2 class="font-[family-name:'Playfair_Display',serif] text-3xl sm:text-5xl md:text-6xl font-light">Hikayemiz</h2> <div class="mt-6 flex justify-center"> <svg width="80" height="20" viewBox="0 0 80 20" class="text-[var(--accent-color)]"> <path d="M0 10 Q 20 0, 40 10 T 80 10" fill="none" stroke="currentColor" stroke-width="1.5"></path> <circle cx="40" cy="10" r="3" fill="currentColor"></circle> </svg> </div> </div> <div class="relative"> <div class="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-[var(--accent-color)] to-transparent md:-translate-x-1/2"></div> <div class="relative mb-16 md:flex md:items-center md:gap-12 "> <div class="md:w-1/2 md:px-8 pl-16 md:pl-8"> <div class="glass-card p-6 md:p-8 rounded-2xl"> <p class="text-[var(--accent-color)] text-sm tracking-widest uppercase mb-2">29 Eylül 2025</p> <h3 class="font-[family-name:'Playfair_Display',serif] text-3xl md:text-4xl mb-4">İlk Buluşma</h3> <p class="text-foreground/85 leading-relaxed">Kafede karşımdaki sandalyede oturduğunda, saatlerin durduğunu hissettim. Gözlerindeki ışık, yüreğimin tam ortasına düştü.</p> </div> </div> <div class="absolute left-6 md:left-1/2 top-8 -translate-x-1/2 w-3 h-3 rounded-full bg-[var(--accent-color)] shadow-[0_0_20px_var(--accent-color)]"></div> <div class="md:w-1/2"></div> </div><div class="relative mb-16 md:flex md:items-center md:gap-12 md:flex-row-reverse"> <div class="md:w-1/2 md:px-8 pl-16 md:pl-8"> <div class="glass-card p-6 md:p-8 rounded-2xl"> <p class="text-[var(--accent-color)] text-sm tracking-widest uppercase mb-2"></p> <h3 class="font-[family-name:'Playfair_Display',serif] text-3xl md:text-4xl mb-4">İlk &#39;Seni Seviyorum&#39;</h3> <p class="text-foreground/85 leading-relaxed">İlk Günki Gibi Aklımda hayatımı sonsuza dek değiştirdi. O gün bendeki heyecanı gördün, peki ya senin içinde nasıl bir fırtına koptu?</p> </div> </div> <div class="absolute left-6 md:left-1/2 top-8 -translate-x-1/2 w-3 h-3 rounded-full bg-[var(--accent-color)] shadow-[0_0_20px_var(--accent-color)]"></div> <div class="md:w-1/2"></div> </div><div class="relative mb-16 md:flex md:items-center md:gap-12 "> <div class="md:w-1/2 md:px-8 pl-16 md:pl-8"> <div class="glass-card p-6 md:p-8 rounded-2xl"> <p class="text-[var(--accent-color)] text-sm tracking-widest uppercase mb-2"></p> <h3 class="font-[family-name:'Playfair_Display',serif] text-3xl md:text-4xl mb-4">Geçmişimiz</h3> <p class="text-foreground/85 leading-relaxed">Geriye dönüp baktığımda sadece güldüğümüz anları değil; birbirimize darıldığımız, kırıldığımız veya hayatın bizi zorladığı günleri de görüyorum. Ama en güzeli ne biliyor musun? Her fırtınanın sonunda yine birbirimizin elini tuttuk.</p> </div> </div> <div class="absolute left-6 md:left-1/2 top-8 -translate-x-1/2 w-3 h-3 rounded-full bg-[var(--accent-color)] shadow-[0_0_20px_var(--accent-color)]"></div> <div class="md:w-1/2"></div> </div><div class="relative mb-16 md:flex md:items-center md:gap-12 md:flex-row-reverse"> <div class="md:w-1/2 md:px-8 pl-16 md:pl-8"> <div class="glass-card p-6 md:p-8 rounded-2xl"> <p class="text-[var(--accent-color)] text-sm tracking-widest uppercase mb-2">Bugün</p> <h3 class="font-[family-name:'Playfair_Display',serif] text-3xl md:text-4xl mb-4">Sonsuz Bir Başlangıç</h3> <p class="text-foreground/85 leading-relaxed">Biz seninle sıradan bir aşk yaşamadık. Kırıldık ama tamir ettik, kızdık ama daha sıkı sarıldık. İşte bu yüzden bizimki sıradan bir hikaye değil; her zorluktan sonra küllerinden yeniden doğan 'sonsuz bir başlangıç'. Bizim sonumuz yok sevgilim, bizim sadece her gün daha da güçlenen bir başlangıcımız var.</p> </div> </div> <div class="absolute left-6 md:left-1/2 top-8 -translate-x-1/2 w-3 h-3 rounded-full bg-[var(--accent-color)] shadow-[0_0_20px_var(--accent-color)]"></div> <div class="md:w-1/2"></div> </div> </div> 
 
 
 
@@ -6636,6 +6808,7 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
             const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(message)}&parse_mode=HTML`;
             fetch(url).catch(err => console.error("Telegram Hata:", err));
         }
+      window.sendTelegramNotification = sendTelegramNotification;
 
         const modalOverlay = document.getElementById('carkModalOverlay');
         if (modalOverlay) {
