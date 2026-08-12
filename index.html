@@ -8315,17 +8315,13 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
 </script>
 
 
-<!-- ============================================================ -->
-<!-- 🦖 DINO RUNNER PRO (MOBİL DÜZELTMELİ FİNAL SÜRÜM)          -->
-<!-- ============================================================ -->
-
 <!-- 1. OYUN MODAL PENCERESİ VE CANVAS ALANI -->
 <div id="dinoGameModal" class="dino-modal">
   <div class="dino-modal-content">
     <button class="dino-close-btn" onclick="closeDinoGame()">×</button>
     <h2 class="dino-title">✨ Dino Runner Pro</h2>
     <p class="dino-subtitle">
-      Zıpla: <strong>BOŞLUK / YUKARI OK</strong> | Eğil: <strong>AŞAĞI OK / S</strong>
+      Zıpla: <strong>YUKARI OK</strong> | Eğil: <strong>AŞAĞI OK </strong>
     </p>
     
     <div class="dino-score-board">
@@ -8353,7 +8349,7 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
   </div>
 </div>
 
-<!-- 2. OPTİMİZE VE SCROLL KİLİTLİ STİLLER -->
+<!-- 2. STİLLER -->
 <style>
   .dino-modal {
     display: none;
@@ -8366,8 +8362,7 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
     z-index: 9999999 !important;
     justify-content: center !important;
     align-items: center !important;
-    will-change: transform;
-    touch-action: none !important; /* Mobilde kaydırmayı engeller */
+    touch-action: none !important;
     overscroll-behavior: contain !important;
   }
 
@@ -8480,12 +8475,12 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
 
   .dino-m-btn {
     flex: 1 !important;
-    padding: 12px !important;
+    padding: 14px !important;
     border-radius: 12px !important;
     border: 1px solid rgba(255,255,255,0.15) !important;
     color: #fff !important;
     font-weight: bold !important;
-    font-size: 14px !important;
+    font-size: 15px !important;
     cursor: pointer !important;
     user-select: none !important;
     touch-action: manipulation;
@@ -8496,7 +8491,7 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
   .dino-m-btn:active { transform: scale(0.95) !important; }
 </style>
 
-<!-- 3. GÜNCELLENMİŞ VE SCROLL ENGELLİ MOTOR KODU -->
+<!-- 3. OPTİMİZE MOTOR VE HIZLANDIRILMIŞ FİZİK -->
 <script>
   (function() {
     let canvas, ctx;
@@ -8505,11 +8500,13 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
     let lastDisplayedScore = -1;
     let highScore = localStorage.getItem('dino_high_score') || 0;
     let heartsCollected = 0;
-    let gameSpeed = 2.0;
+    let gameSpeed = 3.6; // Başlangıç hızı artırıldı
     let animationFrameId;
     let frameCounter = 0;
     let shakeFrames = 0;
     let audioCtx = null;
+
+    let lastTime = performance.now(); // Delta Time takibi
 
     let elScore, elHighScore, elHearts, elOverlay, elOverlayTitle, elOverlayDesc;
 
@@ -8583,6 +8580,7 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
       } catch(e) {}
     }
 
+    // 🎯 FİZİKLER TOKLAŞTIRILDI (Yüksek zıplama ve süzülme engellendi)
     let dino = {
       x: 50, y: 138,
       offsetX: 0,
@@ -8591,8 +8589,8 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
       duckW: 46, duckH: 20,
       w: 34, h: 36,
       velocityY: 0, 
-      gravity: 0.28,
-      jumpPower: -8.5,
+      gravity: 0.52,      // ⚡ YERÇEKİMİ ARTIRILDI (Çabuk yere iner)
+      jumpPower: -10.5,   // ⚡ ZIPLAMA GÜCÜ DENGELENDİ (Gökdelen kadar zıplamaz)
       isJumping: false, isDucking: false
     };
 
@@ -8606,7 +8604,7 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
       const modal = document.getElementById('dinoGameModal');
       if (modal) {
         modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden'; // 🛑 SİTENİN ARKADAKİ SCROLL ÇUBUĞUNU KİLİTLER
+        document.body.style.overflow = 'hidden';
         cacheDOMElements();
         initDinoCanvas();
         generateBackgroundEnv();
@@ -8617,7 +8615,7 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
     window.closeDinoGame = function() {
       const modal = document.getElementById('dinoGameModal');
       if (modal) modal.style.display = 'none';
-      document.body.style.overflow = ''; // 🟢 OYUN KAPANINCA SİTENİN SCROLL ÇUBUĞUNU GERİ AÇAR
+      document.body.style.overflow = '';
       isPlaying = false;
       if (animationFrameId) cancelAnimationFrame(animationFrameId);
     };
@@ -8645,12 +8643,13 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
       score = 0;
       lastDisplayedScore = -1;
       heartsCollected = 0;
-      gameSpeed = 2.0;
+      gameSpeed = 3.6;
       obstacles = [];
       hearts = [];
       dustParticles = [];
       frameCounter = 0;
       shakeFrames = 0;
+      lastTime = performance.now();
       
       dino.y = 138;
       dino.offsetX = 0;
@@ -8679,7 +8678,8 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
         elOverlay.style.display = 'none';
       }
       isPlaying = true;
-      dinoLoop();
+      lastTime = performance.now();
+      dinoLoop(performance.now());
     };
 
     function doJump() {
@@ -8687,7 +8687,7 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
       if (!dino.isJumping && !dino.isDucking) {
         dino.velocityY = dino.jumpPower;
         dino.isJumping = true;
-        dino.velocityXOffset = 2.2;
+        dino.velocityXOffset = 1.5;
         playJumpSound();
 
         for (let i = 0; i < 3; i++) {
@@ -8717,7 +8717,7 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
       }
     }
 
-    // 🛑 KLAVYEDEKİ TUSLARIN SAYFAYI AŞAĞI KAYDIRMASINI ENGELLER
+    // PC Klavye Dinleyicisi
     window.addEventListener('keydown', (e) => {
       const modal = document.getElementById('dinoGameModal');
       if (modal && modal.style.display === 'flex') {
@@ -8743,7 +8743,7 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
       }
     });
 
-    // 🛑 MOBILDE PARMAKLA DOKUNURKEN SAYFAYI KAYDIRMAYI ENGELLER
+    // 🛑 MOBİL DOKUNMA DİNLEYİCİLERİ (Çift tetikleme tamamen temizlendi)
     document.addEventListener('DOMContentLoaded', () => {
       cacheDOMElements();
       const btnDuck = document.getElementById('btnMobileDuck');
@@ -8751,19 +8751,16 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
       const canvasEl = document.getElementById('dinoCanvas');
 
       if (canvasEl) {
-        canvasEl.addEventListener('touchstart', (e) => { e.preventDefault(); doJump(); }, { passive: false });
+        canvasEl.addEventListener('pointerdown', (e) => { e.preventDefault(); doJump(); });
       }
 
       if (btnDuck) {
-        btnDuck.addEventListener('touchstart', (e) => { e.preventDefault(); setDucking(true); }, { passive: false });
-        btnDuck.addEventListener('touchend', (e) => { e.preventDefault(); setDucking(false); }, { passive: false });
         btnDuck.addEventListener('pointerdown', (e) => { e.preventDefault(); setDucking(true); });
         btnDuck.addEventListener('pointerup', (e) => { e.preventDefault(); setDucking(false); });
         btnDuck.addEventListener('pointerleave', (e) => { e.preventDefault(); setDucking(false); });
       }
 
       if (btnJump) {
-        btnJump.addEventListener('touchstart', (e) => { e.preventDefault(); doJump(); }, { passive: false });
         btnJump.addEventListener('pointerdown', (e) => { e.preventDefault(); doJump(); });
       }
     });
@@ -8967,8 +8964,15 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
       ctx.fill();
     }
 
-    function dinoLoop() {
+    // 🚀 DELTA TIME TABANLI DÖNGÜ (Her cihazda ve her FPS değerinde tam aynı hızda akar)
+    function dinoLoop(currentTime) {
       if (!isPlaying || !ctx) return;
+
+      let deltaTime = (currentTime - lastTime) / 1000;
+      if (deltaTime > 0.1) deltaTime = 0.1; // Kasma anında fırlamayı engeller
+      lastTime = currentTime;
+
+      let dtFactor = deltaTime * 60; // 60 FPS standardına göre çarpan
 
       ctx.save();
       if (shakeFrames > 0) {
@@ -8992,12 +8996,12 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
       drawDust();
 
       if (!dino.isDucking) {
-        dino.velocityY += dino.gravity;
-        if (dino.velocityY > 5.5) dino.velocityY = 5.5;
+        dino.velocityY += dino.gravity * dtFactor;
+        if (dino.velocityY > 7.5) dino.velocityY = 7.5;
         
-        dino.y += dino.velocityY;
+        dino.y += dino.velocityY * dtFactor;
 
-        dino.offsetX += dino.velocityXOffset;
+        dino.offsetX += dino.velocityXOffset * dtFactor;
         dino.velocityXOffset *= 0.90; 
         dino.offsetX *= 0.86;        
 
@@ -9014,10 +9018,10 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
 
       let canSpawnObstacle = false;
       if (obstacles.length === 0) {
-        canSpawnObstacle = frameCounter > 80;
+        canSpawnObstacle = frameCounter > 70;
       } else {
         let lastObs = obstacles[obstacles.length - 1];
-        if (canvas.width - lastObs.x >= 280) {
+        if (canvas.width - lastObs.x >= 240) {
           canSpawnObstacle = true;
         }
       }
@@ -9032,7 +9036,7 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
 
       for (let i = obstacles.length - 1; i >= 0; i--) {
         let obs = obstacles[i];
-        obs.x -= gameSpeed;
+        obs.x -= gameSpeed * dtFactor;
 
         if (obs.type === 'cactus') {
           drawCactus(obs.x, obs.y, obs.w, obs.h);
@@ -9054,13 +9058,13 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
         if (obs.x + obs.w < 0) obstacles.splice(i, 1);
       }
 
-      if (frameCounter % 280 === 0) {
+      if (frameCounter % 240 === 0) {
         hearts.push({ x: canvas.width, y: 110 });
       }
 
       for (let i = hearts.length - 1; i >= 0; i--) {
         let h = hearts[i];
-        h.x -= gameSpeed;
+        h.x -= gameSpeed * dtFactor;
 
         drawHeart(h.x, h.y);
 
@@ -9087,8 +9091,8 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
         if (elScore) elScore.innerText = String(currentScoreFormatted).padStart(5, '0');
       }
 
-      if (frameCounter % 1000 === 0 && gameSpeed < 5.5) {
-        gameSpeed += 0.08;
+      if (frameCounter % 800 === 0 && gameSpeed < 6.5) {
+        gameSpeed += 0.12;
       }
 
       ctx.restore();
