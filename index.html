@@ -4290,10 +4290,9 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
 
 
 
+
   
-
-
-<!-- ============================================================ -->
+  <!-- ============================================================ -->
 <!-- 🎮 ANA OYUN MERKEZİ (HUB) - TÜM OYUNLARI BİRLEŞTİREN YAPI -->
 <!-- ============================================================ -->
 <style>
@@ -4301,7 +4300,7 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
   .master-games-btn {
     position: fixed;
     top: 14px;
-    right: 14px; /* Mobilde ve PC'de en sağ üstte kalır */
+    right: 14px;
     width: 44px;
     height: 44px;
     background: rgba(255, 255, 255, 0.95);
@@ -4325,13 +4324,10 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
     box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
   }
 
-  /* 
-    ÖNEMLİ: Eski butonları ekranda gizliyoruz! 
-    Menüden tetiklenecekleri için ekranda yer kaplamalarına gerek yok.
-  */
+  /* Eski butonları ekranda gizliyoruz */
   #openCarkModalBtn,
   #openSnakeModalBtn,
-  #openKelimeModalBtn { /* Kelime avının buton ID'sini buraya göre uyarla */
+  #openKelimeModalBtn {
     display: none !important; 
   }
 
@@ -4439,45 +4435,66 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
       </div>
     </div>
 
+    <!-- Dino Oyunu -->
+    <div class="hub-game-card" onclick="triggerGame('dino')">
+      <div class="hub-game-icon">🦖</div>
+      <div class="hub-game-info">
+        <div class="hub-game-title">Dino Runner Pro</div>
+        <div class="hub-game-desc">Engellerden kaç, eğil ve rekor kır.</div>
+      </div>
+    </div>
+
   </div>
 </div>
 
 <script>
-  // Hub üzerinden ilgili oyunun kendi butonuna sanal tıklama gönderir.
   function triggerGame(gameType) {
     // Önce Hub menüsünü kapat
-    document.getElementById('hubModalOverlay').classList.remove('active');
+    const hubOverlay = document.getElementById('hubModalOverlay');
+    if (hubOverlay) hubOverlay.classList.remove('active');
     
     if (gameType === 'kelime') {
-      // Kelime oyununu açan butonun ID'sini tetikler
-      // (Eğer kelime avı butonunun ID'si farklıysa burayı ona göre güncelle)
       const kelimeBtn = document.getElementById('openKelimeModalBtn');
-      if(kelimeBtn) kelimeBtn.click();
+      if (kelimeBtn) kelimeBtn.click();
       
     } else if (gameType === 'cark') {
-      // Çark butonunu tetikler (Senin gönderdiğin koddaki buton)
       const carkBtn = document.getElementById('openCarkModalBtn');
-      if(carkBtn) carkBtn.click();
+      if (carkBtn) carkBtn.click();
       
     } else if (gameType === 'yilan') {
-      // Yılan butonunu tetikler (Senin gönderdiğin koddaki buton)
+      // 🐍 Eski çalışan orijinal kodun birebir aynısı
       const yilanBtn = document.getElementById('openSnakeModalBtn');
-      if(yilanBtn) yilanBtn.click();
+      if (yilanBtn) yilanBtn.click();
+
+    } else if (gameType === 'dino') {
+      // 🦖 Dino oyununu hatasız tetikleyen güvenli fonksiyon
+      if (typeof openDinoGame === 'function') {
+        openDinoGame();
+      }
     }
   }
 
   // Overlay'e tıklandığında Hub'ı kapatma
   const hubOverlay = document.getElementById('hubModalOverlay');
-  hubOverlay.addEventListener('click', (e) => {
-    if (e.target === hubOverlay) {
-      hubOverlay.classList.remove('active');
-    }
-  });
+  if (hubOverlay) {
+    hubOverlay.addEventListener('click', (e) => {
+      if (e.target === hubOverlay) {
+        hubOverlay.classList.remove('active');
+      }
+    });
+  }
 </script>
+
+
+
 
 <!-- ============================================================ -->
 <!-- ALT KISMA KELİME AVI, ŞANS ÇARKI VE YILAN OYUNU KODLARINI YAPIŞTIR -->
 <!-- ============================================================ -->
+
+
+
+  
 <!-- MOBİL UYUMLU, XP BARLI, GOOGLE GİRİŞİ ZORUNLU YILAN OYUNU (GİRİŞ KİLİTLİ VE TAM ORTALANMIŞ SÜRÜM) -->
 <style>
   /* SAĞ ÜSTTEKİ OYNA BUTONU */
@@ -8292,8 +8309,932 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
 </script>
 
 
+<!-- ============================================================ -->
+<!-- 🦖 DINO RUNNER PRO (SÜZÜLME VE İLERİ ATILMA FİZİKLİ SÜRÜM)  -->
+<!-- ============================================================ -->
+
+<!-- 1. OYUN MODAL PENCERESİ VE CANVAS ALANI -->
+<div id="dinoGameModal" class="dino-modal">
+  <div class="dino-modal-content">
+    <button class="dino-close-btn" onclick="closeDinoGame()">×</button>
+    <h2 class="dino-title">✨ Dino Runner Pro</h2>
+    <p class="dino-subtitle">
+      Zıpla: <strong>BOŞLUK </strong> | Eğil: <strong>AŞAĞI OK </strong>
+    </p>
+    
+    <div class="dino-score-board">
+      <span>SKOR: <strong id="dinoScore">00000</strong></span>
+      <span>REKOR: <strong id="dinoHighScore">00000</strong></span>
+      <span>KALP: <strong id="dinoHearts">0</strong> ❤️</span>
+    </div>
+
+    <div class="dino-canvas-wrapper">
+      <canvas id="dinoCanvas" width="600" height="200"></canvas>
+      
+      <!-- BAŞLATMA / BİTİŞ EKRANI -->
+      <div id="dinoOverlay" class="dino-overlay">
+        <h3 id="dinoOverlayTitle">🚀 BAŞLAMAYA HAZIR MISIN?</h3>
+        <p id="dinoOverlayDesc">Zıplamak için Boşluk | Eğilmek için Aşağı Ok</p>
+        <button id="dinoStartBtn" onclick="startDinoGame()">BAŞLA</button>
+      </div>
+    </div>
+
+    <!-- MOBİL DOKUNMATİK KONTROL BUTONLARI -->
+    <div class="dino-mobile-controls">
+      <button class="dino-m-btn duck" id="btnMobileDuck">⬇️ EĞİL</button>
+      <button class="dino-m-btn jump" id="btnMobileJump">⬆️ ZIPLA</button>
+    </div>
+  </div>
+</div>
+
+<!-- 2. STİLLER -->
+<style>
+  .dino-modal {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(8, 12, 22, 0.94) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    z-index: 9999999 !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .dino-modal-content {
+    background: #0d1322 !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    border-radius: 24px !important;
+    padding: 20px !important;
+    width: 92% !important;
+    max-width: 640px !important;
+    text-align: center !important;
+    color: #fff !important;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(34, 197, 94, 0.18) !important;
+    position: relative !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  }
+
+  .dino-close-btn {
+    position: absolute !important;
+    top: 15px !important;
+    right: 20px !important;
+    background: none !important;
+    border: none !important;
+    color: #94a3b8 !important;
+    font-size: 28px !important;
+    cursor: pointer !important;
+    line-height: 1 !important;
+  }
+  .dino-close-btn:hover { color: #f43f5e !important; }
+
+  .dino-title { margin: 0 !important; font-size: 22px !important; color: #4ade80 !important; text-shadow: 0 0 10px rgba(74, 222, 128, 0.5) !important; }
+  .dino-subtitle { font-size: 12px !important; color: #94a3b8 !important; margin: 6px 0 14px !important; }
+
+  .dino-score-board {
+    display: flex !important;
+    justify-content: space-around !important;
+    background: rgba(255,255,255,0.05) !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    padding: 8px 16px !important;
+    border-radius: 12px !important;
+    margin-bottom: 12px !important;
+    font-size: 13px !important;
+    color: #cbd5e1 !important;
+    font-family: 'Courier New', Courier, monospace !important;
+    font-weight: bold !important;
+  }
+
+  .dino-score-board strong { color: #38bdf8 !important; }
+
+  .dino-canvas-wrapper {
+    position: relative !important;
+    width: 100% !important;
+    background: #000 !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(255,255,255,0.15) !important;
+  }
+
+  #dinoCanvas {
+    display: block !important;
+    width: 100% !important;
+    height: 200px !important;
+  }
+
+  .dino-overlay {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(13, 19, 34, 0.95) !important;
+    display: flex;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 12px !important;
+    z-index: 10 !important;
+  }
+
+  .dino-overlay.dno-hidden { display: none !important; }
+
+  .dino-overlay h3 { margin: 0 !important; font-size: 20px !important; color: #f8fafc !important; }
+  .dino-overlay p { margin: 0 !important; font-size: 13px !important; color: #94a3b8 !important; }
+
+  #dinoStartBtn {
+    background: linear-gradient(135deg, #22c55e, #16a34a) !important;
+    color: #fff !important;
+    border: none !important;
+    padding: 10px 28px !important;
+    border-radius: 20px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 15px rgba(34, 197, 94, 0.5) !important;
+    transition: transform 0.2s !important;
+  }
+
+  #dinoStartBtn:hover { transform: scale(1.05) !important; }
+
+  .dino-mobile-controls {
+    display: flex !important;
+    gap: 12px !important;
+    margin-top: 12px !important;
+    justify-content: center !important;
+  }
+
+  .dino-m-btn {
+    flex: 1 !important;
+    padding: 10px !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(255,255,255,0.15) !important;
+    color: #fff !important;
+    font-weight: bold !important;
+    font-size: 13px !important;
+    cursor: pointer !important;
+    user-select: none !important;
+  }
+
+  .dino-m-btn.duck { background: rgba(225, 29, 72, 0.25) !important; }
+  .dino-m-btn.jump { background: rgba(34, 197, 94, 0.25) !important; }
+  .dino-m-btn:active { transform: scale(0.96) !important; }
+</style>
+
+<!-- 3. İZOLE EDİLMİŞ DINO ENGINE SCRIPT -->
+<script>
+  (function() {
+    let canvas, ctx;
+    let isPlaying = false;
+    let score = 0;
+    let highScore = localStorage.getItem('dino_high_score') || 0;
+    let heartsCollected = 0;
+    let gameSpeed = 2.0;
+    let animationFrameId;
+    let frameCounter = 0;
+    let shakeFrames = 0;
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playJumpSound() {
+      try {
+        initAudio();
+        let osc = audioCtx.createOscillator();
+        let gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.12);
+        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
+        osc.start(audioCtx.currentTime);
+        osc.stop(audioCtx.currentTime + 0.12);
+      } catch(e) {}
+    }
+
+    function playHeartSound() {
+      try {
+        initAudio();
+        let osc = audioCtx.createOscillator();
+        let gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+        osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.08);
+        osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.16);
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.28);
+        osc.start(audioCtx.currentTime);
+        osc.stop(audioCtx.currentTime + 0.28);
+      } catch(e) {}
+    }
+
+    function playGameOverSound() {
+      try {
+        initAudio();
+        let osc = audioCtx.createOscillator();
+        let gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(280, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.35);
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
+        osc.start(audioCtx.currentTime);
+        osc.stop(audioCtx.currentTime + 0.35);
+      } catch(e) {}
+    }
+
+    let dino = {
+      x: 50, y: 138,
+      offsetX: 0,         // İleri atılma mesafesi
+      velocityXOffset: 0, // İleri hamle ivmesi
+      normalW: 34, normalH: 36,
+      duckW: 46, duckH: 20,
+      w: 34, h: 36,
+      velocityY: 0, 
+      gravity: 0.28,      // 👈 Çok hafifletilmiş yer çekimi (havada süzülme)
+      jumpPower: -8.5,    // 👈 Dengeli zıplama kuvveti
+      isJumping: false, isDucking: false
+    };
+
+    let obstacles = [];
+    let hearts = [];
+    let stars = [];
+    let clouds = [];
+    let dustParticles = [];
+
+    window.openDinoGame = function() {
+      const modal = document.getElementById('dinoGameModal');
+      if (modal) {
+        modal.style.display = 'flex';
+        initDinoCanvas();
+        generateBackgroundEnv();
+        resetDinoGame();
+      }
+    };
+
+    window.closeDinoGame = function() {
+      const modal = document.getElementById('dinoGameModal');
+      if (modal) modal.style.display = 'none';
+      isPlaying = false;
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+    };
+
+    function initDinoCanvas() {
+      canvas = document.getElementById('dinoCanvas');
+      if (canvas) {
+        ctx = canvas.getContext('2d');
+        const hsEl = document.getElementById('dinoHighScore');
+        if (hsEl) hsEl.innerText = String(highScore).padStart(5, '0');
+      }
+    }
+
+    function generateBackgroundEnv() {
+      stars = [];
+      clouds = [];
+      for (let i = 0; i < 35; i++) {
+        stars.push({ x: Math.random() * 600, y: Math.random() * 110, size: Math.random() * 2, alpha: Math.random() });
+      }
+      for (let i = 0; i < 3; i++) {
+        clouds.push({ x: Math.random() * 600, y: 20 + Math.random() * 40, speed: 0.2 + Math.random() * 0.2 });
+      }
+    }
+
+    function resetDinoGame() {
+      score = 0;
+      heartsCollected = 0;
+      gameSpeed = 2.0;
+      obstacles = [];
+      hearts = [];
+      dustParticles = [];
+      frameCounter = 0;
+      shakeFrames = 0;
+      
+      dino.y = 138;
+      dino.offsetX = 0;
+      dino.velocityXOffset = 0;
+      dino.w = dino.normalW;
+      dino.h = dino.normalH;
+      dino.velocityY = 0;
+      dino.isJumping = false;
+      dino.isDucking = false;
+      
+      document.getElementById('dinoScore').innerText = '00000';
+      document.getElementById('dinoHearts').innerText = '0';
+      
+      const overlay = document.getElementById('dinoOverlay');
+      if (overlay) {
+        overlay.classList.remove('dno-hidden');
+        overlay.style.display = 'flex';
+      }
+      document.getElementById('dinoOverlayTitle').innerText = '🚀 BAŞLAMAYA HAZIR MISIN?';
+    }
+
+    window.startDinoGame = function() {
+      initAudio();
+      resetDinoGame();
+      const overlay = document.getElementById('dinoOverlay');
+      if (overlay) {
+        overlay.classList.add('dno-hidden');
+        overlay.style.display = 'none';
+      }
+      isPlaying = true;
+      dinoLoop();
+    };
+
+    function doJump() {
+      if (!isPlaying) return;
+      if (!dino.isJumping && !dino.isDucking) {
+        dino.velocityY = dino.jumpPower;
+        dino.isJumping = true;
+        dino.velocityXOffset = 3.2; // 👈 Zıplayınca öne doğru hissedilir atılma gücü
+        playJumpSound();
+
+        for (let i = 0; i < 5; i++) {
+          dustParticles.push({
+            x: dino.x + dino.offsetX + 8 + Math.random() * 12,
+            y: dino.y + dino.h - 2,
+            vx: -gameSpeed * 0.4 + (Math.random() - 0.5) * 1.5,
+            vy: -Math.random() * 1.2,
+            size: 1.5 + Math.random() * 2,
+            alpha: 0.8
+          });
+        }
+      }
+    }
+
+    function setDucking(duckState) {
+      if (!isPlaying || dino.isJumping) return;
+      dino.isDucking = duckState;
+      if (duckState) {
+        dino.w = dino.duckW;
+        dino.h = dino.duckH;
+        dino.y = 154;
+      } else {
+        dino.w = dino.normalW;
+        dino.h = dino.normalH;
+        dino.y = 138;
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      const modal = document.getElementById('dinoGameModal');
+      if (modal && modal.style.display === 'flex') {
+        if (e.code === 'Space' || e.code === 'ArrowUp') {
+          e.preventDefault();
+          doJump();
+        }
+        if (e.code === 'ArrowDown' || e.code === 'KeyS') {
+          e.preventDefault();
+          setDucking(true);
+        }
+      }
+    });
+
+    window.addEventListener('keyup', (e) => {
+      const modal = document.getElementById('dinoGameModal');
+      if (modal && modal.style.display === 'flex') {
+        if (e.code === 'ArrowDown' || e.code === 'KeyS') {
+          setDucking(false);
+        }
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const btnDuck = document.getElementById('btnMobileDuck');
+      const btnJump = document.getElementById('btnMobileJump');
+
+      if (btnDuck) {
+        btnDuck.addEventListener('touchstart', (e) => { e.preventDefault(); setDucking(true); });
+        btnDuck.addEventListener('touchend', (e) => { e.preventDefault(); setDucking(false); });
+        btnDuck.addEventListener('mousedown', () => setDucking(true));
+        btnDuck.addEventListener('mouseup', () => setDucking(false));
+      }
+
+      if (btnJump) {
+        btnJump.addEventListener('touchstart', (e) => { e.preventDefault(); doJump(); });
+        btnJump.addEventListener('click', () => doJump());
+      }
+    });
+
+    function drawEnvironment() {
+      let currentScore = Math.floor(score / 3);
+      let cycle = currentScore % 800;
+
+      let skyGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      let celestialColor = '#fef08a';
+      let celestialGlow = 15;
+      let isNight = true;
+
+      if (cycle < 200) {
+        skyGradient.addColorStop(0, '#060911');
+        skyGradient.addColorStop(0.7, '#0d172a');
+        skyGradient.addColorStop(1, '#1e1b4b');
+        celestialColor = '#fef08a';
+        celestialGlow = 18;
+        isNight = true;
+      } else if (cycle < 400) {
+        skyGradient.addColorStop(0, '#1e1b4b');
+        skyGradient.addColorStop(0.5, '#4a044e');
+        skyGradient.addColorStop(1, '#831843');
+        celestialColor = '#fcd34d';
+        celestialGlow = 12;
+        isNight = true;
+      } else if (cycle < 600) {
+        skyGradient.addColorStop(0, '#0369a1');
+        skyGradient.addColorStop(0.6, '#0ea5e9');
+        skyGradient.addColorStop(1, '#bae6fd');
+        celestialColor = '#fbbf24';
+        celestialGlow = 20;
+        isNight = false;
+      } else {
+        skyGradient.addColorStop(0, '#0d1322');
+        skyGradient.addColorStop(0.5, '#9d174d');
+        skyGradient.addColorStop(1, '#f97316');
+        celestialColor = '#f43f5e';
+        celestialGlow = 25;
+        isNight = false;
+      }
+
+      ctx.fillStyle = skyGradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = celestialColor;
+      ctx.shadowBlur = celestialGlow;
+      ctx.shadowColor = celestialColor;
+      ctx.beginPath();
+      ctx.arc(520, 40, 18, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      ctx.fillStyle = isNight ? 'rgba(167, 139, 250, 0.2)' : 'rgba(255, 255, 255, 0.45)';
+      clouds.forEach(c => {
+        c.x -= c.speed;
+        if (c.x < -60) c.x = 640;
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, 12, 0, Math.PI * 2);
+        ctx.arc(c.x + 12, c.y - 4, 15, 0, Math.PI * 2);
+        ctx.arc(c.x + 26, c.y, 12, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      if (isNight) {
+        stars.forEach(s => {
+          ctx.fillStyle = `rgba(255, 255, 255, ${s.alpha * 0.8})`;
+          ctx.fillRect(s.x, s.y, s.size, s.size);
+        });
+      }
+    }
+
+    function drawDust() {
+      if (!dino.isJumping && frameCounter % 5 === 0) {
+        dustParticles.push({
+          x: dino.x + dino.offsetX + 4,
+          y: dino.y + dino.h - 2,
+          vx: -gameSpeed * 0.5 - Math.random() * 0.5,
+          vy: -Math.random() * 0.5,
+          size: 1.2 + Math.random() * 1.8,
+          alpha: 0.7
+        });
+      }
+
+      for (let i = dustParticles.length - 1; i >= 0; i--) {
+        let p = dustParticles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha -= 0.035;
+
+        if (p.alpha <= 0) {
+          dustParticles.splice(i, 1);
+          continue;
+        }
+
+        ctx.fillStyle = `rgba(203, 213, 225, ${p.alpha})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function drawDino(x, y, isJumping, isDucking, frame) {
+      ctx.fillStyle = '#4ade80';
+      ctx.shadowBlur = 6;
+      ctx.shadowColor = '#4ade80';
+
+      if (isDucking) {
+        ctx.beginPath();
+        ctx.ellipse(x + 22, y + 10, 20, 8, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(x + 38, y + 6, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#060911';
+        ctx.fillRect(x + 40, y + 4, 3, 3);
+
+        ctx.fillStyle = '#4ade80';
+        let legOffset = Math.floor(frame / 5) % 2 === 0;
+        ctx.fillRect(x + 16, y + 14, 5, legOffset ? 6 : 3);
+        ctx.fillRect(x + 28, y + 14, 5, legOffset ? 3 : 6);
+      } else if (isJumping) {
+        ctx.beginPath();
+        ctx.ellipse(x + 16, y + 20, 10, 12, -0.2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.ellipse(x + 22, y + 8, 7, 6, 0.2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#060911';
+        ctx.fillRect(x + 24, y + 6, 3, 3);
+
+        ctx.fillStyle = '#4ade80';
+        ctx.beginPath();
+        ctx.moveTo(x + 8, y + 20);
+        ctx.lineTo(x - 4, y + 16);
+        ctx.lineTo(x + 8, y + 26);
+        ctx.fill();
+
+        ctx.fillRect(x + 10, y + 28, 6, 4);
+        ctx.fillRect(x + 18, y + 26, 6, 4);
+      } else {
+        ctx.beginPath();
+        ctx.ellipse(x + 16, y + 20, 10, 12, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.ellipse(x + 22, y + 8, 8, 6, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillRect(x + 26, y + 8, 5, 4);
+
+        ctx.fillStyle = '#060911';
+        ctx.fillRect(x + 24, y + 6, 3, 3);
+
+        ctx.fillStyle = '#4ade80';
+        ctx.beginPath();
+        ctx.moveTo(x + 8, y + 18);
+        ctx.lineTo(x - 6, y + 22);
+        ctx.lineTo(x + 8, y + 26);
+        ctx.fill();
+
+        let legOffset = Math.floor(frame / 6) % 2 === 0;
+        ctx.fillRect(x + 10, y + 30, 5, legOffset ? 6 : 3);
+        ctx.fillRect(x + 20, y + 30, 5, legOffset ? 3 : 6);
+      }
+      ctx.shadowBlur = 0;
+    }
+
+    function drawCactus(x, y, w, h) {
+      ctx.fillStyle = '#22c55e';
+      ctx.shadowBlur = 6;
+      ctx.shadowColor = '#22c55e';
+
+      ctx.beginPath();
+      ctx.fillRect(x + w * 0.35, y, w * 0.3, h);
+      ctx.arc(x + w * 0.5, y, w * 0.15, Math.PI, 0);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.fillRect(x + 2, y + h * 0.3, w * 0.35, h * 0.18);
+      ctx.fillRect(x + 2, y + h * 0.12, w * 0.12, h * 0.25);
+      ctx.arc(x + 2 + w * 0.06, y + h * 0.12, w * 0.06, Math.PI, 0);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.fillRect(x + w * 0.65, y + h * 0.45, w * 0.35, h * 0.18);
+      ctx.fillRect(x + w * 0.88, y + h * 0.25, w * 0.12, h * 0.28);
+      ctx.arc(x + w * 0.88 + w * 0.06, y + h * 0.25, w * 0.06, Math.PI, 0);
+      ctx.fill();
+
+      ctx.fillStyle = '#4ade80';
+      ctx.fillRect(x + w * 0.46, y + 2, 2, h - 3);
+
+      ctx.shadowBlur = 0;
+    }
+
+    function drawBird(x, y, frame) {
+      ctx.fillStyle = '#c084fc';
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = '#c084fc';
+
+      ctx.beginPath();
+      ctx.ellipse(x + 20, y + 12, 12, 6, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(x + 26, y + 8);
+      ctx.lineTo(x + 42, y + 11);
+      ctx.lineTo(x + 26, y + 14);
+      ctx.lineTo(x + 12, y + 3);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.fillStyle = '#060911';
+      ctx.fillRect(x + 26, y + 8, 3, 3);
+
+      ctx.fillStyle = '#a855f7';
+      let wingUp = Math.floor(frame / 8) % 2 === 0;
+      
+      ctx.beginPath();
+      if (wingUp) {
+        ctx.moveTo(x + 16, y + 10);
+        ctx.lineTo(x + 22, y - 10);
+        ctx.lineTo(x + 8, y - 2);
+      } else {
+        ctx.moveTo(x + 16, y + 10);
+        ctx.lineTo(x + 22, y + 26);
+        ctx.lineTo(x + 8, y + 18);
+      }
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.shadowBlur = 0;
+    }
+
+    function drawHeart(x, y) {
+      ctx.fillStyle = '#f43f5e';
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = '#f43f5e';
+      ctx.beginPath();
+      ctx.arc(x - 4, y, 5, 0, Math.PI * 2);
+      ctx.arc(x + 4, y, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.moveTo(x - 9, y + 2);
+      ctx.lineTo(x, y + 11);
+      ctx.lineTo(x + 9, y + 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+
+    function dinoLoop() {
+      if (!isPlaying || !ctx) return;
+
+      ctx.save();
+      if (shakeFrames > 0) {
+        let offsetX = (Math.random() - 0.5) * 8;
+        let offsetY = (Math.random() - 0.5) * 8;
+        ctx.translate(offsetX, offsetY);
+        shakeFrames--;
+      }
+
+      ctx.clearRect(-10, -10, canvas.width + 20, canvas.height + 20);
+      frameCounter++;
+
+      drawEnvironment();
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(0, 174);
+      ctx.lineTo(canvas.width, 174);
+      ctx.stroke();
+
+      drawDust();
+
+      if (!dino.isDucking) {
+        dino.velocityY += dino.gravity;
+        // Düşüş hızı sınırı (Terminal Velocity) ile yumuşak süzülme
+        if (dino.velocityY > 5.5) dino.velocityY = 5.5;
+        
+        dino.y += dino.velocityY;
+
+        // İleri atılma ve yumuşak sönümleme (Center Spring)
+        dino.offsetX += dino.velocityXOffset;
+        dino.velocityXOffset *= 0.90; 
+        dino.offsetX *= 0.86;        
+
+        if (dino.y >= 138) {
+          dino.y = 138;
+          dino.velocityY = 0;
+          dino.isJumping = false;
+          dino.offsetX = 0;
+          dino.velocityXOffset = 0;
+        }
+      }
+
+      drawDino(dino.x + dino.offsetX, dino.y, dino.isJumping, dino.isDucking, frameCounter);
+
+      let canSpawnObstacle = false;
+      if (obstacles.length === 0) {
+        canSpawnObstacle = frameCounter > 80;
+      } else {
+        let lastObs = obstacles[obstacles.length - 1];
+        if (canvas.width - lastObs.x >= 280) {
+          canSpawnObstacle = true;
+        }
+      }
+
+      if (canSpawnObstacle) {
+        if (score > 120 && Math.random() < 0.35) {
+          obstacles.push({ type: 'bird', x: canvas.width, y: 132, w: 40, h: 20 });
+        } else {
+          obstacles.push({ type: 'cactus', x: canvas.width, y: 148, w: 20, h: 26 });
+        }
+      }
+
+      for (let i = obstacles.length - 1; i >= 0; i--) {
+        let obs = obstacles[i];
+        obs.x -= gameSpeed;
+
+        if (obs.type === 'cactus') {
+          drawCactus(obs.x, obs.y, obs.w, obs.h);
+        } else if (obs.type === 'bird') {
+          drawBird(obs.x, obs.y, frameCounter);
+        }
+
+        if (
+          (dino.x + dino.offsetX) + 8 < obs.x + obs.w &&
+          (dino.x + dino.offsetX) + dino.w - 8 > obs.x &&
+          dino.y + 8 < obs.y + obs.h &&
+          dino.y + dino.h > obs.y
+        ) {
+          gameOverDino();
+          ctx.restore();
+          return;
+        }
+
+        if (obs.x + obs.w < 0) obstacles.splice(i, 1);
+      }
+
+      if (frameCounter % 280 === 0) {
+        hearts.push({ x: canvas.width, y: 110 });
+      }
+
+      for (let i = hearts.length - 1; i >= 0; i--) {
+        let h = hearts[i];
+        h.x -= gameSpeed;
+
+        drawHeart(h.x, h.y);
+
+        if (
+          Math.abs(((dino.x + dino.offsetX) + dino.w / 2) - h.x) < 24 &&
+          Math.abs((dino.y + dino.h / 2) - h.y) < 24
+        ) {
+          heartsCollected++;
+          score += 30;
+          playHeartSound();
+          document.getElementById('dinoHearts').innerText = heartsCollected;
+          hearts.splice(i, 1);
+          continue;
+        }
+
+        if (h.x < 0) hearts.splice(i, 1);
+      }
+
+      score++;
+      let currentScoreFormatted = String(Math.floor(score / 3)).padStart(5, '0');
+      document.getElementById('dinoScore').innerText = currentScoreFormatted;
+
+      if (frameCounter % 1000 === 0 && gameSpeed < 5.5) {
+        gameSpeed += 0.08;
+      }
+
+      ctx.restore();
+      animationFrameId = requestAnimationFrame(dinoLoop);
+    }
+
+    function gameOverDino() {
+      isPlaying = false;
+      shakeFrames = 12;
+      playGameOverSound();
+      
+      let finalScore = Math.floor(score / 3);
+
+      if (finalScore > highScore) {
+        highScore = finalScore;
+        localStorage.setItem('dino_high_score', highScore);
+        document.getElementById('dinoHighScore').innerText = String(highScore).padStart(5, '0');
+      }
+
+      const overlay = document.getElementById('dinoOverlay');
+      if (overlay) {
+        document.getElementById('dinoOverlayTitle').innerText = '💥 OYUN BİTTİ!';
+        document.getElementById('dinoOverlayDesc').innerText = `Skorun: ${finalScore} | Kalp: ${heartsCollected}`;
+        overlay.classList.remove('dno-hidden');
+        overlay.style.display = 'flex';
+      }
+    }
+  })();
+</script>
 
 
+
+  
+
+<!-- ============================================================ -->
+<!-- 🟢 CANLI SAYAÇ PAKETİ (HTML + CSS + JS TEK BAKIŞTA) -->
+<!-- ============================================================ -->
+
+<!-- 1. Firebase Kütüphaneleri -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<!-- 2. Görsel Katman (Garantili En Üst Katman CSS) -->
+<style>
+  #onlineCounterBadge, .online-counter-badge {
+  position: fixed !important;
+  top: 48px !important;   /* "A & Z" logosunun hemen altına indirir */
+  left: 18px !important;  /* Sol kenara hizalar */
+  right: auto !important; /* Sağdaki hizalamayı iptal eder */
+  
+  /* Diğer mevcut stillerin (background, border, padding, z-index vs.) aynı kalacak */
+  background: rgba(15, 23, 42, 0.85) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 30px !important;
+  padding: 5px 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  color: #f8fafc !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important;
+  z-index: 99999 !important;
+}
+
+  .online-dot-pulse {
+    width: 8px;
+    height: 8px;
+    background-color: #22c55e;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #22c55e;
+    animation: pulseOnline 1.8s infinite;
+  }
+
+  @keyframes pulseOnline {
+    0% { transform: scale(0.95); opacity: 0.8; }
+    50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 12px #22c55e; }
+    100% { transform: scale(0.95); opacity: 0.8; }
+  }
+
+  #onlineCountVal {
+    color: #38bdf8 !important;
+    font-weight: 800 !important;
+  }
+</style>
+
+<!-- 3. Sayaç Kutusu -->
+<div id="onlineCounterBadge">
+  <span class="online-dot-pulse"></span>
+  <span><span id="onlineCountVal">1</span></span>
+</div>
+
+<!-- 4. Canlı Bağlantı Scripti -->
+<script>
+  (function() {
+    const carkConfig = {
+      apiKey: "AIzaSyDdxnuTvAdYs4rDBVlfpT44A7VEpp06xyE",
+      authDomain: "cark-7df7c.firebaseapp.com",
+      databaseURL: "https://cark-7df7c-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "cark-7df7c",
+      storageBucket: "cark-7df7c.firebasestorage.app",
+      messagingSenderId: "413334951088",
+      appId: "1:413334951088:web:7efb5a57475b637d929775"
+    };
+
+    try {
+      let app = firebase.apps.find(a => a.name === 'counterApp');
+      if (!app) {
+        app = firebase.initializeApp(carkConfig, 'counterApp');
+      }
+
+      const db = firebase.database(app);
+      const connectedRef = db.ref('.info/connected');
+      const onlineUsersRef = db.ref('canliZiyaretciler');
+
+      connectedRef.on('value', (snap) => {
+        if (snap.val() === true) {
+          const myUserRef = onlineUsersRef.push();
+          myUserRef.onDisconnect().remove();
+          myUserRef.set(true);
+        }
+      });
+
+      onlineUsersRef.on('value', (snap) => {
+        const activeCount = snap.numChildren() || 1;
+        const countEl = document.getElementById('onlineCountVal');
+        if (countEl) countEl.innerText = activeCount;
+      }, (err) => {
+        console.error("Firebase izin hatası:", err);
+      });
+    } catch(e) {
+      console.error("Sayaç çalıştırma hatası:", e);
+    }
+  })();
+</script>
 
 
 
