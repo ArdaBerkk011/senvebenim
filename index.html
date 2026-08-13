@@ -9429,7 +9429,7 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
   })();
 </script>
 
-<!-- SITE KAPANDI EKRANI + PERMANENT (KARIŞILMAZ) KİLİT -->
+<!-- GELİŞMİŞ SİTE KAPANDI EKRANI (DOSYANIN EN ALTINA) -->
 <style id="kapandiStil">
     html.kapali-mod, body.kapali-mod {
         overflow: hidden !important;
@@ -9454,91 +9454,107 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
         color: #fff !important;
     }
 
-    .sifre-kutu-container {
-        margin-top: 25px;
+    /* Yanıp Sönen Canlı Durum Işığı */
+    .durum-rozeti {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 11px;
+        color: #ef4444;
+        letter-spacing: 1.5px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+    }
+
+    .durum-isik {
+        width: 7px;
+        height: 7px;
+        background-color: #ef4444;
+        border-radius: 50%;
+        box-shadow: 0 0 8px #ef4444;
+        animation: yanSondur 1.5s infinite;
+    }
+
+    /* Detay Bilgi Satırları */
+    .sistem-detaylar {
+        margin-top: 20px;
+        padding-top: 18px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
         display: flex;
         flex-direction: column;
-        gap: 12px;
-        align-items: center;
+        gap: 8px;
+        text-align: left;
     }
 
-    .sifre-input {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        border-radius: 12px;
-        padding: 12px 16px;
-        color: #fff;
-        font-size: 14px;
-        text-align: center;
-        outline: none;
-        width: 100%;
-        max-width: 240px;
-        box-sizing: border-box;
-        transition: all 0.3s ease;
-        letter-spacing: 2px;
-    }
-
-    .sifre-input:focus {
-        border-color: #ef4444;
-        box-shadow: 0 0 12px rgba(239, 68, 68, 0.3);
-    }
-
-    .sifre-buton {
-        background: rgba(239, 68, 68, 0.2);
-        border: 1px solid rgba(239, 68, 68, 0.5);
-        color: #ef4444;
-        padding: 10px 24px;
-        border-radius: 12px;
-        font-size: 12px;
-        font-weight: 600;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        width: 100%;
-        max-width: 240px;
-    }
-
-    .sifre-buton:hover {
-        background: #ef4444;
-        color: #fff;
-        box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
-    }
-
-    .hata-mesaji {
-        color: #ef4444;
+    .detay-satir {
+        display: flex;
+        justify-content: space-between;
         font-size: 11px;
-        line-height: 1.5;
-        margin-top: 8px;
+        color: rgba(255, 255, 255, 0.4);
         letter-spacing: 0.5px;
-        max-width: 260px;
-        min-height: 32px;
+    }
+
+    .detay-satir span:last-child {
+        color: rgba(255, 255, 255, 0.7);
+        font-weight: 500;
+    }
+
+    @keyframes yanSondur {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.3; transform: scale(0.85); }
     }
 </style>
 
 <div id="kapandiOverlay">
-    <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 40px 30px; border-radius: 24px; max-width: 420px; width: 90%; box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
-        <div style="font-size: 48px; margin-bottom: 15px; opacity: 0.85;">💔</div>
-        <div style="font-size: 20px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: #ef4444; margin-bottom: 12px;">ERİŞİM KISITLANDI</div>
-        <div style="font-size: 13px; color: rgba(255, 255, 255, 0.5); line-height: 1.6; letter-spacing: 0.5px;">Büyük bir emekle hazırlanan bu sayfa, beklenen heyecanı, ilgiyi bulamadığı için durdurulmuştur.</div>
-        <div style="width: 40px; height: 2px; background: rgba(239, 68, 68, 0.4); margin: 20px auto 0 auto; border-radius: 2px;"></div>
-
-        <div class="sifre-kutu-container">
-            <input type="password" id="sifreInput" class="sifre-input" placeholder="Giriş Şifresi..." onkeypress="klavyeKontrol(event)">
-            <button onclick="sifreKontrolEt()" class="sifre-buton">Erişim Sağla</button>
-            <div id="hataMesaji" class="hata-mesaji"></div>
+    <div style="background: rgba(255, 255, 255, 0.025); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 42px 32px; border-radius: 28px; max-width: 440px; width: 90%; box-shadow: 0 25px 60px rgba(0,0,0,0.7);">
+        
+        <!-- Canlı Durum Rozeti -->
+        <div class="durum-rozeti">
+            <div class="durum-isik"></div>
+            <span>Erişim Durduruldu</span>
         </div>
+
+        <!-- Kırık Kalp Büyütülmüş Efektli -->
+        <div style="font-size: 52px; margin-bottom: 12px; filter: drop-shadow(0 0 15px rgba(239,68,68,0.3));">💔</div>
+        
+        <!-- Başlık -->
+        <div style="font-size: 21px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #ef4444; margin-bottom: 14px;">
+            ERİŞİM KISITLANDI
+        </div>
+
+        <!-- Gelişmiş Açıklama Metni -->
+        <div style="font-size: 13.5px; color: rgba(255, 255, 255, 0.6); line-height: 1.65; letter-spacing: 0.4px; font-weight: 300;">
+            Büyük bir emek ve özenle hazırlanan bu site, beklenen ilgi ve heyecanı bulamadığı için sunucu bağlantısı kısıtlanmıştır.
+        </div>
+
+        <!-- Sistem Detay Kartı -->
+        <div class="sistem-detaylar">
+            <div class="detay-satir">
+                <span>Durum Kodu:</span>
+                <span style="color: #ef4444 !important;">503 - Hizmet Askıya Alındı</span>
+            </div>
+            <div class="detay-satir">
+                <span>Etkileşim Seviyesi:</span>
+                <span>Yetersiz</span>
+            </div>
+            <div class="detay-satir">
+                <span>Son Güncelleme:</span>
+                <span>Otomatik Arşivlendi</span>
+            </div>
+        </div>
+
     </div>
 </div>
 
 <script>
-    const SITE_KAPANDI_MI = true;  
-    const DOGRU_SIFRE = "016787";     
-
-    // Tarayıcı hafızasında saklanan hak sayısı
-    let KALAN_HAK = localStorage.getItem('site_kalan_hak') !== null 
-        ? parseInt(localStorage.getItem('site_kalan_hak')) 
-        : 3;
+    // true  = Kapalı Ekran Görünür
+    // false = Normal Site Açılır
+    const SITE_KAPANDI_MI = true; 
 
     (function() {
         const overlay = document.getElementById('kapandiOverlay');
@@ -9552,67 +9568,8 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
         } else {
             document.documentElement.classList.add('kapali-mod');
             document.body.classList.add('kapali-mod');
-            
-            // Eğer daha önce tüm haklarını tükettiyse, sayfa açılır açılmaz kilitli başlatır
-            if (KALAN_HAK <= 0) {
-                setTimeout(() => {
-                    const input = document.getElementById('sifreInput');
-                    const hataDiv = document.getElementById('hataMesaji');
-                    if (input && hataDiv) {
-                        hataDiv.style.color = "#ef4444";
-                        hataDiv.innerHTML = `🚫 <b>Tüm haklar tükendi!</b><br>Sistem kilitlendi.`;
-                        input.disabled = true;
-                        input.placeholder = "KİLİTLENDİ";
-                    }
-                }, 50);
-            }
         }
     })();
-
-    function sifreKontrolEt() {
-        if (KALAN_HAK <= 0) return;
-
-        const input = document.getElementById('sifreInput');
-        const hataDiv = document.getElementById('hataMesaji');
-        const girilenSifre = input.value.trim();
-
-        if (girilenSifre === DOGRU_SIFRE) {
-            hataDiv.style.color = "#22c55e";
-            hataDiv.innerHTML = "Erişim Onaylandı! Sayfa açılıyor...";
-            
-            // Doğru girilirse hakları sıfırla
-            localStorage.removeItem('site_kalan_hak');
-
-            setTimeout(() => {
-                const overlay = document.getElementById('kapandiOverlay');
-                const stil = document.getElementById('kapandiStil');
-                if (overlay) overlay.style.setProperty('display', 'none', 'important');
-                if (stil) stil.remove();
-                document.documentElement.classList.remove('kapali-mod');
-                document.body.classList.remove('kapali-mod');
-            }, 1000);
-        } else {
-            KALAN_HAK--;
-            localStorage.setItem('site_kalan_hak', KALAN_HAK); // Cihaza kaydet
-            input.value = "";
-
-            if (KALAN_HAK > 0) {
-                hataDiv.style.color = "#ef4444";
-                hataDiv.innerHTML = `⚠️ Yanlış şifre! Kalan hakkınız: <b>${KALAN_HAK}</b><br>Haklar tükenirse tüm veriler kalıcı olarak kilitlenicektir.`;
-            } else {
-                hataDiv.style.color = "#ef4444";
-                hataDiv.innerHTML = `🚫 <b>Tüm haklar tükendi!</b><br>Sistem kilitlendi.`;
-                input.disabled = true;
-                input.placeholder = "KİLİTLENDİ";
-            }
-        }
-    }
-
-    function klavyeKontrol(event) {
-        if (event.key === 'Enter') {
-            sifreKontrolEt();
-        }
-    }
 </script>
 
   
