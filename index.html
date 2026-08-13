@@ -9429,7 +9429,63 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
   })();
 </script>
 
+<!-- SITE KAPANDI EKRANI V2 (DOSYANIN EN ALTINA EKLENECEK) -->
+<style id="kapandiStil">
+    /* Sayfa yüklenirken mikro gecikme ve sızma olmaması için stiller */
+    html.kapali-mod, body.kapali-mod {
+        overflow: hidden !important;
+        height: 100% !important;
+    }
+    #kapandiOverlay {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        background: #090a0f !important;
+        z-index: 2147483647 !important; /* En yüksek z-index değeri */
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+        padding: 20px !important;
+        box-sizing: border-box !important;
+        font-family: 'Montserrat', sans-serif, system-ui !important;
+        color: #fff !important;
+    }
+</style>
 
+<div id="kapandiOverlay">
+    <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 40px 30px; border-radius: 24px; max-width: 420px; width: 90%; box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
+        <div style="font-size: 48px; margin-bottom: 15px; opacity: 0.85;">💔</div>
+        <div style="font-size: 20px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: #ef4444; margin-bottom: 12px;">ERİŞİM KISITLANDI</div>
+        <div style="font-size: 13px; color: rgba(255, 255, 255, 0.5); line-height: 1.6; letter-spacing: 0.5px;">Büyük bir emekle hazırlanan bu sayfa, beklenen heyecanı bulamadığı için olarak durdurulmuştur.</div>
+        <div style="width: 40px; height: 2px; background: rgba(239, 68, 68, 0.4); margin: 20px auto 0 auto; border-radius: 2px;"></div>
+    </div>
+</div>
+
+<script>
+    // --- KONTROL MERKEZİ ---
+    // true  = Site Kapalı (Siyah perde anında açılır, site kilitlenir)
+    // false = Site Açık   (Perde tamamen kalkar, site normale döner)
+    const SITE_KAPANDI_MI = true; 
+
+    (function() {
+        const overlay = document.getElementById('kapandiOverlay');
+        const stil = document.getElementById('kapandiStil');
+        
+        if (!SITE_KAPANDI_MI) {
+            if (overlay) overlay.style.setProperty('display', 'none', 'important');
+            if (stil) stil.remove();
+            document.documentElement.classList.remove('kapali-mod');
+            document.body.classList.remove('kapali-mod');
+        } else {
+            document.documentElement.classList.add('kapali-mod');
+            document.body.classList.add('kapali-mod');
+        }
+    })();
+</script>
 
   
 </body> 
