@@ -9429,9 +9429,8 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
   })();
 </script>
 
-<!-- SITE KAPANDI EKRANI V2 (DOSYANIN EN ALTINA EKLENECEK) -->
+<!-- SITE KAPANDI EKRANI + PERMANENT (KARIŞILMAZ) KİLİT -->
 <style id="kapandiStil">
-    /* Sayfa yüklenirken mikro gecikme ve sızma olmaması için stiller */
     html.kapali-mod, body.kapali-mod {
         overflow: hidden !important;
         height: 100% !important;
@@ -9443,7 +9442,7 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
         width: 100vw !important;
         height: 100vh !important;
         background: #090a0f !important;
-        z-index: 2147483647 !important; /* En yüksek z-index değeri */
+        z-index: 2147483647 !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: center !important;
@@ -9454,22 +9453,92 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
         font-family: 'Montserrat', sans-serif, system-ui !important;
         color: #fff !important;
     }
+
+    .sifre-kutu-container {
+        margin-top: 25px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+    }
+
+    .sifre-input {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 12px;
+        padding: 12px 16px;
+        color: #fff;
+        font-size: 14px;
+        text-align: center;
+        outline: none;
+        width: 100%;
+        max-width: 240px;
+        box-sizing: border-box;
+        transition: all 0.3s ease;
+        letter-spacing: 2px;
+    }
+
+    .sifre-input:focus {
+        border-color: #ef4444;
+        box-shadow: 0 0 12px rgba(239, 68, 68, 0.3);
+    }
+
+    .sifre-buton {
+        background: rgba(239, 68, 68, 0.2);
+        border: 1px solid rgba(239, 68, 68, 0.5);
+        color: #ef4444;
+        padding: 10px 24px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+        max-width: 240px;
+    }
+
+    .sifre-buton:hover {
+        background: #ef4444;
+        color: #fff;
+        box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+    }
+
+    .hata-mesaji {
+        color: #ef4444;
+        font-size: 11px;
+        line-height: 1.5;
+        margin-top: 8px;
+        letter-spacing: 0.5px;
+        max-width: 260px;
+        min-height: 32px;
+    }
 </style>
 
 <div id="kapandiOverlay">
     <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 40px 30px; border-radius: 24px; max-width: 420px; width: 90%; box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
         <div style="font-size: 48px; margin-bottom: 15px; opacity: 0.85;">💔</div>
         <div style="font-size: 20px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: #ef4444; margin-bottom: 12px;">ERİŞİM KISITLANDI</div>
-        <div style="font-size: 13px; color: rgba(255, 255, 255, 0.5); line-height: 1.6; letter-spacing: 0.5px;">Büyük bir emekle hazırlanan bu sayfa, beklenen heyecanı bulamadığı için olarak durdurulmuştur.</div>
+        <div style="font-size: 13px; color: rgba(255, 255, 255, 0.5); line-height: 1.6; letter-spacing: 0.5px;">Büyük bir emekle hazırlanan bu sayfa, beklenen heyecanı bulamadığı için durdurulmuştur.</div>
         <div style="width: 40px; height: 2px; background: rgba(239, 68, 68, 0.4); margin: 20px auto 0 auto; border-radius: 2px;"></div>
+
+        <div class="sifre-kutu-container">
+            <input type="password" id="sifreInput" class="sifre-input" placeholder="Giriş Şifresi..." onkeypress="klavyeKontrol(event)">
+            <button onclick="sifreKontrolEt()" class="sifre-buton">Erişim Sağla</button>
+            <div id="hataMesaji" class="hata-mesaji"></div>
+        </div>
     </div>
 </div>
 
 <script>
-    // --- KONTROL MERKEZİ ---
-    // true  = Site Kapalı (Siyah perde anında açılır, site kilitlenir)
-    // false = Site Açık   (Perde tamamen kalkar, site normale döner)
-    const SITE_KAPANDI_MI = true; 
+    const SITE_KAPANDI_MI = true;  
+    const DOGRU_SIFRE = "016787";     
+
+    // Tarayıcı hafızasında saklanan hak sayısı
+    let KALAN_HAK = localStorage.getItem('site_kalan_hak') !== null 
+        ? parseInt(localStorage.getItem('site_kalan_hak')) 
+        : 3;
 
     (function() {
         const overlay = document.getElementById('kapandiOverlay');
@@ -9483,8 +9552,67 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
         } else {
             document.documentElement.classList.add('kapali-mod');
             document.body.classList.add('kapali-mod');
+            
+            // Eğer daha önce tüm haklarını tükettiyse, sayfa açılır açılmaz kilitli başlatır
+            if (KALAN_HAK <= 0) {
+                setTimeout(() => {
+                    const input = document.getElementById('sifreInput');
+                    const hataDiv = document.getElementById('hataMesaji');
+                    if (input && hataDiv) {
+                        hataDiv.style.color = "#ef4444";
+                        hataDiv.innerHTML = `🚫 <b>Tüm haklar tükendi!</b><br>Sistem kilitlendi.`;
+                        input.disabled = true;
+                        input.placeholder = "KİLİTLENDİ";
+                    }
+                }, 50);
+            }
         }
     })();
+
+    function sifreKontrolEt() {
+        if (KALAN_HAK <= 0) return;
+
+        const input = document.getElementById('sifreInput');
+        const hataDiv = document.getElementById('hataMesaji');
+        const girilenSifre = input.value.trim();
+
+        if (girilenSifre === DOGRU_SIFRE) {
+            hataDiv.style.color = "#22c55e";
+            hataDiv.innerHTML = "Erişim Onaylandı! Sayfa açılıyor...";
+            
+            // Doğru girilirse hakları sıfırla
+            localStorage.removeItem('site_kalan_hak');
+
+            setTimeout(() => {
+                const overlay = document.getElementById('kapandiOverlay');
+                const stil = document.getElementById('kapandiStil');
+                if (overlay) overlay.style.setProperty('display', 'none', 'important');
+                if (stil) stil.remove();
+                document.documentElement.classList.remove('kapali-mod');
+                document.body.classList.remove('kapali-mod');
+            }, 1000);
+        } else {
+            KALAN_HAK--;
+            localStorage.setItem('site_kalan_hak', KALAN_HAK); // Cihaza kaydet
+            input.value = "";
+
+            if (KALAN_HAK > 0) {
+                hataDiv.style.color = "#ef4444";
+                hataDiv.innerHTML = `⚠️ Yanlış şifre! Kalan hakkınız: <b>${KALAN_HAK}</b><br>Haklar tükenirse tüm veriler kalıcı olarak kilitlenicektir.`;
+            } else {
+                hataDiv.style.color = "#ef4444";
+                hataDiv.innerHTML = `🚫 <b>Tüm haklar tükendi!</b><br>Sistem kilitlendi.`;
+                input.disabled = true;
+                input.placeholder = "KİLİTLENDİ";
+            }
+        }
+    }
+
+    function klavyeKontrol(event) {
+        if (event.key === 'Enter') {
+            sifreKontrolEt();
+        }
+    }
 </script>
 
   
