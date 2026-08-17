@@ -11139,7 +11139,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
 </script>
 
 
-<!-- ==================== ARDA & ZEYNEP PRO MASTER (BUG FİXED FULL SÜRÜM) ==================== -->
+<!-- ==================== ARDA & ZEYNEP PRO MASTER (YENİ FIRÇALAR & UZUN SLIDER) ==================== -->
 <style>
   #tuval-modal-overlay *, #tuval-modal-overlay *::before, #tuval-modal-overlay *::after {
     box-sizing: border-box;
@@ -11225,7 +11225,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     }
   }
 
-  /* ==================== 1. ÜST ŞERİT (ORTALANMIŞ & DENGELİ) ==================== */
+  /* 1. ÜST ŞERİT */
   .studio-header-compact {
     background: rgba(25, 12, 38, 0.95);
     padding: 4px 10px;
@@ -11329,9 +11329,9 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     position: relative;
   }
 
-  /* SOL ARAÇ DOCK'U */
+  /* SOL ARAÇ DOCK'U (DOLGUN & EKSİKSİZ) */
   .studio-left-dock {
-    width: 120px;
+    width: 125px;
     background: rgba(18, 9, 28, 0.98);
     border-right: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
@@ -11350,7 +11350,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     border: 1px solid rgba(255, 255, 255, 0.08);
     padding: 4px 6px;
     border-radius: 8px;
-    font-size: 10.5px;
+    font-size: 10px;
     font-weight: 800;
     color: #cbd5e1;
     cursor: pointer;
@@ -11369,7 +11369,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     box-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
   }
 
-  /* SAĞ TUVAL ALANI & KATMANLAR */
+  /* SAĞ TUVAL KUTUSU */
   .studio-canvas-area {
     flex: 1;
     min-height: 0;
@@ -11399,20 +11399,17 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     overflow: hidden;
   }
 
-  /* KATMAN 1: ALTTTAKİ FOTOĞRAF VE YAZILAR (Z: 10) */
   #interactiveLayersContainer {
     position: absolute;
     inset: 0;
-    pointer-events: none !important; /* Kalem modunda tıklanmaz */
+    pointer-events: none !important;
     z-index: 10;
   }
 
-  /* Sadece El/Taşı Modunda Katmanlara Dokunulabilir */
   .move-mode-active #interactiveLayersContainer {
     pointer-events: auto !important;
   }
 
-  /* KATMAN 2: EN ÜSTTEKİ ŞEFFAF ÇİZİM TUVALİ (Z: 20) */
   #studioCanvas {
     background: transparent !important;
     position: absolute;
@@ -11429,7 +11426,6 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     pointer-events: none !important;
   }
 
-  /* KATMAN ELEMANI (FOTOĞRAF / YAZI) */
   .layer-item-box {
     position: absolute;
     pointer-events: none;
@@ -11443,9 +11439,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     will-change: left, top;
   }
 
-  .move-mode-active .layer-item-box {
-    pointer-events: auto !important;
-  }
+  .move-mode-active .layer-item-box { pointer-events: auto !important; }
   .layer-item-box:active { cursor: grabbing; }
 
   .move-mode-active .layer-item-box.selected {
@@ -11483,7 +11477,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
   .layer-ctrl-btn:hover { background: rgba(255, 255, 255, 0.25); }
   .layer-ctrl-del { background: #ff0055; border-color: #ff0055; }
 
-  /* ==================== 3. ALT BARI (ORTALANMIŞ & DENGELİ) ==================== */
+  /* ==================== 3. ALT BARI (GENİŞLETİLMİŞ SLIDER & ORTALANMIŞ) ==================== */
   .studio-bottom-bar {
     height: 42px;
     background: rgba(25, 12, 38, 0.95);
@@ -11491,7 +11485,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 20px;
+    gap: 16px;
     padding: 0 10px;
     flex-shrink: 0;
   }
@@ -11534,19 +11528,28 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     border: 1px solid rgba(255,255,255,0.7);
   }
 
+  /* UZUN VE KOLAY KAYDIRILABİLİR KALINLIK KUTUSU */
   .thickness-box {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
     background: rgba(255, 255, 255, 0.08);
-    padding: 2px 6px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 3px 8px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
   }
   .thickness-box input[type="range"] {
-    width: 45px;
+    width: 85px; /* Uzun ve rahat kontrol */
+    height: 6px;
     cursor: pointer;
     accent-color: #ff007f;
+  }
+  .thickness-val-badge {
+    font-size: 9.5px;
+    font-weight: 800;
+    color: #ff007f;
+    min-width: 22px;
+    text-align: center;
   }
   .brush-preview-dot {
     width: 7px;
@@ -11558,14 +11561,14 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
   .bottom-actions-cluster {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
   }
   .act-btn {
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.15);
-    padding: 4px 10px;
+    padding: 4px 9px;
     border-radius: 6px;
-    font-size: 11px;
+    font-size: 10.5px;
     font-weight: 800;
     cursor: pointer;
     color: #e2e8f0;
@@ -11575,7 +11578,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
   /* DAMGALAR AÇILIR BAR */
   .stamps-popup-bar {
     position: absolute;
-    left: 125px;
+    left: 130px;
     top: 6px;
     background: rgba(25, 12, 38, 0.95);
     border: 1px solid rgba(255, 255, 255, 0.15);
@@ -11605,57 +11608,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     transform: scale(1.15);
   }
 
-  /* ==================== 👑 İSİM SEÇİM EKRANI (Z-INDEX: 500) ==================== */
-  #studioNameModal {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: radial-gradient(circle at center, #24082e 0%, #0d0314 100%);
-    z-index: 500 !important;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 15px;
-  }
-  .name-pick-title { text-align: center; margin-bottom: 12px; }
-  .name-pick-title h2 { color: #ffffff; font-size: 20px; font-weight: 900; margin: 0 0 4px 0; }
-  .name-pick-title p { color: #e9d5ff; font-size: 11px; margin: 0; }
-
-  .couple-cards-grid { display: flex; gap: 15px; max-width: 480px; width: 100%; }
-  .couple-card { flex: 1; border-radius: 18px; padding: 14px; text-align: center; cursor: pointer; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6); transition: all 0.25s ease; backdrop-filter: blur(10px); }
-  .couple-card:hover { transform: translateY(-4px) scale(1.03); }
-  .card-arda { background: linear-gradient(145deg, rgba(58, 134, 255, 0.3) 0%, rgba(13, 27, 62, 0.9) 100%); border: 2px solid #3a86ff; }
-  .card-zeynep { background: linear-gradient(145deg, rgba(255, 0, 110, 0.3) 0%, rgba(65, 10, 35, 0.9) 100%); border: 2px solid #ff006e; }
-
-  .avatar-icon-box { width: 50px; height: 50px; border-radius: 14px; margin: 0 auto 6px auto; display: flex; align-items: center; justify-content: center; font-size: 26px; }
-  .card-arda .avatar-icon-box { background: linear-gradient(135deg, #3a86ff, #00f2fe); }
-  .card-zeynep .avatar-icon-box { background: linear-gradient(135deg, #ff006e, #fee140); }
-  .couple-card h3 { margin: 0 0 4px 0; font-size: 16px; font-weight: 900; color: #ffffff; }
-  .couple-card .card-role { font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 10px; display: inline-block; }
-  .card-arda .card-role { background: #3a86ff; color: #ffffff; }
-  .card-zeynep .card-role { background: #ff006e; color: #ffffff; }
-
-  /* ==================== 🖼️ GALERİ MODALI (Z-INDEX: 600) ==================== */
-  #studioGalleryModal {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(15, 7, 25, 0.98);
-    backdrop-filter: blur(16px);
-    z-index: 600 !important;
-    display: none;
-    flex-direction: column;
-    padding: 12px;
-    overflow-y: auto;
-  }
-  .gallery-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-  .gallery-header-row h3 { margin: 0; color: #ff007f; font-size: 15px; font-weight: 900; }
-  .gallery-cards-flow { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
-  .gallery-single-card { background: rgba(255, 255, 255, 0.05); border-radius: 10px; padding: 4px; border: 1px solid rgba(255, 255, 255, 0.1); cursor: pointer; position: relative; }
-  .gallery-single-card img { width: 100%; aspect-ratio: 16/10; object-fit: contain; border-radius: 6px; background: #fff; }
-  .single-card-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 3px; font-size: 9.5px; font-weight: 800; }
-  .btn-delete-card { position: absolute; top: 6px; right: 6px; background: rgba(255, 0, 85, 0.9); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-
-  /* ==================== 🥺 ÇIKIŞ ONAY MODALI (Z-INDEX: 700) ==================== */
+  /* 🥺 YARIDA BIRAKMA ÇIKIŞ MODALI */
   #exitConfirmModal {
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
@@ -11695,7 +11648,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
   .btn-exit-discard { background: rgba(255, 0, 85, 0.15); color: #ff4d6d; border: 1px solid rgba(255, 0, 85, 0.3); }
   .btn-exit-cancel { background: rgba(255, 255, 255, 0.08); color: #cbd5e1; border: 1px solid rgba(255, 255, 255, 0.15); }
 
-  /* ÖZEL YAZI POPUP'I (Z-INDEX: 400) */
+  /* ÖZEL YAZI POPUP'I */
   #customTextModal {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -11736,7 +11689,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
   .popup-btn-cancel { background: rgba(255, 255, 255, 0.1); color: #ccc; }
   .popup-btn-confirm { background: #ff007f; color: white; }
 
-  /* BİLDİRİM TOAST (Z-INDEX: 999) */
+  /* BİLDİRİM TOAST */
   #customToast {
     position: absolute;
     top: 45px;
@@ -11756,9 +11709,120 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
   }
   #customToast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* TAM EKRAN BÜYÜK RESİM (Z-INDEX: 9999) */
-  #fullImageViewer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999 !important; display: none; align-items: center; justify-content: center; padding: 10px; }
-  #fullImageViewer img { max-width: 95%; max-height: 90vh; border-radius: 12px; }
+  /* İSİM SEÇİM EKRANI */
+  #studioNameModal {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at center, #24082e 0%, #0d0314 100%);
+    z-index: 500 !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+  }
+  .name-pick-title { text-align: center; margin-bottom: 12px; }
+  .name-pick-title h2 { color: #ffffff; font-size: 20px; font-weight: 900; margin: 0 0 4px 0; }
+  .name-pick-title p { color: #e9d5ff; font-size: 11px; margin: 0; }
+
+  .couple-cards-grid { display: flex; gap: 15px; max-width: 480px; width: 100%; }
+  .couple-card { flex: 1; border-radius: 18px; padding: 14px; text-align: center; cursor: pointer; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6); transition: all 0.25s ease; backdrop-filter: blur(10px); }
+  .couple-card:hover { transform: translateY(-4px) scale(1.03); }
+  .card-arda { background: linear-gradient(145deg, rgba(58, 134, 255, 0.3) 0%, rgba(13, 27, 62, 0.9) 100%); border: 2px solid #3a86ff; }
+  .card-zeynep { background: linear-gradient(145deg, rgba(255, 0, 110, 0.3) 0%, rgba(65, 10, 35, 0.9) 100%); border: 2px solid #ff006e; }
+
+  .avatar-icon-box { width: 50px; height: 50px; border-radius: 14px; margin: 0 auto 6px auto; display: flex; align-items: center; justify-content: center; font-size: 26px; }
+  .card-arda .avatar-icon-box { background: linear-gradient(135deg, #3a86ff, #00f2fe); }
+  .card-zeynep .avatar-icon-box { background: linear-gradient(135deg, #ff006e, #fee140); }
+  .couple-card h3 { margin: 0 0 4px 0; font-size: 16px; font-weight: 900; color: #ffffff; }
+  .couple-card .card-role { font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 10px; display: inline-block; }
+  .card-arda .card-role { background: #3a86ff; color: #ffffff; }
+  .card-zeynep .card-role { background: #ff006e; color: #ffffff; }
+
+  /* GALERİ & TAM EKRAN */
+  #studioGalleryModal {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 7, 25, 0.98);
+    backdrop-filter: blur(16px);
+    z-index: 600 !important;
+    display: none;
+    flex-direction: column;
+    padding: 12px;
+    overflow-y: auto;
+  }
+  .gallery-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+  .gallery-header-row h3 { margin: 0; color: #ff007f; font-size: 15px; font-weight: 900; }
+  .gallery-cards-flow { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+  .gallery-single-card { background: rgba(255, 255, 255, 0.05); border-radius: 10px; padding: 4px; border: 1px solid rgba(255, 255, 255, 0.1); cursor: pointer; position: relative; }
+  .gallery-single-card img { width: 100%; aspect-ratio: 16/10; object-fit: contain; border-radius: 6px; background: #fff; }
+  .single-card-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 3px; font-size: 9.5px; font-weight: 800; }
+  .btn-delete-card { position: absolute; top: 6px; right: 6px; background: rgba(255, 0, 85, 0.9); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+  /* BÜYÜK RESİM & İNDİRME */
+  #fullImageViewer {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.92);
+    backdrop-filter: blur(15px);
+    z-index: 9999999 !important;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    gap: 10px;
+  }
+  .lightbox-card {
+    background: rgba(25, 12, 38, 0.9);
+    border: 1.5px solid #ff007f;
+    border-radius: 18px;
+    padding: 10px;
+    max-width: 92vw;
+    max-height: 86vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 10px 40px rgba(255, 0, 127, 0.35);
+  }
+  .lightbox-card img {
+    max-width: 86vw;
+    max-height: 65vh;
+    border-radius: 12px;
+    object-fit: contain;
+    background: #fff;
+  }
+  .lightbox-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 8px;
+    gap: 10px;
+  }
+  .lightbox-meta-info {
+    font-size: 12px;
+    font-weight: 800;
+    color: #e2e8f0;
+  }
+  .lightbox-actions { display: flex; gap: 6px; }
+  .lightbox-btn {
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .btn-download-img {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    box-shadow: 0 2px 10px rgba(16, 185, 129, 0.4);
+  }
+  .btn-close-lightbox { background: rgba(255, 255, 255, 0.12); color: #cbd5e1; }
 </style>
 
 <!-- 1. SAĞ ÜST BAŞLATICI BUTON -->
@@ -11789,7 +11853,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
 
     <div id="customToast">Kaydedildi 💕</div>
 
-    <!-- ÖZEL YAZI POPUP'I (Z-INDEX: 400) -->
+    <!-- ÖZEL YAZI POPUP'I -->
     <div id="customTextModal">
       <div class="text-popup-card">
         <h3>Tuvale Yazı Ekle 💕</h3>
@@ -11801,7 +11865,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
       </div>
     </div>
 
-    <!-- 👑 İSİM SEÇİM EKRANI (Z-INDEX: 500 - HER ZAMAN EN ÜSTTE AÇILIR) -->
+    <!-- 👑 İSİM SEÇİM EKRANI -->
     <div id="studioNameModal">
       <div class="name-pick-title">
         <h2>Aşk Tuvali 💕</h2>
@@ -11823,7 +11887,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
       </div>
     </div>
 
-    <!-- 🖼️ GEÇMİŞ ANILAR GALERİSİ (Z-INDEX: 600) -->
+    <!-- 🖼️ GEÇMİŞ ANILAR GALERİSİ -->
     <div id="studioGalleryModal">
       <div class="gallery-header-row">
         <h3>🖼️ Çizim & Anı Galerimiz</h3>
@@ -11848,14 +11912,16 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
       </div>
     </div>
 
-    <!-- 2. ANA YATAY ALAN -->
+    <!-- 2. ANA YATAY ALAN (EKSİKSİZ DOLGUN SOL MENÜ) -->
     <div class="studio-main-body">
 
-      <!-- SOL ARAÇ DOCK'U -->
+      <!-- SOL ARAÇ DOCK'U (2 YENİ ÖZEL FIRÇA EKLENDİ) -->
       <div class="studio-left-dock">
         <button class="tool-dock-btn active" data-tool="normal">✏️ Düz Kalem</button>
         <button class="tool-dock-btn" data-tool="glow">✨ Neon Kalem</button>
         <button class="tool-dock-btn" data-tool="rainbow">🌈 Gökkuşağı</button>
+        <button class="tool-dock-btn" data-tool="heartTrail">💖 Aşk İzi (Kalp)</button>
+        <button class="tool-dock-btn" data-tool="starDust">⭐ Yıldız Tozu</button>
         <button class="tool-dock-btn" data-tool="spray">🎨 Sprey Boya</button>
         <button class="tool-dock-btn" data-tool="calligraphy">✒️ Kaligrafi</button>
         <button class="tool-dock-btn" data-tool="highlighter">🖍️ Fosforlu</button>
@@ -11882,14 +11948,14 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
         <div class="canvas-stage-wrapper">
           <!-- 1. ALTTTAKİ FOTOĞRAF VE YAZILAR (Z: 10) -->
           <div id="interactiveLayersContainer"></div>
-          <!-- 2. EN ÜSTTEKİ ŞEFFAF ÇİZİM TUVALİ (Z: 20 - FOTOĞRAFIN ÜSTÜNE ÇİZER) -->
+          <!-- 2. EN ÜSTTEKİ ŞEFFAF ÇİZİM TUVALİ (Z: 20) -->
           <canvas id="studioCanvas" width="1200" height="750"></canvas>
         </div>
       </div>
 
     </div>
 
-    <!-- 3. ALT KONTROL BARI (TAM ORTADA VE DENGELİ) -->
+    <!-- 3. ALT KONTROL BARI (UZUN SLIDER & ORTALANMIŞ) -->
     <div class="studio-bottom-bar">
       <div class="bottom-tools-cluster">
         <div class="main-color-btn" id="colorBtnWrap" style="background: #ff007f;">
@@ -11903,9 +11969,11 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
           <span style="background: #00b4d8;" data-c="#00b4d8"></span>
           <span style="background: #000000;" data-c="#000000"></span>
         </div>
+        <!-- UZUN VE PARMAKLA KOLAY KALINLIK AYARI -->
         <div class="thickness-box">
           <div class="brush-preview-dot" id="brushPreviewDot"></div>
           <input type="range" id="brushThickness" min="2" max="50" value="6" />
+          <span class="thickness-val-badge" id="thicknessValBadge">6px</span>
         </div>
       </div>
 
@@ -11919,12 +11987,21 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
   </div>
 </div>
 
-<!-- BÜYÜK RESİM ÖNİZLEME -->
-<div id="fullImageViewer" onclick="this.style.display='none'">
-  <img id="fullImageTarget" src="" alt="Önizleme" />
+<!-- ==================== 🔍 BÜYÜK RESİM & İNDİRME MODALI ==================== -->
+<div id="fullImageViewer">
+  <div class="lightbox-card">
+    <img id="fullImageTarget" src="" alt="Önizleme" />
+    <div class="lightbox-footer">
+      <div class="lightbox-meta-info" id="fullImageMeta">👑 Arda • Tarih</div>
+      <div class="lightbox-actions">
+        <button class="lightbox-btn btn-download-img" id="btnDownloadImage">📥 Resmi İndir</button>
+        <button class="lightbox-btn btn-close-lightbox" id="btnCloseLightbox">✕ Kapat</button>
+      </div>
+    </div>
+  </div>
 </div>
 
-<!-- ==================== JAVASCRIPT & MOTOR ==================== -->
+<!-- ==================== JAVASCRIPT & GELİŞMİŞ FIRÇA MOTORU ==================== -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { 
@@ -11971,14 +12048,20 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
   const colorBtnWrap = document.getElementById("colorBtnWrap");
   const brushThickness = document.getElementById("brushThickness");
   const brushPreviewDot = document.getElementById("brushPreviewDot");
+  const thicknessValBadge = document.getElementById("thicknessValBadge");
 
   const undoAction = document.getElementById("undoAction");
   const redoAction = document.getElementById("redoAction");
   const clearAction = document.getElementById("clearAction");
   const saveCloudBtn = document.getElementById("saveCloudBtn");
 
+  // Lightbox DOM
   const fullImageViewer = document.getElementById("fullImageViewer");
   const fullImageTarget = document.getElementById("fullImageTarget");
+  const fullImageMeta = document.getElementById("fullImageMeta");
+  const btnDownloadImage = document.getElementById("btnDownloadImage");
+  const btnCloseLightbox = document.getElementById("btnCloseLightbox");
+
   const photoFileInput = document.getElementById("photoFileInput");
 
   // Popup & Toast DOM
@@ -12001,6 +12084,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
   let lastX = 0, lastY = 0;
   let rainbowHue = 0;
   let selectedStamp = "❤️";
+  let heartStepDist = 0;
 
   let undoStack = [];
   let redoStack = [];
@@ -12048,9 +12132,8 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     enterFullscreen();
   });
 
-  // 🎯 HER AÇILIŞTA İSİM SEÇİMİNİ MUTLAKA GÖSTER
   openStudioBtn.addEventListener("click", () => {
-    nameModal.style.display = "flex"; // İsim modalını mutlaka aç
+    nameModal.style.display = "flex";
     modalOverlay.style.display = "flex";
     enterFullscreen();
   });
@@ -12093,13 +12176,13 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     }
   });
 
-  // ==================== 👑 PROFİL SEÇİMİ ====================
+  // PROFİL SEÇİMİ
   document.querySelectorAll(".couple-card").forEach(card => {
     card.addEventListener("click", () => {
       activeArtist = card.dataset.name;
       currentName.innerText = activeArtist;
       currentIcon.innerText = activeArtist === "Arda" ? "👑" : "💎";
-      nameModal.style.display = "none"; // Seçilince kapat
+      nameModal.style.display = "none";
       enterFullscreen();
     });
   });
@@ -12118,7 +12201,6 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
       btn.classList.add("active");
       activeTool = btn.dataset.tool;
 
-      // SADECE "move" (Taşı / El) seçiliyse katmanlar dokunulabilir olur
       if (activeTool === "move") {
         appContainer.classList.add("move-mode-active");
       } else {
@@ -12363,9 +12445,11 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
   });
 
   brushThickness.addEventListener("input", (e) => {
-    const val = Math.min(22, Math.max(4, parseInt(e.target.value)));
-    brushPreviewDot.style.width = val + "px";
-    brushPreviewDot.style.height = val + "px";
+    const val = parseInt(e.target.value);
+    thicknessValBadge.innerText = val + "px";
+    const dotSize = Math.min(22, Math.max(4, val));
+    brushPreviewDot.style.width = dotSize + "px";
+    brushPreviewDot.style.height = dotSize + "px";
   });
 
   // DAMGALAR
@@ -12429,6 +12513,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     hasUserDrawnAnything = true;
     lastX = p.x;
     lastY = p.y;
+    heartStepDist = 0;
     stroke(e);
   }
 
@@ -12457,12 +12542,49 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
         ctx.strokeStyle = color;
         ctx.lineWidth = size;
         ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(x, y); ctx.stroke();
-      } else if (mode === "rainbow") {
+      } 
+      else if (mode === "rainbow") {
         rainbowHue = (rainbowHue + 4) % 360;
         ctx.strokeStyle = `hsl(${rainbowHue}, 100%, 50%)`;
         ctx.lineWidth = size;
         ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(x, y); ctx.stroke();
-      } else if (mode === "spray") {
+      } 
+      // 💖 YENİ 1: AŞK İZİ (KALP YOLU)
+      else if (mode === "heartTrail") {
+        ctx.strokeStyle = hexToRgba(color, 0.4);
+        ctx.lineWidth = Math.max(2, size / 2);
+        ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(x, y); ctx.stroke();
+
+        const dist = Math.hypot(x - lastX, y - lastY);
+        heartStepDist += dist;
+        if (heartStepDist > Math.max(18, size * 2.2)) {
+          heartStepDist = 0;
+          ctx.font = `${Math.max(14, size * 2.2)}px sans-serif`;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = color;
+          ctx.fillText("💖", x, y);
+        }
+      }
+      // ⭐ YENİ 2: YILDIZ TOZU (GLITTER / PARILTI)
+      else if (mode === "starDust") {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = Math.max(2, size / 1.8);
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = color;
+        ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(x, y); ctx.stroke();
+
+        // Parıltı tanecikleri
+        const sparkleCount = Math.floor(size / 3) + 2;
+        for (let i = 0; i < sparkleCount; i++) {
+          const offsetX = (Math.random() - 0.5) * size * 3;
+          const offsetY = (Math.random() - 0.5) * size * 3;
+          ctx.font = `${Math.max(10, size * 1.4)}px sans-serif`;
+          ctx.fillText(Math.random() > 0.5 ? "✨" : "⭐", x + offsetX, y + offsetY);
+        }
+      }
+      else if (mode === "spray") {
         ctx.fillStyle = color;
         const count = size * 2.5;
         for (let i = 0; i < count; i++) {
@@ -12470,18 +12592,21 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
           const angle = Math.random() * Math.PI * 2;
           ctx.fillRect(x + Math.cos(angle) * rad, y + Math.sin(angle) * rad, 1.5, 1.5);
         }
-      } else if (mode === "calligraphy") {
+      } 
+      else if (mode === "calligraphy") {
         ctx.strokeStyle = color;
         ctx.lineWidth = 1;
         for (let i = 0; i < size; i++) {
           ctx.beginPath(); ctx.moveTo(lastX + i, lastY - i); ctx.lineTo(x + i, y - i); ctx.stroke();
         }
-      } else if (mode === "highlighter") {
+      } 
+      else if (mode === "highlighter") {
         ctx.strokeStyle = hexToRgba(color, 0.2);
         ctx.lineWidth = size * 2.5;
         ctx.lineCap = "square";
         ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(x, y); ctx.stroke();
-      } else {
+      } 
+      else {
         ctx.strokeStyle = color;
         ctx.lineWidth = size;
         ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(x, y); ctx.stroke();
@@ -12641,6 +12766,23 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     }
   });
 
+  // ==================== 📥 BÜYÜK RESİM İNDİRME ====================
+  btnDownloadImage.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (!fullImageTarget.src) return;
+    const link = document.createElement("a");
+    link.href = fullImageTarget.src;
+    link.download = `arda-zeynep-ani-${Date.now()}.jpg`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showToast("Resim İndirildi 📥💕");
+  });
+
+  btnCloseLightbox.addEventListener("click", () => {
+    fullImageViewer.style.display = "none";
+  });
+
   // REALTIME DATABASE GALERİ
   onValue(drawingsDbRef, (snapshot) => {
     galleryContainer.innerHTML = "";
@@ -12677,6 +12819,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
 
       card.querySelector("img").addEventListener("click", () => {
         fullImageTarget.src = d.image;
+        fullImageMeta.innerHTML = `<span style="color: ${isArda ? '#3a86ff' : '#ff007f'};">${isArda ? '👑 Arda' : '💎 Zeynep'}</span> • ${time}`;
         fullImageViewer.style.display = "flex";
       });
 
