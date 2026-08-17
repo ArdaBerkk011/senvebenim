@@ -5263,16 +5263,25 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
             const kraliceBtn = document.getElementById('openKraliceModalBtn');
             if (kraliceBtn) kraliceBtn.click();
         }
-        // 4. Aşk Tuvalı (Piyano ve Ninja gibi güvenli açılış)
-    else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') {
-        const studioModal = document.getElementById('loveStudioModal');
-        if (studioModal) {
-            studioModal.style.display = 'flex';
-        }
-        if (typeof window.openStudioApp === 'function') {
-            window.openStudioApp();
-        }
+        // 4. Aşk Tuvalı
+else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') {
+    // 1. Önce sağ üstteki başlatıcı butona tıklama tetiklemesi gönder
+    const openBtn = document.getElementById('openStudioBtn');
+    if (openBtn) {
+        openBtn.click();
     }
+
+    // 2. Eğer varsa doğrudan global başlatma fonksiyonunu çalıştır
+    if (typeof window.openStudioApp === 'function') {
+        window.openStudioApp();
+    }
+
+    // 3. Eğer üsttekiler açmazsa ana modal katmanını görünür yap
+    const tuvalOverlay = document.getElementById('tuval-modal-overlay');
+    if (tuvalOverlay) {
+        tuvalOverlay.style.display = 'flex';
+    }
+}
         // 5. Love Ninja
         else if (gameType === 'ninja' || gameType === 'ninjtaa' || gameType === 'ninjaaa' || gameType === 'love-ninja') {
             const ninjaModal = document.getElementById('ninja-modal-container');
@@ -11129,1552 +11138,1286 @@ SEN <span class="italic text-[var(--accent-color)]">&</span> BEN
 
 
   
-
-<!-- ================= AŞK TUVALİ SİSTEMİ (GARANTİLİ) ================= -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
-
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
-<!-- 🌟 1. TÜM JAVASCRIPT MOTORU EN TEPEDE (ASLA HATA VERMEZ) -->
-<script>
-  window.currentUser = "Arda 🖤";
-
-  // Modal Aç/Kapat
-  window.openStudioApp = function() {
-    var modal = document.getElementById("loveStudioModal");
-    if (modal) {
-      modal.style.display = "flex";
-      setTimeout(function() {
-        if (typeof window.resizeCanvas === 'function') window.resizeCanvas();
-      }, 150);
-    }
-  };
-
-  window.closeStudioApp = function() {
-    if (typeof window.turnOffAmbience === 'function') window.turnOffAmbience();
-    var modal = document.getElementById("loveStudioModal");
-    if (modal) modal.style.display = "none";
-  };
-
-  // Karakter Seçimi
-  window.selectUserAndStart = function(name) {
-    window.currentUser = name;
-    var nameEl = document.getElementById("activeUserName");
-    if (nameEl) nameEl.innerText = name;
-    var overlay = document.getElementById("welcomeOverlay");
-    if (overlay) {
-      overlay.style.opacity = "0";
-      setTimeout(function() { overlay.style.display = "none"; }, 350);
-    }
-  };
-
-  window.openWelcomeScreen = function() {
-    var overlay = document.getElementById("welcomeOverlay");
-    if (overlay) {
-      overlay.style.display = "flex";
-      setTimeout(function() { overlay.style.opacity = "1"; }, 10);
-    }
-  };
-
-  // Firebase Değişkenleri
-  var elementsRef = null;
-  var galleryRef = null;
-  var canvasElements = {};
-  var imageCache = new Map();
-
-  function initStudioFirebase() {
-    try {
-      if (typeof firebase === 'undefined') {
-        setTimeout(initStudioFirebase, 300);
-        return;
-      }
-      var firebaseConfig = {
-        apiKey: "AIzaSyBpZQQW4FHbSFtdedXGEN9aSuGVrHOftjw",
-        authDomain: "kedi-oyunu.firebaseapp.com",
-        databaseURL: "https://kedi-oyunu-default-rtdb.europe-west1.firebasedatabase.app",
-        projectId: "kedi-oyunu",
-        storageBucket: "kedi-oyunu.firebasestorage.app",
-        messagingSenderId: "757056025025",
-        appId: "1:757056025025:web:ac890dcb32184bc5f37f40"
-      };
-
-      var studioApp;
-      if (!firebase.apps.length) {
-        studioApp = firebase.initializeApp(firebaseConfig);
-      } else {
-        studioApp = firebase.apps.find(function(a) { return a.name === "kedi-oyunu"; }) || firebase.initializeApp(firebaseConfig, "kedi-oyunu");
-      }
-      var db = studioApp.database();
-      elementsRef = db.ref("live_board/elements");
-      galleryRef = db.ref("live_board/gallery");
-
-      elementsRef.on("value", function(snapshot) {
-        canvasElements = snapshot.val() || {};
-        if (typeof window.renderAll === 'function') window.renderAll();
-      });
-    } catch(err) {
-      console.warn("Studio Firebase:", err);
-    }
-  }
-  initStudioFirebase();
-
-  // Ambiyans
-  var activeAmbience = null;
-  var ambientParticles = [];
-  var isAmbienceActive = false;
-  var isAmbienceMuted = false;
-
-  function initParticles(type) {
-    ambientParticles = [];
-    var rainCanvas = document.getElementById("rainCanvas");
-    if (!rainCanvas) return;
-    if (type === 'rain') {
-      for (var i = 0; i < 45; i++) {
-        ambientParticles.push({
-          x: Math.random() * rainCanvas.width,
-          y: Math.random() * rainCanvas.height,
-          len: 12 + Math.random() * 15,
-          speed: 4 + Math.random() * 6,
-          alpha: 0.15 + Math.random() * 0.25
-        });
-      }
-    } else if (type === 'fire') {
-      for (var j = 0; j < 35; j++) {
-        ambientParticles.push({
-          x: Math.random() * rainCanvas.width,
-          y: rainCanvas.height + Math.random() * 50,
-          radius: 1.5 + Math.random() * 3,
-          speedY: 1 + Math.random() * 2.5,
-          speedX: (Math.random() - 0.5) * 1.2,
-          alpha: 0.3 + Math.random() * 0.6,
-          color: Math.random() > 0.4 ? '#f97316' : '#fbbf24'
-        });
-      }
-    }
-  }
-
-  function animateAmbience() {
-    var rainCanvas = document.getElementById("rainCanvas");
-    var rCtx = rainCanvas ? rainCanvas.getContext("2d") : null;
-    if (!isAmbienceActive || !rCtx || !rainCanvas) {
-      if (rCtx && rainCanvas) rCtx.clearRect(0, 0, rainCanvas.width, rainCanvas.height);
-      return;
-    }
-    rCtx.clearRect(0, 0, rainCanvas.width, rainCanvas.height);
-
-    if (activeAmbience === 'rain') {
-      rCtx.strokeStyle = "#38bdf8";
-      rCtx.lineWidth = 1.2;
-      rCtx.lineCap = "round";
-
-      for (var i = 0; i < ambientParticles.length; i++) {
-        var p = ambientParticles[i];
-        rCtx.globalAlpha = p.alpha;
-        rCtx.beginPath();
-        rCtx.moveTo(p.x, p.y);
-        rCtx.lineTo(p.x - 2, p.y + p.len);
-        rCtx.stroke();
-
-        p.y += p.speed;
-        p.x -= 0.6;
-        if (p.y > rainCanvas.height) {
-          p.y = -p.len;
-          p.x = Math.random() * rainCanvas.width;
-        }
-      }
-    } else if (activeAmbience === 'fire') {
-      for (var k = 0; k < ambientParticles.length; k++) {
-        var p2 = ambientParticles[k];
-        rCtx.globalAlpha = p2.alpha;
-        rCtx.fillStyle = p2.color;
-        rCtx.shadowColor = p2.color;
-        rCtx.shadowBlur = 8;
-        rCtx.beginPath();
-        rCtx.arc(p2.x, p2.y, p2.radius, 0, Math.PI * 2);
-        rCtx.fill();
-
-        p2.y -= p2.speedY;
-        p2.x += p2.speedX;
-        p2.alpha -= 0.003;
-
-        if (p2.y < -10 || p2.alpha <= 0) {
-          p2.y = rainCanvas.height + 10;
-          p2.x = Math.random() * rainCanvas.width;
-          p2.alpha = 0.3 + Math.random() * 0.6;
-        }
-      }
-    }
-    requestAnimationFrame(animateAmbience);
-  }
-
-  window.toggleCozyMenu = function() {
-    var pop = document.getElementById("cozyPopover");
-    if (pop) pop.style.display = pop.style.display === "flex" ? "none" : "flex";
-  };
-
-  window.toggleAmbience = function(type) {
-    var audios = {
-      rain: document.getElementById("audioRain"),
-      fire: document.getElementById("audioFire"),
-      lofi: document.getElementById("audioLofi")
-    };
-    var options = {
-      rain: document.getElementById("optRain"),
-      fire: document.getElementById("optFire"),
-      lofi: document.getElementById("optLofi")
-    };
-
-    Object.keys(audios).forEach(function(k) { if (audios[k]) audios[k].pause(); });
-    Object.keys(options).forEach(function(k) { if (options[k]) options[k].classList.remove("active"); });
-    isAmbienceActive = false;
-
-    var btn = document.getElementById("btnCozy");
-    if (activeAmbience === type) {
-      activeAmbience = null;
-      if (btn) btn.classList.remove("active");
-    } else {
-      activeAmbience = type;
-      if (audios[type]) {
-        audios[type].muted = isAmbienceMuted;
-        audios[type].play().catch(function(){});
-      }
-      if (options[type]) options[type].classList.add("active");
-      if (btn) btn.classList.add("active");
-
-      if (type === 'rain' || type === 'fire') {
-        isAmbienceActive = true;
-        initParticles(type);
-        animateAmbience();
-      }
-    }
-    var pop = document.getElementById("cozyPopover");
-    if (pop) pop.style.display = "none";
-  };
-
-  window.toggleAmbienceMute = function() {
-    isAmbienceMuted = !isAmbienceMuted;
-    var audios = [document.getElementById("audioRain"), document.getElementById("audioFire"), document.getElementById("audioLofi")];
-    audios.forEach(function(a) { if (a) a.muted = isAmbienceMuted; });
-
-    var icon = document.getElementById("muteIcon");
-    var label = document.getElementById("muteLabel");
-    var opt = document.getElementById("optMute");
-
-    if (isAmbienceMuted) {
-      if (icon) icon.className = "fa-solid fa-volume-high";
-      if (label) label.innerText = "Sesi Aç";
-      if (opt) opt.classList.add("active-mute");
-    } else {
-      if (icon) icon.className = "fa-solid fa-volume-xmark";
-      if (label) label.innerText = "Sesi Kapat (Sessiz Mod)";
-      if (opt) opt.classList.remove("active-mute");
-    }
-  };
-
-  window.turnOffAmbience = function() {
-    var audios = [document.getElementById("audioRain"), document.getElementById("audioFire"), document.getElementById("audioLofi")];
-    var options = [document.getElementById("optRain"), document.getElementById("optFire"), document.getElementById("optLofi")];
-    audios.forEach(function(a) { if (a) a.pause(); });
-    options.forEach(function(o) { if (o) o.classList.remove("active"); });
-    isAmbienceActive = false;
-    activeAmbience = null;
-    var btn = document.getElementById("btnCozy");
-    if (btn) btn.classList.remove("active");
-    var rainCanvas = document.getElementById("rainCanvas");
-    var rCtx = rainCanvas ? rainCanvas.getContext("2d") : null;
-    if (rCtx && rainCanvas) rCtx.clearRect(0, 0, rainCanvas.width, rainCanvas.height);
-    var pop = document.getElementById("cozyPopover");
-    if (pop) pop.style.display = "none";
-  };
-
-  // Tuval Değişkenleri
-  var activeColor = "#ff3366";
-  var activeTool = "pen";
-  var selectedEmoji = null;
-  var isDrawing = false;
-  var currentStrokePoints = [];
-  var selectedElementKey = null;
-  var isDraggingSelected = false;
-  var isResizingHandle = false;
-  var dragOffsetX = 0, dragOffsetY = 0;
-
-  var bgThemes = ["bg-white", "bg-paper", "bg-dots", "bg-dark"];
-  var currentBgIndex = 0;
-
-  window.resizeCanvas = function() {
-    var container = document.getElementById("boardContainer");
-    var canvas = document.getElementById("paintCanvas");
-    var rainCanvas = document.getElementById("rainCanvas");
-    if (!container || !canvas || !rainCanvas) return;
-    var rect = container.getBoundingClientRect();
-    canvas.width = rect.width;
-    canvas.height = rect.height;
-    rainCanvas.width = rect.width;
-    rainCanvas.height = rect.height;
-    if (isAmbienceActive) initParticles(activeAmbience);
-    window.renderAll();
-  };
-  window.addEventListener("resize", window.resizeCanvas);
-
-  window.setTool = function(tool) {
-    activeTool = tool;
-    selectedEmoji = null;
-    var emojiPopover = document.getElementById("emojiPopover");
-    var transformToolbar = document.getElementById("transformToolbar");
-    if (emojiPopover) emojiPopover.style.display = "none";
-    
-    if (tool !== 'select') {
-      selectedElementKey = null;
-      if (transformToolbar) transformToolbar.style.display = "none";
-      window.renderAll();
-    }
-
-    document.querySelectorAll(".sidebar-dock .tool-item").forEach(function(btn) {
-      if (btn.dataset.tool) btn.classList.toggle("active", btn.dataset.tool === tool);
-    });
-    var emoBtn = document.getElementById("emojiToolBtn");
-    if (emoBtn) emoBtn.classList.remove("active");
-  };
-
-  window.toggleEmojiPicker = function() {
-    var emojiPopover = document.getElementById("emojiPopover");
-    if (!emojiPopover) return;
-    var isVisible = emojiPopover.style.display === "grid";
-    emojiPopover.style.display = isVisible ? "none" : "grid";
-  };
-
-  window.selectEmoji = function(emoji) {
-    selectedEmoji = emoji;
-    activeTool = "stamp";
-    var emojiPopover = document.getElementById("emojiPopover");
-    if (emojiPopover) emojiPopover.style.display = "none";
-    document.querySelectorAll(".sidebar-dock .tool-item").forEach(function(btn) { btn.classList.remove("active"); });
-    var emoBtn = document.getElementById("emojiToolBtn");
-    if (emoBtn) emoBtn.classList.add("active");
-  };
-
-  window.setColor = function(color, element) {
-    activeColor = color;
-    var cp = document.getElementById("customColor");
-    if (cp) cp.value = color;
-    if (element) {
-      document.querySelectorAll(".c-dot").forEach(function(s) { s.classList.remove("selected"); });
-      element.classList.add("selected");
-    }
-  };
-
-  window.cycleBackground = function() {
-    var container = document.getElementById("boardContainer");
-    if (!container) return;
-    container.classList.remove(bgThemes[currentBgIndex]);
-    currentBgIndex = (currentBgIndex + 1) % bgThemes.length;
-    container.classList.add(bgThemes[currentBgIndex]);
-  };
-
-  function drawVectorHeart(targetCtx, cx, cy, size, color) {
-    targetCtx.save();
-    targetCtx.fillStyle = color;
-    targetCtx.shadowColor = color;
-    targetCtx.shadowBlur = 4;
-    targetCtx.beginPath();
-    var s = size * 0.55;
-    targetCtx.moveTo(cx, cy);
-    targetCtx.bezierCurveTo(cx - s, cy - s * 1.2, cx - s * 1.8, cy + s * 0.2, cx, cy + s * 1.5);
-    targetCtx.bezierCurveTo(cx + s * 1.8, cy + s * 0.2, cx + s, cy - s * 1.2, cx, cy);
-    targetCtx.closePath();
-    targetCtx.fill();
-    targetCtx.restore();
-  }
-
-  window.handlePhotoUpload = function(e) {
-    var file = e.target.files[0];
-    if (!file) return;
-
-    var reader = new FileReader();
-    reader.onload = function(evt) {
-      var img = new Image();
-      img.onload = function() {
-        var maxDim = 800;
-        var w = img.width, h = img.height;
-        if (w > maxDim || h > maxDim) {
-          if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
-          else { w = Math.round((w * maxDim) / h); h = maxDim; }
-        }
-
-        var tempCanvas = document.createElement("canvas");
-        tempCanvas.width = w;
-        tempCanvas.height = h;
-        var tCtx = tempCanvas.getContext("2d");
-        tCtx.drawImage(img, 0, 0, w, h);
-
-        var dataUrl = tempCanvas.toDataURL("image/jpeg", 0.75);
-
-        if (elementsRef) {
-          var newRef = elementsRef.push({
-            type: 'image',
-            src: dataUrl,
-            x: 0.2,
-            y: 0.2,
-            w: 0.6,
-            h: 0.6 * (h / w),
-            aspectRatio: h / w,
-            user: window.currentUser,
-            timestamp: Date.now()
-          });
-          selectedElementKey = newRef.key;
-        }
-
-        window.setTool('select');
-        var transformToolbar = document.getElementById("transformToolbar");
-        if (transformToolbar) transformToolbar.style.display = "flex";
-      };
-      img.src = evt.target.result;
-    };
-    reader.readAsDataURL(file);
-    e.target.value = "";
-  };
-
-  function getCoords(e) {
-    var canvas = document.getElementById("paintCanvas");
-    var rect = canvas.getBoundingClientRect();
-    var clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    var clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    return {
-      x: (clientX - rect.left) / rect.width,
-      y: (clientY - rect.top) / rect.height
-    };
-  }
-
-  function handleStart(e) {
-    var coords = getCoords(e);
-    var canvas = document.getElementById("paintCanvas");
-    var brushSize = document.getElementById("brushSize");
-    var transformToolbar = document.getElementById("transformToolbar");
-
-    if (activeTool === 'select') {
-      if (selectedElementKey && canvasElements[selectedElementKey]) {
-        var el = canvasElements[selectedElementKey];
-        if (el.type === 'image') {
-          var cornerX = el.x + el.w;
-          var cornerY = el.y + el.h;
-          if (Math.abs(coords.x - cornerX) < 0.08 && Math.abs(coords.y - cornerY) < 0.08) {
-            isResizingHandle = true;
-            return;
-          }
-        }
-      }
-
-      var keys = Object.keys(canvasElements).reverse();
-      var hitKey = null;
-      for (var i = 0; i < keys.length; i++) {
-        var key = keys[i];
-        var el2 = canvasElements[key];
-        if (el2.type === 'image') {
-          if (coords.x >= el2.x && coords.x <= el2.x + el2.w &&
-              coords.y >= el2.y && coords.y <= el2.y + el2.h) {
-            hitKey = key;
-            break;
-          }
-        } else if (el2.type === 'text' || el2.type === 'stamp') {
-          var radius = (el2.size || 25) / canvas.width;
-          if (Math.abs(coords.x - el2.x) < radius * 2 && Math.abs(coords.y - el2.y) < radius * 2) {
-            hitKey = key;
-            break;
-          }
-        }
-      }
-
-      if (hitKey) {
-        selectedElementKey = hitKey;
-        isDraggingSelected = true;
-        var selectedEl = canvasElements[hitKey];
-        dragOffsetX = coords.x - selectedEl.x;
-        dragOffsetY = coords.y - selectedEl.y;
-        if (transformToolbar) transformToolbar.style.display = "flex";
-      } else {
-        selectedElementKey = null;
-        if (transformToolbar) transformToolbar.style.display = "none";
-      }
-      window.renderAll();
-      return;
-    }
-
-    if (activeTool === "stamp" && selectedEmoji) {
-      if (elementsRef) {
-        elementsRef.push({
-          type: 'stamp',
-          emoji: selectedEmoji,
-          x: coords.x,
-          y: coords.y,
-          size: parseInt(brushSize.value) * 6,
-          user: window.currentUser,
-          timestamp: Date.now()
-        });
-      }
-      return;
-    }
-
-    if (activeTool === "text") {
-      var text = prompt("Tuvale ne yazmak istersin? ✨");
-      if (text && text.trim() !== "") {
-        if (elementsRef) {
-          var newRef2 = elementsRef.push({
-            type: 'text',
-            text: text,
-            x: coords.x,
-            y: coords.y,
-            color: activeColor,
-            size: Math.max(24, parseInt(brushSize.value) * 5),
-            user: window.currentUser,
-            timestamp: Date.now()
-          });
-          selectedElementKey = newRef2.key;
-        }
-        window.setTool('select');
-        if (transformToolbar) transformToolbar.style.display = "flex";
-      }
-      return;
-    }
-
-    isDrawing = true;
-    currentStrokePoints = [{ x: coords.x, y: coords.y }];
-  }
-
-  function handleMove(e) {
-    var coords = getCoords(e);
-    var brushSize = document.getElementById("brushSize");
-
-    if (activeTool === 'select' && selectedElementKey) {
-      var el = canvasElements[selectedElementKey];
-      if (!el) return;
-
-      if (isResizingHandle && el.type === 'image') {
-        var newW = Math.max(0.1, Math.min(1.0, coords.x - el.x));
-        el.w = newW;
-        el.h = newW * (el.aspectRatio || 1);
-        window.renderAll();
-        return;
-      }
-
-      if (isDraggingSelected) {
-        el.x = coords.x - dragOffsetX;
-        el.y = coords.y - dragOffsetY;
-        window.renderAll();
-        return;
-      }
-    }
-
-    if (!isDrawing) return;
-
-    currentStrokePoints.push({ x: coords.x, y: coords.y });
-    window.renderAll();
-    drawLocalStroke(currentStrokePoints, activeTool, activeColor, parseInt(brushSize.value));
-  }
-
-  function handleEnd() {
-    var brushSize = document.getElementById("brushSize");
-
-    if (activeTool === 'select' && selectedElementKey) {
-      var el = canvasElements[selectedElementKey];
-      if (el && (isDraggingSelected || isResizingHandle)) {
-        isDraggingSelected = false;
-        isResizingHandle = false;
-        if (elementsRef) {
-          elementsRef.child(selectedElementKey).update({
-            x: el.x,
-            y: el.y,
-            w: el.w || 0,
-            h: el.h || 0
-          });
-        }
-        return;
-      }
-    }
-
-    if (!isDrawing) return;
-    isDrawing = false;
-
-    if (currentStrokePoints.length > 0) {
-      if (elementsRef) {
-        elementsRef.push({
-          type: 'stroke',
-          tool: activeTool,
-          color: activeTool === 'eraser' ? '#FFFFFF' : activeColor,
-          size: parseInt(brushSize.value),
-          points: currentStrokePoints,
-          user: window.currentUser,
-          timestamp: Date.now()
-        });
-      }
-      currentStrokePoints = [];
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", function() {
-    var canvas = document.getElementById("paintCanvas");
-    if (canvas) {
-      canvas.addEventListener("mousedown", handleStart);
-      canvas.addEventListener("mousemove", handleMove);
-      window.addEventListener("mouseup", handleEnd);
-
-      canvas.addEventListener("touchstart", function(e) { e.preventDefault(); handleStart(e); }, { passive: false });
-      canvas.addEventListener("touchmove", function(e) { e.preventDefault(); handleMove(e); }, { passive: false });
-      window.addEventListener("touchend", handleEnd);
-    }
-  });
-
-  window.renderAll = function() {
-    var canvas = document.getElementById("paintCanvas");
-    var ctx = canvas ? canvas.getContext("2d") : null;
-    if (!ctx || !canvas) return;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (var key in canvasElements) {
-      var el = canvasElements[key];
-      renderSingleElement(el, key === selectedElementKey);
-    }
-  };
-
-  function renderSingleElement(el, isSelected) {
-    var canvas = document.getElementById("paintCanvas");
-    var ctx = canvas ? canvas.getContext("2d") : null;
-    if (!ctx || !canvas) return;
-    ctx.save();
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-
-    if (el.type === 'stroke' && el.points && el.points.length > 0) {
-      if (el.tool === 'heart') {
-        for (var i = 0; i < el.points.length; i++) {
-          drawVectorHeart(ctx, el.points[i].x * canvas.width, el.points[i].y * canvas.height, el.size * 1.6, el.color);
-        }
-      } else if (el.tool === 'neon') {
-        ctx.strokeStyle = el.color;
-        ctx.lineWidth = el.size;
-        ctx.shadowColor = el.color;
-        ctx.shadowBlur = el.size * 2.5;
-        ctx.beginPath();
-        ctx.moveTo(el.points[0].x * canvas.width, el.points[0].y * canvas.height);
-        for (var j = 1; j < el.points.length; j++) {
-          ctx.lineTo(el.points[j].x * canvas.width, el.points[j].y * canvas.height);
-        }
-        ctx.stroke();
-      } else if (el.tool === 'eraser') {
-        ctx.strokeStyle = '#FFFFFF';
-        ctx.lineWidth = el.size * 3.5;
-        ctx.beginPath();
-        ctx.moveTo(el.points[0].x * canvas.width, el.points[0].y * canvas.height);
-        for (var k = 1; k < el.points.length; k++) {
-          ctx.lineTo(el.points[k].x * canvas.width, el.points[k].y * canvas.height);
-        }
-        ctx.stroke();
-      } else {
-        ctx.strokeStyle = el.color;
-        ctx.lineWidth = el.size;
-        ctx.beginPath();
-        ctx.moveTo(el.points[0].x * canvas.width, el.points[0].y * canvas.height);
-        for (var m = 1; m < el.points.length; m++) {
-          ctx.lineTo(el.points[m].x * canvas.width, el.points[m].y * canvas.height);
-        }
-        ctx.stroke();
-      }
-    }
-    else if (el.type === 'image') {
-      var img = imageCache.get(el.src);
-      if (!img) {
-        img = new Image();
-        img.onload = function() { window.renderAll(); };
-        img.src = el.src;
-        imageCache.set(el.src, img);
-      } else if (img.complete) {
-        var x = el.x * canvas.width;
-        var y = el.y * canvas.height;
-        var w = el.w * canvas.width;
-        var h = el.h * canvas.height;
-        ctx.drawImage(img, x, y, w, h);
-
-        if (isSelected) {
-          ctx.strokeStyle = "#ff3366";
-          ctx.lineWidth = 2.5;
-          ctx.setLineDash([6, 6]);
-          ctx.strokeRect(x - 2, y - 2, w + 4, h + 4);
-
-          ctx.setLineDash([]);
-          ctx.fillStyle = "#3b82f6";
-          ctx.beginPath();
-          ctx.arc(x + w, y + h, 9, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.strokeStyle = "#ffffff";
-          ctx.lineWidth = 2;
-          ctx.stroke();
-        }
-      }
-    }
-    else if (el.type === 'text') {
-      var tx = el.x * canvas.width;
-      var ty = el.y * canvas.height;
-      ctx.font = "700 " + el.size + "px 'Caveat', cursive, sans-serif";
-      ctx.fillStyle = el.color;
-      ctx.fillText(el.text, tx, ty);
-
-      if (isSelected) {
-        var width = ctx.measureText(el.text).width;
-        ctx.strokeStyle = "#ff3366";
-        ctx.lineWidth = 2;
-        ctx.setLineDash([4, 4]);
-        ctx.strokeRect(tx - 4, y - el.size, width + 8, el.size + 6);
-      }
-    }
-    else if (el.type === 'stamp') {
-      var sx = el.x * canvas.width;
-      var sy = el.y * canvas.height;
-      ctx.font = el.size + "px serif";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(el.emoji, sx, sy);
-
-      if (isSelected) {
-        ctx.strokeStyle = "#ff3366";
-        ctx.lineWidth = 2;
-        ctx.setLineDash([4, 4]);
-        ctx.strokeRect(sx - el.size / 2 - 2, sy - el.size / 2 - 2, el.size + 4, el.size + 4);
-      }
-    }
-
-    ctx.restore();
-  }
-
-  function drawLocalStroke(points, tool, color, size) {
-    var canvas = document.getElementById("paintCanvas");
-    var ctx = canvas ? canvas.getContext("2d") : null;
-    if (!ctx || !canvas || points.length < 2) return;
-    ctx.save();
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-
-    if (tool === 'heart') {
-      for (var i = 0; i < points.length; i++) {
-        drawVectorHeart(ctx, points[i].x * canvas.width, points[i].y * canvas.height, size * 1.6, color);
-      }
-    } else {
-      ctx.strokeStyle = tool === 'eraser' ? '#FFFFFF' : color;
-      ctx.lineWidth = tool === 'eraser' ? size * 3.5 : size;
-
-      if (tool === 'neon') {
-        ctx.shadowColor = color;
-        ctx.shadowBlur = size * 2.5;
-      }
-
-      ctx.beginPath();
-      ctx.moveTo(points[0].x * canvas.width, points[0].y * canvas.height);
-      for (var j = 1; j < points.length; j++) {
-        ctx.lineTo(points[j].x * canvas.width, points[j].y * canvas.height);
-      }
-      ctx.stroke();
-    }
-    ctx.restore();
-  }
-
-  window.scaleSelected = function(factor) {
-    if (!selectedElementKey || !canvasElements[selectedElementKey]) return;
-    var el = canvasElements[selectedElementKey];
-
-    if (el.type === 'image') {
-      el.w = Math.max(0.1, Math.min(1.0, el.w * factor));
-      el.h = el.w * (el.aspectRatio || 1);
-      if (elementsRef) elementsRef.child(selectedElementKey).update({ w: el.w, h: el.h });
-    } else if (el.type === 'text' || el.type === 'stamp') {
-      el.size = Math.round(el.size * factor);
-      if (elementsRef) elementsRef.child(selectedElementKey).update({ size: el.size });
-    }
-  };
-
-  window.makeFullScreen = function() {
-    if (!selectedElementKey || !canvasElements[selectedElementKey]) return;
-    var el = canvasElements[selectedElementKey];
-    if (el.type === 'image') {
-      el.x = 0;
-      el.y = 0;
-      el.w = 1.0;
-      el.h = 1.0;
-      if (elementsRef) elementsRef.child(selectedElementKey).update({ x: 0, y: 0, w: 1.0, h: 1.0 });
-    }
-  };
-
-  window.deleteSelected = function() {
-    if (!selectedElementKey) return;
-    if (elementsRef) elementsRef.child(selectedElementKey).remove();
-    selectedElementKey = null;
-    var transformToolbar = document.getElementById("transformToolbar");
-    if (transformToolbar) transformToolbar.style.display = "none";
-  };
-
-  window.undoLastElement = function() {
-    var keys = Object.keys(canvasElements);
-    if (keys.length > 0) {
-      var lastKey = keys[keys.length - 1];
-      if (elementsRef) elementsRef.child(lastKey).remove();
-    } else {
-      alert("Geri alınacak bir çizim bulunamadı!");
-    }
-  };
-
-  window.clearCanvasPrompt = function() {
-    if (confirm("Tuvali tamamen temizlemek istiyor musun?")) {
-      if (elementsRef) elementsRef.remove();
-      selectedElementKey = null;
-      var transformToolbar = document.getElementById("transformToolbar");
-      if (transformToolbar) transformToolbar.style.display = "none";
-    }
-  };
-
-  window.saveToGallery = function() {
-    selectedElementKey = null;
-    window.renderAll();
-
-    var canvas = document.getElementById("paintCanvas");
-    if (!canvas) return;
-    var dataUrl = canvas.toDataURL("image/png");
-    var now = new Date();
-    var dateFormatted = now.toLocaleDateString("tr-TR", { day: 'numeric', month: 'long', year: 'numeric' });
-    var timeFormatted = now.toLocaleTimeString("tr-TR", { hour: '2-digit', minute: '2-digit' });
-    var fullTimeStr = dateFormatted + " • Saat " + timeFormatted;
-
-    if (galleryRef) {
-      galleryRef.push({
-        image: dataUrl,
-        author: window.currentUser,
-        date: fullTimeStr,
-        timestamp: Date.now()
-      }).then(function() {
-        if (elementsRef) elementsRef.remove();
-        alert("✨ Çiziminiz Anı Defterine kaydedildi!");
-      });
-    }
-  };
-
-  var currentPreviewUrl = "";
-
-  window.openGallery = function() {
-    var modal = document.getElementById("galleryBackdrop");
-    var containerEl = document.getElementById("galleryContainer");
-    if (modal) modal.style.display = "flex";
-    if (containerEl) containerEl.innerHTML = "<p style='color:#64748b; font-size:12px; text-align:center;'>Anılar yükleniyor...</p>";
-
-    if (galleryRef) {
-      galleryRef.once("value", function(snapshot) {
-        if (!containerEl) return;
-        containerEl.innerHTML = "";
-        var data = snapshot.val();
-        if (!data) {
-          containerEl.innerHTML = "<p style='color:#64748b; grid-column: 1/-1; text-align:center; font-size:12px;'>Henüz bir anı kaydedilmemiş!</p>";
-          return;
-        }
-
-        var entries = Object.entries(data).reverse();
-        entries.forEach(function(entry) {
-          var key = entry[0];
-          var item = entry[1];
-          var card = document.createElement("div");
-          card.className = "memory-card";
-          card.onclick = function() { showPreview(item.image, (item.author || '') + " - " + (item.date || '')); };
-          card.innerHTML = 
-            "<button class='btn-delete-card' onclick='window.deleteMemory(\"" + key + "\", event)' title='Bu anıyı sil'>" +
-              "<i class='fa-solid fa-trash-can'></i>" +
-            "</button>" +
-            "<img src='" + item.image + "' alt='Çizim Anısı'>" +
-            "<div class='memory-details'>" +
-              "<div class='memory-author'><i class='fa-solid fa-palette'></i> " + (item.author || 'Anonim') + "</div>" +
-              "<div class='memory-time'><i class='fa-regular fa-clock'></i> " + (item.date || 'Tarih belirtilmedi') + "</div>" +
-            "</div>";
-          containerEl.appendChild(card);
-        });
-      });
-    }
-  };
-
-  window.deleteMemory = function(key, e) {
-    e.stopPropagation();
-    if (confirm("Bu çizim anısını Hatıra Defterinden silmek istediğine emin misin?")) {
-      if (galleryRef) {
-        galleryRef.child(key).remove().then(function() { window.openGallery(); });
-      }
-    }
-  };
-
-  window.closeGallery = function() {
-    var modal = document.getElementById("galleryBackdrop");
-    if (modal) modal.style.display = "none";
-  };
-
-  function showPreview(imgSrc, infoText) {
-    currentPreviewUrl = imgSrc;
-    var pi = document.getElementById("previewImg");
-    var pt = document.getElementById("previewInfo");
-    var pb = document.getElementById("previewBackdrop");
-    if (pi) pi.src = imgSrc;
-    if (pt) pt.innerText = infoText;
-    if (pb) pb.style.display = "flex";
-  }
-
-  window.closePreview = function() {
-    var pb = document.getElementById("previewBackdrop");
-    if (pb) pb.style.display = "none";
-  };
-
-  window.downloadPreviewImg = function() {
-    var a = document.createElement("a");
-    a.href = currentPreviewUrl;
-    a.download = "Ask-Animiz-" + Date.now() + ".png";
-    a.click();
-  };
-</script>
-
+<!-- ==================== ARDA & ZEYNEP MASTER PRO (ULTRA OPTİMİZE) ==================== -->
 <style>
-  :root {
-    --studio-primary: #ff3366;
-    --studio-glow: rgba(255, 51, 102, 0.35);
-    --studio-accent: #1e293b;
-    --studio-bg: #fff5f7;
-    --studio-glass: rgba(255, 255, 255, 0.95);
-    --studio-border: rgba(255, 255, 255, 0.9);
-  }
-
-  /* 🎨 TAM EKRAN AŞK TUVALİ MODALI */
-  #loveStudioModal.love-studio-app {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 9999999;
+  #tuval-modal-overlay *, #tuval-modal-overlay *::before, #tuval-modal-overlay *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    user-select: none;
-    background: var(--studio-bg);
-    color: var(--studio-accent);
-    flex-direction: column;
-    height: 100vh;
-    width: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* SAĞ ÜST SABİT BAŞLATICI BUTON */
+  .tuval-launcher-btn {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 99990;
+    background: linear-gradient(135deg, #ff007f 0%, #7928ca 50%, #3a86ff 100%);
+    background-size: 200% 200%;
+    animation: gradientMove 4s ease infinite;
+    color: #ffffff !important;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(255, 0, 127, 0.45);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  .tuval-launcher-btn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 15px 35px rgba(255, 0, 127, 0.65);
+  }
+.tuval-launcher-btn {
+    display: none !important; /* Menüden açılacağı için sağ üstteki butonu gizler */
+}
+  @keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* TAM EKRAN MODAL */
+  #tuval-modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(10, 4, 20, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 99999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     overflow: hidden;
   }
 
-  #loveStudioModal * { box-sizing: border-box; }
-
-  /* Karşılama Ekranı */
-  #welcomeOverlay.welcome-overlay {
-    position: fixed;
-    inset: 0;
-    background: radial-gradient(circle at center, rgba(255, 240, 243, 0.96), rgba(255, 225, 232, 0.98));
-    backdrop-filter: blur(16px);
-    z-index: 2000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    transition: opacity 0.35s ease;
-  }
-
-  .welcome-card {
-    background: white;
-    padding: 35px 30px;
-    border-radius: 32px;
-    box-shadow: 0 25px 60px rgba(255, 51, 102, 0.18);
-    text-align: center;
-    max-width: 440px;
-    width: 100%;
-    border: 2px solid #fff0f3;
-  }
-
-  .welcome-title { font-size: 22px; font-weight: 800; color: var(--studio-accent); margin-bottom: 6px; }
-  .welcome-sub { font-size: 13px; color: #64748b; margin-bottom: 25px; font-weight: 600; }
-
-  .user-choice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .choice-btn {
-    border: none;
-    border-radius: 22px;
-    padding: 20px 15px;
-    cursor: pointer;
+  /* OTOMATİK DÖNÜŞÜM CONTAINER */
+  #tuval-app-container {
+    background: #0f071a;
+    width: 100vw;
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    font-weight: 800;
-    font-size: 15px;
-    transition: all 0.25s;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-  }
-  .choice-btn.arda { background: #0f172a; color: white; }
-  .choice-btn.arda:hover { transform: translateY(-4px); }
-  .choice-btn.zeynep { background: linear-gradient(135deg, #ff3366, #ff758c); color: white; }
-  .choice-btn.zeynep:hover { transform: translateY(-4px); }
-  .choice-avatar {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 
-  /* Header */
-  .studio-header {
-    background: var(--studio-glass);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--studio-border);
-    padding: 8px 14px;
+  @media screen and (orientation: portrait), screen and (max-aspect-ratio: 1/1) {
+    #tuval-app-container {
+      width: 100vh !important;
+      height: 100vw !important;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%) rotate(90deg) !important;
+    }
+  }
+
+  /* 1. ÜST ŞERİT */
+  .studio-header-compact {
+    background: rgba(25, 12, 38, 0.95);
+    padding: 6px 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    z-index: 30;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    height: 42px;
+    flex-shrink: 0;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
     gap: 8px;
-  }
-
-  .header-left, .header-right { display: flex; align-items: center; gap: 8px; }
-
-  .active-user-badge {
-    background: white;
-    border: 1px solid #ffd1dc;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 800;
-    color: var(--studio-primary);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  }
-
-  .btn-action {
-    padding: 8px 14px;
-    border-radius: 20px;
-    border: none;
-    cursor: pointer;
-    font-weight: 700;
-    font-size: 12px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: all 0.2s;
-    text-decoration: none;
-    white-space: nowrap;
-  }
-  .btn-action:hover { transform: translateY(-1px); }
-  .btn-back { background: #f1f5f9; color: #475569; }
-  .btn-cozy { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
-  .btn-cozy.active { background: #2563eb; color: white; }
-  .btn-gallery { background: #ffe4e9; color: var(--studio-primary); }
-  .btn-save { background: linear-gradient(135deg, #ff3366, #ff758c); color: white; }
-
-  /* Ana Stüdyo */
-  .studio-main {
-    flex: 1;
-    display: flex;
-    position: relative;
-    padding: 8px;
-    gap: 8px;
-    overflow: hidden;
-  }
-
-  .sidebar-dock {
-    width: 64px;
-    background: var(--studio-glass);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--studio-border);
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px 4px;
-    gap: 5px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    z-index: 20;
-  }
-
-  .tool-item {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    border: none;
-    background: transparent;
-    color: #64748b;
-    font-size: 15px;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-  }
-  .tool-item span { font-size: 8px; font-weight: 700; margin-top: 2px; }
-  .tool-item:hover { background: #fff0f3; color: var(--studio-primary); }
-  .tool-item.active { background: var(--studio-primary); color: white; }
-  .sidebar-line { width: 60%; height: 1px; background: #f1f5f9; margin: 2px 0; }
-
-  .canvas-workspace {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .floating-controls {
-    position: absolute;
-    top: 10px;
-    background: var(--studio-glass);
-    backdrop-filter: blur(14px);
-    border: 1px solid var(--studio-border);
-    padding: 5px 12px;
-    border-radius: 30px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    z-index: 10;
-  }
-
-  .color-dots { display: flex; gap: 5px; align-items: center; }
-  .c-dot {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.12);
-  }
-  .c-dot.selected { transform: scale(1.25); border-color: #222; }
-  .color-input-btn { width: 22px; height: 22px; border-radius: 50%; border: none; cursor: pointer; background: none; }
-  .brush-slider input[type="range"] { width: 60px; accent-color: var(--studio-primary); cursor: pointer; }
-
-  .transform-toolbar {
-    display: none;
-    position: absolute;
-    top: 55px;
-    background: #0f172a;
+    font-size: 13px;
+    font-weight: 900;
     color: white;
-    padding: 6px 12px;
-    border-radius: 20px;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    font-weight: 700;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-    z-index: 15;
   }
-  .transform-btn {
-    background: #334155;
+  .header-badge {
+    background: linear-gradient(135deg, #ff007f, #7928ca);
     color: white;
-    border: none;
-    padding: 5px 9px;
+    padding: 2px 7px;
     border-radius: 8px;
-    cursor: pointer;
+    font-size: 10px;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-gallery-open {
+    background: linear-gradient(135deg, #8338ec 0%, #3a86ff 100%);
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 16px;
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 800;
+    cursor: pointer;
     display: flex;
     align-items: center;
     gap: 4px;
   }
-  .transform-btn:hover { background: var(--studio-primary); }
 
-  .emoji-popover {
-    display: none;
-    position: absolute;
-    left: 75px;
-    top: 90px;
-    background: var(--studio-glass);
-    backdrop-filter: blur(16px);
-    border: 1px solid var(--studio-border);
-    padding: 10px;
-    border-radius: 18px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-    z-index: 25;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
-  }
-  .emoji-item {
-    font-size: 20px;
-    background: white;
-    border: 1px solid #ffe5ec;
-    border-radius: 10px;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-  }
-  .emoji-item:hover { transform: scale(1.2); background: #fff0f3; }
-
-  .cozy-popover {
-    display: none;
-    position: absolute;
-    top: 50px;
-    right: 180px;
-    background: var(--studio-glass);
-    backdrop-filter: blur(16px);
-    border: 1px solid var(--studio-border);
-    padding: 12px;
-    border-radius: 20px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-    z-index: 40;
-    flex-direction: column;
-    gap: 6px;
-    min-width: 180px;
-  }
-  .cozy-option {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: white;
-    padding: 8px 12px;
-    border-radius: 14px;
-    font-size: 12px;
-    font-weight: 700;
-    cursor: pointer;
-    border: 1px solid #f1f5f9;
-  }
-  .cozy-option.active { background: #2563eb; color: white; }
-  .cozy-option.active-mute { background: #fee2e2; color: #ef4444; border-color: #fca5a5; }
-  .cozy-divider { width: 100%; height: 1px; background: #e2e8f0; margin: 4px 0; }
-
-  .board-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    border-radius: 20px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.04);
-    overflow: hidden;
-    touch-action: none;
-    background: #ffffff;
-  }
-  .bg-white { background: #ffffff; }
-  .bg-paper { 
-    background-color: #fcf8f2;
-    background-image: linear-gradient(#e8dfd8 1px, transparent 1px), linear-gradient(90deg, #e8dfd8 1px, transparent 1px);
-    background-size: 20px 20px;
-  }
-  .bg-dots {
-    background-color: #ffffff;
-    background-image: radial-gradient(#ffccd5 1.3px, transparent 1.3px);
-    background-size: 18px 18px;
-  }
-  .bg-dark { background: #161824; }
-
-  canvas#paintCanvas { width: 100%; height: 100%; display: block; position: absolute; inset: 0; z-index: 1; }
-  canvas#rainCanvas { width: 100%; height: 100%; display: block; position: absolute; inset: 0; pointer-events: none; z-index: 2; }
-
-  .modal-backdrop {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(15, 23, 42, 0.7);
-    backdrop-filter: blur(5px);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-    padding: 15px;
-  }
-  .modal-window {
-    background: white;
-    width: 100%;
-    max-width: 820px;
-    max-height: 85vh;
-    border-radius: 22px;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
-    overflow: hidden;
-  }
-  .modal-head { padding: 14px 18px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; }
-  .gallery-grid { padding: 18px; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; }
-  .memory-card {
-    background: #fff;
-    border: 1px solid #f1f5f9;
+  .user-badge-tag {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 4px 10px;
     border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    display: flex;
-    flex-direction: column;
+    font-size: 11px;
+    font-weight: 800;
     cursor: pointer;
-    position: relative;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 5px;
   }
-  .memory-card img { width: 100%; height: 145px; object-fit: contain; background: #fafafa; border-bottom: 1px solid #f1f5f9; }
-  .memory-details { padding: 10px 12px; background: white; }
-  .memory-author { font-weight: 800; color: var(--studio-primary); font-size: 12px; }
-  .memory-time { color: #64748b; font-size: 10px; margin-top: 2px; }
-  .btn-delete-card {
-    position: absolute;
-    top: 8px;
-    right: 8px;
+
+  .btn-close-studio {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     width: 28px;
     height: 28px;
-    background: rgba(255, 255, 255, 0.9);
-    color: #ef4444;
-    border: 1px solid #fee2e2;
     border-radius: 50%;
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #bbb;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
+  }
+  .btn-close-studio:hover { background: #ff0055; color: #fff; }
+
+  /* 2. ANA YATAY ALAN */
+  .studio-main-body {
+    flex: 1;
+    display: flex;
+    min-height: 0;
+    overflow: hidden;
+    position: relative;
   }
 
-  .preview-box {
-    max-width: 520px;
-    background: white;
-    border-radius: 20px;
+  /* SOL DOCK */
+  .studio-left-dock {
+    width: 130px;
+    background: rgba(18, 9, 28, 0.98);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    gap: 3px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    flex-shrink: 0;
+  }
+  .studio-left-dock::-webkit-scrollbar { display: none; }
+
+  .tool-dock-btn {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 5px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 800;
+    color: #cbd5e1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.2s;
+    text-align: left;
+    white-space: nowrap;
+  }
+  .tool-dock-btn:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+  .tool-dock-btn.active {
+    background: linear-gradient(135deg, #ff007f 0%, #ff548f 100%);
+    color: white;
+    border-color: #ff007f;
+    box-shadow: 0 0 12px rgba(255, 0, 127, 0.5);
+  }
+
+  /* SAĞ TUVAL ALANI & KATMANLAR */
+  .studio-canvas-area {
+    flex: 1;
+    background: #08030d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 6px;
     overflow: hidden;
+  }
+
+  .canvas-stage-wrapper {
+    position: relative;
+    max-width: 100%;
+    max-height: 100%;
+    aspect-ratio: 16 / 10;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #studioCanvas {
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+    cursor: crosshair;
+    width: 100%;
+    height: 100%;
+    display: block;
+    touch-action: none;
+  }
+
+  /* ==================== ✋ İNTERAKTİF KATMANLAR ==================== */
+  #interactiveLayersContainer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    border-radius: 14px;
+  }
+
+  .move-mode-active #interactiveLayersContainer {
+    pointer-events: auto;
+  }
+
+  .layer-item-box {
+    position: absolute;
+    pointer-events: auto;
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translate(-50%, -50%);
+    will-change: left, top;
+  }
+  .layer-item-box:active { cursor: grabbing; }
+
+  .layer-item-box.selected {
+    border: 2px dashed #ff007f;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
+  }
+
+  .layer-controls-mini {
+    display: none;
+    align-items: center;
+    gap: 4px;
+    background: rgba(20, 10, 30, 0.95);
+    padding: 4px 8px;
+    border-radius: 16px;
+    margin-top: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  }
+  .layer-item-box.selected .layer-controls-mini {
+    display: flex;
+  }
+
+  .layer-ctrl-btn {
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 3px 7px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+  .layer-ctrl-btn:hover { background: rgba(255, 255, 255, 0.25); }
+  .layer-ctrl-del { background: #ff0055; border-color: #ff0055; }
+
+  /* 3. ALT BARI */
+  .studio-bottom-bar {
+    height: 44px;
+    background: rgba(25, 12, 38, 0.95);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 14px;
+    flex-shrink: 0;
+  }
+
+  .bottom-left-tools {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .main-color-btn {
+    position: relative;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
+    border: 2px solid white;
+    flex-shrink: 0;
+  }
+  .main-color-btn input[type="color"] {
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    cursor: pointer;
+    border: none;
+    background: none;
+  }
+
+  .quick-palette-row {
+    display: flex;
+    gap: 4px;
+  }
+  .quick-palette-row span {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1.5px solid rgba(255,255,255,0.7);
+    transition: 0.15s transform;
+  }
+  .quick-palette-row span:hover { transform: scale(1.25); }
+
+  .thickness-box {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 3px 8px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .thickness-box input[type="range"] {
+    width: 55px;
+    cursor: pointer;
+    accent-color: #ff007f;
+  }
+  .brush-preview-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ff007f;
+  }
+
+  .bottom-right-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .act-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 5px 9px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+    color: #e2e8f0;
+  }
+  .act-btn-save {
+    background: linear-gradient(135deg, #ff007f 0%, #ff548f 100%);
+    color: white !important;
+    border: none;
+    padding: 5px 12px;
+    font-weight: 900;
+    box-shadow: 0 2px 10px rgba(255, 0, 127, 0.4);
+  }
+
+  /* DAMGALAR AÇILIR BAR */
+  .stamps-popup-bar {
+    position: absolute;
+    left: 135px;
+    top: 8px;
+    background: rgba(25, 12, 38, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 5px 8px;
+    border-radius: 12px;
+    display: none;
+    align-items: center;
+    gap: 6px;
+    z-index: 50;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+  .stamp-pick-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    font-size: 16px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .stamp-pick-btn.active {
+    background: #ff007f;
+    border-color: #ff007f;
+    transform: scale(1.15);
+  }
+
+  /* İSİM SEÇİM EKRANI */
+  #studioNameModal {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at center, #24082e 0%, #0d0314 100%);
+    z-index: 100;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     padding: 15px;
-    gap: 12px;
   }
-  .preview-box img { width: 100%; max-height: 60vh; object-fit: contain; border-radius: 12px; background: #fafafa; }
+  .name-pick-title { text-align: center; margin-bottom: 12px; }
+  .name-pick-title h2 { color: #ffffff; font-size: 20px; font-weight: 900; margin: 0 0 4px 0; }
+  .name-pick-title p { color: #e9d5ff; font-size: 11px; margin: 0; }
 
-  @media (max-width: 768px) {
-    .studio-header { padding: 6px 8px; }
-    .btn-action span { display: none; }
-    .studio-main { flex-direction: column-reverse; padding: 6px; gap: 6px; }
-    .sidebar-dock {
-      width: 100%;
-      height: 50px;
-      flex-direction: row;
-      justify-content: space-around;
-      padding: 4px 6px;
-      border-radius: 16px;
-    }
-    .sidebar-line { width: 1px; height: 60%; margin: 0 2px; }
-    .tool-item { width: 34px; height: 34px; font-size: 13px; }
-    .tool-item span { display: none; }
-    .floating-controls { top: 6px; transform: scale(0.88); }
-    .emoji-popover { left: 10px; top: auto; bottom: 60px; }
-    .cozy-popover { right: 10px; top: 48px; }
+  .couple-cards-grid {
+    display: flex;
+    gap: 15px;
+    max-width: 480px;
+    width: 100%;
   }
+  .couple-card {
+    flex: 1;
+    border-radius: 18px;
+    padding: 14px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    transition: all 0.25s ease;
+    backdrop-filter: blur(10px);
+  }
+  .couple-card:hover { transform: translateY(-4px) scale(1.03); }
+  .card-arda { background: linear-gradient(145deg, rgba(58, 134, 255, 0.3) 0%, rgba(13, 27, 62, 0.9) 100%); border: 2px solid #3a86ff; }
+  .card-zeynep { background: linear-gradient(145deg, rgba(255, 0, 110, 0.3) 0%, rgba(65, 10, 35, 0.9) 100%); border: 2px solid #ff006e; }
+
+  .avatar-icon-box {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    margin: 0 auto 6px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+  }
+  .card-arda .avatar-icon-box { background: linear-gradient(135deg, #3a86ff, #00f2fe); }
+  .card-zeynep .avatar-icon-box { background: linear-gradient(135deg, #ff006e, #fee140); }
+  .couple-card h3 { margin: 0 0 4px 0; font-size: 16px; font-weight: 900; color: #ffffff; }
+  .couple-card .card-role { font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 10px; display: inline-block; }
+  .card-arda .card-role { background: #3a86ff; color: #ffffff; }
+  .card-zeynep .card-role { background: #ff006e; color: #ffffff; }
+
+  /* GALERİ & TAM EKRAN */
+  #studioGalleryModal {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 7, 25, 0.98);
+    backdrop-filter: blur(16px);
+    z-index: 102;
+    display: none;
+    flex-direction: column;
+    padding: 14px;
+    overflow-y: auto;
+  }
+  .gallery-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+  .gallery-header-row h3 { margin: 0; color: #ff007f; font-size: 16px; font-weight: 900; }
+  .gallery-cards-flow { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+  .gallery-single-card { background: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 5px; border: 1px solid rgba(255, 255, 255, 0.1); cursor: pointer; position: relative; }
+  .gallery-single-card img { width: 100%; aspect-ratio: 16/10; object-fit: contain; border-radius: 8px; background: #fff; }
+  .single-card-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; font-size: 10px; font-weight: 800; }
+  .btn-delete-card { position: absolute; top: 8px; right: 8px; background: rgba(255, 0, 85, 0.9); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+  #fullImageViewer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 999999; display: none; align-items: center; justify-content: center; padding: 15px; }
+  #fullImageViewer img { max-width: 95%; max-height: 90vh; border-radius: 14px; }
 </style>
 
-<!-- 🎨 2. TAM EKRAN AŞK TUVALİ OYUN PENCERESİ (HTML) -->
-<div class="love-studio-app" id="loveStudioModal">
+<!-- 1. SAĞ ÜST BAŞLATICI BUTON -->
+<button class="tuval-launcher-btn" id="openStudioBtn">
+  <span>🎨</span> Aşk Tuvali
+</button>
 
-  <!-- Giriş Karakter Seçim Ekranı -->
-  <div class="welcome-overlay" id="welcomeOverlay">
-    <div class="welcome-card">
-      <div style="font-size: 38px; margin-bottom: 8px;">🎨</div>
-      <h2 class="welcome-title">Aşk Tuvaline Hoş Geldiniz</h2>
-      <p class="welcome-sub">Bugün kim çizim yapacak?</p>
-      
-      <div class="user-choice-grid">
-        <button class="choice-btn arda" onclick="window.selectUserAndStart('Arda 🖤')">
-          <div class="choice-avatar">🖤</div>
-          <span>Arda</span>
-        </button>
-        <button class="choice-btn zeynep" onclick="window.selectUserAndStart('Zeynep 💖')">
-          <div class="choice-avatar">💖</div>
-          <span>Zeynep</span>
-        </button>
+<!-- 2. TAM EKRAN ÇİZİM STÜDYOSU (OTOMATİK YATAY) -->
+<div id="tuval-modal-overlay">
+  <div id="tuval-app-container">
+
+    <!-- GİZLİ DOSYA YÜKLEYİCİ -->
+    <input type="file" id="photoFileInput" accept="image/*" style="display: none;" />
+
+    <!-- LÜKS İSİM SEÇİM EKRANI -->
+    <div id="studioNameModal">
+      <div class="name-pick-title">
+        <h2>Aşk Tuvali 💕</h2>
+        <p>Tuvali kullanacak sanatçıyı seçin:</p>
       </div>
-    </div>
-  </div>
 
-  <!-- Üst Header -->
-  <header class="studio-header">
-    <div class="header-left">
-      <button class="btn-action btn-back" onclick="window.closeStudioApp()" title="Ana Siteye Dön">
-        <i class="fa-solid fa-arrow-left"></i>
-        <span>Geri Dön</span>
-      </button>
-
-      <div class="active-user-badge" onclick="window.openWelcomeScreen()" title="Ressamı Değiştir">
-        <span id="activeUserName">Arda 🖤</span>
-        <i class="fa-solid fa-arrows-rotate" style="font-size: 10px; color: #94a3b8;"></i>
-      </div>
-    </div>
-
-    <div class="header-right">
-      <button class="btn-action btn-cozy" id="btnCozy" onclick="window.toggleCozyMenu()" title="Ambiyans & Yağmur">
-        <i class="fa-solid fa-cloud-rain"></i>
-        <span>Ambiyans</span>
-      </button>
-
-      <button class="btn-action btn-gallery" onclick="window.openGallery()" title="Hatıra Defteri">
-        <i class="fa-solid fa-images"></i>
-        <span>Anı Defteri</span>
-      </button>
-
-      <button class="btn-action btn-save" onclick="window.saveToGallery()" title="Kaydet ve Sıfırla">
-        <i class="fa-solid fa-cloud-arrow-up"></i>
-        <span>Anılara Kaydet</span>
-      </button>
-    </div>
-  </header>
-
-  <!-- Ambiyans Açılır Menüsü -->
-  <div class="cozy-popover" id="cozyPopover">
-    <div class="cozy-option" id="optRain" onclick="window.toggleAmbience('rain')">
-      <i class="fa-solid fa-cloud-showers-heavy"></i>
-      <span>Huzurlu Yağmur</span>
-    </div>
-    <div class="cozy-option" id="optFire" onclick="window.toggleAmbience('fire')">
-      <i class="fa-solid fa-fire-flame-curved"></i>
-      <span>Sıcak Şömine</span>
-    </div>
-    <div class="cozy-option" id="optLofi" onclick="window.toggleAmbience('lofi')">
-      <i class="fa-solid fa-music"></i>
-      <span>Gece Lofi</span>
-    </div>
-
-    <div class="cozy-divider"></div>
-
-    <div class="cozy-option" id="optMute" onclick="window.toggleAmbienceMute()">
-      <i class="fa-solid fa-volume-xmark" id="muteIcon"></i>
-      <span id="muteLabel">Sesi Kapat (Sessiz Mod)</span>
-    </div>
-
-    <div class="cozy-option" onclick="window.turnOffAmbience()" style="color: #ef4444;">
-      <i class="fa-solid fa-power-off"></i>
-      <span>Ambiyansı Kapat</span>
-    </div>
-  </div>
-
-  <audio id="audioRain" loop src="https://cdn.pixabay.com/download/audio/2022/05/16/audio_db947098e9.mp3?filename=soft-rain-ambient-111154.mp3"></audio>
-  <audio id="audioFire" loop src="https://cdn.pixabay.com/download/audio/2021/08/09/audio_24e3975765.mp3?filename=fireplace-crackling-loop-110298.mp3"></audio>
-  <audio id="audioLofi" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3"></audio>
-
-  <input type="file" id="photoUploadInput" accept="image/*" style="display:none;" onchange="window.handlePhotoUpload(event)">
-
-  <!-- Çalışma Alanı -->
-  <main class="studio-main">
-    <div class="sidebar-dock">
-      <button class="tool-item" data-tool="select" onclick="window.setTool('select')" title="El (Taşı & Boyutlandır)">
-        <i class="fa-solid fa-hand"></i>
-        <span>El</span>
-      </button>
-
-      <button class="tool-item active" data-tool="pen" onclick="window.setTool('pen')" title="Normal Kalem">
-        <i class="fa-solid fa-pen"></i>
-        <span>Kalem</span>
-      </button>
-      <button class="tool-item" data-tool="neon" onclick="window.setTool('neon')" title="Işıltılı Neon">
-        <i class="fa-solid fa-wand-magic-sparkles"></i>
-        <span>Neon</span>
-      </button>
-      <button class="tool-item" data-tool="heart" onclick="window.setTool('heart')" title="Kalp Fırçası">
-        <i class="fa-solid fa-heart"></i>
-        <span>Kalp</span>
-      </button>
-      <button class="tool-item" data-tool="text" onclick="window.setTool('text')" title="Yazı Yaz">
-        <i class="fa-solid fa-font"></i>
-        <span>Yazı</span>
-      </button>
-      <button class="tool-item" onclick="document.getElementById('photoUploadInput').click()" title="Fotoğraf Yükle">
-        <i class="fa-regular fa-image"></i>
-        <span>Foto</span>
-      </button>
-      <button class="tool-item" id="emojiToolBtn" onclick="window.toggleEmojiPicker()" title="Emoji Damgası">
-        <i class="fa-regular fa-face-smile"></i>
-        <span>Emoji</span>
-      </button>
-      <button class="tool-item" data-tool="eraser" onclick="window.setTool('eraser')" title="Silgi">
-        <i class="fa-solid fa-eraser"></i>
-        <span>Silgi</span>
-      </button>
-
-      <div class="sidebar-line"></div>
-
-      <button class="tool-item" onclick="window.undoLastElement()" title="Son Hareketi Geri Al">
-        <i class="fa-solid fa-rotate-left"></i>
-        <span>Geri Al</span>
-      </button>
-
-      <button class="tool-item" onclick="window.cycleBackground()" title="Zemin Teması">
-        <i class="fa-solid fa-layer-group"></i>
-        <span>Zemin</span>
-      </button>
-      <button class="tool-item" onclick="window.clearCanvasPrompt()" title="Temizle" style="color: #ef4444;">
-        <i class="fa-solid fa-trash-can"></i>
-        <span>Sil</span>
-      </button>
-    </div>
-
-    <!-- Emoji Çekmecesi -->
-    <div class="emoji-popover" id="emojiPopover">
-      <div class="emoji-item" onclick="window.selectEmoji('❤️')">❤️</div>
-      <div class="emoji-item" onclick="window.selectEmoji('💖')">💖</div>
-      <div class="emoji-item" onclick="window.selectEmoji('🐱')">🐱</div>
-      <div class="emoji-item" onclick="window.selectEmoji('👑')">👑</div>
-      <div class="emoji-item" onclick="window.selectEmoji('🌸')">🌸</div>
-      <div class="emoji-item" onclick="window.selectEmoji('☕')">☕</div>
-      <div class="emoji-item" onclick="window.selectEmoji('💋')">💋</div>
-      <div class="emoji-item" onclick="window.selectEmoji('✨')">✨</div>
-      <div class="emoji-item" onclick="window.selectEmoji('🧸')">🧸</div>
-      <div class="emoji-item" onclick="window.selectEmoji('💍')">💍</div>
-      <div class="emoji-item" onclick="window.selectEmoji('💌')">💌</div>
-      <div class="emoji-item" onclick="window.selectEmoji('🌙')">🌙</div>
-    </div>
-
-    <!-- Tuval Alanı -->
-    <div class="canvas-workspace">
-      <div class="floating-controls">
-        <div class="color-dots">
-          <div class="c-dot selected" style="background:#ff3366;" onclick="window.setColor('#ff3366', this)"></div>
-          <div class="c-dot" style="background:#8b5cf6;" onclick="window.setColor('#8b5cf6', this)"></div>
-          <div class="c-dot" style="background:#3b82f6;" onclick="window.setColor('#3b82f6', this)"></div>
-          <div class="c-dot" style="background:#10b981;" onclick="window.setColor('#10b981', this)"></div>
-          <div class="c-dot" style="background:#f59e0b;" onclick="window.setColor('#f59e0b', this)"></div>
-          <div class="c-dot" style="background:#1f2937;" onclick="window.setColor('#1f2937', this)"></div>
-          <input type="color" id="customColor" class="color-input-btn" value="#ff3366" onchange="window.setColor(this.value)">
+      <div class="couple-cards-grid">
+        <div class="couple-card card-arda" data-name="Arda">
+          <div class="avatar-icon-box">👑</div>
+          <h3>Arda</h3>
+          <span class="card-role">Sanatçı</span>
         </div>
 
-        <div class="brush-slider">
-          <input type="range" id="brushSize" min="2" max="35" value="5" title="Kalınlık">
+        <div class="couple-card card-zeynep" data-name="Zeynep">
+          <div class="avatar-icon-box">💎</div>
+          <h3>Zeynep</h3>
+          <span class="card-role">İlham Perisi</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- GEÇMİŞ ANILAR GALERİSİ -->
+    <div id="studioGalleryModal">
+      <div class="gallery-header-row">
+        <h3>🖼️ Çizim & Anı Galerimiz</h3>
+        <button class="btn-close-studio" id="closeGalleryBtn">✕</button>
+      </div>
+      <div class="gallery-cards-flow" id="galleryContainer">
+        <p style="text-align:center; width:100%; color:#aaa; font-size:12px;">Çizimler yükleniyor...</p>
+      </div>
+    </div>
+
+    <!-- 1. ÜST ŞERİT -->
+    <div class="studio-header-compact">
+      <div class="header-left">
+        <span>🎨</span> Aşk Stüdyosu <span class="header-badge">MASTER</span>
+      </div>
+      <div class="header-right">
+        <button class="btn-gallery-open" id="openGalleryBtn">🖼️ Galerimiz</button>
+        <button class="user-badge-tag" id="changeUserTrigger">
+          <span id="currentIcon">👑</span>
+          <span id="currentName">Arda</span>
+        </button>
+        <button class="btn-close-studio" id="closeStudioBtn">✕</button>
+      </div>
+    </div>
+
+    <!-- 2. ANA YATAY ALAN -->
+    <div class="studio-main-body">
+
+      <!-- SOL ARAÇ DOCK'U -->
+      <div class="studio-left-dock">
+        <button class="tool-dock-btn active" data-tool="normal">✏️ Düz Kalem</button>
+        <button class="tool-dock-btn" data-tool="glow">✨ Neon Kalem</button>
+        <button class="tool-dock-btn" data-tool="rainbow">🌈 Gökkuşağı</button>
+        <button class="tool-dock-btn" data-tool="spray">🎨 Sprey Boya</button>
+        <button class="tool-dock-btn" data-tool="calligraphy">✒️ Kaligrafi</button>
+        <button class="tool-dock-btn" data-tool="highlighter">🖍️ Fosforlu</button>
+        <button class="tool-dock-btn" data-tool="text">🔤 Yazı Ekle</button>
+        <button class="tool-dock-btn" data-tool="photo">📸 Fotoğraf</button>
+        <button class="tool-dock-btn" data-tool="move">✋ Taşı / El</button>
+        <button class="tool-dock-btn" data-tool="stamp">🎀 Damgalar</button>
+        <button class="tool-dock-btn" data-tool="eraser">🧽 Silgi</button>
+      </div>
+
+      <!-- DAMGALAR AÇILIR BAR -->
+      <div class="stamps-popup-bar" id="stampsPalette">
+        <button class="stamp-pick-btn active" data-stamp="❤️">❤️</button>
+        <button class="stamp-pick-btn" data-stamp="💋">💋</button>
+        <button class="stamp-pick-btn" data-stamp="🐾">🐾</button>
+        <button class="stamp-pick-btn" data-stamp="⭐">⭐</button>
+        <button class="stamp-pick-btn" data-stamp="🌸">🌸</button>
+        <button class="stamp-pick-btn" data-stamp="🧸">🧸</button>
+        <button class="stamp-pick-btn" data-stamp="💍">💍</button>
+      </div>
+
+      <!-- SAĞ DEV TUVAL & KATMANLAR KUTUSU -->
+      <div class="studio-canvas-area" id="canvasWrap">
+        <div class="canvas-stage-wrapper">
+          <canvas id="studioCanvas" width="1200" height="750"></canvas>
+          <div id="interactiveLayersContainer"></div>
         </div>
       </div>
 
-      <!-- Seçilen Fotoğraf / Yazı Kontrol Menüsü -->
-      <div class="transform-toolbar" id="transformToolbar">
-        <button class="transform-btn" onclick="window.scaleSelected(1.2)"><i class="fa-solid fa-magnifying-glass-plus"></i> Büyüt</button>
-        <button class="transform-btn" onclick="window.scaleSelected(0.8)"><i class="fa-solid fa-magnifying-glass-minus"></i> Küçült</button>
-        <button class="transform-btn" onclick="window.makeFullScreen()"><i class="fa-solid fa-expand"></i> Tam Ekran</button>
-        <button class="transform-btn" onclick="window.deleteSelected()" style="background:#ef4444;"><i class="fa-solid fa-trash"></i> Sil</button>
+    </div>
+
+    <!-- 3. ALT KONTROL BARI -->
+    <div class="studio-bottom-bar">
+      <div class="bottom-left-tools">
+        <div class="main-color-btn" id="colorBtnWrap" style="background: #ff007f;">
+          <input type="color" id="mainColorPicker" value="#ff007f" />
+        </div>
+        <div class="quick-palette-row">
+          <span style="background: #ff007f;" data-c="#ff007f"></span>
+          <span style="background: #3a86ff;" data-c="#3a86ff"></span>
+          <span style="background: #8338ec;" data-c="#8338ec"></span>
+          <span style="background: #ffbe0b;" data-c="#ffbe0b"></span>
+          <span style="background: #00b4d8;" data-c="#00b4d8"></span>
+          <span style="background: #000000;" data-c="#000000"></span>
+        </div>
+        <div class="thickness-box">
+          <div class="brush-preview-dot" id="brushPreviewDot"></div>
+          <input type="range" id="brushThickness" min="2" max="50" value="6" />
+        </div>
       </div>
 
-      <div class="board-container bg-white" id="boardContainer">
-        <canvas id="paintCanvas"></canvas>
-        <canvas id="rainCanvas"></canvas>
+      <div class="bottom-right-actions">
+        <button class="act-btn" id="undoAction" title="Geri Al">↩ Geri</button>
+        <button class="act-btn" id="redoAction" title="İleri Al">↪ İleri</button>
+        <button class="act-btn" id="clearAction" title="Temizle">🗑️ Sil</button>
+        <button class="act-btn act-btn-save" id="saveCloudAction">💾 Kaydet</button>
       </div>
     </div>
-  </main>
 
-  <!-- Anı Defteri Modalı -->
-  <div class="modal-backdrop" id="galleryBackdrop">
-    <div class="modal-window">
-      <div class="modal-head">
-        <h4 style="color: var(--studio-primary); font-weight:800;"><i class="fa-solid fa-heart"></i> Ortak Anı Defterimiz</h4>
-        <button class="tool-item" onclick="window.closeGallery()"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="gallery-grid" id="galleryContainer"></div>
-    </div>
-  </div>
-
-  <!-- Fotoğraf Büyütme Modalı -->
-  <div class="modal-backdrop" id="previewBackdrop" onclick="window.closePreview()">
-    <div class="preview-box" onclick="event.stopPropagation()">
-      <img id="previewImg" src="" alt="Anı">
-      <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
-        <span id="previewInfo" style="font-size:12px; font-weight:700; color:#475569;"></span>
-        <button class="btn-action btn-save" onclick="window.downloadPreviewImg()"><i class="fa-solid fa-download"></i> İndir</button>
-      </div>
-    </div>
   </div>
 </div>
+
+<!-- BÜYÜK RESİM ÖNİZLEME -->
+<div id="fullImageViewer" onclick="this.style.display='none'">
+  <img id="fullImageTarget" src="" alt="Önizleme" />
+</div>
+
+<!-- ==================== JAVASCRIPT & MOTOR ==================== -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { 
+    getDatabase, ref, push, set, onValue, remove 
+  } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBpZQQW4FHbSFtdedXGEN9aSuGVrHOftjw",
+    authDomain: "kedi-oyunu.firebaseapp.com",
+    databaseURL: "https://kedi-oyunu-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "kedi-oyunu",
+    storageBucket: "kedi-oyunu.firebasestorage.app",
+    messagingSenderId: "757056025025",
+    appId: "1:757056025025:web:ac890dcb32184bc5f37f40"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const drawingsDbRef = ref(db, "arda_zeynep_drawings");
+
+  // DOM Elemanları
+  const openStudioBtn = document.getElementById("openStudioBtn");
+  const closeStudioBtn = document.getElementById("closeStudioBtn");
+  const modalOverlay = document.getElementById("tuval-modal-overlay");
+  const appContainer = document.getElementById("tuval-app-container");
+
+  const nameModal = document.getElementById("studioNameModal");
+  const changeUserTrigger = document.getElementById("changeUserTrigger");
+  const currentIcon = document.getElementById("currentIcon");
+  const currentName = document.getElementById("currentName");
+
+  const openGalleryBtn = document.getElementById("openGalleryBtn");
+  const closeGalleryBtn = document.getElementById("closeGalleryBtn");
+  const galleryModal = document.getElementById("studioGalleryModal");
+  const galleryContainer = document.getElementById("galleryContainer");
+
+  const canvas = document.getElementById("studioCanvas");
+  const interactiveLayersContainer = document.getElementById("interactiveLayersContainer");
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  
+  const stampsPalette = document.getElementById("stampsPalette");
+  const mainColorPicker = document.getElementById("mainColorPicker");
+  const colorBtnWrap = document.getElementById("colorBtnWrap");
+  const brushThickness = document.getElementById("brushThickness");
+  const brushPreviewDot = document.getElementById("brushPreviewDot");
+
+  const undoAction = document.getElementById("undoAction");
+  const redoAction = document.getElementById("redoAction");
+  const clearAction = document.getElementById("clearAction");
+  const saveCloudAction = document.getElementById("saveCloudAction");
+
+  const fullImageViewer = document.getElementById("fullImageViewer");
+  const fullImageTarget = document.getElementById("fullImageTarget");
+  const photoFileInput = document.getElementById("photoFileInput");
+
+  let activeArtist = "Arda";
+  let activeTool = "normal";
+  let isDrawing = false;
+  let lastX = 0, lastY = 0;
+  let rainbowHue = 0;
+  let selectedStamp = "❤️";
+
+  let undoStack = [];
+  let redoStack = [];
+  let layers = [];
+
+  // STÜDYO AÇ / KAPA
+  openStudioBtn.addEventListener("click", () => { modalOverlay.style.display = "flex"; });
+  closeStudioBtn.addEventListener("click", () => { modalOverlay.style.display = "none"; });
+
+  // PROFİL SEÇİMİ
+  document.querySelectorAll(".couple-card").forEach(card => {
+    card.addEventListener("click", () => {
+      activeArtist = card.dataset.name;
+      currentName.innerText = activeArtist;
+      currentIcon.innerText = activeArtist === "Arda" ? "👑" : "💎";
+      nameModal.style.display = "none";
+    });
+  });
+  changeUserTrigger.addEventListener("click", () => { nameModal.style.display = "flex"; });
+
+  // GALERİ
+  openGalleryBtn.addEventListener("click", () => { galleryModal.style.display = "flex"; });
+  closeGalleryBtn.addEventListener("click", () => { galleryModal.style.display = "none"; });
+
+  // SOL ARAÇ SEÇİMİ
+  document.querySelectorAll(".tool-dock-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".tool-dock-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      activeTool = btn.dataset.tool;
+
+      if (activeTool === "move") {
+        appContainer.classList.add("move-mode-active");
+      } else {
+        appContainer.classList.remove("move-mode-active");
+        deselectAllLayers();
+      }
+
+      if (activeTool === "stamp") {
+        stampsPalette.style.display = "flex";
+      } else {
+        stampsPalette.style.display = "none";
+      }
+
+      if (activeTool === "text") {
+        addNewTextLayer();
+      }
+
+      if (activeTool === "photo") {
+        photoFileInput.click();
+      }
+    });
+  });
+
+  function deselectAllLayers() {
+    document.querySelectorAll(".layer-item-box").forEach(el => el.classList.remove("selected"));
+  }
+
+  // ==================== 📸 FOTOĞRAF KATMANI EKLEME ====================
+  photoFileInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        createPhotoLayer(evt.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  function createPhotoLayer(imgSrc) {
+    const layerId = "layer_" + Date.now();
+    const layerBox = document.createElement("div");
+    layerBox.className = "layer-item-box selected";
+    layerBox.style.left = "50%";
+    layerBox.style.top = "50%";
+    layerBox.dataset.id = layerId;
+
+    let width = 200;
+
+    layerBox.innerHTML = `
+      <img src="${imgSrc}" style="width: ${width}px; border-radius: 10px; display: block; pointer-events: none;" />
+      <div class="layer-controls-mini">
+        <button class="layer-ctrl-btn ctrl-dec">🔍-</button>
+        <button class="layer-ctrl-btn ctrl-inc">🔍+</button>
+        <button class="layer-ctrl-btn layer-ctrl-del">🗑️</button>
+      </div>
+    `;
+
+    const imgElem = layerBox.querySelector("img");
+
+    layerBox.querySelector(".ctrl-inc").addEventListener("click", (e) => {
+      e.stopPropagation();
+      width = Math.min(650, width + 25);
+      imgElem.style.width = width + "px";
+    });
+
+    layerBox.querySelector(".ctrl-dec").addEventListener("click", (e) => {
+      e.stopPropagation();
+      width = Math.max(70, width - 25);
+      imgElem.style.width = width + "px";
+    });
+
+    layerBox.querySelector(".layer-ctrl-del").addEventListener("click", (e) => {
+      e.stopPropagation();
+      layerBox.remove();
+      layers = layers.filter(l => l.id !== layerId);
+    });
+
+    interactiveLayersContainer.appendChild(layerBox);
+    makeLayerInteractive(layerBox);
+
+    layers.push({ id: layerId, type: 'photo', elem: layerBox, img: imgElem });
+    photoFileInput.value = "";
+    triggerMoveMode();
+  }
+
+  // ==================== 🔤 YAZI KATMANI EKLEME ====================
+  function addNewTextLayer() {
+    const input = prompt("Tuvale ne yazmak istersin aşkım? 💕", "Seni Seviyorum 💕");
+    if (!input || input.trim() === "") return;
+
+    const layerId = "layer_" + Date.now();
+    const layerBox = document.createElement("div");
+    layerBox.className = "layer-item-box selected";
+    layerBox.style.left = "50%";
+    layerBox.style.top = "50%";
+    layerBox.dataset.id = layerId;
+
+    let fontSize = 28;
+    let currentColor = mainColorPicker.value;
+
+    layerBox.innerHTML = `
+      <div class="layer-text-content" style="font-size: ${fontSize}px; font-weight: 900; color: ${currentColor}; white-space: nowrap; text-shadow: 0 0 10px rgba(0,0,0,0.5);">
+        ${input}
+      </div>
+      <div class="layer-controls-mini">
+        <button class="layer-ctrl-btn ctrl-dec">A-</button>
+        <button class="layer-ctrl-btn ctrl-inc">A+</button>
+        <button class="layer-ctrl-btn ctrl-edit">✏️</button>
+        <button class="layer-ctrl-btn layer-ctrl-del">🗑️</button>
+      </div>
+    `;
+
+    const textContent = layerBox.querySelector(".layer-text-content");
+
+    layerBox.querySelector(".ctrl-inc").addEventListener("click", (e) => {
+      e.stopPropagation();
+      fontSize = Math.min(90, fontSize + 4);
+      textContent.style.fontSize = fontSize + "px";
+    });
+
+    layerBox.querySelector(".ctrl-dec").addEventListener("click", (e) => {
+      e.stopPropagation();
+      fontSize = Math.max(14, fontSize - 4);
+      textContent.style.fontSize = fontSize + "px";
+    });
+
+    layerBox.querySelector(".ctrl-edit").addEventListener("click", (e) => {
+      e.stopPropagation();
+      const updated = prompt("Yazıyı düzenle:", textContent.innerText);
+      if (updated && updated.trim() !== "") textContent.innerText = updated;
+    });
+
+    layerBox.querySelector(".layer-ctrl-del").addEventListener("click", (e) => {
+      e.stopPropagation();
+      layerBox.remove();
+      layers = layers.filter(l => l.id !== layerId);
+    });
+
+    interactiveLayersContainer.appendChild(layerBox);
+    makeLayerInteractive(layerBox);
+
+    layers.push({ id: layerId, type: 'text', elem: layerBox, textElem: textContent });
+    triggerMoveMode();
+  }
+
+  function triggerMoveMode() {
+    activeTool = "move";
+    document.querySelectorAll(".tool-dock-btn").forEach(b => b.classList.remove("active"));
+    const moveBtn = document.querySelector('.tool-dock-btn[data-tool="move"]');
+    if (moveBtn) moveBtn.classList.add("active");
+    appContainer.classList.add("move-mode-active");
+  }
+
+  // ==================== ✋ SÜRÜKLEME VE DOKUNMATİK MOTORU ====================
+  function makeLayerInteractive(layerBox) {
+    let isDragging = false;
+    let dragStartX = 0, dragStartY = 0;
+    let initialLeft = 0, initialTop = 0;
+
+    layerBox.addEventListener("pointerdown", (e) => {
+      if (e.target.tagName === 'BUTTON') return;
+      e.stopPropagation();
+      
+      deselectAllLayers();
+      layerBox.classList.add("selected");
+      isDragging = true;
+
+      dragStartX = e.clientX;
+      dragStartY = e.clientY;
+
+      initialLeft = parseFloat(layerBox.style.left) || layerBox.offsetLeft;
+      initialTop = parseFloat(layerBox.style.top) || layerBox.offsetTop;
+
+      layerBox.setPointerCapture(e.pointerId);
+    });
+
+    layerBox.addEventListener("pointermove", (e) => {
+      if (!isDragging) return;
+      e.preventDefault();
+
+      const isRotated = window.innerHeight > window.innerWidth;
+      let deltaX = e.clientX - dragStartX;
+      let deltaY = e.clientY - dragStartY;
+
+      if (isRotated) {
+        let temp = deltaX;
+        deltaX = deltaY;
+        deltaY = -temp;
+      }
+
+      layerBox.style.left = `${initialLeft + deltaX}px`;
+      layerBox.style.top = `${initialTop + deltaY}px`;
+    });
+
+    layerBox.addEventListener("pointerup", (e) => {
+      isDragging = false;
+      try { layerBox.releasePointerCapture(e.pointerId); } catch(err) {}
+    });
+  }
+
+  // RENK VE KALINLIK
+  mainColorPicker.addEventListener("input", (e) => {
+    colorBtnWrap.style.background = e.target.value;
+    brushPreviewDot.style.background = e.target.value;
+    const selected = document.querySelector(".layer-item-box.selected .layer-text-content");
+    if (selected) selected.style.color = e.target.value;
+  });
+
+  document.querySelectorAll(".quick-palette-row span").forEach(dot => {
+    dot.addEventListener("click", () => {
+      mainColorPicker.value = dot.dataset.c;
+      colorBtnWrap.style.background = dot.dataset.c;
+      brushPreviewDot.style.background = dot.dataset.c;
+      const selected = document.querySelector(".layer-item-box.selected .layer-text-content");
+      if (selected) selected.style.color = dot.dataset.c;
+    });
+  });
+
+  brushThickness.addEventListener("input", (e) => {
+    const val = Math.min(22, Math.max(4, parseInt(e.target.value)));
+    brushPreviewDot.style.width = val + "px";
+    brushPreviewDot.style.height = val + "px";
+  });
+
+  // DAMGALAR
+  document.querySelectorAll(".stamp-pick-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".stamp-pick-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      selectedStamp = btn.dataset.stamp;
+    });
+  });
+
+  // BEYAZ TUVAL
+  function resetCanvasWhite() {
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+  resetCanvasWhite();
+  pushState();
+
+  // ==================== 🔄 KOORDİNAT HESABI ====================
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const cx = e.touches ? e.touches[0].clientX : e.clientX;
+    const cy = e.touches ? e.touches[0].clientY : e.clientY;
+    const isRotated = window.innerHeight > window.innerWidth;
+
+    if (isRotated) {
+      const ratioX = (cx - rect.left) / rect.width;
+      const ratioY = (cy - rect.top) / rect.height;
+      return {
+        x: ratioY * canvas.width,
+        y: (1 - ratioX) * canvas.height
+      };
+    } else {
+      return {
+        x: (cx - rect.left) * (canvas.width / rect.width),
+        y: (cy - rect.top) * (canvas.height / rect.height)
+      };
+    }
+  }
+
+  function start(e) {
+    if (activeTool === "text" || activeTool === "photo" || activeTool === "move") return;
+    e.preventDefault();
+    const p = getPos(e);
+
+    if (activeTool === "stamp") {
+      const size = parseInt(brushThickness.value) * 3 + 28;
+      ctx.font = `${size}px sans-serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(selectedStamp, p.x, p.y);
+      pushState();
+      return;
+    }
+
+    isDrawing = true;
+    lastX = p.x;
+    lastY = p.y;
+    stroke(e);
+  }
+
+  function stroke(e) {
+    if (!isDrawing || activeTool === "stamp" || activeTool === "text" || activeTool === "photo" || activeTool === "move") return;
+    e.preventDefault();
+    const { x, y } = getPos(e);
+    const mode = activeTool;
+    const size = parseInt(brushThickness.value);
+    const color = mainColorPicker.value;
+
+    ctx.save();
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+
+    if (mode === "eraser") {
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = size * 3;
+      ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(x, y); ctx.stroke();
+    } else if (mode === "glow") {
+      ctx.shadowBlur = 18;
+      ctx.shadowColor = color;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = size;
+      ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(x, y); ctx.stroke();
+    } else if (mode === "rainbow") {
+      rainbowHue = (rainbowHue + 4) % 360;
+      ctx.strokeStyle = `hsl(${rainbowHue}, 100%, 50%)`;
+      ctx.lineWidth = size;
+      ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(x, y); ctx.stroke();
+    } else if (mode === "spray") {
+      ctx.fillStyle = color;
+      const count = size * 2.5;
+      for (let i = 0; i < count; i++) {
+        const rad = Math.random() * size;
+        const angle = Math.random() * Math.PI * 2;
+        ctx.fillRect(x + Math.cos(angle) * rad, y + Math.sin(angle) * rad, 1.5, 1.5);
+      }
+    } else if (mode === "calligraphy") {
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1;
+      for (let i = 0; i < size; i++) {
+        ctx.beginPath(); ctx.moveTo(lastX + i, lastY - i); ctx.lineTo(x + i, y - i); ctx.stroke();
+      }
+    } else if (mode === "highlighter") {
+      ctx.strokeStyle = hexToRgba(color, 0.2);
+      ctx.lineWidth = size * 2.5;
+      ctx.lineCap = "square";
+      ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(x, y); ctx.stroke();
+    } else {
+      ctx.strokeStyle = color;
+      ctx.lineWidth = size;
+      ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(x, y); ctx.stroke();
+    }
+
+    ctx.restore();
+    lastX = x;
+    lastY = y;
+  }
+
+  function stop() {
+    if (!isDrawing) return;
+    isDrawing = false;
+    pushState();
+  }
+
+  function pushState() {
+    if (undoStack.length >= 15) undoStack.shift();
+    undoStack.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+    redoStack = [];
+  }
+
+  undoAction.addEventListener("click", () => {
+    if (undoStack.length > 1) {
+      redoStack.push(undoStack.pop());
+      ctx.putImageData(undoStack[undoStack.length - 1], 0, 0);
+    }
+  });
+
+  redoAction.addEventListener("click", () => {
+    if (redoStack.length > 0) {
+      const nextState = redoStack.pop();
+      undoStack.push(nextState);
+      ctx.putImageData(nextState, 0, 0);
+    }
+  });
+
+  clearAction.addEventListener("click", () => {
+    if (confirm("Tuvali ve tüm katmanları temizlemek istiyor musun? 💕")) {
+      fullResetCanvasAndLayers();
+    }
+  });
+
+  function fullResetCanvasAndLayers() {
+    resetCanvasWhite();
+    interactiveLayersContainer.innerHTML = "";
+    layers = [];
+    undoStack = [];
+    redoStack = [];
+    pushState();
+  }
+
+  function hexToRgba(hex, a) {
+    let c = hex.replace("#", "");
+    if (c.length === 3) c = c.split("").map(x => x + x).join("");
+    const n = parseInt(c, 16);
+    return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${a})`;
+  }
+
+  canvas.addEventListener("mousedown", start);
+  canvas.addEventListener("mousemove", stroke);
+  canvas.addEventListener("mouseup", stop);
+  canvas.addEventListener("mouseleave", stop);
+
+  canvas.addEventListener("touchstart", start, { passive: false });
+  canvas.addEventListener("touchmove", stroke, { passive: false });
+  canvas.addEventListener("touchend", stop);
+
+  // ==================== 💾 BİRLEŞTİRME & KAYDETME ====================
+  async function generateFinalMergedImage() {
+    const exportCanvas = document.createElement("canvas");
+    exportCanvas.width = canvas.width;
+    exportCanvas.height = canvas.height;
+    const expCtx = exportCanvas.getContext("2d");
+
+    // 1. Çizimleri kopyala
+    expCtx.drawImage(canvas, 0, 0);
+
+    const canvasRect = canvas.getBoundingClientRect();
+    const isRotated = window.innerHeight > window.innerWidth;
+
+    // 2. Tüm Katmanları (Fotoğraf & Yazı) Milimetrik Olarak Birleştir
+    for (const l of layers) {
+      const el = l.elem;
+      const rect = el.getBoundingClientRect();
+
+      let posX, posY;
+      if (isRotated) {
+        const rx = (rect.left + (rect.width / 2) - canvasRect.left) / canvasRect.width;
+        const ry = (rect.top + (rect.height / 2) - canvasRect.top) / canvasRect.height;
+        posX = ry * canvas.width;
+        posY = (1 - rx) * canvas.height;
+      } else {
+        const scaleX = canvas.width / canvasRect.width;
+        const scaleY = canvas.height / canvasRect.height;
+        posX = (rect.left + (rect.width / 2) - canvasRect.left) * scaleX;
+        posY = (rect.top + (rect.height / 2) - canvasRect.top) * scaleY;
+      }
+
+      if (l.type === 'photo') {
+        const img = l.img;
+        const scaleX = canvas.width / canvasRect.width;
+        const drawW = img.offsetWidth * (isRotated ? (canvas.height / canvasRect.height) : scaleX);
+        const drawH = img.offsetHeight * (isRotated ? (canvas.width / canvasRect.width) : (canvas.height / canvasRect.height));
+        expCtx.drawImage(img, posX - drawW / 2, posY - drawH / 2, drawW, drawH);
+      } 
+      else if (l.type === 'text') {
+        const textElem = l.textElem;
+        const fontSizePx = parseFloat(window.getComputedStyle(textElem).fontSize) || 28;
+        const scale = canvas.width / 1100;
+        expCtx.save();
+        expCtx.fillStyle = textElem.style.color || "#ff007f";
+        expCtx.font = `900 ${fontSizePx * scale}px -apple-system, BlinkMacSystemFont, sans-serif`;
+        expCtx.textAlign = "center";
+        expCtx.textBaseline = "middle";
+        expCtx.fillText(textElem.innerText, posX, posY);
+        expCtx.restore();
+      }
+    }
+
+    return exportCanvas.toDataURL("image/jpeg", 0.75);
+  }
+
+  saveCloudAction.addEventListener("click", async () => {
+    deselectAllLayers();
+    saveCloudAction.innerText = "Kaydediliyor...";
+    saveCloudAction.disabled = true;
+
+    try {
+      const dataUrl = await generateFinalMergedImage();
+      const newDrawingRef = push(drawingsDbRef);
+
+      await set(newDrawingRef, {
+        image: dataUrl,
+        author: activeArtist,
+        createdAt: new Date().toISOString()
+      });
+
+      // 🧹 KAYDETTİKTEN SONRA EKRANI VE KATMANLARI SIFIRLA
+      fullResetCanvasAndLayers();
+
+      alert(`Harika! ${activeArtist} olarak çizimin galeriye kaydedildi 💕 Yeni bir çizime başlayabilirsin!`);
+    } catch (e) {
+      console.error(e);
+      alert("Kayıt Hatası: " + (e.message || "Lütfen tekrar deneyin."));
+    } finally {
+      saveCloudAction.innerText = "💾 Kaydet";
+      saveCloudAction.disabled = false;
+    }
+  });
+
+  // REALTIME DATABASE GALERİ
+  onValue(drawingsDbRef, (snapshot) => {
+    galleryContainer.innerHTML = "";
+    const data = snapshot.val();
+
+    if (!data) {
+      galleryContainer.innerHTML = "<p style='text-align:center; width:100%; color:#aaa; font-size:12px;'>Henüz hiç çizim yok. İlk resmi siz çizin! 🎨</p>";
+      return;
+    }
+
+    const items = Object.entries(data).sort((a, b) => new Date(b[1].createdAt) - new Date(a[1].createdAt));
+
+    items.forEach(([docId, d]) => {
+      const time = new Date(d.createdAt).toLocaleDateString("tr-TR", {
+        day: "numeric",
+        month: "short",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+
+      const isArda = d.author === "Arda";
+      const card = document.createElement("div");
+      card.className = "gallery-single-card";
+      card.innerHTML = `
+        <button class="btn-delete-card" title="Çizimi Sil" data-id="${docId}">🗑️</button>
+        <img src="${d.image}" alt="Çizim" loading="lazy" />
+        <div class="single-card-meta">
+          <span style="color: ${isArda ? '#3a86ff' : '#ff007f'};">
+            ${isArda ? '👑 Arda' : '💎 Zeynep'}
+          </span>
+          <span style="color:#aaa;">${time}</span>
+        </div>
+      `;
+
+      card.querySelector("img").addEventListener("click", () => {
+        fullImageTarget.src = d.image;
+        fullImageViewer.style.display = "flex";
+      });
+
+      card.querySelector(".btn-delete-card").addEventListener("click", async (e) => {
+        e.stopPropagation();
+        if (confirm("Bu çizimi galeriden silmek istediğinize emin misiniz?")) {
+          try {
+            await remove(ref(db, `arda_zeynep_drawings/${docId}`));
+          } catch (err) {
+            alert("Silme hatası: " + err.message);
+          }
+        }
+      });
+
+      galleryContainer.appendChild(card);
+    });
+  });
+</script>
+<!-- ==================== ARDA & ZEYNEP MASTER PRO BİTİŞ ==================== -->
+
  
 
 
