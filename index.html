@@ -11139,7 +11139,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
 </script>
 
 
-<!-- ==================== ARDA & ZEYNEP PRO MASTER (TEK KAYDET BUTONLU) ==================== -->
+<!-- ==================== ARDA & ZEYNEP PRO MASTER (ÇIKIŞ KORUMALI) ==================== -->
 <style>
   #tuval-modal-overlay *, #tuval-modal-overlay *::before, #tuval-modal-overlay *::after {
     box-sizing: border-box;
@@ -11185,7 +11185,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     100% { background-position: 0% 50%; }
   }
 
-  /* TAM EKRAN MODAL (dvh / dvw UYUMLU) */
+  /* TAM EKRAN MODAL */
   #tuval-modal-overlay {
     position: fixed;
     top: 0; left: 0;
@@ -11225,7 +11225,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     }
   }
 
-  /* 1. ÜST ŞERİT (TEK VE NET KAYDET BUTONU) */
+  /* 1. ÜST ŞERİT */
   .studio-header-compact {
     background: rgba(25, 12, 38, 0.95);
     padding: 4px 10px;
@@ -11366,7 +11366,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     box-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
   }
 
-  /* SAĞ TUVAL ALANI & KATMANLAR */
+  /* SAĞ TUVAL ALANI */
   .studio-canvas-area {
     flex: 1;
     min-height: 0;
@@ -11464,7 +11464,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
   .layer-ctrl-btn:hover { background: rgba(255, 255, 255, 0.25); }
   .layer-ctrl-del { background: #ff0055; border-color: #ff0055; }
 
-  /* 3. ALT BARI (SADECE AKSİYONLAR VE RENKLER) */
+  /* 3. ALT BARI */
   .studio-bottom-bar {
     height: 40px;
     background: rgba(25, 12, 38, 0.95);
@@ -11584,6 +11584,135 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     transform: scale(1.15);
   }
 
+  /* ==================== 🥺 YARIDA BIRAKMA ÇIKIŞ MODALI ==================== */
+  #exitConfirmModal {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+  }
+
+  .exit-popup-card {
+    background: #190c26;
+    border: 1.5px solid #ff007f;
+    border-radius: 20px;
+    padding: 16px 20px;
+    width: 100%;
+    max-width: 330px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(255, 0, 127, 0.4);
+    animation: popIn 0.25s ease-out;
+  }
+
+  @keyframes popIn {
+    0% { transform: scale(0.85); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .exit-popup-icon { font-size: 32px; margin-bottom: 6px; }
+  .exit-popup-card h3 { color: #ffffff; font-size: 15px; font-weight: 900; margin-bottom: 4px; }
+  .exit-popup-card p { color: #e9d5ff; font-size: 11.5px; margin-bottom: 14px; }
+
+  .exit-popup-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .exit-btn {
+    width: 100%;
+    padding: 8px;
+    border-radius: 10px;
+    font-size: 11.5px;
+    font-weight: 900;
+    cursor: pointer;
+    border: none;
+    transition: 0.15s transform;
+  }
+  .exit-btn:active { transform: scale(0.97); }
+
+  .btn-exit-save {
+    background: linear-gradient(135deg, #ff007f, #ff548f);
+    color: white;
+    box-shadow: 0 3px 12px rgba(255, 0, 127, 0.4);
+  }
+  .btn-exit-discard {
+    background: rgba(255, 0, 85, 0.15);
+    color: #ff4d6d;
+    border: 1px solid rgba(255, 0, 85, 0.3);
+  }
+  .btn-exit-cancel {
+    background: rgba(255, 255, 255, 0.08);
+    color: #cbd5e1;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  /* ÖZEL YAZI POPUP'I */
+  #customTextModal {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    z-index: 105;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .text-popup-card {
+    background: #190c26;
+    border: 1.5px solid #ff007f;
+    border-radius: 20px;
+    padding: 16px;
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+    box-shadow: 0 10px 35px rgba(255, 0, 127, 0.35);
+  }
+  .text-popup-card h3 { color: #ff007f; font-size: 15px; margin-bottom: 8px; font-weight: 900; }
+  .text-popup-input {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    font-size: 13px;
+    outline: none;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  .text-popup-actions { display: flex; gap: 8px; }
+  .popup-btn { flex: 1; padding: 7px; border-radius: 10px; font-size: 11px; font-weight: 800; cursor: pointer; border: none; }
+  .popup-btn-cancel { background: rgba(255, 255, 255, 0.1); color: #ccc; }
+  .popup-btn-confirm { background: #ff007f; color: white; }
+
+  /* BİLDİRİM TOAST */
+  #customToast {
+    position: absolute;
+    top: 45px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: linear-gradient(135deg, #ff007f, #7928ca);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 800;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    z-index: 999999;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  #customToast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
   /* İSİM SEÇİM EKRANI */
   #studioNameModal {
     position: absolute;
@@ -11600,36 +11729,13 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
   .name-pick-title h2 { color: #ffffff; font-size: 20px; font-weight: 900; margin: 0 0 4px 0; }
   .name-pick-title p { color: #e9d5ff; font-size: 11px; margin: 0; }
 
-  .couple-cards-grid {
-    display: flex;
-    gap: 15px;
-    max-width: 480px;
-    width: 100%;
-  }
-  .couple-card {
-    flex: 1;
-    border-radius: 18px;
-    padding: 14px;
-    text-align: center;
-    cursor: pointer;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-    transition: all 0.25s ease;
-    backdrop-filter: blur(10px);
-  }
+  .couple-cards-grid { display: flex; gap: 15px; max-width: 480px; width: 100%; }
+  .couple-card { flex: 1; border-radius: 18px; padding: 14px; text-align: center; cursor: pointer; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6); transition: all 0.25s ease; backdrop-filter: blur(10px); }
   .couple-card:hover { transform: translateY(-4px) scale(1.03); }
   .card-arda { background: linear-gradient(145deg, rgba(58, 134, 255, 0.3) 0%, rgba(13, 27, 62, 0.9) 100%); border: 2px solid #3a86ff; }
   .card-zeynep { background: linear-gradient(145deg, rgba(255, 0, 110, 0.3) 0%, rgba(65, 10, 35, 0.9) 100%); border: 2px solid #ff006e; }
 
-  .avatar-icon-box {
-    width: 50px;
-    height: 50px;
-    border-radius: 14px;
-    margin: 0 auto 6px auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 26px;
-  }
+  .avatar-icon-box { width: 50px; height: 50px; border-radius: 14px; margin: 0 auto 6px auto; display: flex; align-items: center; justify-content: center; font-size: 26px; }
   .card-arda .avatar-icon-box { background: linear-gradient(135deg, #3a86ff, #00f2fe); }
   .card-zeynep .avatar-icon-box { background: linear-gradient(135deg, #ff006e, #fee140); }
   .couple-card h3 { margin: 0 0 4px 0; font-size: 16px; font-weight: 900; color: #ffffff; }
@@ -11670,8 +11776,35 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
 <div id="tuval-modal-overlay">
   <div id="tuval-app-container">
 
-    <!-- GİZLİ DOSYA YÜKLEYİCİ -->
     <input type="file" id="photoFileInput" accept="image/*" style="display: none;" />
+
+    <div id="customToast">Kaydedildi 💕</div>
+
+    <!-- 🥺 YARIDA BIRAKMA / ÇIKIŞ ONAY MODALI -->
+    <div id="exitConfirmModal">
+      <div class="exit-popup-card">
+        <div class="exit-popup-icon">🥺💕</div>
+        <h3>Çizimi Yarıda mı Bırakacaksın?</h3>
+        <p>Kaydetmediğin çizimlerin var. Çıkmadan önce ne yapmak istersin?</p>
+        <div class="exit-popup-buttons">
+          <button id="btnExitSave" class="exit-btn btn-exit-save">💾 Kaydet ve Çık</button>
+          <button id="btnExitDiscard" class="exit-btn btn-exit-discard">🗑️ Çizimi Sil ve Çık</button>
+          <button id="btnExitCancel" class="exit-btn btn-exit-cancel">🎨 Çizmeye Devam Et</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÖZEL YAZI POPUP'I -->
+    <div id="customTextModal">
+      <div class="text-popup-card">
+        <h3>Tuvale Yazı Ekle 💕</h3>
+        <input type="text" id="customTextInput" class="text-popup-input" placeholder="Seni Seviyorum..." maxlength="60" />
+        <div class="text-popup-actions">
+          <button id="cancelCustomText" class="popup-btn popup-btn-cancel">Vazgeç</button>
+          <button id="confirmCustomText" class="popup-btn popup-btn-confirm">Ekle</button>
+        </div>
+      </div>
+    </div>
 
     <!-- LÜKS İSİM SEÇİM EKRANI -->
     <div id="studioNameModal">
@@ -11706,7 +11839,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
       </div>
     </div>
 
-    <!-- 1. ÜST ŞERİT (TEK VE NET KAYDET BUTONU BURADA) -->
+    <!-- 1. ÜST ŞERİT -->
     <div class="studio-header-compact">
       <div class="header-left">
         <span>🎨</span> Aşk Stüdyosu <span class="header-badge">MASTER</span>
@@ -11751,7 +11884,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
         <button class="stamp-pick-btn" data-stamp="💍">💍</button>
       </div>
 
-      <!-- SAĞ DEV TUVAL & KATMANLAR KUTUSU -->
+      <!-- SAĞ DEV TUVAL & KATMANLAR -->
       <div class="studio-canvas-area" id="canvasWrap">
         <div class="canvas-stage-wrapper">
           <canvas id="studioCanvas" width="1200" height="750"></canvas>
@@ -11761,7 +11894,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
 
     </div>
 
-    <!-- 3. ALT KONTROL BARI (SADE VE NET) -->
+    <!-- 3. ALT KONTROL BARI -->
     <div class="studio-bottom-bar">
       <div class="bottom-left-tools">
         <div class="main-color-btn" id="colorBtnWrap" style="background: #ff007f;">
@@ -11796,7 +11929,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
   <img id="fullImageTarget" src="" alt="Önizleme" />
 </div>
 
-<!-- ==================== JAVASCRIPT & MOTOR ==================== -->
+<!-- ==================== JAVASCRIPT MOTORU ==================== -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { 
@@ -11852,6 +11985,19 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
   const fullImageTarget = document.getElementById("fullImageTarget");
   const photoFileInput = document.getElementById("photoFileInput");
 
+  // Popup & Toast
+  const customTextModal = document.getElementById("customTextModal");
+  const customTextInput = document.getElementById("customTextInput");
+  const cancelCustomText = document.getElementById("cancelCustomText");
+  const confirmCustomText = document.getElementById("confirmCustomText");
+  const customToast = document.getElementById("customToast");
+
+  // Çıkış Onay Modalı DOM
+  const exitConfirmModal = document.getElementById("exitConfirmModal");
+  const btnExitSave = document.getElementById("btnExitSave");
+  const btnExitDiscard = document.getElementById("btnExitDiscard");
+  const btnExitCancel = document.getElementById("btnExitCancel");
+
   let activeArtist = "Arda";
   let activeTool = "normal";
   let isDrawing = false;
@@ -11862,8 +12008,19 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
   let undoStack = [];
   let redoStack = [];
   let layers = [];
+  let editingLayerTextElem = null;
 
-  // ==================== ⛶ FULLSCREEN MODU ====================
+  function showToast(msg) {
+    customToast.innerText = msg;
+    customToast.classList.add("show");
+    setTimeout(() => { customToast.classList.remove("show"); }, 3000);
+  }
+
+  function hasUnsavedChanges() {
+    return undoStack.length > 1 || layers.length > 0;
+  }
+
+  // ==================== ⛶ TAM EKRAN KİLİTLEME ====================
   function enterFullscreen() {
     const docEl = document.documentElement;
     if (docEl.requestFullscreen) {
@@ -11894,9 +12051,42 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     enterFullscreen();
   });
 
+  // ==================== 🚪 GÜVENLİ ÇIKIŞ DENETİMİ ====================
   closeStudioBtn.addEventListener("click", () => {
+    if (hasUnsavedChanges()) {
+      exitConfirmModal.style.display = "flex";
+    } else {
+      modalOverlay.style.display = "none";
+      exitFullscreen();
+    }
+  });
+
+  btnExitCancel.addEventListener("click", () => {
+    exitConfirmModal.style.display = "none";
+    enterFullscreen();
+  });
+
+  btnExitDiscard.addEventListener("click", () => {
+    exitConfirmModal.style.display = "none";
+    fullResetCanvasAndLayers();
     modalOverlay.style.display = "none";
     exitFullscreen();
+  });
+
+  btnExitSave.addEventListener("click", async () => {
+    btnExitSave.innerText = "Kaydediliyor...";
+    btnExitSave.disabled = true;
+    try {
+      await saveDrawingToCloud();
+      exitConfirmModal.style.display = "none";
+      modalOverlay.style.display = "none";
+      exitFullscreen();
+    } catch (e) {
+      alert("Kayıt hatası!");
+    } finally {
+      btnExitSave.innerText = "💾 Kaydet ve Çık";
+      btnExitSave.disabled = false;
+    }
   });
 
   // PROFİL SEÇİMİ
@@ -11906,13 +12096,14 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
       currentName.innerText = activeArtist;
       currentIcon.innerText = activeArtist === "Arda" ? "👑" : "💎";
       nameModal.style.display = "none";
+      enterFullscreen();
     });
   });
   changeUserTrigger.addEventListener("click", () => { nameModal.style.display = "flex"; });
 
   // GALERİ
   openGalleryBtn.addEventListener("click", () => { galleryModal.style.display = "flex"; });
-  closeGalleryBtn.addEventListener("click", () => { galleryModal.style.display = "none"; });
+  closeGalleryBtn.addEventListener("click", () => { galleryModal.style.display = "none"; enterFullscreen(); });
 
   // SOL ARAÇ SEÇİMİ
   document.querySelectorAll(".tool-dock-btn").forEach(btn => {
@@ -11935,7 +12126,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
       }
 
       if (activeTool === "text") {
-        addNewTextLayer();
+        openCustomTextPopup();
       }
 
       if (activeTool === "photo") {
@@ -11955,6 +12146,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
       const reader = new FileReader();
       reader.onload = (evt) => {
         createPhotoLayer(evt.target.result);
+        enterFullscreen();
       };
       reader.readAsDataURL(file);
     }
@@ -12007,11 +12199,34 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     triggerMoveMode();
   }
 
-  // ==================== 🔤 YAZI KATMANI ====================
-  function addNewTextLayer() {
-    const input = prompt("Tuvale ne yazmak istersin aşkım? 💕", "Seni Seviyorum 💕");
-    if (!input || input.trim() === "") return;
+  // ==================== 🔤 ÖZEL YAZI MOTORU ====================
+  function openCustomTextPopup(editElem = null) {
+    editingLayerTextElem = editElem;
+    customTextInput.value = editElem ? editElem.innerText : "Seni Seviyorum 💕";
+    customTextModal.style.display = "flex";
+    setTimeout(() => customTextInput.focus(), 100);
+  }
 
+  cancelCustomText.addEventListener("click", () => {
+    customTextModal.style.display = "none";
+    enterFullscreen();
+  });
+
+  confirmCustomText.addEventListener("click", () => {
+    const textVal = customTextInput.value.trim();
+    if (!textVal) return;
+
+    if (editingLayerTextElem) {
+      editingLayerTextElem.innerText = textVal;
+    } else {
+      createTextLayer(textVal);
+    }
+
+    customTextModal.style.display = "none";
+    enterFullscreen();
+  });
+
+  function createTextLayer(textVal) {
     const layerId = "layer_" + Date.now();
     const layerBox = document.createElement("div");
     layerBox.className = "layer-item-box selected";
@@ -12024,7 +12239,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
 
     layerBox.innerHTML = `
       <div class="layer-text-content" style="font-size: ${fontSize}px; font-weight: 900; color: ${currentColor}; white-space: nowrap; text-shadow: 0 0 10px rgba(0,0,0,0.5);">
-        ${input}
+        ${textVal}
       </div>
       <div class="layer-controls-mini">
         <button class="layer-ctrl-btn ctrl-dec">A-</button>
@@ -12050,8 +12265,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
 
     layerBox.querySelector(".ctrl-edit").addEventListener("click", (e) => {
       e.stopPropagation();
-      const updated = prompt("Yazıyı düzenle:", textContent.innerText);
-      if (updated && updated.trim() !== "") textContent.innerText = updated;
+      openCustomTextPopup(textContent);
     });
 
     layerBox.querySelector(".layer-ctrl-del").addEventListener("click", (e) => {
@@ -12291,9 +12505,8 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
   });
 
   clearAction.addEventListener("click", () => {
-    if (confirm("Tuvali ve tüm katmanları temizlemek istiyor musun? 💕")) {
-      fullResetCanvasAndLayers();
-    }
+    fullResetCanvasAndLayers();
+    showToast("Tuval Temizlendi ✨");
   });
 
   function fullResetCanvasAndLayers() {
@@ -12374,26 +12587,31 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     return exportCanvas.toDataURL("image/jpeg", 0.75);
   }
 
-  saveCloudBtn.addEventListener("click", async () => {
+  async function saveDrawingToCloud() {
     deselectAllLayers();
+    const dataUrl = await generateFinalMergedImage();
+    const newDrawingRef = push(drawingsDbRef);
+
+    await set(newDrawingRef, {
+      image: dataUrl,
+      author: activeArtist,
+      createdAt: new Date().toISOString()
+    });
+
+    fullResetCanvasAndLayers();
+    showToast(`Harika! ${activeArtist} olarak kaydedildi 💕`);
+  }
+
+  saveCloudBtn.addEventListener("click", async () => {
     saveCloudBtn.innerText = "Kaydediliyor...";
     saveCloudBtn.disabled = true;
 
     try {
-      const dataUrl = await generateFinalMergedImage();
-      const newDrawingRef = push(drawingsDbRef);
-
-      await set(newDrawingRef, {
-        image: dataUrl,
-        author: activeArtist,
-        createdAt: new Date().toISOString()
-      });
-
-      fullResetCanvasAndLayers();
-      alert(`Harika! ${activeArtist} olarak çizimin galeriye kaydedildi 💕 Yeni bir çizime başlayabilirsin!`);
+      await saveDrawingToCloud();
+      enterFullscreen();
     } catch (e) {
       console.error(e);
-      alert("Kayıt Hatası: " + (e.message || "Lütfen tekrar deneyin."));
+      showToast("Kayıt Hatası!");
     } finally {
       saveCloudBtn.innerText = "💾 Kaydet";
       saveCloudBtn.disabled = false;
@@ -12441,12 +12659,11 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
 
       card.querySelector(".btn-delete-card").addEventListener("click", async (e) => {
         e.stopPropagation();
-        if (confirm("Bu çizimi galeriden silmek istediğinize emin misiniz?")) {
-          try {
-            await remove(ref(db, `arda_zeynep_drawings/${docId}`));
-          } catch (err) {
-            alert("Silme hatası: " + err.message);
-          }
+        try {
+          await remove(ref(db, `arda_zeynep_drawings/${docId}`));
+          showToast("Çizim Silindi 🗑️");
+        } catch (err) {
+          showToast("Silme hatası!");
         }
       });
 
