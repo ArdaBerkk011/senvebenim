@@ -11139,7 +11139,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
 </script>
 
 
-<!-- ==================== ARDA & ZEYNEP PRO MASTER (TAM DÜZELTİLMİŞ FİNAL) ==================== -->
+<!-- ==================== ARDA & ZEYNEP PRO MASTER (BUG FİXED FULL SÜRÜM) ==================== -->
 <style>
   #tuval-modal-overlay *, #tuval-modal-overlay *::before, #tuval-modal-overlay *::after {
     box-sizing: border-box;
@@ -11225,14 +11225,14 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     }
   }
 
-  /* ==================== 1. ÜST ŞERİT (ORTALANMIŞ & TAM DENGELİ) ==================== */
+  /* ==================== 1. ÜST ŞERİT (ORTALANMIŞ & DENGELİ) ==================== */
   .studio-header-compact {
     background: rgba(25, 12, 38, 0.95);
     padding: 4px 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     height: 40px;
     flex-shrink: 0;
@@ -11341,6 +11341,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     overflow-y: auto;
     scrollbar-width: none;
     flex-shrink: 0;
+    z-index: 30;
   }
   .studio-left-dock::-webkit-scrollbar { display: none; }
 
@@ -11368,7 +11369,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     box-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
   }
 
-  /* SAĞ TUVAL KUTUSU */
+  /* SAĞ TUVAL ALANI & KATMANLAR */
   .studio-canvas-area {
     flex: 1;
     min-height: 0;
@@ -11402,7 +11403,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
   #interactiveLayersContainer {
     position: absolute;
     inset: 0;
-    pointer-events: none !important; /* Kalem modunda asla tıklanmaz */
+    pointer-events: none !important; /* Kalem modunda tıklanmaz */
     z-index: 10;
   }
 
@@ -11411,7 +11412,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     pointer-events: auto !important;
   }
 
-  /* KATMAN 2: EN ÜSTTEKİ ŞEFFAF ÇİZİM TUVALİ (Z: 100) */
+  /* KATMAN 2: EN ÜSTTEKİ ŞEFFAF ÇİZİM TUVALİ (Z: 20) */
   #studioCanvas {
     background: transparent !important;
     position: absolute;
@@ -11420,11 +11421,10 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     height: 100%;
     display: block;
     touch-action: none;
-    z-index: 100 !important; /* Fotoğrafın tam üstünde yer alır */
+    z-index: 20 !important;
     pointer-events: auto !important;
   }
 
-  /* El/Taşı Modundayken Tuval Dokunmayı Katmana Bırakır */
   .move-mode-active #studioCanvas {
     pointer-events: none !important;
   }
@@ -11605,13 +11605,63 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     transform: scale(1.15);
   }
 
-  /* ==================== 🥺 YARIDA BIRAKMA ÇIKIŞ MODALI ==================== */
+  /* ==================== 👑 İSİM SEÇİM EKRANI (Z-INDEX: 500) ==================== */
+  #studioNameModal {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at center, #24082e 0%, #0d0314 100%);
+    z-index: 500 !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+  }
+  .name-pick-title { text-align: center; margin-bottom: 12px; }
+  .name-pick-title h2 { color: #ffffff; font-size: 20px; font-weight: 900; margin: 0 0 4px 0; }
+  .name-pick-title p { color: #e9d5ff; font-size: 11px; margin: 0; }
+
+  .couple-cards-grid { display: flex; gap: 15px; max-width: 480px; width: 100%; }
+  .couple-card { flex: 1; border-radius: 18px; padding: 14px; text-align: center; cursor: pointer; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6); transition: all 0.25s ease; backdrop-filter: blur(10px); }
+  .couple-card:hover { transform: translateY(-4px) scale(1.03); }
+  .card-arda { background: linear-gradient(145deg, rgba(58, 134, 255, 0.3) 0%, rgba(13, 27, 62, 0.9) 100%); border: 2px solid #3a86ff; }
+  .card-zeynep { background: linear-gradient(145deg, rgba(255, 0, 110, 0.3) 0%, rgba(65, 10, 35, 0.9) 100%); border: 2px solid #ff006e; }
+
+  .avatar-icon-box { width: 50px; height: 50px; border-radius: 14px; margin: 0 auto 6px auto; display: flex; align-items: center; justify-content: center; font-size: 26px; }
+  .card-arda .avatar-icon-box { background: linear-gradient(135deg, #3a86ff, #00f2fe); }
+  .card-zeynep .avatar-icon-box { background: linear-gradient(135deg, #ff006e, #fee140); }
+  .couple-card h3 { margin: 0 0 4px 0; font-size: 16px; font-weight: 900; color: #ffffff; }
+  .couple-card .card-role { font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 10px; display: inline-block; }
+  .card-arda .card-role { background: #3a86ff; color: #ffffff; }
+  .card-zeynep .card-role { background: #ff006e; color: #ffffff; }
+
+  /* ==================== 🖼️ GALERİ MODALI (Z-INDEX: 600) ==================== */
+  #studioGalleryModal {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 7, 25, 0.98);
+    backdrop-filter: blur(16px);
+    z-index: 600 !important;
+    display: none;
+    flex-direction: column;
+    padding: 12px;
+    overflow-y: auto;
+  }
+  .gallery-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+  .gallery-header-row h3 { margin: 0; color: #ff007f; font-size: 15px; font-weight: 900; }
+  .gallery-cards-flow { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+  .gallery-single-card { background: rgba(255, 255, 255, 0.05); border-radius: 10px; padding: 4px; border: 1px solid rgba(255, 255, 255, 0.1); cursor: pointer; position: relative; }
+  .gallery-single-card img { width: 100%; aspect-ratio: 16/10; object-fit: contain; border-radius: 6px; background: #fff; }
+  .single-card-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 3px; font-size: 9.5px; font-weight: 800; }
+  .btn-delete-card { position: absolute; top: 6px; right: 6px; background: rgba(255, 0, 85, 0.9); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+  /* ==================== 🥺 ÇIKIŞ ONAY MODALI (Z-INDEX: 700) ==================== */
   #exitConfirmModal {
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
     background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(12px);
-    z-index: 9999999 !important;
+    z-index: 700 !important;
     display: none;
     align-items: center;
     justify-content: center;
@@ -11638,48 +11688,20 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
   .exit-popup-icon { font-size: 32px; margin-bottom: 6px; }
   .exit-popup-card h3 { color: #ffffff; font-size: 15px; font-weight: 900; margin-bottom: 4px; }
   .exit-popup-card p { color: #e9d5ff; font-size: 11.5px; margin-bottom: 14px; }
-
-  .exit-popup-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .exit-btn {
-    width: 100%;
-    padding: 8px;
-    border-radius: 10px;
-    font-size: 11.5px;
-    font-weight: 900;
-    cursor: pointer;
-    border: none;
-    transition: 0.15s transform;
-  }
+  .exit-popup-buttons { display: flex; flex-direction: column; gap: 6px; }
+  .exit-btn { width: 100%; padding: 8px; border-radius: 10px; font-size: 11.5px; font-weight: 900; cursor: pointer; border: none; }
   .exit-btn:active { transform: scale(0.97); }
+  .btn-exit-save { background: linear-gradient(135deg, #ff007f, #ff548f); color: white; box-shadow: 0 3px 12px rgba(255, 0, 127, 0.4); }
+  .btn-exit-discard { background: rgba(255, 0, 85, 0.15); color: #ff4d6d; border: 1px solid rgba(255, 0, 85, 0.3); }
+  .btn-exit-cancel { background: rgba(255, 255, 255, 0.08); color: #cbd5e1; border: 1px solid rgba(255, 255, 255, 0.15); }
 
-  .btn-exit-save {
-    background: linear-gradient(135deg, #ff007f, #ff548f);
-    color: white;
-    box-shadow: 0 3px 12px rgba(255, 0, 127, 0.4);
-  }
-  .btn-exit-discard {
-    background: rgba(255, 0, 85, 0.15);
-    color: #ff4d6d;
-    border: 1px solid rgba(255, 0, 85, 0.3);
-  }
-  .btn-exit-cancel {
-    background: rgba(255, 255, 255, 0.08);
-    color: #cbd5e1;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-  }
-
-  /* ÖZEL YAZI POPUP'I */
+  /* ÖZEL YAZI POPUP'I (Z-INDEX: 400) */
   #customTextModal {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(0, 0, 0, 0.75);
     backdrop-filter: blur(8px);
-    z-index: 105;
+    z-index: 400 !important;
     display: none;
     align-items: center;
     justify-content: center;
@@ -11714,7 +11736,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
   .popup-btn-cancel { background: rgba(255, 255, 255, 0.1); color: #ccc; }
   .popup-btn-confirm { background: #ff007f; color: white; }
 
-  /* BİLDİRİM TOAST */
+  /* BİLDİRİM TOAST (Z-INDEX: 999) */
   #customToast {
     position: absolute;
     top: 45px;
@@ -11727,64 +11749,15 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     font-size: 11px;
     font-weight: 800;
     box-shadow: 0 6px 20px rgba(0,0,0,0.5);
-    z-index: 999999;
+    z-index: 999 !important;
     opacity: 0;
     pointer-events: none;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
   #customToast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* İSİM SEÇİM EKRANI */
-  #studioNameModal {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: radial-gradient(circle at center, #24082e 0%, #0d0314 100%);
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 15px;
-  }
-  .name-pick-title { text-align: center; margin-bottom: 12px; }
-  .name-pick-title h2 { color: #ffffff; font-size: 20px; font-weight: 900; margin: 0 0 4px 0; }
-  .name-pick-title p { color: #e9d5ff; font-size: 11px; margin: 0; }
-
-  .couple-cards-grid { display: flex; gap: 15px; max-width: 480px; width: 100%; }
-  .couple-card { flex: 1; border-radius: 18px; padding: 14px; text-align: center; cursor: pointer; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6); transition: all 0.25s ease; backdrop-filter: blur(10px); }
-  .couple-card:hover { transform: translateY(-4px) scale(1.03); }
-  .card-arda { background: linear-gradient(145deg, rgba(58, 134, 255, 0.3) 0%, rgba(13, 27, 62, 0.9) 100%); border: 2px solid #3a86ff; }
-  .card-zeynep { background: linear-gradient(145deg, rgba(255, 0, 110, 0.3) 0%, rgba(65, 10, 35, 0.9) 100%); border: 2px solid #ff006e; }
-
-  .avatar-icon-box { width: 50px; height: 50px; border-radius: 14px; margin: 0 auto 6px auto; display: flex; align-items: center; justify-content: center; font-size: 26px; }
-  .card-arda .avatar-icon-box { background: linear-gradient(135deg, #3a86ff, #00f2fe); }
-  .card-zeynep .avatar-icon-box { background: linear-gradient(135deg, #ff006e, #fee140); }
-  .couple-card h3 { margin: 0 0 4px 0; font-size: 16px; font-weight: 900; color: #ffffff; }
-  .couple-card .card-role { font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 10px; display: inline-block; }
-  .card-arda .card-role { background: #3a86ff; color: #ffffff; }
-  .card-zeynep .card-role { background: #ff006e; color: #ffffff; }
-
-  /* GALERİ & TAM EKRAN */
-  #studioGalleryModal {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(15, 7, 25, 0.98);
-    backdrop-filter: blur(16px);
-    z-index: 102;
-    display: none;
-    flex-direction: column;
-    padding: 12px;
-    overflow-y: auto;
-  }
-  .gallery-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-  .gallery-header-row h3 { margin: 0; color: #ff007f; font-size: 15px; font-weight: 900; }
-  .gallery-cards-flow { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
-  .gallery-single-card { background: rgba(255, 255, 255, 0.05); border-radius: 10px; padding: 4px; border: 1px solid rgba(255, 255, 255, 0.1); cursor: pointer; position: relative; }
-  .gallery-single-card img { width: 100%; aspect-ratio: 16/10; object-fit: contain; border-radius: 6px; background: #fff; }
-  .single-card-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 3px; font-size: 9.5px; font-weight: 800; }
-  .btn-delete-card { position: absolute; top: 6px; right: 6px; background: rgba(255, 0, 85, 0.9); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-
-  #fullImageViewer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 999999; display: none; align-items: center; justify-content: center; padding: 10px; }
+  /* TAM EKRAN BÜYÜK RESİM (Z-INDEX: 9999) */
+  #fullImageViewer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999 !important; display: none; align-items: center; justify-content: center; padding: 10px; }
   #fullImageViewer img { max-width: 95%; max-height: 90vh; border-radius: 12px; }
 </style>
 
@@ -11796,7 +11769,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
 <!-- 2. TAM EKRAN ÇİZİM STÜDYOSU -->
 <div id="tuval-modal-overlay">
 
-  <!-- 🥺 YARIDA BIRAKMA ÇIKIŞ MODALI -->
+  <!-- 🥺 ÇIKIŞ ONAY MODALI (Z-INDEX: 700) -->
   <div id="exitConfirmModal">
     <div class="exit-popup-card">
       <div class="exit-popup-icon">🥺💕</div>
@@ -11816,7 +11789,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
 
     <div id="customToast">Kaydedildi 💕</div>
 
-    <!-- ÖZEL YAZI POPUP'I -->
+    <!-- ÖZEL YAZI POPUP'I (Z-INDEX: 400) -->
     <div id="customTextModal">
       <div class="text-popup-card">
         <h3>Tuvale Yazı Ekle 💕</h3>
@@ -11828,7 +11801,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
       </div>
     </div>
 
-    <!-- LÜKS İSİM SEÇİM EKRANI -->
+    <!-- 👑 İSİM SEÇİM EKRANI (Z-INDEX: 500 - HER ZAMAN EN ÜSTTE AÇILIR) -->
     <div id="studioNameModal">
       <div class="name-pick-title">
         <h2>Aşk Tuvali 💕</h2>
@@ -11850,7 +11823,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
       </div>
     </div>
 
-    <!-- GEÇMİŞ ANILAR GALERİSİ -->
+    <!-- 🖼️ GEÇMİŞ ANILAR GALERİSİ (Z-INDEX: 600) -->
     <div id="studioGalleryModal">
       <div class="gallery-header-row">
         <h3>🖼️ Çizim & Anı Galerimiz</h3>
@@ -11861,7 +11834,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
       </div>
     </div>
 
-    <!-- 1. ÜST ŞERİT (ORTALANMIŞ VE DENGELİ) -->
+    <!-- 1. ÜST ŞERİT (ORTALANMIŞ & DENGELİ) -->
     <div class="studio-header-compact">
       <div class="header-actions-wrap">
         <button class="btn-gallery-open" id="openGalleryBtn">🖼️ Galerimiz</button>
@@ -11909,7 +11882,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
         <div class="canvas-stage-wrapper">
           <!-- 1. ALTTTAKİ FOTOĞRAF VE YAZILAR (Z: 10) -->
           <div id="interactiveLayersContainer"></div>
-          <!-- 2. EN ÜSTTEKİ ŞEFFAF ÇİZİM TUVALİ (Z: 100 - FOTOĞRAFIN ÜSTÜNE ÇİZER) -->
+          <!-- 2. EN ÜSTTEKİ ŞEFFAF ÇİZİM TUVALİ (Z: 20 - FOTOĞRAFIN ÜSTÜNE ÇİZER) -->
           <canvas id="studioCanvas" width="1200" height="750"></canvas>
         </div>
       </div>
@@ -11951,7 +11924,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
   <img id="fullImageTarget" src="" alt="Önizleme" />
 </div>
 
-<!-- ==================== JAVASCRIPT & GELİŞMİŞ MOTOR ==================== -->
+<!-- ==================== JAVASCRIPT & MOTOR ==================== -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { 
@@ -12075,7 +12048,9 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     enterFullscreen();
   });
 
+  // 🎯 HER AÇILIŞTA İSİM SEÇİMİNİ MUTLAKA GÖSTER
   openStudioBtn.addEventListener("click", () => {
+    nameModal.style.display = "flex"; // İsim modalını mutlaka aç
     modalOverlay.style.display = "flex";
     enterFullscreen();
   });
@@ -12118,17 +12093,19 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     }
   });
 
-  // PROFİL SEÇİMİ
+  // ==================== 👑 PROFİL SEÇİMİ ====================
   document.querySelectorAll(".couple-card").forEach(card => {
     card.addEventListener("click", () => {
       activeArtist = card.dataset.name;
       currentName.innerText = activeArtist;
       currentIcon.innerText = activeArtist === "Arda" ? "👑" : "💎";
-      nameModal.style.display = "none";
+      nameModal.style.display = "none"; // Seçilince kapat
       enterFullscreen();
     });
   });
-  changeUserTrigger.addEventListener("click", () => { nameModal.style.display = "flex"; });
+  changeUserTrigger.addEventListener("click", () => { 
+    nameModal.style.display = "flex"; 
+  });
 
   // GALERİ
   openGalleryBtn.addEventListener("click", () => { galleryModal.style.display = "flex"; });
@@ -12581,7 +12558,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     exportCanvas.height = canvas.height;
     const expCtx = exportCanvas.getContext("2d");
 
-    // 1. Önce Beyaz Arka Plan
+    // 1. Beyaz Arka Plan
     expCtx.fillStyle = "#ffffff";
     expCtx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
 
