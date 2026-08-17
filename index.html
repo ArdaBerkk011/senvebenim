@@ -5317,7 +5317,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
 
   <!-- SAĞ ÜST ÇIKIŞ BUTONU (ONAY PENCERESİNİ AÇAR) -->
   <button class="kralice-top-exit-btn" onclick="openExitModal()" title="Oyundan Çık / Mola Ver">
-    ✖ Geri Dön
+    ✖
   </button>
 
   <div class="game-container">
@@ -9253,7 +9253,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
 
 <style>
     /* ==========================================================
-       %100 İZOLE EDİLMİŞ CSS (SİTEYİ ASLA ETKİLEMEZ)
+       %100 İZOLE EDİLMİŞ CSS
        ========================================================== */
 
     /* 1. SİTEDEKİ SAĞ ÜST AÇILIŞ BUTONU */
@@ -9266,47 +9266,39 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
         border: 2px solid rgba(255, 255, 255, 0.4);
         padding: 10px 20px;
         border-radius: 30px;
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 900;
         font-family: 'Shojumaru', 'Segoe UI', sans-serif !important;
         cursor: pointer;
         box-shadow: 0 8px 25px rgba(255, 0, 68, 0.45);
-        display: flex;
+        display: none !important;
         align-items: center;
         gap: 8px;
-        z-index: 9999;
+        z-index: 99999;
         text-shadow: 1px 1px 2px #000;
         transition: transform 0.2s, box-shadow 0.2s;
-        box-sizing: border-box;
-        margin: 0;
-        line-height: normal;
         text-decoration: none;
     }
     #ninja-launcher-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(255, 0, 68, 0.6); }
-    #ninja-launcher-btn:active { transform: scale(0.95); }
 
     /* 2. MODAL VE DIŞ ÇERÇEVE */
-    #ninja-modal-container,
-    #ninja-modal-container * {
+    #ninja-modal-container, #ninja-modal-container * {
         box-sizing: border-box !important;
         -webkit-tap-highlight-color: transparent;
-        margin: 0;
-        padding: 0;
-        user-select: none;
-        -webkit-user-select: none;
+        margin: 0; padding: 0;
+        user-select: none; -webkit-user-select: none;
     }
 
     #ninja-modal-container {
         position: fixed;
         inset: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.85);
-        backdrop-filter: blur(8px);
+        width: 100vw; height: 100vh;
+        background: rgba(0, 0, 0, 0.88);
+        backdrop-filter: blur(10px);
         display: none;
         justify-content: center;
         align-items: center;
-        z-index: 10000;
+        z-index: 100000;
         font-family: 'Segoe UI', system-ui, sans-serif;
         overflow: hidden !important;
     }
@@ -9315,14 +9307,15 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
         position: relative;
         width: 100%;
         max-width: 480px;
-        height: 88vh;
-        max-height: 820px;
+        height: 90vh;
+        max-height: 840px;
         border-radius: 35px;
         background: #0f1118;
-        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75);
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
         overflow: hidden;
         display: flex;
         flex-direction: column;
+        border: 2px solid rgba(255, 255, 255, 0.1);
         transition: box-shadow 0.3s, border 0.3s;
     }
 
@@ -9347,9 +9340,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     /* ÜST HUD */
     #love-ninja-master .nj-hud-bar {
         position: absolute;
-        top: 15px;
-        left: 15px;
-        right: 15px;
+        top: 15px; left: 15px; right: 15px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -9358,19 +9349,17 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     }
 
     #love-ninja-master .nj-hud-badge {
-        background: rgba(0, 0, 0, 0.6);
+        background: rgba(0, 0, 0, 0.65);
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.2);
         padding: 6px 14px;
         border-radius: 20px;
         color: #fff;
-        font-size: 15px;
+        font-size: 14px;
         font-family: 'Shojumaru', sans-serif;
-        box-shadow: 0 6px 16px rgba(0,0,0,0.4);
         display: flex;
         align-items: center;
         gap: 6px;
-        text-shadow: 1px 2px 2px #000;
     }
 
     #love-ninja-master .nj-hud-controls {
@@ -9385,21 +9374,15 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
         color: #fff;
         padding: 6px 14px;
         border-radius: 18px;
-        font-size: 13px;
-        font-family: 'Segoe UI', sans-serif;
+        font-size: 12px;
         font-weight: 800;
         cursor: pointer;
-        text-shadow: 1px 1px 2px #000;
-        transition: transform 0.15s, background 0.2s;
     }
-    #love-ninja-master .nj-hud-btn:hover { background: rgba(255, 255, 255, 0.35); }
-    #love-ninja-master .nj-hud-btn:active { transform: scale(0.92); }
 
     /* SAĞ ÜST SES BUTONU */
     #love-ninja-master .nj-sound-wrap {
         position: absolute;
-        top: 15px;
-        right: 15px;
+        top: 15px; right: 15px;
         z-index: 100;
     }
 
@@ -9407,24 +9390,17 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
         background: rgba(0, 0, 0, 0.55);
         border: 1px solid rgba(255, 255, 255, 0.25);
         color: #fff;
-        width: 38px;
-        height: 38px;
+        width: 36px; height: 36px;
         border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 16px;
+        display: flex; justify-content: center; align-items: center;
+        font-size: 15px;
         cursor: pointer;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.4);
     }
 
-    /* GERİ SAYIM OVERLAY (3-2-1) */
+    /* GERİ SAYIM OVERLAY */
     #love-ninja-master #countdown-overlay {
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        top: 0; left: 0; width: 100%; height: 100%;
         background: rgba(0, 0, 0, 0.7);
         display: none;
         justify-content: center;
@@ -9434,27 +9410,20 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     }
 
     #love-ninja-master #countdown-number {
-        font-size: 90px;
+        font-size: 85px;
         font-family: 'Shojumaru', sans-serif;
         color: #ffd32a;
-        text-shadow: 0 0 35px #ff0044, 0 4px 15px #000;
-        animation: countPulse 0.75s ease;
-    }
-    @keyframes countPulse {
-        0% { transform: scale(0.4); opacity: 0; }
-        50% { transform: scale(1.2); opacity: 1; }
-        100% { transform: scale(1); opacity: 1; }
+        text-shadow: 0 0 35px #ff0044;
     }
 
-    /* Kombo Bildirimi */
+    /* KOMBO BİLDİRİMİ */
     #love-ninja-master #combo-popup {
         position: absolute;
-        top: 24%;
-        left: 50%;
+        top: 24%; left: 50%;
         transform: translate(-50%, -50%) scale(0);
         color: #ffd32a;
         font-family: 'Shojumaru', sans-serif;
-        font-size: 34px;
+        font-size: 32px;
         text-shadow: 0 0 25px #ff0044, 0 4px 10px #000;
         pointer-events: none;
         z-index: 30;
@@ -9462,12 +9431,10 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     }
     #love-ninja-master #combo-popup.show { transform: translate(-50%, -50%) scale(1.2); }
 
-    /* MENÜ KONTROL ÇEKMECESİ */
+    /* MENÜ PANELİ */
     #love-ninja-master #menu-overlay-panel {
         position: absolute;
-        bottom: 12px;
-        left: 0;
-        width: 100%;
+        bottom: 12px; left: 0; width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -9486,9 +9453,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
         font-family: 'Shojumaru', sans-serif;
         color: #ffd32a;
         margin-bottom: 4px;
-        text-align: left;
         text-shadow: 0 2px 4px #000;
-        letter-spacing: 1px;
     }
 
     #love-ninja-master .nj-customizer-options {
@@ -9504,8 +9469,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
         color: #fff;
         padding: 6px 3px;
         border-radius: 12px;
-        font-size: 11px;
-        font-family: 'Segoe UI', sans-serif;
+        font-size: 10.5px;
         font-weight: 800;
         cursor: pointer;
         transition: all 0.2s;
@@ -9513,7 +9477,6 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     #love-ninja-master .nj-skin-btn.active {
         border-color: #ff0044;
         background: rgba(255, 0, 68, 0.5);
-        transform: scale(1.04);
         box-shadow: 0 0 12px #ff0044;
     }
 
@@ -9529,17 +9492,10 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
         border: none;
         padding: 8px 16px;
         border-radius: 20px;
-        font-size: 12px;
+        font-size: 11.5px;
         font-family: 'Shojumaru', sans-serif;
         cursor: pointer;
-        box-shadow: 0 4px 15px rgba(255, 165, 2, 0.35);
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        text-shadow: 1px 1px 2px #000;
-        transition: transform 0.15s;
     }
-    #love-ninja-master .nj-fruitdex-btn:active { transform: scale(0.95); }
 
     #love-ninja-master .nj-tutorial-btn {
         background: linear-gradient(135deg, #70a1ff, #1e90ff);
@@ -9547,26 +9503,16 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
         border: none;
         padding: 8px 16px;
         border-radius: 20px;
-        font-size: 12px;
+        font-size: 11.5px;
         font-family: 'Shojumaru', sans-serif;
         cursor: pointer;
-        box-shadow: 0 4px 15px rgba(112, 161, 255, 0.35);
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        text-shadow: 1px 1px 2px #000;
-        transition: transform 0.15s;
     }
-    #love-ninja-master .nj-tutorial-btn:active { transform: scale(0.95); }
 
-    /* PARŞÖMEN VE MODALLAR */
+    /* MODALLAR */
     #love-ninja-master .nj-menu-screen {
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(13, 15, 20, 0.90);
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(13, 15, 20, 0.92);
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -9581,27 +9527,13 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
         background: #f4ecd8;
         border: 4px solid #8d5b28;
         border-radius: 20px;
-        padding: 20px 22px;
+        padding: 18px 20px;
         color: #3e2723;
         box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-        max-width: 340px;
+        max-width: 330px;
         width: 100%;
-        margin-bottom: 15px;
-        position: relative;
+        margin-bottom: 12px;
     }
-
-    #love-ninja-master .nj-parchment-scroll::before, 
-    #love-ninja-master .nj-parchment-scroll::after {
-        content: '';
-        position: absolute;
-        left: 5%;
-        right: 5%;
-        height: 8px;
-        background: #5d3a1a;
-        border-radius: 4px;
-    }
-    #love-ninja-master .nj-parchment-scroll::before { top: -6px; }
-    #love-ninja-master .nj-parchment-scroll::after { bottom: -6px; }
 
     #love-ninja-master .nj-sensei-header {
         display: flex;
@@ -9629,37 +9561,8 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
         color: #4e342e;
         margin-top: 10px;
         text-align: left;
-        line-height: 1.35;
-        font-family: 'Segoe UI', system-ui, sans-serif;
     }
 
-    #love-ninja-master .nj-tutorial-list {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        max-height: 250px;
-        overflow-y: auto;
-        padding: 6px 0;
-        margin: 8px 0;
-        text-align: left;
-        font-family: 'Segoe UI', system-ui, sans-serif;
-    }
-
-    #love-ninja-master .nj-tutorial-card {
-        background: rgba(141, 91, 40, 0.08);
-        border: 1px solid rgba(141, 91, 40, 0.2);
-        border-radius: 12px;
-        padding: 8px 10px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    #love-ninja-master .nj-tutorial-icon { font-size: 24px; min-width: 32px; text-align: center; }
-    #love-ninja-master .nj-tutorial-text b { font-size: 12px; color: #8d5b28; display: block; margin-bottom: 2px; }
-    #love-ninja-master .nj-tutorial-text p { font-size: 10.5px; color: #5d3a1a; line-height: 1.3; margin: 0; }
-
-    /* FRUITDEX */
     #love-ninja-master .nj-fruitdex-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -9680,29 +9583,25 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
         align-items: center;
     }
     #love-ninja-master .nj-fruitdex-item span { font-size: 24px; }
-    #love-ninja-master .nj-fruitdex-item small { font-size: 10px; color: #5d3a1a; margin-top: 2px; font-family: 'Segoe UI', sans-serif; }
+    #love-ninja-master .nj-fruitdex-item small { font-size: 10px; color: #5d3a1a; margin-top: 2px; }
 
     #love-ninja-master .nj-primary-btn {
         background: linear-gradient(135deg, #ff0044, #ff4757);
         color: #fff;
         border: none;
-        padding: 12px 28px;
+        padding: 10px 24px;
         border-radius: 25px;
-        font-size: 15px;
+        font-size: 14px;
         font-family: 'Shojumaru', sans-serif;
         cursor: pointer;
         box-shadow: 0 8px 20px rgba(255, 0, 68, 0.4);
-        margin: 4px;
-        text-shadow: 1px 1px 2px #000;
-        transition: transform 0.15s;
     }
-    #love-ninja-master .nj-primary-btn:active { transform: scale(0.94); }
 </style>
 
-<!-- SİTENİN SAĞ ÜST KÖŞESİNDEKİ AÇILIŞ BUTONU -->
-<button id="ninja-launcher-btn" onclick="openNinjaGame()" style="display: none;">
+<!-- SİTEDEKİ SAĞ ÜST AÇILIŞ BUTONU -->
+<button id="ninja-launcher-btn" onclick="openNinjaGame()">
     <span>🎮</span>
-    <span>Love Ninja Oyna</span>
+    <span>Love Ninja</span>
     <span>🍉</span>
 </button>
 
@@ -9711,31 +9610,26 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     <div id="love-ninja-master">
         <canvas id="ninja-canvas"></canvas>
 
-        <!-- SAĞ ÜST SES BUTONU -->
         <div class="nj-sound-wrap" id="main-sound-wrap">
-            <button class="nj-circle-btn" id="toggle-sound-btn" title="Sesi Aç/Kapat">🔊</button>
+            <button class="nj-circle-btn" id="toggle-sound-btn">🔊</button>
         </div>
 
-        <!-- Oyun İçi Üst HUD -->
         <div class="nj-hud-bar" id="game-hud" style="display: none;">
             <div class="nj-hud-badge">
-                <span id="hud-score-label">⚔️ <span id="current-score">0</span></span>
+                <span>⚔️ <span id="current-score">0</span></span>
             </div>
-
             <div class="nj-hud-badge" id="hud-center-info"></div>
-
             <div class="nj-hud-controls">
-                <button class="nj-hud-btn" id="btn-pause-game" title="Duraklat">⏸️</button>
-                <button class="nj-hud-btn" id="btn-quit-to-menu" title="Menüye Dön" onclick="showMainMenu()">🏠 Menü</button>
+                <button class="nj-hud-btn" id="btn-pause-game">⏸️</button>
+                <button class="nj-hud-btn" onclick="showMainMenu()">🏠 Menü</button>
             </div>
         </div>
 
-        <!-- Geri Sayım Ekranı (3-2-1) -->
+        <!-- GERİ SAYIM OVERLAY -->
         <div id="countdown-overlay">
             <div id="countdown-number">3</div>
         </div>
 
-        <!-- Kombo & Blitz Bildirimi -->
         <div id="combo-popup">3x KOMBO! 🔥</div>
 
         <!-- ANA MENÜ PANELİ -->
@@ -9760,18 +9654,12 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
             </div>
 
             <div class="nj-menu-action-row">
-                <button class="nj-fruitdex-btn" onclick="openFruitdexModal()">
-                    <span>📖</span>
-                    <span>Meyve Kitabı</span>
-                </button>
-                <button class="nj-tutorial-btn" onclick="openTutorialModal()">
-                    <span>📜</span>
-                    <span>Nasıl Oynanır?</span>
-                </button>
+                <button class="nj-fruitdex-btn" onclick="openFruitdexModal()">📖 Meyve Kitabı</button>
+                <button class="nj-tutorial-btn" onclick="openTutorialModal()">📜 Nasıl Oynanır?</button>
             </div>
         </div>
 
-        <!-- MODAL 1: SENSEI ÖĞRETİCİ -->
+        <!-- SENSEI ÖĞRETİCİ -->
         <div class="nj-menu-screen" id="tutorial-modal" style="display: none;">
             <div class="nj-parchment-scroll">
                 <div class="nj-sensei-header">
@@ -9781,59 +9669,21 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
                         <small style="color: #5d3a1a; font-weight:800;">Aşk Ninjası Eğitimi 📜</small>
                     </div>
                 </div>
-
-                <div class="nj-tutorial-list">
-                    <div class="nj-tutorial-card">
-                        <div class="nj-tutorial-icon">⚔️</div>
-                        <div class="nj-tutorial-text">
-                            <b>Kılıcı Savur & Kes</b>
-                            <p>Parmağını veya fareni kaydırarak meyveleri havada ikiye böl!</p>
-                        </div>
-                    </div>
-                    <div class="nj-tutorial-card">
-                        <div class="nj-tutorial-icon">🔥</div>
-                        <div class="nj-tutorial-text">
-                            <b>Kombo & Kritik Vuruş</b>
-                            <p>Tek darbede 3+ meyve kesip alevli kombolar patlat! Şanslı vuruşlar +10 verir.</p>
-                        </div>
-                    </div>
-                    <div class="nj-tutorial-card">
-                        <div class="nj-tutorial-icon">💣</div>
-                        <div class="nj-tutorial-text">
-                            <b>Bombalardan Kaçın!</b>
-                            <p>Bombaları kesme! Klasik modda 1 canını götürür, Arcade'de -10 puan kırar.</p>
-                        </div>
-                    </div>
-                    <div class="nj-tutorial-card">
-                        <div class="nj-tutorial-icon">❄️</div>
-                        <div class="nj-tutorial-text">
-                            <b>Özel Güçler & Muzlar</b>
-                            <p>Buz ❄️ dondurur, Fırtına 🌪️ meyve yağdırır, Altın Muz ⭐ 2X verir, Elmas 💎 +5 kazandırır.</p>
-                        </div>
-                    </div>
-                    <div class="nj-tutorial-card">
-                        <div class="nj-tutorial-icon">🧘</div>
-                        <div class="nj-tutorial-text">
-                            <b>3 Farklı Mod</b>
-                            <p><b>Klasik:</b> 3 Canlı mücadele | <b>Arcade:</b> 60s Mega Kalp | <b>Zen:</b> Sonsuz rahat mod.</p>
-                        </div>
-                    </div>
-                </div>
+                <p style="font-size: 12px; color: #5d3a1a; line-height: 1.4; margin-top: 8px;">
+                    Parmağını kaydırarak meyveleri havada ikiye böl! Bombalardan kaçın ve 3'lü kombolarla duvara meyve sularını fışkırt! 🍉💦
+                </p>
             </div>
             <button class="nj-primary-btn" onclick="closeTutorialModal()">KILICIM HAZIR! ⚔️</button>
         </div>
 
-        <!-- MODAL 2: MEYVE KOLEKSİYON KİTABI -->
+        <!-- MEYVE KİTABI -->
         <div class="nj-menu-screen" id="fruitdex-modal" style="display: none;">
             <div class="nj-parchment-scroll">
-                <h2 style="font-size: 20px; color: #8d5b28; margin-bottom: 2px; font-family:'Shojumaru',sans-serif;">📖 MEYVE KİTABI</h2>
-                <small style="color: #5d3a1a; font-weight:700;">İkinizin Toplam İstatistikleri</small>
-
+                <h2 style="font-size: 18px; color: #8d5b28; margin-bottom: 4px; font-family:'Shojumaru',sans-serif;">📖 MEYVE KİTABI</h2>
                 <div style="display: flex; justify-content: space-around; margin: 8px 0; background: rgba(141,91,40,0.15); padding: 6px; border-radius: 10px; font-size: 12px; color: #3e2723;">
                     <span>🍉 Toplam: <b id="stat-total-sliced">0</b></span>
                     <span>🔥 Max Kombo: <b id="stat-max-combo">0x</b></span>
                 </div>
-
                 <div class="nj-fruitdex-grid" id="fruitdex-items-container"></div>
             </div>
             <button class="nj-primary-btn" onclick="closeFruitdexModal()">KAPAT ✕</button>
@@ -9841,15 +9691,11 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
 
         <!-- DURAKLATMA EKRANI -->
         <div class="nj-menu-screen" id="pause-screen" style="display: none;">
-            <h1 style="font-size: 26px; color: #ff0044; margin-bottom: 6px; font-family:'Shojumaru',sans-serif;">DURAKLATILDI ⏸️</h1>
-            <p style="font-size: 13px; color: #a4b0be; margin-bottom: 18px;">Biraz nefeslen sevgilim, meyveler seni bekliyor!</p>
-            <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 200px;">
-                <button class="nj-primary-btn" id="btn-resume-game">DEVAM ET ▶️</button>
-                <button class="nj-primary-btn" style="background:#57606f;" onclick="showMainMenu()">ANA MENÜ 🏠</button>
-            </div>
+            <h1 style="font-size: 24px; color: #ff0044; margin-bottom: 12px; font-family:'Shojumaru',sans-serif;">DURAKLATILDI ⏸️</h1>
+            <button class="nj-primary-btn" id="btn-resume-game">DEVAM ET ▶️</button>
         </div>
 
-        <!-- PARŞÖMEN OYUN BİTTİ EKRANI -->
+        <!-- OYUN BİTTİ EKRANI -->
         <div class="nj-menu-screen" id="game-over-screen" style="display: none;">
             <div class="nj-parchment-scroll">
                 <div class="nj-sensei-header">
@@ -9859,16 +9705,12 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
                         <small style="color: #5d3a1a; font-weight:700;">OYUN TAMAMLANDI</small>
                     </div>
                 </div>
-
-                <div style="font-size: 38px; color: #c0392b; margin: 4px 0; font-family:'Shojumaru',sans-serif;" id="final-score">0</div>
-                <p style="font-size: 12px; color: #d35400; font-weight:700;">🏆 En Yüksek Rekor: <span id="final-high">0</span></p>
-
-                <div class="nj-sensei-quote">
+                <div style="font-size: 36px; color: #c0392b; margin: 4px 0; font-family:'Shojumaru',sans-serif;" id="final-score">0</div>
+                <p style="font-size: 12px; color: #d35400; font-weight:700;">🏆 Rekor: <span id="final-high">0</span></p>
+                <div class="nj-sensei-quote" style="margin-top: 8px;">
                     <span id="sensei-quote-text">"Karpuzun %92'si sudur, tıpkı sana olan sevgimin saf olması gibi!"</span>
-                    <div style="text-align: right; font-size: 10px; margin-top: 4px; color: #8d5b28; font-weight:bold;">— Aşk Ustası Sensei 📜</div>
                 </div>
             </div>
-
             <div style="display: flex; gap: 8px;">
                 <button class="nj-primary-btn" id="btn-replay-mode">TEKRAR KES 🔄</button>
                 <button class="nj-primary-btn" style="background:#57606f;" onclick="showMainMenu()">MENÜ 🏠</button>
@@ -9879,7 +9721,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
 
 <script>
 (() => {
-    /* --- SES MOTORU --- */
+    /* --- AUDIO MOTORU --- */
     let audioCtx = null;
     let soundEnabled = true;
     let bgmInterval = null;
@@ -9887,16 +9729,11 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     let lastWhooshTime = 0;
 
     function initAudio() {
-        if (!audioCtx) {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        if (audioCtx && audioCtx.state === 'suspended') {
-            audioCtx.resume();
-        }
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
     }
 
-    const BGM_SCALE = [293.66, 349.23, 392.00, 440.00, 523.25, 587.33, 440.00, 392.00];
-
+    const BGM_SCALE = [293.66, 349.23, 392.00, 440.00, 523.25, 587.33];
     function startLoFiBgm() {
         stopLoFiBgm();
         if (!soundEnabled) return;
@@ -9908,28 +9745,18 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.type = 'sine';
-
-            const freq = BGM_SCALE[bgmStep % BGM_SCALE.length];
-            osc.frequency.setValueAtTime(freq, t);
-
+            osc.frequency.setValueAtTime(BGM_SCALE[bgmStep % BGM_SCALE.length], t);
             gain.gain.setValueAtTime(0.001, t);
-            gain.gain.linearRampToValueAtTime(0.025, t + 0.1);
-            gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.65);
-
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start(t);
-            osc.stop(t + 0.7);
-
+            gain.gain.linearRampToValueAtTime(0.02, t + 0.1);
+            gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.6);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(t); osc.stop(t + 0.65);
             bgmStep++;
-        }, 580);
+        }, 600);
     }
 
     function stopLoFiBgm() {
-        if (bgmInterval) {
-            clearInterval(bgmInterval);
-            bgmInterval = null;
-        }
+        if (bgmInterval) { clearInterval(bgmInterval); bgmInterval = null; }
     }
 
     function playSfx(type) {
@@ -9938,80 +9765,50 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
         const t = audioCtx.currentTime;
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
+        osc.connect(gain); gain.connect(audioCtx.destination);
 
         if (type === 'gong') {
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(140, t);
+            osc.type = 'sine'; osc.frequency.setValueAtTime(140, t);
             osc.frequency.exponentialRampToValueAtTime(55, t + 1.2);
             gain.gain.setValueAtTime(0.4, t);
             gain.gain.exponentialRampToValueAtTime(0.0001, t + 1.2);
             osc.start(t); osc.stop(t + 1.2);
         } else if (type === 'whoosh') {
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(180, t);
-            osc.frequency.exponentialRampToValueAtTime(70, t + 0.1);
+            osc.type = 'triangle'; osc.frequency.setValueAtTime(180, t);
+            osc.frequency.exponentialRampToValueAtTime(70, t + 0.08);
             gain.gain.setValueAtTime(0.09, t);
-            gain.gain.linearRampToValueAtTime(0.001, t + 0.1);
-            osc.start(t); osc.stop(t + 0.1);
+            gain.gain.linearRampToValueAtTime(0.001, t + 0.08);
+            osc.start(t); osc.stop(t + 0.08);
         } else if (type === 'slice') {
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(340, t);
+            osc.type = 'triangle'; osc.frequency.setValueAtTime(340, t);
             osc.frequency.exponentialRampToValueAtTime(880, t + 0.08);
-            gain.gain.setValueAtTime(0.25, t);
+            gain.gain.setValueAtTime(0.28, t);
             gain.gain.linearRampToValueAtTime(0.01, t + 0.1);
             osc.start(t); osc.stop(t + 0.1);
-        } else if (type === 'critical') {
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(200, t);
-            osc.frequency.exponentialRampToValueAtTime(950, t + 0.2);
-            gain.gain.setValueAtTime(0.4, t);
-            gain.gain.linearRampToValueAtTime(0.01, t + 0.25);
-            osc.start(t); osc.stop(t + 0.25);
         } else if (type === 'bomb') {
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(140, t);
-            osc.frequency.exponentialRampToValueAtTime(25, t + 0.4);
-            gain.gain.setValueAtTime(0.4, t);
-            gain.gain.linearRampToValueAtTime(0.01, t + 0.4);
-            osc.start(t); osc.stop(t + 0.4);
+            osc.type = 'sawtooth'; osc.frequency.setValueAtTime(140, t);
+            osc.frequency.exponentialRampToValueAtTime(25, t + 0.35);
+            gain.gain.setValueAtTime(0.45, t);
+            gain.gain.linearRampToValueAtTime(0.01, t + 0.35);
+            osc.start(t); osc.stop(t + 0.35);
         } else if (type === 'combo') {
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(523, t);
+            osc.type = 'sine'; osc.frequency.setValueAtTime(523, t);
             osc.frequency.setValueAtTime(659, t + 0.08);
             osc.frequency.setValueAtTime(783, t + 0.16);
-            gain.gain.setValueAtTime(0.3, t);
+            gain.gain.setValueAtTime(0.35, t);
             gain.gain.linearRampToValueAtTime(0.01, t + 0.3);
             osc.start(t); osc.stop(t + 0.3);
-        } else if (type === 'miss') {
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(180, t);
-            osc.frequency.linearRampToValueAtTime(80, t + 0.2);
-            gain.gain.setValueAtTime(0.3, t);
-            gain.gain.linearRampToValueAtTime(0.01, t + 0.2);
-            osc.start(t); osc.stop(t + 0.2);
         } else if (type === 'freeze') {
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(950, t);
+            osc.type = 'sine'; osc.frequency.setValueAtTime(950, t);
             osc.frequency.exponentialRampToValueAtTime(320, t + 0.3);
             gain.gain.setValueAtTime(0.35, t);
             gain.gain.linearRampToValueAtTime(0.01, t + 0.3);
             osc.start(t); osc.stop(t + 0.3);
-        } else if (type === 'mega_hit') {
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(400 + Math.random() * 200, t);
-            osc.frequency.exponentialRampToValueAtTime(900, t + 0.06);
-            gain.gain.setValueAtTime(0.3, t);
-            gain.gain.linearRampToValueAtTime(0.01, t + 0.08);
-            osc.start(t); osc.stop(t + 0.08);
         }
     }
 
     function triggerHaptic(duration = 25) {
-        if (navigator.vibrate) {
-            try { navigator.vibrate(duration); } catch(e){}
-        }
+        if (navigator.vibrate) try { navigator.vibrate(duration); } catch(e){}
     }
 
     document.getElementById('toggle-sound-btn').onclick = () => {
@@ -10021,30 +9818,34 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
         else stopLoFiBgm();
     };
 
-    /* --- SENSEI SÖZLERİ --- */
     const SENSEI_QUOTES = [
         '"Karpuzun %92\'si sudur, tıpkı sana olan sevgimin saf ve berrak olması gibi!"',
         '"Çilek, tohumlarını kalbinde taşıyan tek meyvedir; tıpkı benim seni kalbimde taşımam gibi!"',
         '"Muz insanı mutlu eder... Ama senin bir tatlı gülüşün kadar değil sevgilim!"',
         '"Ananas kralların meyvesidir, ama sen benim kalbimin tek kraliçesisin!"',
-        '"Kivi küçük görünür ama içi vitamin doludur; tıpkı senin bir sarılmanın bana hayat vermesi gibi!"',
         '"Bombayı kesmek kalbimi kırmak gibidir; bir dahaki sefere daha dikkatli ol aşkım!"'
     ];
 
-    /* --- CANVAS & ENGINE SETUP --- */
+    /* --- CANVAS & RETINA HD MOTORU --- */
     const canvas = document.getElementById('ninja-canvas');
     const ctx = canvas.getContext('2d');
     let cw = 480, ch = 800;
+    let dpr = 1;
     let animationFrameId = null;
-    let isAppOpen = false; // Oyun açık mı kontrolü
+    let isAppOpen = false;
 
     const EMOJI_FONT = '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Android Emoji", sans-serif';
 
     function resize() {
         const box = document.getElementById('love-ninja-master');
         if (box && box.clientWidth > 0) {
-            cw = canvas.width = box.clientWidth;
-            ch = canvas.height = box.clientHeight;
+            dpr = Math.min(window.devicePixelRatio || 2, 2.5);
+            cw = Math.floor(box.clientWidth);
+            ch = Math.floor(box.clientHeight);
+
+            canvas.width = Math.floor(cw * dpr);
+            canvas.height = Math.floor(ch * dpr);
+
             initMenuFruits();
         }
     }
@@ -10056,7 +9857,6 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
 
     let score = 0;
     let lives = 3;
-    let misses = 0;
     let arcadeTimer = 60;
     let arcadeInterval = null;
 
@@ -10066,10 +9866,8 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
 
     let hitStopFrames = 0;
     let screenShake = 0;
-    let criticalFlash = 0;
-
-    let megaTarget = null;
     let isMegaActive = false;
+    let megaTarget = null;
     let isPaused = false;
 
     let highScores = {
@@ -10092,6 +9890,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     let items = [];
     let slices = [];
     let particles = [];
+    let splatters = []; // 💦 DUVAR LEKELERİ
     let bladeTrail = [];
     let sakuraPetals = [];
     let stars = [];
@@ -10100,117 +9899,101 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
     let lastWaveTime = 0;
     let sliceComboCount = 0;
     let comboResetTimer = null;
-    let blitzStreak = 0;
+    let spawnTimeouts = []; // ⚡ TÜM ZAMANLAYICILARIN LİSTESİ
 
-    /* --- TÜM OYUN NESNELERİNİ TEMİZLEME --- */
+    // 🧹 KESİN VE KUSURSUZ TEMİZLEME FONKSİYONU
     function purgeGameObjects() {
         items = [];
         slices = [];
         particles = [];
+        splatters = []; // 💦 YENİ OYUNA LEKE GEÇMESİNİ ENGELLER
         bladeTrail = [];
-        if (arcadeInterval) {
-            clearInterval(arcadeInterval);
-            arcadeInterval = null;
-        }
-        if (comboResetTimer) {
-            clearTimeout(comboResetTimer);
-            comboResetTimer = null;
-        }
-        isPointerDown = false;
+        hitStopFrames = 0;
+        screenShake = 0;
+        isMegaActive = false;
+        megaTarget = null;
+        isPaused = false;
         freezeTimer = 0;
         frenzyTimer = 0;
         doubleTimer = 0;
-        screenShake = 0;
-        criticalFlash = 0;
-        isMegaActive = false;
-        megaTarget = null;
+        sliceComboCount = 0;
+
+        // BÜTÜN BEKLEYEN FIRLATMA ZAMANLAYICILARINI İPTAL ET
+        spawnTimeouts.forEach(t => clearTimeout(t));
+        spawnTimeouts = [];
+
+        if (arcadeInterval) { clearInterval(arcadeInterval); arcadeInterval = null; }
+        if (comboResetTimer) { clearTimeout(comboResetTimer); comboResetTimer = null; }
     }
 
-    /* --- MENÜ MEYVELERİ --- */
     let menuFruits = [];
-
     function initMenuFruits() {
         menuFruits = [
-            { x: cw * 0.24, y: ch * 0.38, radius: 46, icon: '🍉', label: 'KLASİK', mode: 'classic', color: '#ff4757', angle: 0 },
-            { x: cw * 0.50, y: ch * 0.33, radius: 46, icon: '🍌', label: 'ARCADE', mode: 'arcade', color: '#ffd32a', angle: 0 },
-            { x: cw * 0.76, y: ch * 0.38, radius: 46, icon: '🥥', label: 'ZEN (RAHAT)', mode: 'zen', color: '#2ed573', angle: 0 },
-            { x: cw * 0.50, y: ch * 0.58, radius: 36, icon: '🚪', label: 'ÇIKIŞ', mode: 'quit', color: '#ff0044', angle: 0 }
+            { x: cw * 0.22, y: ch * 0.38, radius: 44, icon: '🍉', label: 'KLASİK', mode: 'classic', color: '#ff4757', angle: 0 },
+            { x: cw * 0.50, y: ch * 0.34, radius: 44, icon: '🍌', label: 'ARCADE', mode: 'arcade', color: '#ffd32a', angle: 0 },
+            { x: cw * 0.78, y: ch * 0.38, radius: 44, icon: '🥥', label: 'ZEN', mode: 'zen', color: '#2ed573', angle: 0 },
+            { x: cw * 0.50, y: ch * 0.56, radius: 36, icon: '💣', label: 'ÇIKIŞ', mode: 'quit', color: '#ff0044', angle: 0 }
         ];
     }
 
-    /* --- DOĞAL MEYVELER LİSTESİ --- */
     const PURE_FRUITS = [
-        { icon: '🍉', name: 'Karpuz', color: '#ff4757', points: 1 },
-        { icon: '🍓', name: 'Çilek', color: '#ff6b81', points: 1 },
-        { icon: '🍍', name: 'Ananas', color: '#ffd32a', points: 1 },
-        { icon: '🥝', name: 'Kivi', color: '#2ed573', points: 1 },
-        { icon: '🍇', name: 'Üzüm', color: '#a55eea', points: 1 },
-        { icon: '🍌', name: 'Muz', color: '#eccc68', points: 1 },
-        { icon: '🥥', name: 'Hindistan C.', color: '#f1f2f6', points: 1 },
-        { icon: '🍒', name: 'Kiraz', color: '#eb4d4b', points: 1 },
-        { icon: '🍊', name: 'Portakal', color: '#fa8231', points: 1 },
-        { icon: '🥭', name: 'Mango', color: '#f7b731', points: 1 },
-        { icon: '🍑', name: 'Şeftali', color: '#ffb8b8', points: 1 },
-        { icon: '🍏', name: 'Yeşil Elma', color: '#6ab04c', points: 1 },
-        { icon: '🍋', name: 'Limon', color: '#f9ca24', points: 1 },
-        { icon: '🥑', name: 'Avokado', color: '#10ac84', points: 1 },
-        { icon: '💖', name: 'Aşk Kalbi', color: '#ff0055', points: 2 },
-        { icon: '💎', name: 'Aşk Elması', color: '#00d2d3', points: 5 }
+        { icon: '🍉', name: 'Karpuz', color: '#ff4757', juiceColor: 'rgba(255, 71, 87, 0.75)', points: 1 },
+        { icon: '🍓', name: 'Çilek', color: '#ff6b81', juiceColor: 'rgba(255, 107, 129, 0.75)', points: 1 },
+        { icon: '🍍', name: 'Ananas', color: '#ffd32a', juiceColor: 'rgba(255, 211, 42, 0.75)', points: 1 },
+        { icon: '🥝', name: 'Kivi', color: '#2ed573', juiceColor: 'rgba(46, 213, 115, 0.75)', points: 1 },
+        { icon: '🍇', name: 'Üzüm', color: '#a55eea', juiceColor: 'rgba(165, 94, 234, 0.75)', points: 1 },
+        { icon: '🍌', name: 'Muz', color: '#eccc68', juiceColor: 'rgba(236, 204, 104, 0.75)', points: 1 },
+        { icon: '🥥', name: 'Hindistan C.', color: '#f1f2f6', juiceColor: 'rgba(241, 242, 246, 0.75)', points: 1 },
+        { icon: '🍒', name: 'Kiraz', color: '#eb4d4b', juiceColor: 'rgba(235, 77, 75, 0.75)', points: 1 },
+        { icon: '🍊', name: 'Portakal', color: '#fa8231', juiceColor: 'rgba(250, 130, 49, 0.75)', points: 1 },
+        { icon: '🥭', name: 'Mango', color: '#f7b731', juiceColor: 'rgba(247, 183, 49, 0.75)', points: 1 },
+        { icon: '🍑', name: 'Şeftali', color: '#ffb8b8', juiceColor: 'rgba(255, 184, 184, 0.75)', points: 1 },
+        { icon: '🍏', name: 'Yeşil Elma', color: '#6ab04c', juiceColor: 'rgba(106, 176, 76, 0.75)', points: 1 },
+        { icon: '🍋', name: 'Limon', color: '#f9ca24', juiceColor: 'rgba(249, 202, 36, 0.75)', points: 1 },
+        { icon: '🥑', name: 'Avokado', color: '#10ac84', juiceColor: 'rgba(16, 172, 132, 0.75)', points: 1 },
+        { icon: '💖', name: 'Aşk Kalbi', color: '#ff0055', juiceColor: 'rgba(255, 0, 85, 0.85)', points: 2 },
+        { icon: '💎', name: 'Aşk Elması', color: '#00d2d3', juiceColor: 'rgba(0, 210, 211, 0.85)', points: 5 }
     ];
 
     const ARCADE_SPECIAL_BANANAS = [
-        { icon: '🍌', color: '#00d2d3', type: 'freeze', points: 2 },
-        { icon: '🍌', color: '#ff9f43', type: 'frenzy', points: 2 },
-        { icon: '🍌', color: '#feca57', type: 'double', points: 2 }
+        { icon: '🍌', color: '#00d2d3', juiceColor: 'rgba(0, 210, 211, 0.85)', type: 'freeze', points: 2 },
+        { icon: '🍌', color: '#ff9f43', juiceColor: 'rgba(255, 159, 67, 0.85)', type: 'frenzy', points: 2 },
+        { icon: '🍌', color: '#feca57', juiceColor: 'rgba(254, 202, 87, 0.85)', type: 'double', points: 2 }
     ];
 
     const BOMB_ITEM = { icon: '💣', color: '#2f3542', type: 'bomb', points: 0 };
 
-    /* --- SAKURA & YILDIZLAR --- */
     function initAtmosphere() {
         sakuraPetals = [];
-        for (let i = 0; i < 12; i++) {
+        for (let i = 0; i < 15; i++) {
             sakuraPetals.push({
-                x: Math.random() * 500,
-                y: Math.random() * 800,
-                vx: Math.random() * 0.6 + 0.3,
-                vy: Math.random() * 0.8 + 0.4,
-                size: Math.random() * 4 + 3,
-                angle: Math.random() * Math.PI * 2,
-                vRot: (Math.random() - 0.5) * 0.02
+                x: Math.random() * 500, y: Math.random() * 800,
+                vx: Math.random() * 0.6 + 0.3, vy: Math.random() * 0.8 + 0.4,
+                size: Math.random() * 4 + 3, angle: Math.random() * Math.PI * 2, vRot: (Math.random() - 0.5) * 0.02
             });
         }
         stars = [];
-        for (let i = 0; i < 25; i++) {
-            stars.push({
-                x: Math.random() * 500,
-                y: Math.random() * 450,
-                size: Math.random() * 1.5 + 0.8,
-                alpha: Math.random() * 0.8 + 0.2
-            });
+        for (let i = 0; i < 30; i++) {
+            stars.push({ x: Math.random() * 500, y: Math.random() * 450, size: Math.random() * 1.5 + 0.8, alpha: Math.random() * 0.8 + 0.2 });
         }
     }
 
     function spawnWave() {
-        if (currentGameState !== 'PLAYING' || isMegaActive || !isAppOpen) return;
-        if (items.length >= 6) return;
-
-        let count = 4;
-        if (frenzyTimer > 0) count = 3;
-        else if (currentMode === 'zen') count = 4;
-        else count = Math.floor(Math.random() * 2) + 3;
+        if (currentGameState !== 'PLAYING' || isMegaActive || !isAppOpen || items.length >= 6) return;
+        let count = (frenzyTimer > 0) ? 4 : (currentMode === 'zen' ? 3 : Math.floor(Math.random() * 2) + 3);
 
         for (let i = 0; i < count; i++) {
             const x = Math.random() * (cw - 140) + 70;
-            setTimeout(() => {
+            const tId = setTimeout(() => {
                 if (currentGameState !== 'PLAYING' || isPaused || isMegaActive || !isAppOpen) return;
                 spawnSingleFruit(x);
-            }, i * 70);
+            }, i * 80);
+            spawnTimeouts.push(tId);
         }
     }
 
     function spawnSingleFruit(spawnX) {
-        if (items.length >= 6) return;
+        if (items.length >= 6 || currentGameState !== 'PLAYING') return;
         const isBomb = (currentMode !== 'zen') && (frenzyTimer <= 0) && (Math.random() < 0.14);
         let template;
 
@@ -10224,25 +10007,24 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
             }
         }
 
-        const gravity = (currentMode === 'zen') ? 0.065 : 0.052;
+        const gravity = (currentMode === 'zen') ? 0.062 : 0.052;
         const targetPeakY = ch * (Math.random() * 0.18 + 0.15);
         const initialVy = -Math.sqrt(2 * gravity * (ch + 50 - targetPeakY));
         const centerOffset = (cw / 2 - spawnX) * 0.0025;
 
         items.push({
-            x: spawnX,
-            y: ch + 45,
+            x: spawnX, y: ch + 45,
             vx: centerOffset + (Math.random() - 0.5) * 1.1,
             vy: initialVy,
             gravity: gravity,
             radius: 38,
             angle: 0,
-            vRot: (Math.random() - 0.5) * 0.02,
+            vRot: (Math.random() - 0.5) * 0.04,
             icon: template.icon,
             color: template.color,
+            juiceColor: template.juiceColor || template.color,
             type: template.type || 'fruit',
-            points: template.points,
-            isSliced: false
+            points: template.points || 1
         });
     }
 
@@ -10250,35 +10032,27 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
         isMegaActive = true;
         items = [];
         megaTarget = {
-            x: cw / 2,
-            y: ch / 2 - 20,
-            radius: 70,
-            scale: 1,
-            hits: 0,
-            maxHits: 28,
-            timer: 240
+            x: cw / 2, y: ch / 2 - 20, radius: 70, scale: 1, hits: 0, timer: 240
         };
         showComboAlert('DEV AŞK KALBİNİ KES! 💖🔥');
     }
 
     function sliceItemWithAngle(item, idx, sliceAngle) {
-        item.isSliced = true;
         items.splice(idx, 1);
-
         hitStopFrames = (currentMode === 'zen' || frenzyTimer > 0) ? 0 : 2;
         triggerHaptic(item.type === 'bomb' ? 140 : 25);
 
         if (item.type === 'bomb') {
-            screenShake = 14;
+            screenShake = 16;
             playSfx('bomb');
             createExplosion(item.x, item.y, '#ff0044');
 
             if (currentMode === 'classic') {
                 lives--;
                 updateCenterHUD();
-                if (lives <= 0) {
-                    gameOver();
-                    return;
+                if (lives <= 0) { 
+                    gameOver(); 
+                    return; 
                 }
                 showComboAlert('BOMBA! -1 CAN 💥');
                 return;
@@ -10290,7 +10064,20 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
             }
         }
 
-        let isCrit = false;
+        // 💦 ORGANİK MEYVE SUYU LEKESİ
+        splatters.push({
+            x: item.x, y: item.y,
+            radius: Math.random() * 22 + 28,
+            color: item.juiceColor,
+            alpha: 0.85,
+            droplets: Array.from({length: 6}, () => ({
+                dx: (Math.random() - 0.5) * 60,
+                dy: (Math.random() - 0.5) * 60,
+                r: Math.random() * 4 + 2
+            }))
+        });
+        if (splatters.length > 8) splatters.shift();
+
         if (item.type === 'freeze') {
             freezeTimer = 240;
             document.getElementById('love-ninja-master').classList.add('frozen-active');
@@ -10299,246 +10086,179 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
         } else if (item.type === 'frenzy') {
             frenzyTimer = 200;
             playSfx('combo');
-            showComboAlert('AŞK FIRTINASI! 🌪️');
+            showComboAlert('MEYVE FIRTINASI! 🌪️');
         } else if (item.type === 'double') {
             doubleTimer = 360;
             playSfx('combo');
             showComboAlert('2X ÇİFT PUAN! ⭐');
         } else {
-            isCrit = (Math.random() < 0.07);
-            if (isCrit) {
-                criticalFlash = 5;
-                screenShake = 10;
-                score += 10;
-                playSfx('critical');
-                showComboAlert('KRİTİK VURUŞ! +10 💥');
-            } else {
-                playSfx('slice');
-            }
+            playSfx('slice');
         }
 
-        let gain = item.points;
-        if (doubleTimer > 0) gain *= 2;
-        if (isCrit) gain = 10;
+        let gain = (doubleTimer > 0) ? item.points * 2 : item.points;
         score += gain;
         sliceComboCount++;
         document.getElementById('current-score').innerText = score;
 
         fruitdex.totalSliced++;
-        if (fruitdex.counts[item.icon] !== undefined) {
-            fruitdex.counts[item.icon]++;
-        }
+        if (fruitdex.counts[item.icon] !== undefined) fruitdex.counts[item.icon]++;
         localStorage.setItem('ninja_fruitdex_v2', JSON.stringify(fruitdex));
 
         clearTimeout(comboResetTimer);
         comboResetTimer = setTimeout(() => {
             if (sliceComboCount >= 3) {
-                blitzStreak++;
-                if (sliceComboCount > fruitdex.maxCombo) {
-                    fruitdex.maxCombo = sliceComboCount;
-                    localStorage.setItem('ninja_fruitdex_v2', JSON.stringify(fruitdex));
-                }
-
-                if (sliceComboCount >= 4) {
-                    document.getElementById('love-ninja-master').classList.add('fever-active');
-                    setTimeout(() => document.getElementById('love-ninja-master').classList.remove('fever-active'), 2000);
-                }
-
                 const bonus = sliceComboCount * 2;
                 score += bonus;
                 document.getElementById('current-score').innerText = score;
                 screenShake = 6;
                 triggerHaptic(40);
                 playSfx('combo');
-
-                if (blitzStreak >= 2) {
-                    showComboAlert(`COMBO BLITZ! +${bonus + 5} 🔥`);
-                } else {
-                    showComboAlert(`${sliceComboCount}x KOMBO! 🔥`);
-                }
-            } else {
-                blitzStreak = 0;
+                showComboAlert(`${sliceComboCount}x KOMBO! 🔥`);
             }
             sliceComboCount = 0;
         }, 300);
 
+        // 🍉 İKİYE BÖLÜNEN PARÇALAR
         const perpAngle = sliceAngle + Math.PI / 2;
-        const pushSpeed = 2.4;
+        const pushSpeed = 2.8;
         const nx = Math.cos(perpAngle) * pushSpeed;
         const ny = Math.sin(perpAngle) * pushSpeed;
 
-        if (slices.length > 5) slices.shift();
         slices.push({
             x: item.x - nx * 4, y: item.y - ny * 4,
             vx: item.vx - nx, vy: item.vy * 0.4 - Math.abs(ny) * 0.5,
-            gravity: 0.07, icon: item.icon, angle: sliceAngle, vRot: -0.06, alpha: 1,
-            color: item.color
+            gravity: 0.08, icon: item.icon, angle: sliceAngle, vRot: -0.08, alpha: 1
         });
         slices.push({
             x: item.x + nx * 4, y: item.y + ny * 4,
             vx: item.vx + nx, vy: item.vy * 0.4 - Math.abs(ny) * 0.5,
-            gravity: 0.07, icon: item.icon, angle: sliceAngle, vRot: 0.06, alpha: 1,
-            color: item.color
+            gravity: 0.08, icon: item.icon, angle: sliceAngle, vRot: 0.08, alpha: 1
         });
 
-        const pCount = (frenzyTimer > 0 || currentMode === 'zen') ? 2 : 4;
-        if (particles.length > 10) particles.splice(0, 5);
-        for (let i = 0; i < pCount; i++) {
-            const spread = (Math.random() - 0.5) * 1.5;
-            const sprayAngle = (i % 2 === 0 ? perpAngle : perpAngle + Math.PI) + spread;
+        // 💦 DAMLACIKLAR
+        for (let i = 0; i < 10; i++) {
             particles.push({
                 x: item.x, y: item.y,
-                vx: Math.cos(sprayAngle) * 3.5,
-                vy: Math.sin(sprayAngle) * 3.5,
-                radius: 2.2,
-                color: item.color,
-                alpha: 1
+                vx: (Math.random() - 0.5) * 6, vy: (Math.random() - 0.5) * 6,
+                radius: Math.random() * 3 + 2, color: item.color, alpha: 1
             });
         }
     }
 
     function createExplosion(x, y, color) {
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < 16; i++) {
             particles.push({
                 x: x, y: y,
-                vx: (Math.random() - 0.5) * 7,
-                vy: (Math.random() - 0.5) * 7,
-                radius: 3.5,
-                color: color,
-                alpha: 1
+                vx: (Math.random() - 0.5) * 8, vy: (Math.random() - 0.5) * 8,
+                radius: 4, color: color, alpha: 1
             });
         }
     }
 
     function showComboAlert(text) {
         const el = document.getElementById('combo-popup');
-        el.innerText = text;
-        el.classList.add('show');
+        el.innerText = text; el.classList.add('show');
         setTimeout(() => el.classList.remove('show'), 650);
+    }
+
+    /* --- 🗡️ KILIÇ MODELLERİ (KATANA, IŞIN, KUNAI) --- */
+    function drawWeapon() {
+        if (!isPointerDown || currentWeapon === 'none') return;
+
+        ctx.save();
+        ctx.translate(pointerPos.x, pointerPos.y);
+        ctx.rotate(pointerPos.angle + Math.PI / 4);
+
+        if (currentWeapon === 'katana') {
+            ctx.fillStyle = '#1e272e';
+            ctx.fillRect(-5, 20, 10, 28);
+            ctx.fillStyle = '#ffd32a';
+            ctx.beginPath();
+            ctx.ellipse(0, 18, 12, 5, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#ffffff';
+            ctx.shadowColor = 'rgba(255,255,255,0.8)'; ctx.shadowBlur = 8;
+            ctx.beginPath();
+            ctx.moveTo(-3, 16); ctx.lineTo(3, 16); ctx.lineTo(1.5, -48); ctx.lineTo(-1.5, -48);
+            ctx.closePath(); ctx.fill();
+        } 
+        else if (currentWeapon === 'lightsaber') {
+            ctx.fillStyle = '#747d8c';
+            ctx.fillRect(-5, 18, 10, 26);
+            ctx.fillStyle = '#00d2d3';
+            ctx.shadowColor = '#00d2d3'; ctx.shadowBlur = 20;
+            ctx.fillRect(-3.5, -50, 7, 68);
+        } 
+        else if (currentWeapon === 'kunai') {
+            ctx.fillStyle = '#2f3542';
+            ctx.beginPath();
+            ctx.moveTo(0, -35); ctx.lineTo(12, 5); ctx.lineTo(4, 8); ctx.lineTo(4, 25);
+            ctx.lineTo(-4, 25); ctx.lineTo(-4, 8); ctx.lineTo(-12, 5);
+            ctx.closePath(); ctx.fill();
+            ctx.strokeStyle = '#2f3542'; ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.arc(0, 30, 5, 0, Math.PI * 2); ctx.stroke();
+        }
+
+        ctx.restore();
     }
 
     function drawDojoBackground() {
         ctx.save();
-        ctx.globalAlpha = 1.0;
-        ctx.globalCompositeOperation = 'source-over';
-
         if (currentDojo === 'sakura') {
             const skyGrad = ctx.createLinearGradient(0, 0, 0, ch);
-            skyGrad.addColorStop(0, '#1a1829');
-            skyGrad.addColorStop(0.45, '#4a2545');
-            skyGrad.addColorStop(0.75, '#8c354e');
-            skyGrad.addColorStop(1, '#e17055');
-            ctx.fillStyle = skyGrad;
-            ctx.fillRect(0, 0, cw, ch);
-
-            ctx.fillStyle = '#2f152d';
-            ctx.beginPath();
-            ctx.moveTo(0, ch - 80);
-            ctx.lineTo(cw * 0.35, ch - 160);
-            ctx.lineTo(cw * 0.7, ch - 90);
-            ctx.lineTo(cw, ch - 140);
-            ctx.lineTo(cw, ch);
-            ctx.lineTo(0, ch);
-            ctx.fill();
-
-            ctx.fillStyle = '#180a18';
-            ctx.beginPath();
-            ctx.moveTo(cw - 120, ch - 40);
-            ctx.quadraticCurveTo(cw - 70, ch - 95, cw - 20, ch - 40);
-            ctx.lineTo(cw - 20, ch);
-            ctx.lineTo(cw - 120, ch);
-            ctx.fill();
-
-            ctx.fillStyle = 'rgba(255, 192, 203, 0.5)';
-            sakuraPetals.forEach(p => {
-                p.x += p.vx; p.y += p.vy; p.angle += p.vRot;
-                if (p.y > ch) p.y = -10;
-                if (p.x > cw) p.x = -10;
-                ctx.save();
-                ctx.translate(p.x, p.y);
-                ctx.rotate(p.angle);
-                ctx.beginPath();
-                ctx.ellipse(0, 0, p.size, p.size * 0.55, 0, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.restore();
-            });
-        } 
-        else if (currentDojo === 'wood') {
+            skyGrad.addColorStop(0, '#1a1829'); skyGrad.addColorStop(0.5, '#8c354e'); skyGrad.addColorStop(1, '#e17055');
+            ctx.fillStyle = skyGrad; ctx.fillRect(0, 0, cw, ch);
+        } else if (currentDojo === 'wood') {
             const woodGrad = ctx.createLinearGradient(0, 0, cw, ch);
-            woodGrad.addColorStop(0, '#3e2415');
-            woodGrad.addColorStop(1, '#20120a');
-            ctx.fillStyle = woodGrad;
-            ctx.fillRect(0, 0, cw, ch);
-
-            ctx.strokeStyle = 'rgba(0, 0, 0, 0.35)';
-            ctx.lineWidth = 3;
+            woodGrad.addColorStop(0, '#3e2415'); woodGrad.addColorStop(1, '#20120a');
+            ctx.fillStyle = woodGrad; ctx.fillRect(0, 0, cw, ch);
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.35)'; ctx.lineWidth = 3;
             for (let y = 0; y < ch; y += 65) {
                 ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(cw, y); ctx.stroke();
             }
-        } 
-        else if (currentDojo === 'night') {
+        } else if (currentDojo === 'night') {
             const nightGrad = ctx.createLinearGradient(0, 0, 0, ch);
-            nightGrad.addColorStop(0, '#050811');
-            nightGrad.addColorStop(0.65, '#0e172e');
-            nightGrad.addColorStop(1, '#1b2a47');
-            ctx.fillStyle = nightGrad;
-            ctx.fillRect(0, 0, cw, ch);
+            nightGrad.addColorStop(0, '#050811'); nightGrad.addColorStop(1, '#1b2a47');
+            ctx.fillStyle = nightGrad; ctx.fillRect(0, 0, cw, ch);
+        }
 
-            ctx.fillStyle = '#fff';
-            stars.forEach(st => {
-                ctx.globalAlpha = Math.sin(Date.now() * 0.002 + st.x) * 0.3 + 0.7;
-                ctx.fillRect(st.x % cw, st.y % ch, st.size, st.size);
-            });
-            ctx.globalAlpha = 1;
-
-            ctx.fillStyle = '#060a12';
+        // 💦 DUVARA YAPIŞAN MEYVE SULARI (SPLATTERS)
+        for (let i = splatters.length - 1; i >= 0; i--) {
+            const sp = splatters[i];
+            sp.alpha -= 0.001;
+            ctx.save();
+            ctx.globalAlpha = Math.max(0, sp.alpha);
+            ctx.fillStyle = sp.color;
             ctx.beginPath();
-            ctx.moveTo(cw * 0.1, ch);
-            ctx.lineTo(cw * 0.5, ch - 160);
-            ctx.lineTo(cw * 0.9, ch);
+            ctx.arc(sp.x, sp.y, sp.radius, 0, Math.PI * 2);
             ctx.fill();
-
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.18)';
-            ctx.beginPath();
-            ctx.moveTo(cw * 0.43, ch - 130);
-            ctx.lineTo(cw * 0.5, ch - 160);
-            ctx.lineTo(cw * 0.57, ch - 130);
-            ctx.fill();
-
-            const moonGrad = ctx.createRadialGradient(cw * 0.78, 110, 10, cw * 0.78, 110, 55);
-            moonGrad.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
-            moonGrad.addColorStop(0.8, 'rgba(240, 243, 255, 0.6)');
-            moonGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
-            ctx.fillStyle = moonGrad;
-            ctx.beginPath();
-            ctx.arc(cw * 0.78, 110, 55, 0, Math.PI * 2);
-            ctx.fill();
+            if (sp.droplets) {
+                sp.droplets.forEach(dp => {
+                    ctx.beginPath();
+                    ctx.arc(sp.x + dp.dx, sp.y + dp.dy, dp.r, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+            }
+            ctx.restore();
+            if (sp.alpha <= 0) splatters.splice(i, 1);
         }
         ctx.restore();
     }
 
     function drawMenuFruitButtons() {
         ctx.save();
-        ctx.globalAlpha = 1.0;
-        ctx.globalCompositeOperation = 'source-over';
-
         ctx.fillStyle = '#ffffff';
-        ctx.font = '30px Shojumaru, sans-serif';
+        ctx.font = '28px Shojumaru, sans-serif';
         ctx.textAlign = 'center';
-        ctx.shadowColor = '#ff0044';
-        ctx.shadowBlur = 14;
+        ctx.shadowColor = '#ff0044'; ctx.shadowBlur = 14;
         ctx.fillText('LOVE NINJA 🍉', cw / 2, 85);
-        ctx.shadowBlur = 0;
 
-        ctx.fillStyle = '#ffd32a';
-        ctx.font = '12px Shojumaru, sans-serif';
-        ctx.shadowColor = '#000';
-        ctx.shadowBlur = 4;
+        ctx.fillStyle = '#ffd32a'; ctx.font = '12px Shojumaru, sans-serif';
+        ctx.shadowColor = '#000'; ctx.shadowBlur = 4;
         ctx.fillText('⚡ BAŞLAMAK İÇİN MEYVEYİ KES! ⚡', cw / 2, 115);
-        ctx.shadowBlur = 0;
 
         menuFruits.forEach(mf => {
-            mf.angle += 0.015;
+            mf.angle += 0.02;
             ctx.save();
             ctx.translate(mf.x, mf.y);
             ctx.rotate(Math.sin(mf.angle) * 0.15);
@@ -10556,272 +10276,199 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
 
             ctx.fillStyle = '#ffffff';
             ctx.font = '13px Shojumaru, sans-serif';
-            ctx.shadowColor = '#000';
-            ctx.shadowBlur = 6;
-            ctx.fillText(mf.label, 0, 48);
+            ctx.shadowColor = '#000'; ctx.shadowBlur = 6;
+            ctx.fillText(mf.label, 0, 52);
 
             if (mf.mode !== 'quit') {
                 ctx.fillStyle = '#ffd32a';
                 ctx.font = '10px Shojumaru, sans-serif';
-                ctx.fillText(`🏆 ${highScores[mf.mode]}`, 0, 64);
+                ctx.fillText(`🏆 ${highScores[mf.mode]}`, 0, 68);
             }
             ctx.restore();
         });
         ctx.restore();
     }
 
-    function drawWeapon() {
-        if (!isPointerDown || currentWeapon === 'none') return;
-
-        ctx.save();
-        ctx.translate(pointerPos.x, pointerPos.y);
-        ctx.rotate(pointerPos.angle + Math.PI / 4);
-
-        if (currentWeapon === 'katana') {
-            ctx.fillStyle = '#1e272e';
-            ctx.fillRect(-5, 22, 10, 30);
-            ctx.fillStyle = '#ffd32a';
-            ctx.beginPath();
-            ctx.ellipse(0, 20, 12, 5, 0, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.fillStyle = '#ffffff';
-            ctx.beginPath();
-            ctx.moveTo(-3, 18); ctx.lineTo(3, 18); ctx.lineTo(1.5, -45); ctx.lineTo(-1.5, -45);
-            ctx.closePath(); ctx.fill();
-        } else if (currentWeapon === 'lightsaber') {
-            ctx.fillStyle = '#747d8c';
-            ctx.fillRect(-6, 20, 12, 28);
-            ctx.fillStyle = '#00d2d3';
-            ctx.fillRect(-4, -45, 8, 65);
-        } else if (currentWeapon === 'kunai') {
-            ctx.fillStyle = '#2f3542';
-            ctx.beginPath();
-            ctx.moveTo(0, -35); ctx.lineTo(12, 5); ctx.lineTo(4, 8); ctx.lineTo(4, 25);
-            ctx.lineTo(-4, 25); ctx.lineTo(-4, 8); ctx.lineTo(-12, 5);
-            ctx.closePath(); ctx.fill();
-        }
-
-        ctx.restore();
-    }
-
-    /* --- AKILLI DÖNGÜ (KAPANINCA KESİNLİKLE DURUR) --- */
+    /* =========================================================================
+       🔄 ÖLÜMSÜZ OYUN DÖNGÜSÜ (ASLA DURMAZ VE KİLİTLENMEZ)
+       ========================================================================= */
     function gameLoop() {
         if (!isAppOpen) {
-            cancelAnimationFrame(animationFrameId);
             animationFrameId = null;
             return;
         }
 
-        if (isPaused) {
-            animationFrameId = requestAnimationFrame(gameLoop);
-            return;
-        }
+        // 🛡️ DÖNGÜYÜ EN TEPEDE YENİLE: HİÇBİR HATA VEYA ÖLÜM DÖNGÜYÜ DURDURAMAZ!
+        animationFrameId = requestAnimationFrame(gameLoop);
+
+        if (isPaused) return;
 
         if (hitStopFrames > 0) {
             hitStopFrames--;
-            animationFrameId = requestAnimationFrame(gameLoop);
             return;
         }
 
-        ctx.clearRect(0, 0, cw, ch);
+        try {
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            ctx.clearRect(0, 0, cw, ch);
 
-        ctx.save();
-        if (screenShake > 0) {
-            const shakeX = (Math.random() - 0.5) * screenShake;
-            const shakeY = (Math.random() - 0.5) * screenShake;
-            ctx.translate(shakeX, shakeY);
-            screenShake *= 0.88;
-            if (screenShake < 0.5) screenShake = 0;
-        }
-
-        // DOJO
-        drawDojoBackground();
-
-        // MENÜ
-        if (currentGameState === 'MENU') {
-            drawMenuFruitButtons();
-        }
-
-        if (criticalFlash > 0) {
-            ctx.fillStyle = 'rgba(255, 215, 0, 0.25)';
-            ctx.fillRect(0, 0, cw, ch);
-            criticalFlash--;
-        }
-
-        // OYUN
-        if (currentGameState === 'PLAYING') {
-            if (freezeTimer > 0) {
-                freezeTimer--;
-                if (freezeTimer <= 0) document.getElementById('love-ninja-master').classList.remove('frozen-active');
-            }
-            if (frenzyTimer > 0) frenzyTimer--;
-            if (doubleTimer > 0) doubleTimer--;
-
-            const now = Date.now();
-            let waveInterval = 2600;
-            if (frenzyTimer > 0) waveInterval = 700;
-            else if (currentMode === 'zen') waveInterval = 950;
-            else if (currentMode === 'arcade') waveInterval = 1800;
-
-            if (now - lastWaveTime > waveInterval && !isMegaActive) {
-                spawnWave();
-                lastWaveTime = now;
-            }
-
-            // Mega Kalp
-            if (isMegaActive && megaTarget) {
-                megaTarget.timer--;
-                ctx.save();
-                ctx.globalAlpha = 1.0;
-                ctx.translate(megaTarget.x, megaTarget.y);
-                ctx.font = '105px ' + EMOJI_FONT;
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText('💖', 0, 0);
-
-                ctx.fillStyle = '#ffd32a';
-                ctx.font = '20px Shojumaru, sans-serif';
-                ctx.shadowColor = '#000';
-                ctx.shadowBlur = 6;
-                ctx.fillText(`KES! ${megaTarget.hits}`, 0, 75);
-                ctx.restore();
-
-                if (megaTarget.timer <= 0) {
-                    isMegaActive = false;
-                    score += megaTarget.hits * 2;
-                    document.getElementById('current-score').innerText = score;
-                    createExplosion(megaTarget.x, megaTarget.y, '#ff0055');
-                    playSfx('critical');
-                    showComboAlert(`+${megaTarget.hits * 2} MEGA PUAN! 🎉`);
-                    megaTarget = null;
-                    if (currentMode === 'arcade') gameOver();
-                }
-            }
-
-            // Uçan Meyveler
-            const timeScale = (freezeTimer > 0) ? 0.35 : 1.0;
-
-            for (let i = items.length - 1; i >= 0; i--) {
-                const it = items[i];
-                it.vy += it.gravity * timeScale;
-                it.x += it.vx * timeScale;
-                it.y += it.vy * timeScale;
-                it.angle += it.vRot * timeScale;
-
-                ctx.save();
-                ctx.globalAlpha = 1.0;
-                ctx.globalCompositeOperation = 'source-over';
-                ctx.translate(it.x, it.y);
-                ctx.rotate(it.angle);
-
-                ctx.font = '52px ' + EMOJI_FONT;
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(it.icon, 0, 0);
-                ctx.restore();
-
-                if (it.y > ch + 60 && it.vy > 0) {
-                    if (currentMode === 'classic' && (it.type === 'fruit' || it.type === 'heart') && !it.isSliced) {
-                        misses++;
-                        lives = Math.max(0, lives - 1);
-                        playSfx('miss');
-                        triggerHaptic(80);
-                        updateCenterHUD();
-                        if (lives <= 0) {
-                            gameOver();
-                            return;
-                        }
-                    }
-                    items.splice(i, 1);
-                }
-            }
-
-            // Kesilen Parçalar
-            const sliceFadeSpeed = (frenzyTimer > 0) ? 0.055 : 0.035;
-            for (let i = slices.length - 1; i >= 0; i--) {
-                const s = slices[i];
-                s.vy += s.gravity * timeScale;
-                s.x += s.vx * timeScale;
-                s.y += s.vy * timeScale;
-                s.angle += s.vRot * timeScale;
-                s.alpha -= sliceFadeSpeed;
-
-                ctx.save();
-                ctx.globalAlpha = Math.max(0, s.alpha);
-                ctx.translate(s.x, s.y);
-                ctx.rotate(s.angle);
-                ctx.font = '36px ' + EMOJI_FONT;
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(s.icon, 0, 0);
-                ctx.restore();
-
-                if (s.alpha <= 0 || s.y > ch + 50) slices.splice(i, 1);
-            }
-
-            // Sıvı Partikülleri
-            for (let i = particles.length - 1; i >= 0; i--) {
-                const p = particles[i];
-                p.x += p.vx * timeScale;
-                p.y += p.vy * timeScale;
-                p.alpha -= 0.065;
-
-                ctx.save();
-                ctx.globalAlpha = Math.max(0, p.alpha);
-                ctx.fillStyle = p.color;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.restore();
-
-                if (p.alpha <= 0) particles.splice(i, 1);
-            }
-        }
-
-        // Kılıç İzi
-        if (bladeTrail.length > 1) {
             ctx.save();
-            ctx.beginPath();
-            ctx.moveTo(bladeTrail[0].x, bladeTrail[0].y);
-            for (let i = 1; i < bladeTrail.length; i++) {
-                ctx.lineTo(bladeTrail[i].x, bladeTrail[i].y);
+            if (screenShake > 0) {
+                ctx.translate((Math.random() - 0.5) * screenShake, (Math.random() - 0.5) * screenShake);
+                screenShake *= 0.88;
             }
 
-            let outerColor = '#ff0044', innerColor = '#ff2a6d';
-            if (currentWeapon === 'lightsaber') {
-                outerColor = '#00d2d3'; innerColor = '#ffffff';
-            } else if (currentWeapon === 'kunai') {
-                outerColor = '#ffa502'; innerColor = '#ffd32a';
+            drawDojoBackground();
+
+            if (currentGameState === 'MENU') {
+                drawMenuFruitButtons();
             }
 
-            ctx.strokeStyle = outerColor;
-            ctx.lineWidth = 10;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-            ctx.stroke();
+            if (currentGameState === 'PLAYING') {
+                if (freezeTimer > 0) {
+                    freezeTimer--;
+                    if (freezeTimer <= 0) document.getElementById('love-ninja-master').classList.remove('frozen-active');
+                }
+                if (frenzyTimer > 0) frenzyTimer--;
+                if (doubleTimer > 0) doubleTimer--;
 
-            ctx.strokeStyle = innerColor;
-            ctx.lineWidth = 5;
-            ctx.stroke();
+                const now = Date.now();
+                let waveInterval = (frenzyTimer > 0) ? 700 : (currentMode === 'zen' ? 1000 : 2000);
+                if (now - lastWaveTime > waveInterval && !isMegaActive) {
+                    spawnWave(); lastWaveTime = now;
+                }
 
-            ctx.strokeStyle = '#ffffff';
-            ctx.lineWidth = 2;
-            ctx.stroke();
+                // Mega Kalp
+                if (isMegaActive && megaTarget) {
+                    megaTarget.timer--;
+                    ctx.save();
+                    ctx.translate(megaTarget.x, megaTarget.y);
+                    ctx.font = '105px ' + EMOJI_FONT;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText('💖', 0, 0);
+
+                    ctx.fillStyle = '#ffd32a';
+                    ctx.font = '20px Shojumaru, sans-serif';
+                    ctx.shadowColor = '#000'; ctx.shadowBlur = 6;
+                    ctx.fillText(`KES! ${megaTarget.hits}`, 0, 75);
+                    ctx.restore();
+
+                    if (megaTarget.timer <= 0) {
+                        isMegaActive = false;
+                        score += megaTarget.hits * 2;
+                        document.getElementById('current-score').innerText = score;
+                        createExplosion(megaTarget.x, megaTarget.y, '#ff0055');
+                        playSfx('combo');
+                        showComboAlert(`+${megaTarget.hits * 2} MEGA PUAN! 🎉`);
+                        megaTarget = null;
+                        if (currentMode === 'arcade') gameOver();
+                    }
+                }
+
+                const timeScale = (freezeTimer > 0) ? 0.35 : 1.0;
+
+                // 🍉 Uçan Canlı Meyveler
+                for (let i = items.length - 1; i >= 0; i--) {
+                    const it = items[i];
+                    it.vy += it.gravity * timeScale;
+                    it.x += it.vx * timeScale;
+                    it.y += it.vy * timeScale;
+                    it.angle += it.vRot * timeScale;
+
+                    ctx.save();
+                    ctx.translate(it.x, it.y);
+                    ctx.rotate(it.angle);
+                    ctx.font = '54px ' + EMOJI_FONT;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(it.icon, 0, 0);
+                    ctx.restore();
+
+                    // Meyve aşağı düştüğünde
+                    if (it.y > ch + 60 && it.vy > 0) {
+                        if (currentMode === 'classic' && (it.type === 'fruit' || it.type === 'heart')) {
+                            lives = Math.max(0, lives - 1);
+                            triggerHaptic(80);
+                            updateCenterHUD();
+                            if (lives <= 0) {
+                                gameOver();
+                                break; // Sadece döngüyü kırar, gameLoop'u öldürmez!
+                            }
+                        }
+                        items.splice(i, 1);
+                    }
+                }
+
+                // 🍉 Kesilen Parçalar
+                for (let i = slices.length - 1; i >= 0; i--) {
+                    const s = slices[i];
+                    s.vy += s.gravity * timeScale;
+                    s.x += s.vx * timeScale;
+                    s.y += s.vy * timeScale;
+                    s.angle += s.vRot * timeScale;
+                    s.alpha -= 0.035;
+
+                    ctx.save();
+                    ctx.globalAlpha = Math.max(0, s.alpha);
+                    ctx.translate(s.x, s.y);
+                    ctx.rotate(s.angle);
+                    ctx.font = '38px ' + EMOJI_FONT;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(s.icon, 0, 0);
+                    ctx.restore();
+
+                    if (s.alpha <= 0 || s.y > ch + 50) slices.splice(i, 1);
+                }
+
+                // 💦 Su Damlacıkları
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    const p = particles[i];
+                    p.x += p.vx * timeScale;
+                    p.y += p.vy * timeScale;
+                    p.alpha -= 0.04;
+                    ctx.save();
+                    ctx.globalAlpha = Math.max(0, p.alpha);
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill();
+                    ctx.restore();
+                    if (p.alpha <= 0) particles.splice(i, 1);
+                }
+            }
+
+            // 🗡️ Parlayan Kılıç İzi
+            if (bladeTrail.length > 1) {
+                ctx.save();
+                for (let i = 1; i < bladeTrail.length; i++) {
+                    const p1 = bladeTrail[i - 1];
+                    const p2 = bladeTrail[i];
+                    const width = (i / bladeTrail.length) * 11;
+
+                    ctx.strokeStyle = (currentWeapon === 'lightsaber') ? '#00d2d3' : (currentWeapon === 'kunai' ? '#ffa502' : '#ff0044');
+                    ctx.lineWidth = width;
+                    ctx.lineCap = 'round';
+                    ctx.shadowColor = ctx.strokeStyle; ctx.shadowBlur = 12;
+                    ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
+
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = width * 0.4;
+                    ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
+                }
+                ctx.restore();
+            }
+
+            drawWeapon();
             ctx.restore();
+        } catch (e) {
+            console.error("GameLoop Güvenlik Yakalaması:", e);
         }
-
-        drawWeapon();
-        ctx.restore();
 
         const nowMs = Date.now();
         bladeTrail = bladeTrail.filter(p => nowMs - p.time < 120);
-
-        if (isAppOpen) {
-            animationFrameId = requestAnimationFrame(gameLoop);
-        }
     }
 
-    /* --- KESME VE KILIÇ RÜZGARI --- */
+    /* --- KESME VE DOKUNMATİK --- */
     function checkLaserSlice(p1, p2) {
         if (!isAppOpen) return;
         const dist = Math.hypot(p2.x - p1.x, p2.y - p1.y);
@@ -10829,8 +10476,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
         const sliceAngle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
 
         if (dist > 25 && Date.now() - lastWhooshTime > 220) {
-            playSfx('whoosh');
-            lastWhooshTime = Date.now();
+            playSfx('whoosh'); lastWhooshTime = Date.now();
         }
 
         for (let s = 0; s <= steps; s++) {
@@ -10842,8 +10488,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
                 for (let i = menuFruits.length - 1; i >= 0; i--) {
                     const mf = menuFruits[i];
                     if (Math.hypot(mf.x - cx, mf.y - cy) < mf.radius + 15) {
-                        playSfx('slice');
-                        triggerHaptic(40);
+                        playSfx('slice'); triggerHaptic(40);
                         createExplosion(mf.x, mf.y, mf.color);
                         if (mf.mode === 'quit') closeNinjaGame();
                         else startMode(mf.mode);
@@ -10856,7 +10501,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
                 if (isMegaActive && megaTarget) {
                     if (Math.hypot(megaTarget.x - cx, megaTarget.y - cy) < megaTarget.radius) {
                         megaTarget.hits++;
-                        playSfx('mega_hit');
+                        playSfx('slice');
                         triggerHaptic(30);
                         createExplosion(cx, cy, '#ff0055');
                         return;
@@ -10865,7 +10510,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
 
                 for (let i = items.length - 1; i >= 0; i--) {
                     const it = items[i];
-                    if (Math.hypot(it.x - cx, it.y - cy) < it.radius + 24) {
+                    if (Math.hypot(it.x - cx, it.y - cy) < it.radius + 20) {
                         sliceItemWithAngle(it, i, sliceAngle);
                     }
                 }
@@ -10877,15 +10522,11 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
         if (!isAppOpen) return;
         const dx = x - pointerPos.x;
         const dy = y - pointerPos.y;
-        pointerPos.x = x;
-        pointerPos.y = y;
-        if (Math.hypot(dx, dy) > 2) {
-            pointerPos.angle = Math.atan2(dy, dx);
-        }
+        pointerPos.x = x; pointerPos.y = y;
+        if (Math.hypot(dx, dy) > 2) pointerPos.angle = Math.atan2(dy, dx);
 
         bladeTrail.push({ x, y, time: Date.now() });
-        if (bladeTrail.length > 6) bladeTrail.splice(0, bladeTrail.length - 6);
-
+        if (bladeTrail.length > 8) bladeTrail.splice(0, bladeTrail.length - 8);
         if (bladeTrail.length >= 2) {
             checkLaserSlice(bladeTrail[bladeTrail.length - 2], bladeTrail[bladeTrail.length - 1]);
         }
@@ -10896,31 +10537,18 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
         const rect = canvas.getBoundingClientRect();
         const clientX = e.touches ? e.touches[0].clientX : e.clientX;
         const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        const x = clientX - rect.left;
-        const y = clientY - rect.top;
-        addTrailPoint(x, y);
+        addTrailPoint(clientX - rect.left, clientY - rect.top);
     }
 
-    canvas.addEventListener('mousedown', (e) => { 
-        if (!isAppOpen) return;
-        isPointerDown = true; bladeTrail = []; handlePointer(e); 
-    });
-    
-    window.addEventListener('mousemove', (e) => { 
-        if (isAppOpen && isPointerDown) handlePointer(e); 
-    });
-    
+    canvas.addEventListener('mousedown', (e) => { isPointerDown = true; bladeTrail = []; handlePointer(e); });
+    window.addEventListener('mousemove', (e) => { if (isAppOpen && isPointerDown) handlePointer(e); });
     window.addEventListener('mouseup', () => { isPointerDown = false; });
 
-    canvas.addEventListener('touchstart', (e) => { 
-        if (!isAppOpen) return;
-        isPointerDown = true; bladeTrail = []; handlePointer(e); 
-    }, { passive: true });
-    
-    canvas.addEventListener('touchmove', handlePointer, { passive: true });
+    canvas.addEventListener('touchstart', (e) => { isPointerDown = true; bladeTrail = []; handlePointer(e); }, { passive: false });
+    canvas.addEventListener('touchmove', handlePointer, { passive: false });
     canvas.addEventListener('touchend', () => { isPointerDown = false; });
 
-    /* --- MODALLAR --- */
+    /* --- MODALLAR VE MENÜ --- */
     window.openTutorialModal = () => { document.getElementById('tutorial-modal').style.display = 'flex'; };
     window.closeTutorialModal = () => { document.getElementById('tutorial-modal').style.display = 'none'; };
 
@@ -10940,10 +10568,8 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
 
         document.getElementById('fruitdex-modal').style.display = 'flex';
     };
-
     window.closeFruitdexModal = () => { document.getElementById('fruitdex-modal').style.display = 'none'; };
 
-    /* --- DURAKLATMA VE GERİ SAYIM --- */
     document.getElementById('btn-pause-game').onclick = () => {
         if (currentGameState !== 'PLAYING') return;
         isPaused = true;
@@ -10953,7 +10579,6 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
 
     document.getElementById('btn-resume-game').onclick = () => {
         document.getElementById('pause-screen').style.display = 'none';
-        
         const overlay = document.getElementById('countdown-overlay');
         const num = document.getElementById('countdown-number');
         overlay.style.display = 'flex';
@@ -10974,10 +10599,9 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
                 isPaused = false;
                 if (soundEnabled && isAppOpen) startLoFiBgm();
             }
-        }, 700);
+        }, 600);
     };
 
-    /* --- BIÇAK VE DOJO SEÇİCİLER --- */
     window.setWeaponModel = (weapon) => {
         currentWeapon = weapon;
         document.querySelectorAll('#menu-overlay-panel .nj-skin-btn[id^="weap-"]').forEach(b => b.classList.remove('active'));
@@ -10990,6 +10614,7 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
         document.getElementById(`dojo-${dojo}`).classList.add('active');
     };
 
+    /* --- 🎮 YENİ OYUN BAŞLATMA (SIFIR HATA GARANTİLİ) --- */
     window.startMode = (mode) => {
         purgeGameObjects();
         currentMode = mode;
@@ -10999,13 +10624,13 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
         document.getElementById('main-sound-wrap').style.display = 'none';
         document.getElementById('game-over-screen').style.display = 'none';
         document.getElementById('pause-screen').style.display = 'none';
+        document.getElementById('tutorial-modal').style.display = 'none';
+        document.getElementById('fruitdex-modal').style.display = 'none';
         document.getElementById('game-hud').style.display = 'flex';
 
-        score = 0;
-        lives = 3;
-        misses = 0;
+        score = 0; 
+        lives = 3; 
         isPaused = false;
-
         document.getElementById('current-score').innerText = '0';
         document.getElementById('love-ninja-master').classList.remove('frozen-active', 'fever-active');
 
@@ -11020,18 +10645,16 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
                 if (currentGameState !== 'PLAYING' || isPaused || !isAppOpen) return;
                 arcadeTimer--;
                 updateCenterHUD();
-
                 if (arcadeTimer === 4) spawnMegaPomegranate();
-
-                if (arcadeTimer <= 0) {
-                    clearInterval(arcadeInterval);
-                    if (!isMegaActive) gameOver();
-                }
+                if (arcadeTimer <= 0) { clearInterval(arcadeInterval); if (!isMegaActive) gameOver(); }
             }, 1000);
         }
 
         lastWaveTime = Date.now();
         spawnWave();
+
+        // 🛡️ DÖNGÜ DURMUŞSA TEKRAR ATEŞLE
+        if (!animationFrameId) gameLoop();
     };
 
     function updateCenterHUD() {
@@ -11049,9 +10672,9 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
 
     function gameOver() {
         currentGameState = 'GAME_OVER';
-        purgeGameObjects();
         stopLoFiBgm();
-
+        purgeGameObjects(); // 🛡️ YANDIĞINDA HAVADAKİ TÜM ARTIKLARI ANINDA TEMİZLE
+        
         document.getElementById('love-ninja-master').classList.remove('frozen-active', 'fever-active');
         document.getElementById('game-hud').style.display = 'none';
 
@@ -11060,14 +10683,11 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
             localStorage.setItem(`ninja_high_${currentMode}`, score);
         }
 
-        const modeNames = { classic: 'KLASİK MOD', arcade: 'ARCADE MOD', zen: 'ZEN (RAHAT MOD)' };
+        const modeNames = { classic: 'KLASİK MOD', arcade: 'ARCADE MOD', zen: 'ZEN MOD' };
         document.getElementById('over-mode-desc').innerText = modeNames[currentMode];
         document.getElementById('final-score').innerText = score;
         document.getElementById('final-high').innerText = highScores[currentMode];
-
-        const quote = SENSEI_QUOTES[Math.floor(Math.random() * SENSEI_QUOTES.length)];
-        document.getElementById('sensei-quote-text').innerText = quote;
-
+        document.getElementById('sensei-quote-text').innerText = SENSEI_QUOTES[Math.floor(Math.random() * SENSEI_QUOTES.length)];
         document.getElementById('game-over-screen').style.display = 'flex';
     }
 
@@ -11087,51 +10707,29 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
         document.getElementById('love-ninja-master').classList.remove('frozen-active', 'fever-active');
 
         resize();
+        if (!animationFrameId) gameLoop();
     };
 
-    /* --- OYUNU AÇMA VE KAPATMA (TAM DONDURMA VE TEMİZLEME) --- */
     window.openNinjaGame = () => {
         isAppOpen = true;
-        const modal = document.getElementById('ninja-modal-container');
-        modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-        document.documentElement.style.overflow = 'hidden';
+        document.getElementById('ninja-modal-container').style.display = 'flex';
         initAudio();
-
         setTimeout(() => {
             resize();
             initAtmosphere();
             showMainMenu();
-            if (!animationFrameId) {
-                gameLoop();
-            }
-        }, 40);
+            if (!animationFrameId) gameLoop();
+        }, 50);
     };
 
     window.closeNinjaGame = () => {
         isAppOpen = false;
         currentGameState = 'CLOSED';
-
-        // 1. Döngüyü tamamen durdur
-        if (animationFrameId) {
-            cancelAnimationFrame(animationFrameId);
-            animationFrameId = null;
-        }
-
-        // 2. Zamanlayıcıları ve sesleri durdur
+        if (animationFrameId) { cancelAnimationFrame(animationFrameId); animationFrameId = null; }
         stopLoFiBgm();
         purgeGameObjects();
-
-        // 3. Audio Context'i askıya al
-        if (audioCtx && audioCtx.state === 'running') {
-            audioCtx.suspend();
-        }
-
-        // 4. Modalı kapat ve sayfa kaydırmasını geri aç
-        const modal = document.getElementById('ninja-modal-container');
-        modal.style.display = 'none';
-        document.body.style.overflow = '';
-        document.documentElement.style.overflow = '';
+        if (audioCtx && audioCtx.state === 'running') audioCtx.suspend();
+        document.getElementById('ninja-modal-container').style.display = 'none';
     };
 
     document.getElementById('btn-replay-mode').onclick = () => startMode(currentMode);
@@ -12857,9 +12455,6 @@ else if (gameType === 'studio' || gameType === 'tuval' || gameType === 'cizim') 
   }
 </style>
 
-
-
-  
 
 
 
